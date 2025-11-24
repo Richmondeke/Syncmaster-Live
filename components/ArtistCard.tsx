@@ -71,7 +71,7 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onClick }) => {
             </motion.h3>
           </div>
           <motion.p 
-            className="text-sm font-medium uppercase tracking-widest text-[#4fb7b3] mt-2 will-change-transform"
+            className="text-sm font-medium uppercase tracking-widest text-[#ccff00] mt-2 will-change-transform"
             variants={{
               rest: { opacity: 0, y: 10 },
               hover: { opacity: 1, y: 0 }

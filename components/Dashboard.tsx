@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -5,16 +6,29 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Briefcase, CheckCircle, Clock, DollarSign, Music, Upload, X, FileAudio, Loader2, ChevronRight, ListMusic, Layers, Edit2, Calendar, Tag, Save, Filter, Play, Pause, SkipBack, SkipForward, Volume2, Mic2, Disc, FilePlus } from 'lucide-react';
-import { SyncBrief, Track, Application } from '../types';
-import { User } from 'firebase/auth';
-import { subscribeToBriefs, subscribeToUserTracks, subscribeToUserApplications, uploadTrackFile, saveTrackMetadata, updateTrackMetadata, submitApplication } from '../services/firebase';
+import { Search, Briefcase, CheckCircle, Clock, DollarSign, Music, Upload, X, FileAudio, Loader2, ChevronRight, ListMusic, Layers, Edit2, Calendar, Tag, Save, Filter, Play, Pause, SkipBack, SkipForward, Volume2, Mic2, Disc, FilePlus, Film, Search as SearchIcon, ImageIcon, Plus, Settings, Link as LinkIcon, Globe, AlertCircle, LogOut, Ghost } from 'lucide-react';
+import { SyncBrief, Track, Application, TabView, ResearchResult, User } from '../types';
+import { subscribeToBriefs, subscribeToUserTracks, subscribeToUserApplications, uploadTrackFile, saveTrackMetadata, updateTrackMetadata, submitApplication, updateArtistProfile } from '../services/supabase';
+import { searchSyncDatabase } from '../services/geminiService';
 
 interface DashboardProps {
   user: User;
 }
 
-type TabView = 'browse' | 'applications' | 'library';
+const SUGGESTED_GENRES = ['Cinematic', 'Electronic', 'Rock', 'Pop', 'Hip Hop', 'Ambient', 'Folk', 'Corporate', 'Orchestral', 'Synthwave'];
+const SUGGESTED_TAGS = ['Uplifting', 'Dark', 'Energetic', 'Emotional', 'Driving', 'Hopeful', 'Tense', 'Epic', 'Quirky', 'Sentimental', 'Advertising', 'Trailer'];
+
+// --- Reusable Empty State Component ---
+const EmptyState = ({ icon: Icon, title, description, action }: { icon: any, title: string, description: string, action?: React.ReactNode }) => (
+  <div className="flex flex-col items-center justify-center py-16 px-4 text-center bg-[#1a1b3b]/40 border border-white/5 rounded-xl border-dashed">
+    <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
+      <Icon className="w-8 h-8 text-white/20" />
+    </div>
+    <h3 className="text-lg font-bold font-heading text-white mb-2">{title}</h3>
+    <p className="text-white/40 text-sm max-w-sm mb-6 leading-relaxed">{description}</p>
+    {action}
+  </div>
+);
 
 const Dashboard: React.FC<DashboardProps> = ({ user }) => {
   const [activeTab, setActiveTab] = useState<TabView>('browse');
@@ -29,6 +43,25 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
   const [editingTrack, setEditingTrack] = useState<Track | null>(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [librarySearch, setLibrarySearch] = useState('');
+
+  // Research State
+  const [researchQuery, setResearchQuery] = useState('');
+  const [researchResult, setResearchResult] = useState<ResearchResult | null>(null);
+  const [isResearching, setIsResearching] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  
+  // Profile State
+  const [profileData, setProfileData] = useState({
+      spotify: user.socials?.spotify || '',
+      appleMusic: user.socials?.appleMusic || '',
+      instagram: user.socials?.instagram || '',
+      website: user.socials?.website || ''
+  });
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  
+  // Real Connection State
+  const [activeInput, setActiveInput] = useState<'spotify' | 'appleMusic' | null>(null);
+  const [tempUrl, setTempUrl] = useState('');
 
   // Audio Player State
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
@@ -73,6 +106,14 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
   useEffect(() => {
     if (!user) return;
     
+    // Update local profile state if user object updates
+    setProfileData({
+        spotify: user.socials?.spotify || '',
+        appleMusic: user.socials?.appleMusic || '',
+        instagram: user.socials?.instagram || '',
+        website: user.socials?.website || ''
+    });
+
     // Subscribe to Briefs (Public)
     const unsubBriefs = subscribeToBriefs((data) => setBriefs(data));
     
@@ -160,6 +201,14 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
       } else {
           if (!applyFormData.title) setApplyFormData(prev => ({ ...prev, title: name }));
       }
+    }
+  };
+
+  const addTagToLibraryUpload = (tag: string) => {
+    const currentTags = libraryUploadData.tags.split(',').map(t => t.trim()).filter(Boolean);
+    if (!currentTags.includes(tag)) {
+      const newTags = currentTags.length > 0 ? `${libraryUploadData.tags}, ${tag}` : tag;
+      setLibraryUploadData(prev => ({ ...prev, tags: newTags }));
     }
   };
 
@@ -292,6 +341,76 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
     }
   };
 
+  const handleResearchSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!researchQuery.trim()) return;
+
+    setIsResearching(true);
+    setResearchResult(null);
+    setImageError(false); // Reset image error on new search
+
+    try {
+      const result = await searchSyncDatabase(researchQuery);
+      setResearchResult(result);
+    } catch (e) {
+      console.error(e);
+      // Optional: Handle error UI
+    } finally {
+      setIsResearching(false);
+    }
+  };
+  
+  // --- Connect Service Handlers ---
+  const handleStartConnect = (service: 'spotify' | 'appleMusic') => {
+      setActiveInput(service);
+      setTempUrl('');
+  };
+
+  const handleConfirmConnect = (service: 'spotify' | 'appleMusic') => {
+      if (!tempUrl.trim()) {
+          setActiveInput(null);
+          return;
+      }
+      
+      if (service === 'spotify' && !tempUrl.includes('spotify.com')) {
+          alert("Please enter a valid Spotify Artist URL");
+          return;
+      }
+      if (service === 'appleMusic' && !tempUrl.includes('music.apple.com')) {
+          alert("Please enter a valid Apple Music Artist URL");
+          return;
+      }
+
+      setProfileData(prev => ({...prev, [service]: tempUrl}));
+      setActiveInput(null);
+      setTempUrl('');
+  };
+
+  const handleCancelConnect = () => {
+      setActiveInput(null);
+      setTempUrl('');
+  };
+
+  const handleDisconnectService = (service: 'spotify' | 'appleMusic') => {
+      if(window.confirm(`Are you sure you want to disconnect your ${service === 'spotify' ? 'Spotify' : 'Apple Music'} account?`)) {
+          setProfileData(prev => ({...prev, [service]: ''}));
+      }
+  };
+
+  const handleProfileSave = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsSavingProfile(true);
+      try {
+          await updateArtistProfile(user.uid, { socials: profileData });
+          alert("Profile connections updated!");
+      } catch (error) {
+          console.error(error);
+          alert("Failed to update profile.");
+      } finally {
+          setIsSavingProfile(false);
+      }
+  };
+
   const filteredLibraryTracks = tracks.filter(t => 
     t.title.toLowerCase().includes(librarySearch.toLowerCase()) || 
     t.artist.toLowerCase().includes(librarySearch.toLowerCase()) ||
@@ -303,7 +422,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
   const StatusBadge = ({ status }: { status: Application['status'] }) => {
     const colors = {
       pending: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
-      shortlisted: 'bg-[#4fb7b3]/10 text-[#4fb7b3] border-[#4fb7b3]/20',
+      shortlisted: 'bg-[#ccff00]/10 text-[#ccff00] border-[#ccff00]/20',
       accepted: 'bg-green-500/10 text-green-500 border-green-500/20',
       rejected: 'bg-red-500/10 text-red-500 border-red-500/20',
     };
@@ -314,9 +433,20 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
       </span>
     );
   };
+  
+  const Logo = () => (
+    <div className="flex items-center gap-2">
+      <div className="w-8 h-8 rounded-full bg-[#ccff00] flex items-center justify-center shrink-0">
+        <span className="font-heading font-bold text-[#31326f] text-lg transform translate-y-[1px]">S</span>
+      </div>
+      <span className="text-3xl md:text-5xl font-heading font-bold">
+        SYNC<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] to-[#e6ff80]">MASTER</span>
+      </span>
+    </div>
+  );
 
   return (
-    <div className="pt-24 pb-32 px-4 md:px-8 max-w-7xl mx-auto min-h-screen relative">
+    <div className="pt-24 pb-48 md:pb-32 px-4 md:px-8 max-w-7xl mx-auto min-h-screen relative">
       <audio 
         ref={audioRef}
         src={currentTrack?.audioUrl}
@@ -325,27 +455,25 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
       />
 
       {/* Header & Tabs */}
-      <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-6">
         <div>
-          <h1 className="text-3xl md:text-5xl font-heading font-bold mb-2">
-            SYNC<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8fbd3] to-[#4fb7b3]">MASTER</span>
-          </h1>
-          <p className="text-white/60 font-mono text-sm">Welcome back, {user?.displayName || 'Creator'}</p>
+          <Logo />
+          <p className="text-white/60 font-mono text-sm mt-2">Welcome back, {user?.displayName || 'Creator'}</p>
         </div>
 
-        <div className="flex bg-white/5 p-1 rounded-lg border border-white/10">
-           {(['browse', 'applications', 'library'] as TabView[]).map((tab) => (
+        <div className="flex bg-white/5 p-1 rounded-lg border border-white/10 overflow-x-auto max-w-full w-full md:w-auto scrollbar-hide">
+           {(['browse', 'applications', 'library', 'research', 'profile'] as TabView[]).map((tab) => (
              <button
                key={tab}
                onClick={() => setActiveTab(tab)}
-               className={`px-6 py-2 rounded-md text-xs font-bold uppercase tracking-widest transition-all
+               className={`px-4 md:px-6 py-2 rounded-md text-xs font-bold uppercase tracking-widest transition-all whitespace-nowrap flex items-center gap-2 shrink-0
                  ${activeTab === tab 
-                   ? 'bg-[#4fb7b3] text-black shadow-lg shadow-[#4fb7b3]/20' 
+                   ? 'bg-[#ccff00] text-black shadow-lg shadow-[#ccff00]/20' 
                    : 'text-white/60 hover:text-white hover:bg-white/5'
                  }
                `}
              >
-               {tab === 'browse' ? 'Briefs' : tab}
+               {tab === 'browse' ? 'Briefs' : tab === 'research' ? 'Research' : tab === 'profile' ? <><Settings className="w-3 h-3" /> Profile</> : tab}
              </button>
            ))}
         </div>
@@ -356,24 +484,28 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
       {/* 1. BROWSE BRIEFS */}
       {activeTab === 'browse' && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-          <div className="flex gap-4 mb-6">
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
               <input 
                 type="text" 
                 placeholder="Search briefs by keyword, genre, or mood..." 
-                className="w-full bg-white/5 border border-white/10 rounded-full py-3 pl-10 pr-4 text-sm text-white focus:border-[#4fb7b3] outline-none transition-colors"
+                className="w-full bg-white/5 border border-white/10 rounded-full py-3 pl-10 pr-4 text-sm text-white focus:border-[#ccff00] outline-none transition-colors"
               />
             </div>
-            <button className="px-4 py-2 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 text-white transition-colors">
+            <button className="px-4 py-2 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 text-white transition-colors self-start md:self-auto">
               <Filter className="w-4 h-4" />
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {briefs.length === 0 ? (
-               <div className="col-span-full py-12 flex justify-center">
-                  <Loader2 className="w-8 h-8 text-[#4fb7b3] animate-spin" />
+               <div className="col-span-full">
+                  <EmptyState 
+                    icon={Ghost}
+                    title="No Briefs Found"
+                    description="We are currently sourcing new opportunities. Check back shortly."
+                  />
                </div>
             ) : briefs.map((brief, index) => {
               const applied = hasApplied(brief.id);
@@ -383,10 +515,10 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className={`relative bg-[#1a1b3b]/60 backdrop-blur-md border ${applied ? 'border-[#4fb7b3]/50' : 'border-white/10'} p-6 flex flex-col gap-4 group hover:bg-[#1a1b3b]/80 transition-colors rounded-xl`}
+                  className={`relative bg-[#1a1b3b]/60 backdrop-blur-md border ${applied ? 'border-[#ccff00]/50' : 'border-white/10'} p-6 flex flex-col gap-4 group hover:bg-[#1a1b3b]/80 transition-colors rounded-xl`}
                 >
                   <div className="flex justify-between items-start">
-                     <div className="bg-white/5 p-2 rounded-lg text-[#a8fbd3]">
+                     <div className="bg-white/5 p-2 rounded-lg text-[#ccff00]">
                        <Briefcase className="w-5 h-5" />
                      </div>
                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded ${brief.deadline === 'Urgent' ? 'bg-red-500/20 text-red-400' : 'bg-white/5 text-white/50'}`}>
@@ -395,7 +527,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                   </div>
     
                   <div>
-                    <h3 className="text-lg font-bold font-heading leading-tight mb-2 text-white group-hover:text-[#4fb7b3] transition-colors">
+                    <h3 className="text-lg font-bold font-heading leading-tight mb-2 text-white group-hover:text-[#ccff00] transition-colors">
                       {brief.title}
                     </h3>
                     <div className="flex items-center gap-2 text-xs font-mono text-white/50 mb-4">
@@ -414,7 +546,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                   </div>
     
                   <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-[#a8fbd3] font-bold text-sm">
+                    <div className="flex items-center gap-1.5 text-[#ccff00] font-bold text-sm">
                       <DollarSign className="w-4 h-4" />
                       {brief.budget}
                     </div>
@@ -424,8 +556,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                       disabled={applied}
                       className={`px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center gap-2
                         ${applied 
-                          ? 'bg-[#4fb7b3]/20 text-[#4fb7b3] cursor-default' 
-                          : 'bg-white text-black hover:bg-[#a8fbd3]'
+                          ? 'bg-[#ccff00]/20 text-[#ccff00] cursor-default' 
+                          : 'bg-white text-black hover:bg-[#ccff00]'
                         }`}
                     >
                       {applied ? (
@@ -448,7 +580,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
       {activeTab === 'applications' && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
           <div className="bg-[#1a1b3b]/40 border border-white/10 rounded-xl overflow-hidden">
-            <div className="grid grid-cols-12 gap-4 p-4 border-b border-white/10 bg-black/20 text-xs font-bold uppercase tracking-widest text-white/50">
+            {/* Desktop Header */}
+            <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-white/10 bg-black/20 text-xs font-bold uppercase tracking-widest text-white/50">
               <div className="col-span-4">Brief</div>
               <div className="col-span-3">Track Submitted</div>
               <div className="col-span-2">Date</div>
@@ -457,28 +590,37 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
             </div>
             
             {applications.length === 0 ? (
-               <div className="p-12 text-center text-white/40">No applications found. Start applying!</div>
+               <EmptyState 
+                 icon={Briefcase}
+                 title="No Applications Yet"
+                 description="You haven't applied to any briefs. Browse the 'Briefs' tab to get started."
+                 action={
+                    <button onClick={() => setActiveTab('browse')} className="mt-4 px-6 py-2 bg-[#ccff00] text-black font-bold text-xs uppercase tracking-widest rounded">Browse Briefs</button>
+                 }
+               />
             ) : (
               applications.map((app) => {
                 const brief = getBrief(app.briefId);
                 const track = getTrack(app.trackId);
                 return (
-                  <div key={app.id} className="grid grid-cols-12 gap-4 p-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors">
-                    <div className="col-span-4">
+                  <div key={app.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors">
+                    <div className="col-span-1 md:col-span-4 flex flex-col">
                       <div className="font-bold text-white mb-1">{brief?.title || 'Loading Brief...'}</div>
                       <div className="text-xs text-white/50">{brief?.client}</div>
                     </div>
-                    <div className="col-span-3 flex items-center gap-2">
-                       <Music className="w-3 h-3 text-[#4fb7b3]" />
+                    <div className="col-span-1 md:col-span-3 flex items-center gap-2">
+                       <Music className="w-3 h-3 text-[#ccff00]" />
                        <span className="text-sm text-gray-200">{track?.title || 'Loading Track...'}</span>
                     </div>
-                    <div className="col-span-2 text-xs font-mono text-white/60">
+                    <div className="col-span-1 md:col-span-2 text-xs font-mono text-white/60 flex items-center gap-2 md:gap-0">
+                      <span className="md:hidden text-white/30 uppercase text-[10px] tracking-widest">Sent:</span>
                       {app.submittedDate}
                     </div>
-                    <div className="col-span-2">
+                    <div className="col-span-1 md:col-span-2 flex items-center gap-2 md:gap-0">
+                       <span className="md:hidden text-white/30 uppercase text-[10px] tracking-widest">Status:</span>
                       <StatusBadge status={app.status} />
                     </div>
-                    <div className="col-span-1 flex justify-end">
+                    <div className="hidden md:flex col-span-1 justify-end">
                       <button className="p-2 hover:bg-white/10 rounded-full transition-colors text-white/40 hover:text-white">
                         <ChevronRight className="w-4 h-4" />
                       </button>
@@ -507,7 +649,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                   value={librarySearch}
                   onChange={(e) => setLibrarySearch(e.target.value)}
                   placeholder="Search tracks..." 
-                  className="w-full bg-white/5 border border-white/10 rounded py-2 pl-8 pr-4 text-xs text-white focus:border-[#4fb7b3] outline-none transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded py-2 pl-8 pr-4 text-xs text-white focus:border-[#ccff00] outline-none transition-colors"
                 />
               </div>
               <button 
@@ -517,7 +659,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                     setTrackFile(null);
                     setLibraryUploadData({ title: '', artist: user.displayName || '', genre: '', tags: '', description: '', rights: false });
                 }}
-                className="flex items-center gap-2 px-6 py-2 bg-[#4fb7b3] text-black font-bold text-xs uppercase tracking-widest rounded hover:bg-white transition-colors"
+                className="flex items-center gap-2 px-6 py-2 bg-[#ccff00] text-black font-bold text-xs uppercase tracking-widest rounded hover:bg-white transition-colors whitespace-nowrap"
               >
                 <Upload className="w-4 h-4" /> Upload
               </button>
@@ -526,14 +668,21 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
 
           <div className="grid grid-cols-1 gap-2">
              {filteredLibraryTracks.length === 0 ? (
-                <div className="p-8 text-center text-white/30 italic">No tracks found. Upload tracks to build your portfolio.</div>
+                <EmptyState 
+                  icon={Music}
+                  title="Your Library is Empty"
+                  description="Upload your tracks to start building your portfolio and applying to briefs."
+                  action={
+                    <button onClick={() => setShowUploadModal(true)} className="mt-4 px-6 py-2 border border-white/20 hover:bg-white hover:text-black transition-colors text-white font-bold text-xs uppercase tracking-widest rounded">Upload Track</button>
+                  }
+                />
              ) : filteredLibraryTracks.map((track) => {
                const isCurrent = currentTrack?.id === track.id;
                return (
                 <div 
                   key={track.id} 
                   className={`bg-[#1a1b3b]/60 border p-3 rounded-lg flex items-center gap-4 group transition-all
-                    ${isCurrent ? 'border-[#4fb7b3]/50 bg-[#4fb7b3]/5' : 'border-white/5 hover:bg-white/5 hover:border-white/20'}
+                    ${isCurrent ? 'border-[#ccff00]/50 bg-[#ccff00]/5' : 'border-white/5 hover:bg-white/5 hover:border-white/20'}
                   `}
                 >
                    {/* Play Button */}
@@ -541,7 +690,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                      onClick={() => handlePlayTrack(track)}
                      className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-colors
                        ${isCurrent 
-                         ? 'bg-[#4fb7b3] text-black' 
+                         ? 'bg-[#ccff00] text-black' 
                          : 'bg-white/10 text-white hover:bg-white hover:text-black group-hover:bg-white/20'
                        }
                      `}
@@ -550,7 +699,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                    </button>
                    
                    <div className="flex-1 min-w-0">
-                      <h3 className={`text-sm font-bold truncate ${isCurrent ? 'text-[#a8fbd3]' : 'text-white'}`}>{track.title}</h3>
+                      <h3 className={`text-sm font-bold truncate ${isCurrent ? 'text-[#ccff00]' : 'text-white'}`}>{track.title}</h3>
                       <p className="text-xs text-white/40 truncate">{track.artist}</p>
                    </div>
 
@@ -562,56 +711,653 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                    </div>
 
                    {/* Metadata Info */}
-                   <div className="flex items-center gap-4 text-xs font-mono text-white/30 w-32 justify-end">
+                   <div className="flex items-center gap-4 text-xs font-mono text-white/30 w-auto md:w-32 justify-end">
                       <div className="hidden md:block">{track.duration}</div>
                       <div className="hidden md:block">{track.genre}</div>
+                      <button 
+                         onClick={() => setEditingTrack(track)}
+                         className="p-2 text-white/30 hover:text-white transition-colors"
+                       >
+                         <Edit2 className="w-4 h-4" />
+                       </button>
                    </div>
-
-                   <button 
-                     onClick={() => setEditingTrack(track)}
-                     className="p-2 text-white/30 hover:text-white transition-colors"
-                   >
-                     <Edit2 className="w-4 h-4" />
-                   </button>
                 </div>
              )})}
           </div>
         </motion.div>
       )}
 
-      {/* --- PERSISTENT PLAYER BAR --- */}
+      {/* 4. SYNC RESEARCH */}
+      {activeTab === 'research' && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+          <div className="bg-[#1a1b3b]/60 border border-white/10 rounded-xl p-8 md:p-12 text-center">
+             <Film className="w-12 h-12 text-[#ccff00] mx-auto mb-4" />
+             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Sync Research</h2>
+             <p className="text-white/60 max-w-lg mx-auto mb-8">
+               Search for Movies, TV Shows, or Songs to uncover placement data. Find out what songs were used in specific scenes.
+             </p>
+
+             <form onSubmit={handleResearchSearch} className="max-w-xl mx-auto relative">
+                <input 
+                  type="text" 
+                  value={researchQuery}
+                  onChange={(e) => setResearchQuery(e.target.value)}
+                  placeholder="e.g. 'The Batman Soundtrack' or 'Stranger Things'" 
+                  className="w-full bg-white/5 border border-white/10 rounded-full py-4 pl-6 pr-14 text-white focus:border-[#ccff00] outline-none transition-colors text-base md:text-lg"
+                />
+                <button 
+                  type="submit"
+                  disabled={isResearching || !researchQuery.trim()}
+                  className="absolute right-2 top-2 p-2 rounded-full bg-[#ccff00] text-black hover:bg-white transition-colors disabled:opacity-50"
+                >
+                   {isResearching ? <Loader2 className="w-6 h-6 animate-spin" /> : <SearchIcon className="w-6 h-6" />}
+                </button>
+             </form>
+          </div>
+
+          {researchResult && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-[#1a1b3b]/40 border border-white/10 rounded-xl overflow-hidden"
+            >
+              <div className="p-6 border-b border-white/10 bg-white/5 flex flex-col md:flex-row gap-6">
+                 {/* Main Image Card */}
+                 <div className="w-full md:w-32 h-48 bg-black/40 rounded-lg flex items-center justify-center overflow-hidden border border-white/10 shrink-0">
+                   {researchResult.imageUrl && !imageError ? (
+                     <img 
+                       src={researchResult.imageUrl} 
+                       alt={researchResult.subject} 
+                       className="w-full h-full object-cover" 
+                       onError={() => setImageError(true)}
+                     />
+                   ) : (
+                     <div className="text-center p-2">
+                       {researchResult.type === 'Song' ? <Music className="w-8 h-8 text-white/20 mx-auto mb-2" /> : <Film className="w-8 h-8 text-white/20 mx-auto mb-2" />}
+                       <span className="text-[10px] text-white/30 uppercase">No Image</span>
+                     </div>
+                   )}
+                 </div>
+
+                 {/* Header Details */}
+                 <div className="flex-1 py-2">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="px-3 py-1 bg-[#ccff00]/10 text-[#ccff00] rounded-full border border-[#ccff00]/20 text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                        {researchResult.type === 'Song' ? <Music className="w-3 h-3" /> : <Film className="w-3 h-3" />}
+                        {researchResult.type} Results
+                      </div>
+                      {researchResult.year && (
+                        <div className="px-3 py-1 bg-white/5 text-white/50 rounded-full border border-white/10 text-xs font-mono">
+                          {researchResult.year}
+                        </div>
+                      )}
+                    </div>
+                    
+                    <h3 className="text-3xl font-heading font-bold text-white mb-2">{researchResult.subject}</h3>
+                    
+                    <div className="flex gap-8 text-sm text-gray-400">
+                       <div className="flex flex-col">
+                         <span className="text-xs uppercase text-white/30 font-bold tracking-wider mb-1">Total Found</span>
+                         <span className="text-white">{researchResult.results.length} Placements</span>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse min-w-[800px]">
+                   <thead>
+                      <tr className="bg-black/20 border-b border-white/5 text-xs font-bold uppercase tracking-widest text-white/40">
+                         <th className="p-4 w-1/4">{researchResult.type === 'Song' ? 'Media Title' : 'Song Title'}</th>
+                         {researchResult.type !== 'Song' && <th className="p-4 w-1/6">Artist</th>}
+                         <th className="p-4 w-1/12">BPM</th>
+                         <th className="p-4 w-1/6">Genre</th>
+                         <th className="p-4 w-1/3">Scene Context</th>
+                         <th className="p-4 text-right">Timestamp</th>
+                      </tr>
+                   </thead>
+                   <tbody>
+                      {researchResult.results.length === 0 ? (
+                        <tr><td colSpan={6} className="p-8 text-center text-white/30 italic">No exact placement details found in public database.</td></tr>
+                      ) : (
+                        researchResult.results.map((item, idx) => (
+                           <tr key={idx} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                              <td className="p-4 font-bold text-white">{item.title}</td>
+                              {researchResult.type !== 'Song' && <td className="p-4 text-white/70">{item.artist || '-'}</td>}
+                              <td className="p-4 text-xs font-mono text-[#ccff00]">{item.bpm || '-'}</td>
+                              <td className="p-4 text-xs uppercase tracking-wide text-white/50">{item.genre || '-'}</td>
+                              <td className="p-4 text-sm text-gray-300">{item.description}</td>
+                              <td className="p-4 text-right text-xs font-mono text-white/50">{item.timestamp || '-'}</td>
+                           </tr>
+                        ))
+                      )}
+                   </tbody>
+                </table>
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+      )}
+
+      {/* 5. PROFILE & SETTINGS */}
+      {activeTab === 'profile' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-3xl mx-auto">
+              <div className="bg-[#1a1b3b]/60 border border-white/10 rounded-xl p-8 mb-8">
+                  <h2 className="text-2xl font-heading font-bold text-white mb-2">Connected Accounts</h2>
+                  <p className="text-white/50 text-sm mb-8">Link your streaming profiles so supervisors can find you easily.</p>
+
+                  <div className="space-y-6">
+                      {/* Spotify Card */}
+                      <div className="bg-black/20 border border-white/5 rounded-lg p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                          <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 bg-[#1DB954] rounded-full flex items-center justify-center shrink-0">
+                                  <Music className="w-6 h-6 text-black" />
+                              </div>
+                              <div>
+                                  <h3 className="font-bold text-lg">Spotify</h3>
+                                  <p className="text-xs text-white/50">Connect your artist profile</p>
+                              </div>
+                          </div>
+                          
+                          <div className="w-full md:w-auto">
+                              {profileData.spotify ? (
+                                  <div className="flex items-center gap-4">
+                                      <div className="flex items-center gap-2 px-3 py-1 bg-[#1DB954]/10 text-[#1DB954] rounded-full text-xs font-bold uppercase tracking-wider border border-[#1DB954]/20">
+                                          <CheckCircle className="w-3 h-3" /> Connected
+                                      </div>
+                                      <button 
+                                          onClick={() => handleDisconnectService('spotify')}
+                                          className="text-white/40 hover:text-red-400 transition-colors"
+                                      >
+                                          <LogOut className="w-4 h-4" />
+                                      </button>
+                                  </div>
+                              ) : activeInput === 'spotify' ? (
+                                  <div className="flex flex-col gap-2 w-full md:w-80">
+                                      <input 
+                                          type="text"
+                                          value={tempUrl}
+                                          onChange={(e) => setTempUrl(e.target.value)}
+                                          placeholder="https://open.spotify.com/artist/..."
+                                          className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-xs text-white focus:border-[#1DB954] outline-none"
+                                          autoFocus
+                                      />
+                                      <div className="flex gap-2">
+                                          <button 
+                                              onClick={() => handleConfirmConnect('spotify')}
+                                              className="flex-1 bg-[#1DB954] text-black text-xs font-bold py-2 rounded hover:bg-white transition-colors"
+                                          >
+                                              Confirm
+                                          </button>
+                                          <button 
+                                              onClick={handleCancelConnect}
+                                              className="flex-1 bg-white/5 text-white text-xs font-bold py-2 rounded hover:bg-white/10 transition-colors"
+                                          >
+                                              Cancel
+                                          </button>
+                                      </div>
+                                  </div>
+                              ) : (
+                                  <button 
+                                      onClick={() => handleStartConnect('spotify')}
+                                      className="w-full md:w-auto px-6 py-2 bg-white text-black text-xs font-bold uppercase tracking-widest rounded hover:bg-[#1DB954] transition-colors"
+                                  >
+                                      Connect Spotify
+                                  </button>
+                              )}
+                          </div>
+                      </div>
+
+                      {/* Apple Music Card */}
+                      <div className="bg-black/20 border border-white/5 rounded-lg p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                          <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 bg-[#FA243C] rounded-full flex items-center justify-center shrink-0">
+                                  <Disc className="w-6 h-6 text-white" />
+                              </div>
+                              <div>
+                                  <h3 className="font-bold text-lg">Apple Music</h3>
+                                  <p className="text-xs text-white/50">Connect your artist profile</p>
+                              </div>
+                          </div>
+
+                          <div className="w-full md:w-auto">
+                              {profileData.appleMusic ? (
+                                  <div className="flex items-center gap-4">
+                                      <div className="flex items-center gap-2 px-3 py-1 bg-[#FA243C]/10 text-[#FA243C] rounded-full text-xs font-bold uppercase tracking-wider border border-[#FA243C]/20">
+                                          <CheckCircle className="w-3 h-3" /> Connected
+                                      </div>
+                                      <button 
+                                          onClick={() => handleDisconnectService('appleMusic')}
+                                          className="text-white/40 hover:text-red-400 transition-colors"
+                                      >
+                                          <LogOut className="w-4 h-4" />
+                                      </button>
+                                  </div>
+                              ) : activeInput === 'appleMusic' ? (
+                                  <div className="flex flex-col gap-2 w-full md:w-80">
+                                      <input 
+                                          type="text"
+                                          value={tempUrl}
+                                          onChange={(e) => setTempUrl(e.target.value)}
+                                          placeholder="https://music.apple.com/artist/..."
+                                          className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-xs text-white focus:border-[#FA243C] outline-none"
+                                          autoFocus
+                                      />
+                                      <div className="flex gap-2">
+                                          <button 
+                                              onClick={() => handleConfirmConnect('appleMusic')}
+                                              className="flex-1 bg-[#FA243C] text-white text-xs font-bold py-2 rounded hover:bg-white hover:text-black transition-colors"
+                                          >
+                                              Confirm
+                                          </button>
+                                          <button 
+                                              onClick={handleCancelConnect}
+                                              className="flex-1 bg-white/5 text-white text-xs font-bold py-2 rounded hover:bg-white/10 transition-colors"
+                                          >
+                                              Cancel
+                                          </button>
+                                      </div>
+                                  </div>
+                              ) : (
+                                  <button 
+                                      onClick={() => handleStartConnect('appleMusic')}
+                                      className="w-full md:w-auto px-6 py-2 bg-white text-black text-xs font-bold uppercase tracking-widest rounded hover:bg-[#FA243C] hover:text-white transition-colors"
+                                  >
+                                      Connect Apple Music
+                                  </button>
+                              )}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              {/* Other Links Form */}
+              <div className="bg-[#1a1b3b]/60 border border-white/10 rounded-xl p-8">
+                  <h3 className="text-lg font-bold font-heading mb-6">Additional Links</h3>
+                  <form onSubmit={handleProfileSave} className="space-y-4">
+                      <div className="space-y-1">
+                          <label className="text-xs font-bold uppercase tracking-widest text-white/50">Instagram URL</label>
+                          <div className="relative">
+                              <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                              <input 
+                                  type="text"
+                                  value={profileData.instagram}
+                                  onChange={(e) => setProfileData({...profileData, instagram: e.target.value})}
+                                  placeholder="https://instagram.com/..."
+                                  className="w-full bg-black/20 border border-white/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white focus:border-[#ccff00] outline-none transition-colors"
+                              />
+                          </div>
+                      </div>
+
+                      <div className="space-y-1">
+                          <label className="text-xs font-bold uppercase tracking-widest text-white/50">Website URL</label>
+                          <div className="relative">
+                              <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                              <input 
+                                  type="text"
+                                  value={profileData.website}
+                                  onChange={(e) => setProfileData({...profileData, website: e.target.value})}
+                                  placeholder="https://..."
+                                  className="w-full bg-black/20 border border-white/10 rounded-lg py-3 pl-10 pr-4 text-sm text-white focus:border-[#ccff00] outline-none transition-colors"
+                              />
+                          </div>
+                      </div>
+
+                      <div className="pt-4 flex justify-end">
+                          <button 
+                              type="submit"
+                              disabled={isSavingProfile}
+                              className="px-8 py-3 bg-[#ccff00] text-black font-bold uppercase tracking-widest rounded hover:bg-white transition-colors disabled:opacity-50 flex items-center gap-2"
+                          >
+                              {isSavingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                              Save Profile
+                          </button>
+                      </div>
+                  </form>
+              </div>
+          </motion.div>
+      )}
+
+      {/* --- MODALS --- */}
+
+      {/* Upload Modal (Library) */}
+      <AnimatePresence>
+        {showUploadModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setShowUploadModal(false)} />
+             <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} className="relative w-[95%] md:w-full max-w-2xl bg-[#1a1b3b] border border-white/10 p-6 md:p-8 rounded-xl shadow-2xl overflow-y-auto max-h-[90vh]">
+                 <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold font-heading">Upload to Library</h2>
+                    <button onClick={() => setShowUploadModal(false)}><X className="w-6 h-6 text-white/50 hover:text-white" /></button>
+                 </div>
+                 
+                 <form onSubmit={handleLibraryUploadSubmit} className="space-y-6">
+                    <div className="border-2 border-dashed border-white/10 rounded-xl p-8 text-center hover:border-[#ccff00]/50 transition-colors bg-black/20">
+                      <input 
+                        type="file" 
+                        accept="audio/*"
+                        ref={libraryFileInputRef}
+                        className="hidden"
+                        onChange={(e) => handleFileChange(e, true)}
+                      />
+                      {trackFile ? (
+                        <div className="flex items-center justify-center gap-3 text-[#ccff00]">
+                          <FileAudio className="w-6 h-6" />
+                          <span className="font-bold">{trackFile.name}</span>
+                        </div>
+                      ) : (
+                        <div onClick={() => libraryFileInputRef.current?.click()} className="cursor-pointer">
+                          <Upload className="w-8 h-8 mx-auto mb-2 text-white/50" />
+                          <p className="text-sm text-white/60">Click to upload WAV, MP3, or AIFF</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                           <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Track Title</label>
+                           <input 
+                              type="text" required
+                              className="w-full bg-black/40 border border-white/10 p-3 text-sm text-white focus:border-[#ccff00] outline-none"
+                              value={libraryUploadData.title}
+                              onChange={e => setLibraryUploadData({...libraryUploadData, title: e.target.value})}
+                           />
+                        </div>
+                        <div className="space-y-1">
+                           <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Artist</label>
+                           <input 
+                              type="text" required
+                              className="w-full bg-black/40 border border-white/10 p-3 text-sm text-white focus:border-[#ccff00] outline-none"
+                              value={libraryUploadData.artist}
+                              onChange={e => setLibraryUploadData({...libraryUploadData, artist: e.target.value})}
+                           />
+                        </div>
+                    </div>
+                    
+                    {/* Enhanced Genre & Tag Selection */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                           <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Genre</label>
+                           <input 
+                              type="text" required
+                              placeholder="e.g. Cinematic"
+                              className="w-full bg-black/40 border border-white/10 p-3 text-sm text-white focus:border-[#ccff00] outline-none"
+                              value={libraryUploadData.genre}
+                              onChange={e => setLibraryUploadData({...libraryUploadData, genre: e.target.value})}
+                           />
+                           {/* Genre Chips */}
+                           <div className="flex flex-wrap gap-2">
+                              {SUGGESTED_GENRES.map(g => (
+                                <button
+                                  key={g}
+                                  type="button"
+                                  onClick={() => setLibraryUploadData(prev => ({ ...prev, genre: g }))}
+                                  className={`text-[10px] border px-2 py-1 rounded-full transition-colors ${libraryUploadData.genre === g ? 'bg-[#ccff00] text-black border-[#ccff00]' : 'border-white/10 text-white/40 hover:border-white/30'}`}
+                                >
+                                  {g}
+                                </button>
+                              ))}
+                           </div>
+                        </div>
+                        <div className="space-y-2">
+                           <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Tags (comma separated)</label>
+                           <input 
+                              type="text"
+                              placeholder="e.g. Epic, Dark, Trailer"
+                              className="w-full bg-black/40 border border-white/10 p-3 text-sm text-white focus:border-[#ccff00] outline-none"
+                              value={libraryUploadData.tags}
+                              onChange={e => setLibraryUploadData({...libraryUploadData, tags: e.target.value})}
+                           />
+                           {/* Tag Chips */}
+                           <div className="flex flex-wrap gap-2">
+                              {SUGGESTED_TAGS.map(t => (
+                                <button
+                                  key={t}
+                                  type="button"
+                                  onClick={() => addTagToLibraryUpload(t)}
+                                  className="text-[10px] border border-white/10 px-2 py-1 rounded-full text-white/40 hover:border-white/30 transition-colors"
+                                >
+                                  + {t}
+                                </button>
+                              ))}
+                           </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-1">
+                       <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Description / Mood</label>
+                       <textarea 
+                          className="w-full bg-black/40 border border-white/10 p-3 text-sm text-white focus:border-[#ccff00] outline-none h-24 resize-none"
+                          value={libraryUploadData.description}
+                          onChange={e => setLibraryUploadData({...libraryUploadData, description: e.target.value})}
+                       />
+                    </div>
+                    
+                    <button 
+                       type="submit"
+                       disabled={uploadState === 'uploading'}
+                       className="w-full bg-[#ccff00] text-black font-bold uppercase tracking-widest py-4 hover:bg-white transition-colors"
+                    >
+                       {uploadState === 'uploading' ? 'Uploading...' : uploadState === 'success' ? 'Uploaded!' : 'Add to Library'}
+                    </button>
+                 </form>
+             </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Application Modal */}
+      <AnimatePresence>
+        {selectedBrief && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setSelectedBrief(null)} />
+             
+             <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} className="relative w-[95%] md:w-full max-w-2xl bg-[#1a1b3b] border border-white/10 p-6 md:p-8 rounded-xl shadow-2xl overflow-y-auto max-h-[90vh]">
+               <button onClick={() => setSelectedBrief(null)} className="absolute top-6 right-6 text-white/50 hover:text-white"><X /></button>
+               
+               <div className="mb-6">
+                 <span className="text-xs font-bold text-[#ccff00] uppercase tracking-widest">Applying to</span>
+                 <h2 className="text-2xl font-bold font-heading mt-1">{selectedBrief.title}</h2>
+               </div>
+
+               {/* Step 1: Choose Method */}
+               <div className="flex flex-col md:flex-row gap-4 mb-6">
+                 <button 
+                   type="button"
+                   onClick={() => setApplicationMethod('library')}
+                   disabled={tracks.length === 0}
+                   className={`flex-1 p-4 border rounded-lg flex flex-col items-center gap-2 transition-all ${applicationMethod === 'library' ? 'bg-[#ccff00]/10 border-[#ccff00] text-[#ccff00]' : 'border-white/10 text-white/40 hover:bg-white/5'} ${tracks.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                 >
+                   <ListMusic className="w-6 h-6" />
+                   <span className="text-xs font-bold uppercase">Select from Library</span>
+                 </button>
+                 <button 
+                   type="button"
+                   onClick={() => setApplicationMethod('upload')}
+                   className={`flex-1 p-4 border rounded-lg flex flex-col items-center gap-2 transition-all ${applicationMethod === 'upload' ? 'bg-[#ccff00]/10 border-[#ccff00] text-[#ccff00]' : 'border-white/10 text-white/40 hover:bg-white/5'}`}
+                 >
+                   <Upload className="w-6 h-6" />
+                   <span className="text-xs font-bold uppercase">Upload New</span>
+                 </button>
+               </div>
+
+               {/* Step 2: Content based on Method */}
+               {applicationMethod === 'library' ? (
+                 <div className="space-y-6">
+                   <div className="max-h-60 overflow-y-auto space-y-2 border border-white/10 rounded-lg p-2 bg-black/20">
+                     {tracks.map(track => (
+                       <div 
+                         key={track.id}
+                         onClick={() => setSelectedLibraryTrackId(track.id)}
+                         className={`p-3 rounded flex items-center justify-between cursor-pointer transition-colors ${selectedLibraryTrackId === track.id ? 'bg-[#ccff00] text-black' : 'hover:bg-white/5 text-white'}`}
+                       >
+                         <div className="min-w-0">
+                           <div className="font-bold text-sm truncate">{track.title}</div>
+                           <div className={`text-xs truncate ${selectedLibraryTrackId === track.id ? 'text-black/60' : 'text-white/40'}`}>{track.artist}</div>
+                         </div>
+                         {selectedLibraryTrackId === track.id && <CheckCircle className="w-4 h-4 shrink-0" />}
+                       </div>
+                     ))}
+                   </div>
+                   <button 
+                     onClick={handleSubmitExistingTrackApplication}
+                     disabled={!selectedLibraryTrackId || uploadState === 'uploading'}
+                     className="w-full bg-[#ccff00] text-black font-bold uppercase tracking-widest py-4 hover:bg-white transition-colors disabled:opacity-50"
+                   >
+                     {uploadState === 'uploading' ? 'Submitting...' : 'Submit Application'}
+                   </button>
+                 </div>
+               ) : (
+                 <form onSubmit={handleSubmitNewTrackApplication} className="space-y-6">
+                    <div className="border-2 border-dashed border-white/10 rounded-xl p-8 text-center hover:border-[#ccff00]/50 transition-colors bg-black/20">
+                      <input 
+                        type="file" 
+                        accept="audio/*"
+                        ref={fileInputRef}
+                        className="hidden"
+                        onChange={(e) => handleFileChange(e, false)}
+                      />
+                      {trackFile ? (
+                        <div className="flex items-center justify-center gap-3 text-[#ccff00]">
+                          <FileAudio className="w-6 h-6" />
+                          <span className="font-bold">{trackFile.name}</span>
+                        </div>
+                      ) : (
+                        <div onClick={() => fileInputRef.current?.click()} className="cursor-pointer">
+                          <Upload className="w-8 h-8 mx-auto mb-2 text-white/50" />
+                          <p className="text-sm text-white/60">Click to upload WAV, MP3, or AIFF</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                           <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Track Title</label>
+                           <input 
+                              type="text" required
+                              className="w-full bg-black/40 border border-white/10 p-3 text-sm text-white focus:border-[#ccff00] outline-none"
+                              value={applyFormData.title}
+                              onChange={e => setApplyFormData({...applyFormData, title: e.target.value})}
+                           />
+                        </div>
+                        <div className="space-y-1">
+                           <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Artist</label>
+                           <input 
+                              type="text" required
+                              className="w-full bg-black/40 border border-white/10 p-3 text-sm text-white focus:border-[#ccff00] outline-none"
+                              value={applyFormData.artist}
+                              onChange={e => setApplyFormData({...applyFormData, artist: e.target.value})}
+                           />
+                        </div>
+                    </div>
+
+                    <div className="space-y-1">
+                       <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Message to Supervisor</label>
+                       <textarea 
+                          className="w-full bg-black/40 border border-white/10 p-3 text-sm text-white focus:border-[#ccff00] outline-none h-24 resize-none"
+                          placeholder="Why is this track perfect for this brief?"
+                          value={applyFormData.description}
+                          onChange={e => setApplyFormData({...applyFormData, description: e.target.value})}
+                       />
+                    </div>
+                    
+                    <div className="flex items-start gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
+                       <input 
+                         type="checkbox" 
+                         required
+                         checked={applyFormData.rights}
+                         onChange={e => setApplyFormData({...applyFormData, rights: e.target.checked})}
+                         className="w-4 h-4 rounded border-white/20 bg-black/40 text-[#ccff00] focus:ring-[#ccff00] mt-0.5"
+                       />
+                       <span className="text-xs text-white/60">I confirm I own 100% of the rights to this master and publishing.</span>
+                    </div>
+
+                    <button 
+                       type="submit"
+                       disabled={uploadState === 'uploading'}
+                       className="w-full bg-[#ccff00] text-black font-bold uppercase tracking-widest py-4 hover:bg-white transition-colors"
+                    >
+                       {uploadState === 'uploading' ? 'Uploading & Submitting...' : uploadState === 'success' ? 'Application Sent!' : 'Submit Application'}
+                    </button>
+                 </form>
+               )}
+             </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Track Modal */}
+      <AnimatePresence>
+        {editingTrack && (
+           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setEditingTrack(null)} />
+              <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} className="relative w-[95%] md:w-full max-w-lg bg-[#1a1b3b] border border-white/10 p-6 md:p-8 rounded-xl shadow-2xl">
+                 <h2 className="text-xl font-bold font-heading mb-6">Edit Metadata</h2>
+                 <form onSubmit={handleSaveTrackMetadata} className="space-y-4">
+                    <div>
+                       <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Title</label>
+                       <input 
+                         className="w-full bg-black/40 border border-white/10 p-2 text-sm text-white" 
+                         value={editingTrack.title}
+                         onChange={e => setEditingTrack({...editingTrack, title: e.target.value})}
+                       />
+                    </div>
+                    <div>
+                       <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Genre</label>
+                       <input 
+                         className="w-full bg-black/40 border border-white/10 p-2 text-sm text-white" 
+                         value={editingTrack.genre}
+                         onChange={e => setEditingTrack({...editingTrack, genre: e.target.value})}
+                       />
+                    </div>
+                    <button type="submit" className="w-full bg-[#ccff00] text-black font-bold py-3 uppercase tracking-widest">Save Changes</button>
+                 </form>
+              </motion.div>
+           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Persistent Player - Mobile Responsive */}
       <AnimatePresence>
         {currentTrack && (
           <motion.div
             initial={{ y: 100 }}
             animate={{ y: 0 }}
             exit={{ y: 100 }}
-            className="fixed bottom-0 left-0 right-0 z-40 bg-[#0f1025]/95 backdrop-blur-xl border-t border-white/10 px-4 md:px-8 py-3 flex items-center justify-between gap-4"
+            className="fixed bottom-0 left-0 right-0 z-50 bg-[#0f1025]/95 backdrop-blur-xl border-t border-white/10 px-4 md:px-8 py-4 md:py-3 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-4 shadow-[0_-5px_20px_rgba(0,0,0,0.5)]"
           >
-            {/* Left: Track Info */}
-            <div className="flex items-center gap-4 w-1/3 md:w-1/4 min-w-0">
+             {/* Simple Player UI */}
+            <div className="flex items-center gap-4 w-full md:w-1/4 min-w-0">
                <div className={`w-12 h-12 rounded bg-gradient-to-br from-gray-800 to-black flex items-center justify-center shrink-0 ${isPlaying ? 'animate-pulse' : ''}`}>
                  <Music className="w-6 h-6 text-white/30" />
                </div>
-               <div className="min-w-0">
+               <div className="min-w-0 flex-1">
                   <div className="text-sm font-bold text-white truncate">{currentTrack.title}</div>
                   <div className="text-xs text-white/50 truncate">{currentTrack.artist}</div>
                </div>
+               {/* Mobile Play Button in info section */}
+               <button 
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="md:hidden w-10 h-10 rounded-full bg-white text-black flex items-center justify-center ml-2"
+               >
+                   {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
+               </button>
             </div>
 
-            {/* Center: Controls */}
-            <div className="flex flex-col items-center gap-2 flex-1 max-w-lg">
-               <div className="flex items-center gap-6">
-                  <button className="text-white/40 hover:text-white transition-colors"><SkipBack className="w-4 h-4" /></button>
+            <div className="flex flex-col items-center gap-2 w-full md:flex-1 md:max-w-lg order-2 md:order-none">
+               {/* Desktop Controls */}
+               <div className="hidden md:flex items-center gap-6">
+                  <button className="text-white/40 hover:text-white"><SkipBack className="w-4 h-4" /></button>
                   <button 
                     onClick={() => setIsPlaying(!isPlaying)}
                     className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform"
                   >
                      {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
                   </button>
-                  <button className="text-white/40 hover:text-white transition-colors"><SkipForward className="w-4 h-4" /></button>
+                  <button className="text-white/40 hover:text-white"><SkipForward className="w-4 h-4" /></button>
                </div>
                
+               {/* Progress Bar */}
                <div className="w-full flex items-center gap-2 text-[10px] font-mono text-white/40">
                   <span>{formatTime(currentTime)}</span>
                   <input
@@ -620,14 +1366,14 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                     max={duration || 0}
                     value={currentTime}
                     onChange={handleSeek}
-                    className="flex-1 h-1 bg-white/10 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2 [&::-webkit-slider-thumb]:h-2 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#4fb7b3]"
+                    className="flex-1 h-1 bg-white/10 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2 [&::-webkit-slider-thumb]:h-2 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#ccff00]"
                   />
                   <span>{formatTime(duration)}</span>
                </div>
             </div>
 
-            {/* Right: Volume */}
-            <div className="flex items-center justify-end gap-2 w-1/3 md:w-1/4">
+            {/* Volume Control - Hidden on Mobile */}
+            <div className="hidden md:flex items-center justify-end gap-2 w-1/4">
                <Volume2 className="w-4 h-4 text-white/40" />
                <input 
                  type="range" 
@@ -640,356 +1386,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
                />
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* --- MODALS --- */}
-
-      {/* Application Modal (Specific to Briefs) */}
-      <AnimatePresence>
-        {selectedBrief && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-              onClick={() => setSelectedBrief(null)}
-            />
-            
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl bg-[#1a1b3b] border border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] rounded-2xl"
-            >
-              <div className="p-6 border-b border-white/10 bg-black/20 flex justify-between items-start">
-                <div>
-                  <div className="text-[#a8fbd3] text-xs font-mono uppercase tracking-widest mb-2">Submitting to Brief</div>
-                  <h3 className="text-xl md:text-2xl font-heading font-bold text-white">{selectedBrief.title}</h3>
-                  <p className="text-white/50 text-sm mt-1">{selectedBrief.client} • {selectedBrief.budget}</p>
-                </div>
-                <button onClick={() => setSelectedBrief(null)} className="p-2 hover:bg-white/10 rounded-full text-white/50 hover:text-white">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Selection Tabs */}
-              {uploadState !== 'success' && (
-                <div className="flex border-b border-white/10">
-                  <button 
-                    onClick={() => setApplicationMethod('library')}
-                    disabled={tracks.length === 0}
-                    className={`flex-1 py-4 text-xs font-bold uppercase tracking-widest transition-colors
-                      ${applicationMethod === 'library' 
-                        ? 'bg-white/5 text-[#a8fbd3] border-b-2 border-[#a8fbd3]' 
-                        : 'text-white/50 hover:text-white hover:bg-white/5'}
-                      ${tracks.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}
-                    `}
-                  >
-                    Select from Library
-                  </button>
-                  <button 
-                    onClick={() => setApplicationMethod('upload')}
-                    className={`flex-1 py-4 text-xs font-bold uppercase tracking-widest transition-colors
-                      ${applicationMethod === 'upload' 
-                        ? 'bg-white/5 text-[#a8fbd3] border-b-2 border-[#a8fbd3]' 
-                        : 'text-white/50 hover:text-white hover:bg-white/5'}
-                    `}
-                  >
-                    Upload New
-                  </button>
-                </div>
-              )}
-
-              <div className="p-6 overflow-y-auto custom-scrollbar">
-                {uploadState === 'success' ? (
-                  <div className="flex flex-col items-center justify-center py-12 text-center">
-                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-20 h-20 rounded-full bg-[#4fb7b3]/20 flex items-center justify-center mb-6">
-                      <CheckCircle className="w-10 h-10 text-[#4fb7b3]" />
-                    </motion.div>
-                    <h4 className="text-2xl font-bold font-heading mb-2">Submission Received</h4>
-                    <p className="text-white/60">Your track has been sent to the music supervisor.</p>
-                  </div>
-                ) : applicationMethod === 'library' ? (
-                  /* --- LIBRARY SELECTION VIEW --- */
-                  <div className="space-y-6">
-                    <p className="text-sm text-white/60">Choose a track from your existing catalog:</p>
-                    
-                    <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
-                      {tracks.map(track => (
-                        <div 
-                          key={track.id}
-                          onClick={() => setSelectedLibraryTrackId(track.id)}
-                          className={`p-3 rounded-lg border cursor-pointer flex items-center gap-3 transition-all
-                            ${selectedLibraryTrackId === track.id 
-                              ? 'bg-[#4fb7b3]/20 border-[#4fb7b3]' 
-                              : 'bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10'}
-                          `}
-                        >
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${selectedLibraryTrackId === track.id ? 'bg-[#4fb7b3] text-black' : 'bg-white/10 text-white/50'}`}>
-                            {selectedLibraryTrackId === track.id ? <CheckCircle className="w-5 h-5" /> : <Music className="w-4 h-4" />}
-                          </div>
-                          <div className="flex-1">
-                            <div className="text-sm font-bold text-white">{track.title}</div>
-                            <div className="text-xs text-white/50">{track.artist}</div>
-                          </div>
-                          <div className="text-xs text-white/30 font-mono">{track.genre}</div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="pt-4 border-t border-white/10 flex justify-end gap-4">
-                       <button type="button" onClick={() => setSelectedBrief(null)} className="px-6 py-3 text-xs font-bold uppercase tracking-widest text-white/60 hover:text-white">Cancel</button>
-                       <button 
-                         onClick={handleSubmitExistingTrackApplication}
-                         disabled={!selectedLibraryTrackId || uploadState === 'uploading'}
-                         className="bg-[#4fb7b3] text-black px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-white transition-all disabled:opacity-50 flex items-center gap-2"
-                       >
-                         {uploadState === 'uploading' ? <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</> : 'Submit Selected Track'}
-                       </button>
-                    </div>
-                  </div>
-                ) : (
-                  /* --- UPLOAD NEW VIEW --- */
-                  <form onSubmit={handleSubmitNewTrackApplication} className="space-y-6">
-                    <div 
-                      onClick={() => fileInputRef.current?.click()}
-                      className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${trackFile ? 'border-[#4fb7b3] bg-[#4fb7b3]/5' : 'border-white/10 hover:border-white/30 hover:bg-white/5'}`}
-                    >
-                      <input type="file" ref={fileInputRef} onChange={e => handleFileChange(e, false)} accept="audio/*" className="hidden" />
-                      {trackFile ? (
-                        <div className="flex items-center gap-4">
-                          <div className="p-3 bg-[#4fb7b3]/20 rounded-full"><FileAudio className="w-6 h-6 text-[#4fb7b3]" /></div>
-                          <div className="text-left"><p className="font-bold text-white">{trackFile.name}</p><p className="text-xs text-[#4fb7b3]">Ready to upload</p></div>
-                        </div>
-                      ) : (
-                        <>
-                          <Upload className="w-8 h-8 text-white/50 mb-4" />
-                          <p className="text-sm font-bold uppercase tracking-widest text-white mb-1">Upload Track</p>
-                          <p className="text-xs text-white/40">WAV, MP3, or AIFF (Max 50MB)</p>
-                        </>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-white/70">Track Title</label>
-                        <input type="text" required value={applyFormData.title} onChange={e => setApplyFormData({...applyFormData, title: e.target.value})} className="w-full bg-black/40 border border-white/10 px-4 py-3 text-sm text-white focus:border-[#4fb7b3] outline-none rounded-lg" placeholder="e.g. Neon Nights" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-white/70">Artist</label>
-                        <input type="text" required value={applyFormData.artist} onChange={e => setApplyFormData({...applyFormData, artist: e.target.value})} className="w-full bg-black/40 border border-white/10 px-4 py-3 text-sm text-white focus:border-[#4fb7b3] outline-none rounded-lg" />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-white/70">Description / Pitch</label>
-                        <textarea rows={2} value={applyFormData.description} onChange={e => setApplyFormData({...applyFormData, description: e.target.value})} className="w-full bg-black/40 border border-white/10 px-4 py-3 text-sm text-white focus:border-[#4fb7b3] outline-none rounded-lg resize-none" placeholder="Notes for the supervisor..." />
-                    </div>
-
-                    <label className="flex items-start gap-3 cursor-pointer group">
-                      <input type="checkbox" required checked={applyFormData.rights} onChange={e => setApplyFormData({...applyFormData, rights: e.target.checked})} className="mt-1 w-4 h-4 rounded border-white/30 bg-white/5 checked:bg-[#4fb7b3]" />
-                      <span className="text-xs text-white/60 group-hover:text-white/80 transition-colors">I confirm that I control 100% of the rights for this track.</span>
-                    </label>
-
-                    <div className="pt-4 border-t border-white/10 flex justify-end gap-4">
-                       <button type="button" onClick={() => setSelectedBrief(null)} className="px-6 py-3 text-xs font-bold uppercase tracking-widest text-white/60 hover:text-white">Cancel</button>
-                       <button type="submit" disabled={uploadState === 'uploading' || !trackFile || !applyFormData.rights} className="bg-[#4fb7b3] text-black px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-white transition-all disabled:opacity-50 flex items-center gap-2">
-                         {uploadState === 'uploading' ? <><Loader2 className="w-4 h-4 animate-spin" /> Uploading...</> : 'Submit Track'}
-                       </button>
-                    </div>
-                  </form>
-                )}
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Library Upload Modal (Generic) */}
-      <AnimatePresence>
-          {showUploadModal && (
-              <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-                  <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-                      onClick={() => setShowUploadModal(false)}
-                  />
-                  
-                  <motion.div
-                      initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                      className="relative w-full max-w-2xl bg-[#1a1b3b] border border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh] rounded-2xl"
-                  >
-                      <div className="p-6 border-b border-white/10 bg-black/20 flex justify-between items-start">
-                          <div>
-                              <div className="text-[#a8fbd3] text-xs font-mono uppercase tracking-widest mb-2">Add to Library</div>
-                              <h3 className="text-xl md:text-2xl font-heading font-bold text-white">Upload New Track</h3>
-                          </div>
-                          <button onClick={() => setShowUploadModal(false)} className="p-2 hover:bg-white/10 rounded-full text-white/50 hover:text-white">
-                              <X className="w-5 h-5" />
-                          </button>
-                      </div>
-
-                      <div className="p-6 overflow-y-auto custom-scrollbar">
-                          {uploadState === 'success' ? (
-                              <div className="flex flex-col items-center justify-center py-12 text-center">
-                                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-20 h-20 rounded-full bg-[#4fb7b3]/20 flex items-center justify-center mb-6">
-                                      <CheckCircle className="w-10 h-10 text-[#4fb7b3]" />
-                                  </motion.div>
-                                  <h4 className="text-2xl font-bold font-heading mb-2">Upload Complete</h4>
-                                  <p className="text-white/60">Your track is now in your library and ready for sync.</p>
-                              </div>
-                          ) : (
-                              <form onSubmit={handleLibraryUploadSubmit} className="space-y-6">
-                                  <div 
-                                      onClick={() => libraryFileInputRef.current?.click()}
-                                      className={`border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${trackFile ? 'border-[#4fb7b3] bg-[#4fb7b3]/5' : 'border-white/10 hover:border-white/30 hover:bg-white/5'}`}
-                                  >
-                                      <input type="file" ref={libraryFileInputRef} onChange={e => handleFileChange(e, true)} accept="audio/*" className="hidden" />
-                                      {trackFile ? (
-                                          <div className="flex items-center gap-4">
-                                              <div className="p-3 bg-[#4fb7b3]/20 rounded-full"><FileAudio className="w-6 h-6 text-[#4fb7b3]" /></div>
-                                              <div className="text-left"><p className="font-bold text-white">{trackFile.name}</p><p className="text-xs text-[#4fb7b3]">Ready to upload</p></div>
-                                          </div>
-                                      ) : (
-                                          <>
-                                              <Upload className="w-8 h-8 text-white/50 mb-4" />
-                                              <p className="text-sm font-bold uppercase tracking-widest text-white mb-1">Select Audio File</p>
-                                              <p className="text-xs text-white/40">WAV, MP3, or AIFF (Max 50MB)</p>
-                                          </>
-                                      )}
-                                  </div>
-
-                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                      <div className="space-y-2">
-                                          <label className="text-xs font-bold uppercase tracking-widest text-white/70">Track Title</label>
-                                          <input type="text" required value={libraryUploadData.title} onChange={e => setLibraryUploadData({...libraryUploadData, title: e.target.value})} className="w-full bg-black/40 border border-white/10 px-4 py-3 text-sm text-white focus:border-[#4fb7b3] outline-none rounded-lg" placeholder="e.g. Midnight Run" />
-                                      </div>
-                                      <div className="space-y-2">
-                                          <label className="text-xs font-bold uppercase tracking-widest text-white/70">Artist</label>
-                                          <input type="text" required value={libraryUploadData.artist} onChange={e => setLibraryUploadData({...libraryUploadData, artist: e.target.value})} className="w-full bg-black/40 border border-white/10 px-4 py-3 text-sm text-white focus:border-[#4fb7b3] outline-none rounded-lg" />
-                                      </div>
-                                  </div>
-
-                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                      <div className="space-y-2">
-                                          <label className="text-xs font-bold uppercase tracking-widest text-white/70">Genre</label>
-                                          <input type="text" required value={libraryUploadData.genre} onChange={e => setLibraryUploadData({...libraryUploadData, genre: e.target.value})} className="w-full bg-black/40 border border-white/10 px-4 py-3 text-sm text-white focus:border-[#4fb7b3] outline-none rounded-lg" placeholder="e.g. Synthwave" />
-                                      </div>
-                                      <div className="space-y-2">
-                                          <label className="text-xs font-bold uppercase tracking-widest text-white/70">Tags (Comma Separated)</label>
-                                          <input type="text" value={libraryUploadData.tags} onChange={e => setLibraryUploadData({...libraryUploadData, tags: e.target.value})} className="w-full bg-black/40 border border-white/10 px-4 py-3 text-sm text-white focus:border-[#4fb7b3] outline-none rounded-lg" placeholder="e.g. Upbeat, Sports, Driving" />
-                                      </div>
-                                  </div>
-                                  
-                                  <div className="space-y-2">
-                                      <label className="text-xs font-bold uppercase tracking-widest text-white/70">Description / Metadata</label>
-                                      <textarea rows={2} value={libraryUploadData.description} onChange={e => setLibraryUploadData({...libraryUploadData, description: e.target.value})} className="w-full bg-black/40 border border-white/10 px-4 py-3 text-sm text-white focus:border-[#4fb7b3] outline-none rounded-lg resize-none" placeholder="BPM, Key, Mood..." />
-                                  </div>
-
-                                  <label className="flex items-start gap-3 cursor-pointer group">
-                                      <input type="checkbox" required checked={libraryUploadData.rights} onChange={e => setLibraryUploadData({...libraryUploadData, rights: e.target.checked})} className="mt-1 w-4 h-4 rounded border-white/30 bg-white/5 checked:bg-[#4fb7b3]" />
-                                      <span className="text-xs text-white/60 group-hover:text-white/80 transition-colors">I confirm that I control 100% of the rights for this track.</span>
-                                  </label>
-
-                                  <div className="pt-4 border-t border-white/10 flex justify-end gap-4">
-                                      <button type="button" onClick={() => setShowUploadModal(false)} className="px-6 py-3 text-xs font-bold uppercase tracking-widest text-white/60 hover:text-white">Cancel</button>
-                                      <button type="submit" disabled={uploadState === 'uploading' || !trackFile || !libraryUploadData.rights} className="bg-[#4fb7b3] text-black px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-white transition-all disabled:opacity-50 flex items-center gap-2">
-                                          {uploadState === 'uploading' ? <><Loader2 className="w-4 h-4 animate-spin" /> Uploading...</> : 'Save to Library'}
-                                      </button>
-                                  </div>
-                              </form>
-                          )}
-                      </div>
-                  </motion.div>
-              </div>
-          )}
-      </AnimatePresence>
-
-      {/* Edit Metadata Modal */}
-      <AnimatePresence>
-        {editingTrack && (
-           <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-             <motion.div 
-               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-               className="absolute inset-0 bg-black/80 backdrop-blur-md"
-               onClick={() => setEditingTrack(null)}
-             />
-             <motion.div
-               initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-               className="relative w-full max-w-lg bg-[#1a1b3b] border border-white/10 shadow-2xl rounded-2xl overflow-hidden"
-             >
-                <div className="p-6 border-b border-white/10 flex justify-between items-center bg-black/20">
-                  <h3 className="font-heading font-bold text-xl text-white">Edit Metadata</h3>
-                  <button onClick={() => setEditingTrack(null)}><X className="w-5 h-5 text-white/50 hover:text-white" /></button>
-                </div>
-                
-                <form onSubmit={handleSaveTrackMetadata} className="p-6 space-y-4">
-                   <div className="space-y-1">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#a8fbd3]">Title</label>
-                      <input 
-                        type="text" 
-                        value={editingTrack.title} 
-                        onChange={e => setEditingTrack({...editingTrack, title: e.target.value})}
-                        className="w-full bg-black/40 border border-white/10 px-4 py-2 text-sm text-white focus:border-[#4fb7b3] outline-none rounded"
-                      />
-                   </div>
-                   <div className="grid grid-cols-2 gap-4">
-                     <div className="space-y-1">
-                        <label className="text-xs font-bold uppercase tracking-widest text-[#a8fbd3]">Artist</label>
-                        <input 
-                          type="text" 
-                          value={editingTrack.artist} 
-                          onChange={e => setEditingTrack({...editingTrack, artist: e.target.value})}
-                          className="w-full bg-black/40 border border-white/10 px-4 py-2 text-sm text-white focus:border-[#4fb7b3] outline-none rounded"
-                        />
-                     </div>
-                     <div className="space-y-1">
-                        <label className="text-xs font-bold uppercase tracking-widest text-[#a8fbd3]">Genre</label>
-                        <input 
-                          type="text" 
-                          value={editingTrack.genre} 
-                          onChange={e => setEditingTrack({...editingTrack, genre: e.target.value})}
-                          className="w-full bg-black/40 border border-white/10 px-4 py-2 text-sm text-white focus:border-[#4fb7b3] outline-none rounded"
-                        />
-                     </div>
-                   </div>
-                   <div className="space-y-1">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#a8fbd3]">Tags (comma separated)</label>
-                      <div className="flex items-center gap-2 bg-black/40 border border-white/10 px-4 py-2 rounded focus-within:border-[#4fb7b3]">
-                        <Tag className="w-4 h-4 text-white/30" />
-                        <input 
-                          type="text" 
-                          value={editingTrack.tags.join(', ')} 
-                          onChange={e => setEditingTrack({...editingTrack, tags: e.target.value.split(',').map(t => t.trim())})}
-                          className="w-full bg-transparent text-sm text-white outline-none"
-                        />
-                      </div>
-                   </div>
-                   <div className="space-y-1">
-                      <label className="text-xs font-bold uppercase tracking-widest text-[#a8fbd3]">Description</label>
-                      <textarea 
-                        rows={3}
-                        value={editingTrack.description || ''} 
-                        onChange={e => setEditingTrack({...editingTrack, description: e.target.value})}
-                        className="w-full bg-black/40 border border-white/10 px-4 py-2 text-sm text-white focus:border-[#4fb7b3] outline-none rounded resize-none"
-                      />
-                   </div>
-
-                   <div className="pt-4 flex justify-end gap-3">
-                      <button type="button" onClick={() => setEditingTrack(null)} className="px-4 py-2 text-xs font-bold uppercase tracking-widest text-white/50 hover:text-white">Cancel</button>
-                      <button type="submit" className="px-6 py-2 bg-[#4fb7b3] hover:bg-white text-black text-xs font-bold uppercase tracking-widest rounded transition-colors flex items-center gap-2">
-                        <Save className="w-4 h-4" /> Save Changes
-                      </button>
-                   </div>
-                </form>
-             </motion.div>
-           </div>
         )}
       </AnimatePresence>
     </div>

@@ -13,9 +13,9 @@ import CustomCursor from './components/CustomCursor';
 import ArtistCard from './components/ArtistCard';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
-import { Artist, ViewState } from './types';
-import { subscribeToAuth, seedBriefsIfNeeded, logoutUser } from './services/firebase';
-import { User } from 'firebase/auth';
+import SupervisorDashboard from './components/SupervisorDashboard';
+import { Artist, ViewState, User } from './types';
+import { subscribeToAuth, seedBriefsIfNeeded, logoutUser } from './services/supabase';
 
 // Dummy Data (Re-purposed as Success Stories or Featured Roster)
 const ROSTER: Artist[] = [
@@ -89,7 +89,7 @@ const App: React.FC = () => {
     // Seed database with briefs if empty (safe to call even if mock)
     seedBriefsIfNeeded();
 
-    // Listen to Auth State (Handles both Real and Mock)
+    // Listen to Auth State
     const unsubscribe = subscribeToAuth((currentUser) => {
       setUser(currentUser);
       if (currentUser) {
@@ -187,8 +187,17 @@ const App: React.FC = () => {
     setSelectedArtist(ROSTER[nextIndex]);
   };
   
+  const Logo = () => (
+    <div className="flex items-center gap-3">
+      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#ccff00] flex items-center justify-center shrink-0">
+        <span className="font-heading font-bold text-[#31326f] text-lg md:text-xl transform translate-y-[1px]">S</span>
+      </div>
+      <span className="font-heading text-xl md:text-2xl font-bold tracking-tighter text-white">SYNCMASTER</span>
+    </div>
+  );
+
   return (
-    <div className="relative min-h-screen text-white selection:bg-[#4fb7b3] selection:text-black cursor-auto md:cursor-none overflow-x-hidden">
+    <div className="relative min-h-screen text-white selection:bg-[#ccff00] selection:text-black cursor-auto md:cursor-none overflow-x-hidden">
       <CustomCursor />
       <FluidBackground />
       
@@ -196,10 +205,10 @@ const App: React.FC = () => {
       <nav className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-8 py-6 mix-blend-difference">
         <div 
           onClick={() => setView('landing')}
-          className="font-heading text-xl md:text-2xl font-bold tracking-tighter text-white cursor-pointer z-50 hover:text-[#a8fbd3] transition-colors"
+          className="cursor-pointer z-50 hover:opacity-80 transition-opacity"
           data-hover="true"
         >
-          SYNCMASTER
+          <Logo />
         </div>
         
         {/* Desktop Menu */}
@@ -210,7 +219,7 @@ const App: React.FC = () => {
                 <button 
                   key={item} 
                   onClick={() => scrollToSection(item.toLowerCase())}
-                  className="hover:text-[#a8fbd3] transition-colors text-white cursor-pointer bg-transparent border-none"
+                  className="hover:text-[#ccff00] transition-colors text-white cursor-pointer bg-transparent border-none"
                   data-hover="true"
                 >
                   {item}
@@ -233,7 +242,7 @@ const App: React.FC = () => {
                       data-hover="true"
                    >
                       <UserIcon className="w-4 h-4" />
-                      Artist Login
+                      Login
                    </button>
                  )}
                  <button 
@@ -247,7 +256,8 @@ const App: React.FC = () => {
             </>
           ) : view === 'dashboard' ? (
              <div className="flex items-center gap-6">
-                <span className="text-[#a8fbd3]">{user?.displayName || 'Artist'}</span>
+                <span className="text-[#ccff00]">{user?.displayName || 'User'}</span>
+                <span className="text-xs px-2 py-1 bg-white/10 rounded uppercase">{user?.role || 'Artist'}</span>
                 <button 
                   onClick={handleLogout}
                   className="flex items-center gap-2 text-white hover:text-red-400 transition-colors ml-4"
@@ -258,7 +268,7 @@ const App: React.FC = () => {
                 </button>
              </div>
           ) : (
-             <button onClick={() => setView('landing')} className="hover:text-[#a8fbd3] text-white">Back to Home</button>
+             <button onClick={() => setView('landing')} className="hover:text-[#ccff00] text-white">Back to Home</button>
           )}
         </div>
 
@@ -286,7 +296,7 @@ const App: React.FC = () => {
                   <button
                     key={item}
                     onClick={() => scrollToSection(item.toLowerCase())}
-                    className="text-4xl font-heading font-bold text-white hover:text-[#a8fbd3] transition-colors uppercase bg-transparent border-none"
+                    className="text-4xl font-heading font-bold text-white hover:text-[#ccff00] transition-colors uppercase bg-transparent border-none"
                   >
                     {item}
                   </button>
@@ -295,16 +305,16 @@ const App: React.FC = () => {
                 {user ? (
                    <button 
                     onClick={() => { setView('dashboard'); setMobileMenuOpen(false); }}
-                    className="text-lg font-mono text-[#a8fbd3]"
+                    className="text-lg font-mono text-[#ccff00]"
                   >
                     Dashboard
                   </button>
                 ) : (
                    <button 
                     onClick={() => { setView('auth'); setMobileMenuOpen(false); }}
-                    className="text-lg font-mono text-[#a8fbd3]"
+                    className="text-lg font-mono text-[#ccff00]"
                   >
-                    Artist Login
+                    Login
                   </button>
                 )}
 
@@ -327,7 +337,9 @@ const App: React.FC = () => {
       )}
 
       {view === 'dashboard' && user && (
-        <Dashboard user={user} />
+        user.role === 'supervisor' 
+          ? <SupervisorDashboard user={user} />
+          : <Dashboard user={user} />
       )}
 
       {view === 'landing' && (
@@ -343,12 +355,12 @@ const App: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.2 }}
-                className="flex items-center gap-3 md:gap-6 text-xs md:text-base font-mono text-[#a8fbd3] tracking-[0.2em] md:tracking-[0.3em] uppercase mb-4 bg-black/20 px-4 py-2 rounded-full backdrop-blur-sm"
+                className="flex items-center gap-3 md:gap-6 text-xs md:text-base font-mono text-[#ccff00] tracking-[0.2em] md:tracking-[0.3em] uppercase mb-4 bg-black/20 px-4 py-2 rounded-full backdrop-blur-sm"
               >
                 <span>Film</span>
-                <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#4fb7b3] rounded-full animate-pulse"/>
+                <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#ccff00] rounded-full animate-pulse"/>
                 <span>TV</span>
-                <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#4fb7b3] rounded-full animate-pulse"/>
+                <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#ccff00] rounded-full animate-pulse"/>
                 <span>Games</span>
               </motion.div>
 
@@ -396,9 +408,9 @@ const App: React.FC = () => {
                   <div key={key} className="flex whitespace-nowrap shrink-0">
                     {[...Array(4)].map((_, i) => (
                       <span key={i} className="text-3xl md:text-7xl font-heading font-black px-8 flex items-center gap-4">
-                        GET SYNCED <span className="text-black text-2xl md:text-4xl">●</span> 
-                        GLOBAL REACH <span className="text-black text-2xl md:text-4xl">●</span> 
-                        MONETIZE YOUR MUSIC <span className="text-black text-2xl md:text-4xl">●</span>
+                        GET SYNCED <span className="text-[#ccff00] text-2xl md:text-4xl">●</span> 
+                        GLOBAL REACH <span className="text-[#ccff00] text-2xl md:text-4xl">●</span> 
+                        MONETIZE YOUR MUSIC <span className="text-[#ccff00] text-2xl md:text-4xl">●</span>
                       </span>
                     ))}
                   </div>
@@ -413,7 +425,7 @@ const App: React.FC = () => {
               <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 px-4">
                 <h2 className="text-5xl md:text-8xl font-heading font-bold uppercase leading-[0.9] drop-shadow-lg break-words w-full md:w-auto">
                   Featured <br/> 
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a8fbd3] to-[#4fb7b3]">Roster</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] to-[#e6ff80]">Roster</span>
                 </h2>
               </div>
 
@@ -427,7 +439,7 @@ const App: React.FC = () => {
 
           {/* FEATURES SECTION */}
           <section id="features" className="relative z-10 py-20 md:py-32 bg-black/20 backdrop-blur-sm border-t border-white/10 overflow-hidden">
-            <div className="absolute top-1/2 right-[-20%] w-[50vw] h-[50vw] bg-[#4fb7b3]/20 rounded-full blur-[40px] pointer-events-none will-change-transform" style={{ transform: 'translateZ(0)' }} />
+            <div className="absolute top-1/2 right-[-20%] w-[50vw] h-[50vw] bg-[#ccff00]/20 rounded-full blur-[40px] pointer-events-none will-change-transform" style={{ transform: 'translateZ(0)' }} />
 
             <div className="max-w-7xl mx-auto px-4 md:px-6 relative">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 items-center">
@@ -462,7 +474,7 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="lg:col-span-7 relative h-[400px] md:h-[700px] w-full order-1 lg:order-2">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#637ab9] to-[#4fb7b3] rounded-3xl rotate-3 opacity-30 blur-xl" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#ccff00] to-[#e6ff80] rounded-3xl rotate-3 opacity-20 blur-xl" />
                   <div className="relative h-full w-full rounded-3xl overflow-hidden border border-white/10 group shadow-2xl">
                     <img 
                       src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1000&auto=format&fit=crop" 
@@ -492,7 +504,7 @@ const App: React.FC = () => {
                 <h2 className="text-5xl md:text-9xl font-heading font-bold opacity-20 text-white">
                   JOIN
                 </h2>
-                <p className="text-[#a8fbd3] font-mono uppercase tracking-widest -mt-3 md:-mt-8 relative z-10 text-sm md:text-base">
+                <p className="text-[#ccff00] font-mono uppercase tracking-widest -mt-3 md:-mt-8 relative z-10 text-sm md:text-base">
                   Choose your career path
                 </p>
               </div>
@@ -500,8 +512,8 @@ const App: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
                   { name: 'Basic', price: 'Free', color: 'white', accent: 'bg-white/5' },
-                  { name: 'Pro Artist', price: '$15/mo', color: 'teal', accent: 'bg-[#4fb7b3]/10 border-[#4fb7b3]/50' },
-                  { name: 'Agency', price: '$45/mo', color: 'periwinkle', accent: 'bg-[#637ab9]/10 border-[#637ab9]/50' },
+                  { name: 'Pro Artist', price: '$15/mo', color: 'lime', accent: 'bg-[#ccff00]/10 border-[#ccff00]/50' },
+                  { name: 'Agency', price: '$45/mo', color: 'blue', accent: 'bg-[#637ab9]/10 border-[#637ab9]/50' },
                 ].map((ticket, i) => {
                   const isPurchasing = purchasingIndex === i;
                   const isPurchased = purchasedIndex === i;
@@ -518,14 +530,14 @@ const App: React.FC = () => {
                       
                       <div className="flex-1">
                         <h3 className="text-2xl md:text-3xl font-heading font-bold mb-4 text-white">{ticket.name}</h3>
-                        <div className={`text-5xl md:text-6xl font-bold mb-8 md:mb-10 tracking-tighter ${ticket.color === 'white' ? 'text-white' : ticket.color === 'teal' ? 'text-[#4fb7b3]' : 'text-[#637ab9]'}`}>
+                        <div className={`text-5xl md:text-6xl font-bold mb-8 md:mb-10 tracking-tighter ${ticket.color === 'white' ? 'text-white' : ticket.color === 'lime' ? 'text-[#ccff00]' : 'text-[#637ab9]'}`}>
                           {ticket.price}
                         </div>
                         <ul className="space-y-4 md:space-y-6 text-sm text-gray-200">
                           <li className="flex items-center gap-3"><Ticket className="w-5 h-5 text-gray-400" /> Browse Briefs</li>
                           <li className="flex items-center gap-3"><MapPin className="w-5 h-5 text-gray-400" /> Create Profile</li>
-                          {i > 0 && <li className="flex items-center gap-3 text-white"><Zap className={`w-5 h-5 text-[#a8fbd3]`} /> Unlimited Uploads</li>}
-                          {i > 1 && <li className="flex items-center gap-3 text-white"><Globe className={`w-5 h-5 text-[#4fb7b3]`} /> Priority Support</li>}
+                          {i > 0 && <li className="flex items-center gap-3 text-white"><Zap className={`w-5 h-5 text-[#ccff00]`} /> Unlimited Uploads</li>}
+                          {i > 1 && <li className="flex items-center gap-3 text-white"><Globe className={`w-5 h-5 text-[#637ab9]`} /> Priority Support</li>}
                         </ul>
                       </div>
                       
@@ -534,7 +546,7 @@ const App: React.FC = () => {
                         disabled={isDisabled}
                         className={`w-full py-4 text-sm font-bold uppercase tracking-[0.2em] border border-white/20 transition-all duration-300 mt-8 group overflow-hidden relative 
                           ${isPurchased 
-                            ? 'bg-[#a8fbd3] text-black border-[#a8fbd3] cursor-default' 
+                            ? 'bg-[#ccff00] text-black border-[#ccff00] cursor-default' 
                             : isPurchasing 
                               ? 'bg-white/20 text-white cursor-wait'
                               : isDisabled 
@@ -571,7 +583,7 @@ const App: React.FC = () => {
               {/* Newsletter */}
               <div className="md:col-span-5 w-full">
                 <form onSubmit={handleSubscribe} className="relative max-w-md mx-auto md:mx-0">
-                  <label className="block text-xs font-bold uppercase tracking-widest text-[#a8fbd3] mb-2 text-center md:text-left">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-[#ccff00] mb-2 text-center md:text-left">
                       Get Weekly Brief Alerts
                   </label>
                   <div className="flex relative">
@@ -581,11 +593,11 @@ const App: React.FC = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="ENTER YOUR EMAIL" 
                       required
-                      className="w-full bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-[#4fb7b3] transition-colors"
+                      className="w-full bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-[#ccff00] transition-colors"
                     />
                     <button 
                       type="submit" 
-                      className="bg-white text-black px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-[#a8fbd3] transition-colors whitespace-nowrap"
+                      className="bg-white text-black px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-[#ccff00] transition-colors whitespace-nowrap"
                       data-hover="true"
                     >
                       {subscribed ? 'Joined!' : 'Sign Up'}
@@ -595,7 +607,7 @@ const App: React.FC = () => {
                     <motion.p 
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="absolute -bottom-6 left-0 text-xs text-[#a8fbd3] font-mono mt-2"
+                      className="absolute -bottom-6 left-0 text-xs text-[#ccff00] font-mono mt-2"
                     >
                       Welcome to the network.
                     </motion.p>
@@ -629,7 +641,7 @@ const App: React.FC = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-5xl bg-[#1a1b3b] border border-white/10 overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-[#4fb7b3]/10 group/modal"
+              className="relative w-full max-w-5xl bg-[#1a1b3b] border border-white/10 overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-[#ccff00]/10 group/modal"
             >
               {/* Close Button */}
               <button
@@ -684,7 +696,7 @@ const App: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                  <div className="flex items-center gap-3 text-[#4fb7b3] mb-4">
+                  <div className="flex items-center gap-3 text-[#ccff00] mb-4">
                      <Calendar className="w-4 h-4" />
                      <span className="font-mono text-sm tracking-widest uppercase">{selectedArtist.day}</span>
                   </div>
@@ -693,7 +705,7 @@ const App: React.FC = () => {
                     {selectedArtist.name}
                   </h3>
                   
-                  <p className="text-lg text-[#a8fbd3] font-medium tracking-widest uppercase mb-6">
+                  <p className="text-lg text-[#e6ff80] font-medium tracking-widest uppercase mb-6">
                     {selectedArtist.genre}
                   </p>
                   

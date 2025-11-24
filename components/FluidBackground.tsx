@@ -57,9 +57,9 @@ const FluidBackground: React.FC = () => {
       
       <StarField />
 
-      {/* Blob 1: Mint - Optimized Blur (60px -> 40px) and Animation Speed */}
+      {/* Blob 1: Light Lime */}
       <motion.div
-        className="absolute top-[-10%] left-[-10%] w-[90vw] h-[90vw] bg-[#a8fbd3] rounded-full mix-blend-screen filter blur-[40px] opacity-30 will-change-transform"
+        className="absolute top-[-10%] left-[-10%] w-[90vw] h-[90vw] bg-[#e6ff80] rounded-full mix-blend-screen filter blur-[40px] opacity-20 will-change-transform"
         animate={{
           x: [0, 50, -25, 0],
           y: [0, -25, 25, 0],
@@ -72,9 +72,9 @@ const FluidBackground: React.FC = () => {
         style={{ transform: 'translateZ(0)' }}
       />
 
-      {/* Blob 2: Teal */}
+      {/* Blob 2: Neon Lime */}
       <motion.div
-        className="absolute top-[20%] right-[-20%] w-[100vw] h-[80vw] bg-[#4fb7b3] rounded-full mix-blend-screen filter blur-[40px] opacity-20 will-change-transform"
+        className="absolute top-[20%] right-[-20%] w-[100vw] h-[80vw] bg-[#ccff00] rounded-full mix-blend-screen filter blur-[40px] opacity-10 will-change-transform"
         animate={{
           x: [0, -50, 25, 0],
           y: [0, 50, -25, 0],
@@ -87,7 +87,7 @@ const FluidBackground: React.FC = () => {
         style={{ transform: 'translateZ(0)' }}
       />
 
-      {/* Blob 3: Periwinkle */}
+      {/* Blob 3: Blue (Retained for depth) */}
       <motion.div
         className="absolute bottom-[-20%] left-[20%] w-[80vw] h-[80vw] bg-[#637ab9] rounded-full mix-blend-screen filter blur-[40px] opacity-20 will-change-transform"
         animate={{
