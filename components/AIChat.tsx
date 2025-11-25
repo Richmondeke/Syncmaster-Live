@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -58,7 +59,7 @@ const AIChat: React.FC = () => {
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="mb-4 w-[90vw] md:w-96 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-[#ccff00]/20"
+            className="mb-4 w-[90vw] md:w-96 bg-black/80 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl shadow-[#ccff00]/20"
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-[#1e2055] to-[#2a2c6e] p-4 flex justify-between items-center border-b border-white/10">
@@ -82,7 +83,7 @@ const AIChat: React.FC = () => {
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] p-3 rounded-lg text-sm ${
+                    className={`max-w-[85%] p-3 rounded-xl text-sm ${
                       msg.role === 'user'
                         ? 'bg-[#ccff00] text-black rounded-tr-none font-medium'
                         : 'bg-white/10 text-gray-200 rounded-tl-none border border-white/5'
@@ -94,7 +95,7 @@ const AIChat: React.FC = () => {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-white/10 p-3 rounded-lg rounded-tl-none flex gap-1">
+                  <div className="bg-white/10 p-3 rounded-xl rounded-tl-none flex gap-1">
                     <span className="w-1.5 h-1.5 bg-[#ccff00] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                     <span className="w-1.5 h-1.5 bg-[#ccff00] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                     <span className="w-1.5 h-1.5 bg-[#ccff00] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -122,7 +123,7 @@ const AIChat: React.FC = () => {
                 <button
                   onClick={handleSend}
                   disabled={isLoading || !input.trim()}
-                  className="bg-[#ccff00] p-2 rounded-lg hover:bg-white transition-colors disabled:opacity-50"
+                  className="bg-[#ccff00] p-2 rounded-xl hover:bg-white transition-colors disabled:opacity-50"
                   data-hover="true"
                 >
                   <Send className="w-4 h-4 text-black" />

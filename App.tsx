@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -9,7 +10,6 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { Ticket, Globe, Zap, Music, MapPin, Menu, X, Calendar, Play, ChevronLeft, ChevronRight, User as UserIcon, LogOut, Briefcase } from 'lucide-react';
 import FluidBackground from './components/FluidBackground';
 import GradientText from './components/GlitchText';
-import CustomCursor from './components/CustomCursor';
 import ArtistCard from './components/ArtistCard';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
@@ -67,6 +67,22 @@ const ROSTER: Artist[] = [
     image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=1000&auto=format&fit=crop',
     description: 'Ambient soundscapes for tension and drama. A favorite among indie film directors.'
   },
+  {
+    id: '7',
+    name: 'Solar Flare',
+    genre: 'Indie Pop',
+    day: 'RISING',
+    image: 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?q=80&w=1000&auto=format&fit=crop',
+    description: 'Bright, energetic indie pop with catchy hooks. Perfect for summer campaigns and feel-good TV moments.'
+  },
+  {
+    id: '8',
+    name: 'Midnight Jazz',
+    genre: 'Nu-Jazz',
+    day: 'CLASSIC',
+    image: 'https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?q=80&w=1000&auto=format&fit=crop',
+    description: 'Sophisticated jazz fusion blending classic instrumentation with modern production. Ideal for upscale dining scenes.'
+  }
 ];
 
 const App: React.FC = () => {
@@ -197,140 +213,130 @@ const App: React.FC = () => {
   );
 
   return (
-    <div className="relative min-h-screen text-white selection:bg-[#ccff00] selection:text-black cursor-auto md:cursor-none overflow-x-hidden">
-      <CustomCursor />
+    <div className="relative min-h-screen text-white selection:bg-[#ccff00] selection:text-black overflow-x-hidden">
       <FluidBackground />
       
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-8 py-6 mix-blend-difference">
-        <div 
-          onClick={() => setView('landing')}
-          className="cursor-pointer z-50 hover:opacity-80 transition-opacity"
-          data-hover="true"
-        >
-          <Logo />
-        </div>
-        
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-10 text-sm font-bold tracking-widest uppercase">
-          {view === 'landing' ? (
-            <>
-              {['Roster', 'Features', 'Pricing'].map((item) => (
-                <button 
-                  key={item} 
-                  onClick={() => scrollToSection(item.toLowerCase())}
-                  className="hover:text-[#ccff00] transition-colors text-white cursor-pointer bg-transparent border-none"
-                  data-hover="true"
-                >
-                  {item}
-                </button>
-              ))}
-              <div className="flex gap-4">
-                 {user ? (
-                   <button 
-                      onClick={() => setView('dashboard')}
-                      className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
-                      data-hover="true"
-                   >
-                      <UserIcon className="w-4 h-4" />
-                      Dashboard
-                   </button>
-                 ) : (
-                   <button 
-                      onClick={() => setView('auth')}
-                      className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
-                      data-hover="true"
-                   >
-                      <UserIcon className="w-4 h-4" />
-                      Login
-                   </button>
-                 )}
-                 <button 
-                  onClick={() => scrollToSection('pricing')}
-                  className="border border-white px-8 py-3 text-xs font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-all duration-300 text-white cursor-pointer bg-transparent"
-                  data-hover="true"
-                >
-                  Join Now
-                </button>
-              </div>
-            </>
-          ) : view === 'dashboard' ? (
-             <div className="flex items-center gap-6">
-                <span className="text-[#ccff00]">{user?.displayName || 'User'}</span>
-                <span className="text-xs px-2 py-1 bg-white/10 rounded uppercase">{user?.role || 'Artist'}</span>
-                <button 
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 text-white hover:text-red-400 transition-colors ml-4"
-                  data-hover="true"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Sign Out
-                </button>
-             </div>
-          ) : (
-             <button onClick={() => setView('landing')} className="hover:text-[#ccff00] text-white">Back to Home</button>
-          )}
-        </div>
-
-        {/* Mobile Menu Toggle */}
-        <button 
-          className="md:hidden text-white z-50 relative w-10 h-10 flex items-center justify-center"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-           {mobileMenuOpen ? <X /> : <Menu />}
-        </button>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-30 bg-[#31326f]/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 md:hidden"
+      {/* Navigation - Only shown when NOT in dashboard to prevent overlap */}
+      {view !== 'dashboard' && (
+        <nav className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-8 py-6 mix-blend-difference">
+          <div 
+            onClick={() => setView('landing')}
+            className="cursor-pointer z-50 hover:opacity-80 transition-opacity"
+            data-hover="true"
           >
+            <Logo />
+          </div>
+          
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-10 text-sm font-bold tracking-widest uppercase">
             {view === 'landing' ? (
               <>
                 {['Roster', 'Features', 'Pricing'].map((item) => (
-                  <button
-                    key={item}
+                  <button 
+                    key={item} 
                     onClick={() => scrollToSection(item.toLowerCase())}
-                    className="text-4xl font-heading font-bold text-white hover:text-[#ccff00] transition-colors uppercase bg-transparent border-none"
+                    className="hover:text-[#ccff00] transition-colors text-white cursor-pointer bg-transparent border-none"
+                    data-hover="true"
                   >
                     {item}
                   </button>
                 ))}
-                
-                {user ? (
+                <div className="flex gap-4">
+                   {user ? (
+                     <button 
+                        onClick={() => setView('dashboard')}
+                        className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
+                        data-hover="true"
+                     >
+                        <UserIcon className="w-4 h-4" />
+                        Dashboard
+                     </button>
+                   ) : (
+                     <button 
+                        onClick={() => setView('auth')}
+                        className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
+                        data-hover="true"
+                     >
+                        <UserIcon className="w-4 h-4" />
+                        Login
+                     </button>
+                   )}
                    <button 
-                    onClick={() => { setView('dashboard'); setMobileMenuOpen(false); }}
-                    className="text-lg font-mono text-[#ccff00]"
+                    onClick={() => scrollToSection('pricing')}
+                    className="border border-white px-8 py-3 text-xs font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-all duration-300 text-white cursor-pointer bg-transparent rounded-xl"
+                    data-hover="true"
                   >
-                    Dashboard
+                    Join Now
                   </button>
-                ) : (
-                   <button 
-                    onClick={() => { setView('auth'); setMobileMenuOpen(false); }}
-                    className="text-lg font-mono text-[#ccff00]"
-                  >
-                    Login
-                  </button>
-                )}
-
-                <button 
-                  onClick={() => scrollToSection('pricing')}
-                  className="mt-8 border border-white px-10 py-4 text-sm font-bold tracking-widest uppercase bg-white text-black"
-                >
-                  Join Now
-                </button>
+                </div>
               </>
             ) : (
-               <button onClick={() => { setView('landing'); setMobileMenuOpen(false); }} className="text-2xl font-bold">Home</button>
+               <button onClick={() => setView('landing')} className="hover:text-[#ccff00] text-white">Back to Home</button>
             )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="md:hidden text-white z-50 relative w-10 h-10 flex items-center justify-center"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+             {mobileMenuOpen ? <X /> : <Menu />}
+          </button>
+        </nav>
+      )}
+
+      {/* Mobile Menu Overlay - Only for landing navigation */}
+      {view !== 'dashboard' && (
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed inset-0 z-30 bg-[#31326f]/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 md:hidden"
+            >
+              {view === 'landing' ? (
+                <>
+                  {['Roster', 'Features', 'Pricing'].map((item) => (
+                    <button
+                      key={item}
+                      onClick={() => scrollToSection(item.toLowerCase())}
+                      className="text-4xl font-heading font-bold text-white hover:text-[#ccff00] transition-colors uppercase bg-transparent border-none"
+                    >
+                      {item}
+                    </button>
+                  ))}
+                  
+                  {user ? (
+                     <button 
+                      onClick={() => { setView('dashboard'); setMobileMenuOpen(false); }}
+                      className="text-lg font-mono text-[#ccff00]"
+                    >
+                      Dashboard
+                    </button>
+                  ) : (
+                     <button 
+                      onClick={() => { setView('auth'); setMobileMenuOpen(false); }}
+                      className="text-lg font-mono text-[#ccff00]"
+                    >
+                      Login
+                    </button>
+                  )}
+
+                  <button 
+                    onClick={() => scrollToSection('pricing')}
+                    className="mt-8 border border-white px-10 py-4 text-sm font-bold tracking-widest uppercase bg-white text-black rounded-xl"
+                  >
+                    Join Now
+                  </button>
+                </>
+              ) : (
+                 <button onClick={() => { setView('landing'); setMobileMenuOpen(false); }} className="text-2xl font-bold">Home</button>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
 
       {view === 'auth' && (
         <Auth onLogin={handleLogin} onCancel={() => setView('landing')} />
@@ -429,7 +435,7 @@ const App: React.FC = () => {
                 </h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l border-white/10 bg-black/20 backdrop-blur-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {ROSTER.map((artist) => (
                   <ArtistCard key={artist.id} artist={artist} onClick={() => setSelectedArtist(artist)} />
                 ))}
@@ -461,7 +467,7 @@ const App: React.FC = () => {
                         key={i} 
                         className="flex items-start gap-6"
                       >
-                        <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/5">
+                        <div className="p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/5">
                           <feature.icon className="w-6 h-6 text-white" />
                         </div>
                         <div>
@@ -474,8 +480,8 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="lg:col-span-7 relative h-[400px] md:h-[700px] w-full order-1 lg:order-2">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#ccff00] to-[#e6ff80] rounded-3xl rotate-3 opacity-20 blur-xl" />
-                  <div className="relative h-full w-full rounded-3xl overflow-hidden border border-white/10 group shadow-2xl">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#ccff00] to-[#e6ff80] rounded-[12px] rotate-3 opacity-20 blur-xl" />
+                  <div className="relative h-full w-full rounded-xl overflow-hidden border border-white/10 group shadow-2xl">
                     <img 
                       src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1000&auto=format&fit=crop" 
                       alt="Studio" 
@@ -523,7 +529,7 @@ const App: React.FC = () => {
                     <motion.div
                       key={i}
                       whileHover={isDisabled ? {} : { y: -20 }}
-                      className={`relative p-8 md:p-10 border border-white/10 backdrop-blur-md flex flex-col min-h-[450px] md:min-h-[550px] transition-colors duration-300 ${ticket.accent} ${isDisabled && !isPurchased ? 'opacity-50 grayscale' : ''} will-change-transform`}
+                      className={`relative p-8 md:p-10 border border-white/10 backdrop-blur-md flex flex-col min-h-[450px] md:min-h-[550px] transition-colors duration-300 rounded-xl ${ticket.accent} ${isDisabled && !isPurchased ? 'opacity-50 grayscale' : ''} will-change-transform`}
                       data-hover={!isDisabled}
                     >
                       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -544,7 +550,7 @@ const App: React.FC = () => {
                       <button 
                         onClick={() => handlePurchase(i)}
                         disabled={isDisabled}
-                        className={`w-full py-4 text-sm font-bold uppercase tracking-[0.2em] border border-white/20 transition-all duration-300 mt-8 group overflow-hidden relative 
+                        className={`w-full py-4 text-sm font-bold uppercase tracking-[0.2em] border border-white/20 transition-all duration-300 mt-8 group overflow-hidden relative rounded-xl
                           ${isPurchased 
                             ? 'bg-[#ccff00] text-black border-[#ccff00] cursor-default' 
                             : isPurchasing 
@@ -593,11 +599,11 @@ const App: React.FC = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="ENTER YOUR EMAIL" 
                       required
-                      className="w-full bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-[#ccff00] transition-colors"
+                      className="w-full bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-[#ccff00] transition-colors rounded-xl"
                     />
                     <button 
                       type="submit" 
-                      className="bg-white text-black px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-[#ccff00] transition-colors whitespace-nowrap"
+                      className="bg-white text-black px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-[#ccff00] transition-colors whitespace-nowrap rounded-r-xl"
                       data-hover="true"
                     >
                       {subscribed ? 'Joined!' : 'Sign Up'}
@@ -641,7 +647,7 @@ const App: React.FC = () => {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-5xl bg-[#1a1b3b] border border-white/10 overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-[#ccff00]/10 group/modal"
+              className="relative w-full max-w-5xl bg-[#1a1b3b] border border-white/10 overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-[#ccff00]/10 group/modal rounded-xl"
             >
               {/* Close Button */}
               <button

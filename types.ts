@@ -85,6 +85,7 @@ export interface Application {
   trackId: string;
   status: 'pending' | 'shortlisted' | 'rejected' | 'accepted';
   submittedDate: string;
+  submitted_date?: string; // handle potential snake_case from DB
 }
 
 export interface ResearchItem {
@@ -104,5 +105,33 @@ export interface ResearchResult {
   results: ResearchItem[];
 }
 
+export interface TrendingSync {
+  id: string;
+  title: string;
+  type: 'Movie' | 'TV Show';
+  imageUrl?: string;
+  topTrack: string;
+  artist: string;
+  year: string;
+}
+
+export interface Agency {
+  id: string;
+  name: string;
+  type: 'Agency' | 'Supervisor' | 'Library';
+  location: string;
+  contactEmail: string;
+  website: string;
+  credits: string[];
+  logo: string;
+  description?: string;
+  submissionPolicy?: string;
+  socials?: {
+    linkedin?: string;
+    instagram?: string;
+    twitter?: string;
+  };
+}
+
 export type ViewState = 'landing' | 'auth' | 'dashboard';
-export type TabView = 'browse' | 'applications' | 'library' | 'research' | 'profile';
+export type TabView = 'browse' | 'applications' | 'library' | 'research' | 'directory' | 'profile';

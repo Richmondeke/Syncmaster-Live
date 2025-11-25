@@ -1,10 +1,11 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
 */
 
 import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
-import { ResearchResult } from "../types";
+import { ResearchResult, TrendingSync } from "../types";
 
 const getApiKey = () => {
   try {
@@ -113,5 +114,56 @@ export const searchSyncDatabase = async (query: string): Promise<ResearchResult 
   } catch (error) {
     console.error("Sync Search Error:", error);
     return null;
+  }
+};
+
+export const getTrendingSyncs = async (): Promise<TrendingSync[]> => {
+  if (!API_KEY) {
+    console.warn("API Key missing for Trending Syncs");
+    // Return mock data if no key
+    return [
+      { id: '1', title: 'Barbie', type: 'Movie', year: '2023', topTrack: 'What Was I Made For?', artist: 'Billie Eilish' },
+      { id: '2', title: 'Saltburn', type: 'Movie', year: '2023', topTrack: 'Murder on the Dancefloor', artist: 'Sophie Ellis-Bextor' },
+      { id: '3', title: 'The Bear', type: 'TV Show', year: '2024', topTrack: 'New Noise', artist: 'Refused' }
+    ];
+  }
+
+  const ai = new GoogleGenAI({ apiKey: API_KEY });
+
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: `Generate a list of 5 recent popular movies or TV shows (from 2023-2025) that are notable for their music soundtracks or specific sync placements.
+      
+      Output ONLY valid JSON in this format:
+      [
+        {
+          "id": "unique_id",
+          "title": "Movie/Show Title",
+          "type": "Movie" | "TV Show",
+          "imageUrl": "Direct URL to poster (upload.wikimedia.org preferred). Must end in .jpg/.png. If not found, use null.",
+          "topTrack": "Most famous song from soundtrack",
+          "artist": "Artist of that song",
+          "year": "Release Year"
+        }
+      ]
+      
+      Do not include markdown formatting.`,
+      config: {
+        tools: [{ googleSearch: {} }],
+      },
+    });
+
+    let text = response.text || "[]";
+    const jsonStart = text.indexOf('[');
+    const jsonEnd = text.lastIndexOf(']');
+    if (jsonStart !== -1 && jsonEnd !== -1) {
+      text = text.substring(jsonStart, jsonEnd + 1);
+    }
+
+    return JSON.parse(text) as TrendingSync[];
+  } catch (error) {
+    console.error("Trending Syncs Error:", error);
+    return [];
   }
 };

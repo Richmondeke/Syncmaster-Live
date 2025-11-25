@@ -1,3 +1,4 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -17,7 +18,7 @@ interface ArtistCardProps {
 const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onClick }) => {
   return (
     <motion.div
-      className="group relative h-[400px] md:h-[500px] w-full overflow-hidden border-b md:border-r border-white/10 bg-black cursor-pointer"
+      className="group relative h-[400px] md:h-[500px] w-full overflow-hidden border-b md:border-r border-white/10 bg-black cursor-pointer rounded-xl"
       initial="rest"
       whileHover="hover"
       whileTap="hover"
@@ -26,22 +27,22 @@ const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onClick }) => {
       onClick={onClick}
     >
       {/* Image Background with Zoom */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden rounded-xl">
         <motion.img 
           src={artist.image} 
           alt={artist.name} 
-          className="h-full w-full object-cover grayscale will-change-transform"
+          className="h-full w-full object-cover grayscale will-change-transform rounded-xl"
           variants={{
             rest: { scale: 1, opacity: 0.6, filter: 'grayscale(100%)' },
             hover: { scale: 1.05, opacity: 0.9, filter: 'grayscale(0%)' }
           }}
           transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
         />
-        <div className="absolute inset-0 bg-black/30 group-hover:bg-[#637ab9]/20 transition-colors duration-500" />
+        <div className="absolute inset-0 bg-black/30 group-hover:bg-[#637ab9]/20 transition-colors duration-500 rounded-xl" />
       </div>
 
       {/* Overlay Info */}
-      <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between pointer-events-none">
+      <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between pointer-events-none rounded-xl">
         <div className="flex justify-between items-start">
            <span className="text-xs font-mono border border-white/30 px-2 py-1 rounded-full backdrop-blur-md">
              {artist.day}

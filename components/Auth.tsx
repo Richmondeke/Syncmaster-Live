@@ -6,9 +6,9 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, Mail, Lock, User, ArrowRight, AlertCircle, Headphones, Radio, CheckCircle } from 'lucide-react';
+import { X, Mail, Lock, User, ArrowRight, AlertCircle, Headphones, Radio, CheckCircle, Eye, EyeOff, RefreshCw } from 'lucide-react';
 import GradientText from './GlitchText';
-import { loginUser, registerUser, loginWithGoogle } from '../services/supabase';
+import { loginUser, registerUser, loginWithGoogle, resendConfirmation } from '../services/supabase';
 
 interface AuthProps {
   onLogin: () => void;
@@ -29,6 +29,8 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showResend, setShowResend] = useState(false);
   
   // New State for Role Selection
   const [role, setRole] = useState<'artist' | 'supervisor'>('artist');
@@ -44,10 +46,15 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
     setIsLoading(true);
     setError(null);
     setSuccessMessage(null);
+    setShowResend(false);
     
+    // Trim email to avoid "Invalid login credentials" due to accidental spaces
+    const cleanEmail = formData.email.trim();
+    const cleanPassword = formData.password;
+
     try {
       if (isSignUp) {
-        const { data } = await registerUser(formData.email, formData.password, formData.name, role);
+        const { data } = await registerUser(cleanEmail, cleanPassword, formData.name, role);
         if (data.user && !data.session) {
           // User created but email not verified
           setSuccessMessage("Account created! Please check your email to confirm your address before logging in.");
@@ -56,16 +63,34 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
           onLogin();
         }
       } else {
-        await loginUser(formData.email, formData.password);
+        await loginUser(cleanEmail, cleanPassword);
         onLogin(); 
       }
     } catch (err: any) {
       console.error(err);
       if (err.message.includes('Email not confirmed')) {
-        setError("Please verify your email address to log in.");
+        setError("Email not verified. Please check your inbox/spam folder.");
+        setShowResend(true);
+      } else if (err.message.includes('Invalid login credentials')) {
+        setError("Invalid email or password. Please check for typos or Sign Up if you don't have an account.");
       } else {
         setError(err.message || "Authentication failed. Please try again.");
       }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (!formData.email) return;
+    setIsLoading(true);
+    try {
+      await resendConfirmation(formData.email);
+      setSuccessMessage(`Confirmation email resent to ${formData.email}. Check your inbox.`);
+      setError(null);
+      setShowResend(false);
+    } catch (err: any) {
+      setError(err.message || "Failed to resend email.");
     } finally {
       setIsLoading(false);
     }
@@ -90,7 +115,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
       <motion.div 
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="relative w-full max-w-md bg-[#1a1b3b]/90 border border-white/10 p-8 md:p-10 shadow-2xl shadow-[#ccff00]/10 overflow-hidden"
+        className="relative w-full max-w-md bg-[#1a1b3b]/90 border border-white/10 p-8 md:p-10 shadow-2xl shadow-[#ccff00]/10 overflow-hidden rounded-xl"
       >
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#ccff00] to-transparent" />
@@ -114,10 +139,22 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
           <motion.div 
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
-            className="mb-6 p-3 bg-red-500/10 border border-red-500/20 rounded flex items-start gap-3"
+            className="mb-6 p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex flex-col gap-2"
           >
-            <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
-            <p className="text-xs text-red-200">{error}</p>
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
+              <p className="text-xs text-red-200">{error}</p>
+            </div>
+            {showResend && (
+              <button 
+                onClick={handleResend}
+                disabled={isLoading}
+                className="text-[10px] uppercase font-bold tracking-widest bg-red-500/20 hover:bg-red-500/30 text-white py-1 px-2 rounded-xl flex items-center justify-center gap-2 self-end transition-colors"
+              >
+                {isLoading ? 'Sending...' : 'Resend Verification Email'}
+                <RefreshCw className="w-3 h-3" />
+              </button>
+            )}
           </motion.div>
         )}
 
@@ -125,7 +162,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
           <motion.div 
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
-            className="mb-6 p-3 bg-[#ccff00]/10 border border-[#ccff00]/20 rounded flex items-start gap-3"
+            className="mb-6 p-3 bg-[#ccff00]/10 border border-[#ccff00]/20 rounded-xl flex items-start gap-3"
           >
             <CheckCircle className="w-5 h-5 text-[#ccff00] shrink-0" />
             <p className="text-xs text-[#ccff00]">{successMessage}</p>
@@ -136,7 +173,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
         <button
           onClick={handleGoogleLogin}
           type="button"
-          className="w-full bg-white text-black font-bold py-3 mb-6 flex items-center justify-center gap-3 hover:bg-gray-100 transition-colors rounded-sm"
+          className="w-full bg-white text-black font-bold py-3 mb-6 flex items-center justify-center gap-3 hover:bg-gray-100 transition-colors rounded-xl"
         >
           <GoogleIcon />
           <span className="text-sm uppercase tracking-widest">Continue with Google</span>
@@ -155,14 +192,14 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div 
                 onClick={() => setRole('artist')}
-                className={`cursor-pointer border rounded-lg p-3 flex flex-col items-center justify-center gap-2 transition-all ${role === 'artist' ? 'bg-[#ccff00]/10 border-[#ccff00] text-[#ccff00]' : 'bg-black/20 border-white/10 text-white/50 hover:bg-white/5'}`}
+                className={`cursor-pointer border rounded-xl p-3 flex flex-col items-center justify-center gap-2 transition-all ${role === 'artist' ? 'bg-[#ccff00]/10 border-[#ccff00] text-[#ccff00]' : 'bg-black/20 border-white/10 text-white/50 hover:bg-white/5'}`}
               >
                 <Headphones className="w-6 h-6" />
                 <span className="text-xs font-bold uppercase tracking-widest">Artist</span>
               </div>
               <div 
                 onClick={() => setRole('supervisor')}
-                className={`cursor-pointer border rounded-lg p-3 flex flex-col items-center justify-center gap-2 transition-all ${role === 'supervisor' ? 'bg-[#ccff00]/10 border-[#ccff00] text-[#ccff00]' : 'bg-black/20 border-white/10 text-white/50 hover:bg-white/5'}`}
+                className={`cursor-pointer border rounded-xl p-3 flex flex-col items-center justify-center gap-2 transition-all ${role === 'supervisor' ? 'bg-[#ccff00]/10 border-[#ccff00] text-[#ccff00]' : 'bg-black/20 border-white/10 text-white/50 hover:bg-white/5'}`}
               >
                 <Radio className="w-6 h-6" />
                 <span className="text-xs font-bold uppercase tracking-widest text-center">Supervisor</span>
@@ -180,7 +217,8 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
                 <input 
                   type="text" 
                   required
-                  className="w-full bg-black/40 border border-white/10 px-10 py-3 text-sm text-white focus:border-[#ccff00] outline-none transition-colors"
+                  autoComplete="name"
+                  className="w-full bg-black/40 border border-white/10 px-10 py-3 text-sm text-white focus:border-[#ccff00] outline-none transition-colors rounded-xl"
                   placeholder={role === 'artist' ? "e.g. Neon Voyager" : "e.g. HBO Music"}
                   value={formData.name}
                   onChange={e => setFormData({...formData, name: e.target.value})}
@@ -196,7 +234,8 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
               <input 
                 type="email" 
                 required
-                className="w-full bg-black/40 border border-white/10 px-10 py-3 text-sm text-white focus:border-[#ccff00] outline-none transition-colors"
+                autoComplete="email"
+                className="w-full bg-black/40 border border-white/10 px-10 py-3 text-sm text-white focus:border-[#ccff00] outline-none transition-colors rounded-xl"
                 placeholder="email@domain.com"
                 value={formData.email}
                 onChange={e => setFormData({...formData, email: e.target.value})}
@@ -209,20 +248,28 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
               <input 
-                type="password" 
+                type={showPassword ? "text" : "password"}
                 required
-                className="w-full bg-black/40 border border-white/10 px-10 py-3 text-sm text-white focus:border-[#ccff00] outline-none transition-colors"
+                autoComplete={isSignUp ? "new-password" : "current-password"}
+                className="w-full bg-black/40 border border-white/10 px-10 py-3 text-sm text-white focus:border-[#ccff00] outline-none transition-colors rounded-xl"
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={e => setFormData({...formData, password: e.target.value})}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 
           <button 
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#ccff00] text-black font-bold uppercase tracking-widest py-3 mt-6 hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
+            className="w-full bg-[#ccff00] text-black font-bold uppercase tracking-widest py-3 mt-6 hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden rounded-xl"
           >
             <span className="relative z-10 flex items-center justify-center gap-2">
               {isLoading ? 'Processing...' : (isSignUp ? `Initialize ${role === 'artist' ? 'Artist' : 'Supervisor'}` : 'Access Dashboard')}
