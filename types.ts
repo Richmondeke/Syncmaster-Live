@@ -71,6 +71,7 @@ export interface Track {
   title: string;
   artist: string;
   genre: string;
+  bpm?: number; // New field
   tags: string[];
   uploadDate: string;
   duration: string;
@@ -134,4 +135,4 @@ export interface Agency {
 }
 
 export type ViewState = 'landing' | 'auth' | 'dashboard';
-export type TabView = 'browse' | 'applications' | 'library' | 'research' | 'directory' | 'profile';
+export type TabView = 'browse' | 'applications' | 'library' | 'directory' | 'profile';

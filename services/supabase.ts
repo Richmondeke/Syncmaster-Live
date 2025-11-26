@@ -1,6 +1,8 @@
 
 
 
+
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -289,6 +291,7 @@ export const subscribeToUserTracks = (userId: string, callback: (tracks: Track[]
          title: t.title,
          artist: t.artist,
          genre: t.genre,
+         bpm: t.bpm,
          tags: t.tags || [],
          uploadDate: t.upload_date,
          duration: t.duration,
@@ -317,6 +320,7 @@ export const subscribeToUserTracks = (userId: string, callback: (tracks: Track[]
              title: t.title,
              artist: t.artist,
              genre: t.genre,
+             bpm: t.bpm,
              tags: t.tags || [],
              uploadDate: t.upload_date,
              duration: t.duration,
@@ -365,6 +369,7 @@ export const fetchArtistTracks = async (artistId: string): Promise<Track[]> => {
       title: t.title,
       artist: t.artist,
       genre: t.genre,
+      bpm: t.bpm,
       tags: t.tags || [],
       uploadDate: t.upload_date,
       duration: t.duration,
@@ -611,6 +616,7 @@ export const saveTrackMetadata = async (track: Omit<Track, 'id'>, userId: string
     title: track.title,
     artist: track.artist,
     genre: track.genre,
+    bpm: track.bpm,
     tags: track.tags,
     upload_date: track.uploadDate,
     duration: track.duration,
@@ -632,6 +638,7 @@ export const saveTrackMetadata = async (track: Omit<Track, 'id'>, userId: string
      title: data.title,
      artist: data.artist,
      genre: data.genre,
+     bpm: data.bpm,
      tags: data.tags || [],
      uploadDate: data.upload_date,
      duration: data.duration,
@@ -645,6 +652,7 @@ export const updateTrackMetadata = async (trackId: string, updates: Partial<Trac
   if (updates.title) dbUpdates.title = updates.title;
   if (updates.artist) dbUpdates.artist = updates.artist;
   if (updates.genre) dbUpdates.genre = updates.genre;
+  if (updates.bpm) dbUpdates.bpm = updates.bpm;
   if (updates.tags) dbUpdates.tags = updates.tags;
   if (updates.description) dbUpdates.description = updates.description;
 
