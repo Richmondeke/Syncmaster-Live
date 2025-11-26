@@ -30,67 +30,50 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [showResend, setShowResend] = useState(false);
-  
-  // New State for Role Selection
-  const [role, setRole] = useState<'artist' | 'supervisor'>('artist');
-  
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    name: ''
-  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Form State
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [role, setRole] = useState<'artist' | 'supervisor'>('artist');
+
+  const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
     setSuccessMessage(null);
-    setShowResend(false);
-    
-    // Trim email to avoid "Invalid login credentials" due to accidental spaces
-    const cleanEmail = formData.email.trim();
-    const cleanPassword = formData.password;
 
     try {
       if (isSignUp) {
-        const { data } = await registerUser(cleanEmail, cleanPassword, formData.name, role);
-        if (data.user && !data.session) {
-          // User created but email not verified
-          setSuccessMessage("Account created! Please check your email to confirm your address before logging in.");
+        if (!name.trim()) throw new Error("Full Name is required.");
+        
+        // Safely capture response to avoid 'Cannot read properties of undefined'
+        const response = await registerUser(email, password, name, role);
+        const user = response?.user;
+        
+        if (user) {
+          setSuccessMessage(`Account created! Please check ${email} to confirm your account before logging in.`);
+          // Don't auto-login on signup if email confirmation is required
           setIsSignUp(false);
-        } else {
-          onLogin();
         }
       } else {
-        await loginUser(cleanEmail, cleanPassword);
-        onLogin(); 
+        const response = await loginUser(email, password);
+        if (response?.user) {
+           onLogin();
+        }
       }
     } catch (err: any) {
-      console.error(err);
-      if (err.message.includes('Email not confirmed')) {
-        setError("Email not verified. Please check your inbox/spam folder.");
-        setShowResend(true);
-      } else if (err.message.includes('Invalid login credentials')) {
-        setError("Invalid email or password. Please check for typos or Sign Up if you don't have an account.");
-      } else {
-        setError(err.message || "Authentication failed. Please try again.");
+      console.error("Auth process error:", err);
+      let msg = err.message || "Authentication failed.";
+      
+      // Handle rate limit / security errors
+      if (msg.toLowerCase().includes("security purposes") || msg.toLowerCase().includes("seconds")) {
+        msg = "For security, please wait 60 seconds before trying again.";
+      } else if (msg.includes("Invalid login credentials")) {
+        msg = "Invalid email or password.";
       }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleResend = async () => {
-    if (!formData.email) return;
-    setIsLoading(true);
-    try {
-      await resendConfirmation(formData.email);
-      setSuccessMessage(`Confirmation email resent to ${formData.email}. Check your inbox.`);
-      setError(null);
-      setShowResend(false);
-    } catch (err: any) {
-      setError(err.message || "Failed to resend email.");
+      
+      setError(msg);
     } finally {
       setIsLoading(false);
     }
@@ -98,193 +81,184 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
 
   const handleGoogleLogin = async () => {
     try {
-      setIsLoading(true);
+      setError(null);
       await loginWithGoogle();
-      // NOTE: OAuth triggers a redirect, so execution stops here in most cases.
     } catch (err: any) {
-      console.error(err);
-      setError("Google Login failed. Please try again.");
-      setIsLoading(false);
+      setError(err.message || "Google login failed.");
+    }
+  };
+
+  const handleResend = async () => {
+    if (!email) {
+      setError("Please enter your email address first.");
+      return;
+    }
+    try {
+      setError(null);
+      await resendConfirmation(email);
+      setSuccessMessage("Confirmation email resent. Check your inbox.");
+    } catch (err: any) {
+       let msg = err.message;
+       if (msg.toLowerCase().includes("security purposes")) {
+         msg = "Please wait a moment before requesting another email.";
+       }
+       setError(msg);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onCancel} />
-      
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="relative w-full max-w-md bg-[#1a1b3b]/90 border border-white/10 p-8 md:p-10 shadow-2xl shadow-[#ccff00]/10 overflow-hidden rounded-xl"
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        className="w-full max-w-md bg-[#1a1b3b] border border-white/10 p-8 rounded-xl shadow-2xl relative overflow-hidden"
       >
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#ccff00] to-transparent" />
-        <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#ccff00] rounded-full blur-[50px] opacity-10" />
-        
         <button 
-          onClick={onCancel}
+          onClick={onCancel} 
           className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="mb-6 text-center">
-          <GradientText text={isSignUp ? "CREATE ACCOUNT" : "WELCOME BACK"} className="text-2xl md:text-3xl font-heading mb-2" />
-          <p className="text-white/50 text-sm font-mono">
-            {isSignUp ? "Join the SyncMaster Network" : "Log in to your dashboard"}
-          </p>
+        <div className="text-center mb-8">
+           <div className="flex items-center justify-center gap-2 mb-2">
+             <div className="w-8 h-8 rounded-full bg-[#ccff00] flex items-center justify-center">
+                <span className="font-heading font-bold text-[#31326f] text-lg transform translate-y-[1px]">S</span>
+             </div>
+           </div>
+           <GradientText text={isSignUp ? "JOIN SYNCMASTER" : "WELCOME BACK"} className="text-2xl font-bold" />
+           <p className="text-white/40 text-xs uppercase tracking-widest mt-2">
+             {isSignUp ? "Create your professional profile" : "Access your dashboard"}
+           </p>
         </div>
 
         {error && (
           <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="mb-6 p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex flex-col gap-2"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex gap-3 text-red-200 text-sm items-start"
           >
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
-              <p className="text-xs text-red-200">{error}</p>
+            <AlertCircle className="w-5 h-5 shrink-0" />
+            <div className="flex-1">
+               <p>{error}</p>
+               {!isSignUp && (error.includes("Invalid") || error.includes("confirm")) && (
+                  <button onClick={handleResend} className="text-xs underline mt-2 hover:text-white flex items-center gap-1">
+                     <RefreshCw className="w-3 h-3" /> Resend Confirmation
+                  </button>
+               )}
             </div>
-            {showResend && (
-              <button 
-                onClick={handleResend}
-                disabled={isLoading}
-                className="text-[10px] uppercase font-bold tracking-widest bg-red-500/20 hover:bg-red-500/30 text-white py-1 px-2 rounded-xl flex items-center justify-center gap-2 self-end transition-colors"
-              >
-                {isLoading ? 'Sending...' : 'Resend Verification Email'}
-                <RefreshCw className="w-3 h-3" />
-              </button>
-            )}
           </motion.div>
         )}
 
         {successMessage && (
           <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="mb-6 p-3 bg-[#ccff00]/10 border border-[#ccff00]/20 rounded-xl flex items-start gap-3"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg flex gap-3 text-green-200 text-sm items-center"
           >
-            <CheckCircle className="w-5 h-5 text-[#ccff00] shrink-0" />
-            <p className="text-xs text-[#ccff00]">{successMessage}</p>
+            <CheckCircle className="w-5 h-5 shrink-0" />
+            <p>{successMessage}</p>
           </motion.div>
         )}
 
-        {/* Google Login Button */}
-        <button
-          onClick={handleGoogleLogin}
-          type="button"
-          className="w-full bg-white text-black font-bold py-3 mb-6 flex items-center justify-center gap-3 hover:bg-gray-100 transition-colors rounded-xl"
-        >
-          <GoogleIcon />
-          <span className="text-sm uppercase tracking-widest">Continue with Google</span>
-        </button>
-
-        <div className="flex items-center gap-4 mb-6">
-          <div className="h-px bg-white/10 flex-1" />
-          <span className="text-xs text-white/30 uppercase tracking-widest">Or</span>
-          <div className="h-px bg-white/10 flex-1" />
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          
-          {/* Role Selection (Only on Sign Up) */}
+        <form onSubmit={handleAuth} className="space-y-4">
           {isSignUp && (
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div 
-                onClick={() => setRole('artist')}
-                className={`cursor-pointer border rounded-xl p-3 flex flex-col items-center justify-center gap-2 transition-all ${role === 'artist' ? 'bg-[#ccff00]/10 border-[#ccff00] text-[#ccff00]' : 'bg-black/20 border-white/10 text-white/50 hover:bg-white/5'}`}
-              >
-                <Headphones className="w-6 h-6" />
-                <span className="text-xs font-bold uppercase tracking-widest">Artist</span>
-              </div>
-              <div 
-                onClick={() => setRole('supervisor')}
-                className={`cursor-pointer border rounded-xl p-3 flex flex-col items-center justify-center gap-2 transition-all ${role === 'supervisor' ? 'bg-[#ccff00]/10 border-[#ccff00] text-[#ccff00]' : 'bg-black/20 border-white/10 text-white/50 hover:bg-white/5'}`}
-              >
-                <Radio className="w-6 h-6" />
-                <span className="text-xs font-bold uppercase tracking-widest text-center">Supervisor</span>
-              </div>
-            </div>
-          )}
-
-          {isSignUp && (
-            <div className="space-y-1">
-              <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">
-                {role === 'artist' ? 'Artist / Band Name' : 'Supervisor / Agency Name'}
-              </label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-                <input 
-                  type="text" 
-                  required
-                  autoComplete="name"
-                  className="w-full bg-black/40 border border-white/10 px-10 py-3 text-sm text-white focus:border-[#ccff00] outline-none transition-colors rounded-xl"
-                  placeholder={role === 'artist' ? "e.g. Neon Voyager" : "e.g. HBO Music"}
-                  value={formData.name}
-                  onChange={e => setFormData({...formData, name: e.target.value})}
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
+              <div className="relative mb-4">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder-white/30 focus:border-[#ccff00] outline-none transition-colors"
                 />
               </div>
-            </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div 
+                  onClick={() => setRole('artist')}
+                  className={`cursor-pointer p-4 rounded-xl border flex flex-col items-center gap-2 transition-all ${role === 'artist' ? 'bg-[#ccff00]/10 border-[#ccff00] text-[#ccff00]' : 'bg-black/20 border-white/10 text-white/50 hover:border-white/30'}`}
+                >
+                  <Headphones className="w-6 h-6" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Artist</span>
+                </div>
+                <div 
+                  onClick={() => setRole('supervisor')}
+                  className={`cursor-pointer p-4 rounded-xl border flex flex-col items-center gap-2 transition-all ${role === 'supervisor' ? 'bg-[#ccff00]/10 border-[#ccff00] text-[#ccff00]' : 'bg-black/20 border-white/10 text-white/50 hover:border-white/30'}`}
+                >
+                  <Radio className="w-6 h-6" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">Supervisor</span>
+                </div>
+              </div>
+            </motion.div>
           )}
 
-          <div className="space-y-1">
-            <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Email</label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-              <input 
-                type="email" 
-                required
-                autoComplete="email"
-                className="w-full bg-black/40 border border-white/10 px-10 py-3 text-sm text-white focus:border-[#ccff00] outline-none transition-colors rounded-xl"
-                placeholder="email@domain.com"
-                value={formData.email}
-                onChange={e => setFormData({...formData, email: e.target.value})}
-              />
-            </div>
+          <div className="relative">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder-white/30 focus:border-[#ccff00] outline-none transition-colors"
+            />
           </div>
 
-          <div className="space-y-1">
-            <label className="text-xs font-bold uppercase tracking-widest text-[#ccff00]">Password</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-              <input 
-                type={showPassword ? "text" : "password"}
-                required
-                autoComplete={isSignUp ? "new-password" : "current-password"}
-                className="w-full bg-black/40 border border-white/10 px-10 py-3 text-sm text-white focus:border-[#ccff00] outline-none transition-colors rounded-xl"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={e => setFormData({...formData, password: e.target.value})}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white"
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
+          <div className="relative">
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-10 pr-10 text-white placeholder-white/30 focus:border-[#ccff00] outline-none transition-colors"
+            />
+            <button
+               type="button"
+               onClick={() => setShowPassword(!showPassword)}
+               className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white"
+            >
+               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
           </div>
 
-          <button 
+          <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#ccff00] text-black font-bold uppercase tracking-widest py-3 mt-6 hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden rounded-xl"
+            className="w-full bg-[#ccff00] text-black font-bold uppercase tracking-widest py-3 rounded-xl hover:bg-white transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
           >
-            <span className="relative z-10 flex items-center justify-center gap-2">
-              {isLoading ? 'Processing...' : (isSignUp ? `Initialize ${role === 'artist' ? 'Artist' : 'Supervisor'}` : 'Access Dashboard')}
-              {!isLoading && <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
-            </span>
-            <div className="absolute inset-0 bg-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-0" />
+            {isLoading ? (
+               <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+            ) : (
+               <>
+                 {isSignUp ? 'Create Account' : 'Sign In'} <ArrowRight className="w-4 h-4" />
+               </>
+            )}
           </button>
         </form>
 
+        <div className="my-6 flex items-center gap-4 text-white/20">
+           <div className="h-px bg-current flex-1" />
+           <span className="text-[10px] uppercase font-bold">Or continue with</span>
+           <div className="h-px bg-current flex-1" />
+        </div>
+
+        <button 
+          onClick={handleGoogleLogin}
+          className="w-full bg-white text-black font-bold uppercase tracking-widest py-3 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-3"
+        >
+          <GoogleIcon />
+          <span>Google</span>
+        </button>
+
         <div className="mt-6 text-center">
-          <button 
+          <button
             onClick={() => { setIsSignUp(!isSignUp); setError(null); setSuccessMessage(null); }}
-            className="text-xs text-white/40 hover:text-[#ccff00] transition-colors uppercase tracking-widest border-b border-transparent hover:border-[#ccff00]"
+            className="text-xs text-white/50 hover:text-[#ccff00] uppercase tracking-widest font-bold transition-colors"
           >
-            {isSignUp ? "Already have an account? Sign In" : "Need access? Join Now"}
+            {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Join Now"}
           </button>
         </div>
       </motion.div>

@@ -6,9 +6,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, User as UserIcon, LogOut, ChevronLeft, Music, Play, Pause, SkipBack, SkipForward, Volume2, Grid, Layers, Disc, Activity, Award, Briefcase, X, Link as LinkIcon, Globe, Ghost, ArrowUpRight, Menu, Users } from 'lucide-react';
+import { Search, User as UserIcon, LogOut, ChevronLeft, Music, Play, Pause, SkipBack, SkipForward, Volume2, Grid, Layers, Disc, Activity, Award, Briefcase, X, Link as LinkIcon, Globe, Ghost, ArrowUpRight, Menu, Users, Repeat, Repeat1, Plus, Loader2 } from 'lucide-react';
 import { User, Profile, Track, Application, SyncBrief } from '../types';
-import { fetchArtists, fetchArtistTracks, fetchArtistApplications, getBriefs, fetchBriefApplicationsWithDetails, getUserProfile, logoutUser, getBriefApplicationCounts } from '../services/supabase';
+import { fetchArtists, fetchArtistTracks, fetchArtistApplications, getBriefs, fetchBriefApplicationsWithDetails, getUserProfile, logoutUser, getBriefApplicationCounts, createBrief } from '../services/supabase';
 
 interface SupervisorDashboardProps {
   user: User;
@@ -52,12 +52,19 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
       topGenre: '-'
   });
   
+  // Create Brief State
+  const [isCreateBriefModalOpen, setIsCreateBriefModalOpen] = useState(false);
+  const [isCreatingBrief, setIsCreatingBrief] = useState(false);
+  
   // Audio Player State
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [loopMode, setLoopMode] = useState<'off' | 'all' | 'one'>('off');
+  const [queue, setQueue] = useState<Track[]>([]);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(-1);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -166,6 +173,36 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
      }
   };
 
+  const handleCreateBriefSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setIsCreatingBrief(true);
+      const formData = new FormData(e.currentTarget);
+      
+      const tagsString = formData.get('tags') as string;
+      const tags = tagsString ? tagsString.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      const newBriefData = {
+          title: formData.get('title') as string,
+          client: formData.get('client') as string,
+          budget: formData.get('budget') as string,
+          genre: formData.get('genre') as string,
+          deadline: formData.get('deadline') as string,
+          description: formData.get('description') as string,
+          tags: tags
+      };
+
+      try {
+          const createdBrief = await createBrief(newBriefData);
+          setBriefs(prev => [createdBrief, ...prev]);
+          setIsCreateBriefModalOpen(false);
+      } catch (error) {
+          console.error("Create brief error:", error);
+          alert("Failed to create brief.");
+      } finally {
+          setIsCreatingBrief(false);
+      }
+  };
+
   // --- Helpers ---
   const getBriefTitle = (briefId: string) => (briefs || []).find(b => b.id === briefId)?.title || 'Unknown Brief';
   const getTrackTitle = (trackId: string) => (artistTracks || []).find(t => t.id === trackId)?.title || 'Unknown Track';
@@ -202,13 +239,78 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
     if (audioRef.current) audioRef.current.volume = volume;
   }, [volume]);
 
-  const handlePlayTrack = (track: Track) => {
-    if (currentTrack?.id === track.id) {
-      setIsPlaying(!isPlaying);
+  const handlePlayTrack = (track: Track, contextList: Track[] = []) => {
+    // Determine the queue context
+    let list: Track[] = contextList;
+    if (list.length === 0) {
+        if (view === 'artist') {
+            list = artistTracks;
+        } else if (view === 'briefApps') {
+            // Map briefApps to tracks if possible, simplified here
+             list = briefApps.map(a => ({
+                 id: a.trackId || a.id,
+                 title: a.trackTitle,
+                 artist: a.artistName,
+                 audioUrl: a.audioUrl,
+                 genre: '',
+                 tags: [],
+                 uploadDate: a.submittedDate,
+                 duration: '0:00'
+             } as Track)).filter(t => t.audioUrl);
+        }
+    }
+
+    // Fallback
+    if (list.length === 0 && track) list = [track];
+
+    setQueue(list);
+    
+    // Find index
+    const idx = list.findIndex(t => t.id === track.id);
+    
+    // If playing same track, toggle pause
+    if (currentTrack?.id === track.id && isPlaying) {
+      setIsPlaying(false);
     } else {
+      setCurrentTrackIndex(idx);
       setCurrentTrack(track);
       setIsPlaying(true);
     }
+  };
+
+  const handleNextTrack = (isAuto = false) => {
+    if (queue.length === 0 || currentTrackIndex === -1) return;
+    
+    // Auto-advance logic: if loop is off and at end, stop.
+    if (isAuto && loopMode === 'off' && currentTrackIndex === queue.length - 1) {
+        setIsPlaying(false);
+        return;
+    }
+
+    const nextIndex = (currentTrackIndex + 1) % queue.length;
+    setCurrentTrackIndex(nextIndex);
+    setCurrentTrack(queue[nextIndex]);
+    setIsPlaying(true);
+  };
+
+  const handlePrevTrack = () => {
+    if (queue.length === 0 || currentTrackIndex === -1) return;
+    
+    if (audioRef.current && audioRef.current.currentTime > 3) {
+        audioRef.current.currentTime = 0;
+        return;
+    }
+
+    const prevIndex = (currentTrackIndex - 1 + queue.length) % queue.length;
+    setCurrentTrackIndex(prevIndex);
+    setCurrentTrack(queue[prevIndex]);
+    setIsPlaying(true);
+  };
+
+  const toggleLoop = () => {
+    if (loopMode === 'off') setLoopMode('all');
+    else if (loopMode === 'all') setLoopMode('one');
+    else setLoopMode('off');
   };
 
   const formatTime = (time: number) => {
@@ -240,7 +342,16 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
                 setDuration(audioRef.current.duration || 0);
             }
         }}
-        onEnded={() => setIsPlaying(false)}
+        onEnded={() => {
+            if (loopMode === 'one') {
+                if (audioRef.current) {
+                    audioRef.current.currentTime = 0;
+                    audioRef.current.play();
+                }
+            } else {
+                handleNextTrack(true);
+            }
+        }}
       />
 
       {/* --- SIDEBAR (Desktop) --- */}
@@ -390,7 +501,15 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
                {/* VIEW 3: BRIEFS LIST */}
                {view === 'briefs' && (
                   <motion.div key="briefs" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                     <h2 className="text-xl font-bold font-heading mb-6 flex items-center gap-2"><Briefcase className="w-5 h-5 text-[#ccff00]" /> Active Briefs</h2>
+                     <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-xl font-bold font-heading flex items-center gap-2"><Briefcase className="w-5 h-5 text-[#ccff00]" /> Active Briefs</h2>
+                        <button 
+                            onClick={() => setIsCreateBriefModalOpen(true)}
+                            className="bg-[#ccff00] text-black px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors flex items-center gap-2"
+                        >
+                            <Plus className="w-4 h-4" /> Create Brief
+                        </button>
+                     </div>
                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {(briefs || []).map((brief) => (
                            <div key={brief.id} onClick={() => handleBriefSelect(brief)} className="bg-[#1a1b3b]/40 border border-white/10 p-6 rounded-xl hover:border-[#ccff00]/50 transition-colors cursor-pointer group">
@@ -410,7 +529,25 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
                      <div className="mb-8 bg-[#1a1b3b]/40 border border-white/10 p-8 rounded-xl"><span className="text-[#ccff00] text-xs font-bold uppercase tracking-widest">Reviewing Submissions for</span><h2 className="text-3xl font-heading font-bold text-white mt-2">{selectedBrief.title}</h2><div className="flex gap-6 mt-6 text-sm text-white/50"><div><span className="block text-xs uppercase text-white/30 mb-1">Client</span> {selectedBrief.client}</div><div><span className="block text-xs uppercase text-white/30 mb-1">Budget</span> {selectedBrief.budget}</div><div><span className="block text-xs uppercase text-white/30 mb-1">Genre</span> {selectedBrief.genre}</div></div></div>
                      <div className="bg-[#1a1b3b]/40 rounded-xl border border-white/10 overflow-hidden">
                         <div className="grid grid-cols-12 gap-4 p-4 border-b border-white/10 bg-black/20 text-xs font-bold uppercase tracking-widest text-white/40 min-w-[800px]"><div className="col-span-4">Artist</div><div className="col-span-4">Track</div><div className="col-span-2">Date</div><div className="col-span-2 text-right">Status</div></div>
-                        <div className="overflow-x-auto"><div className="min-w-[800px]">{loading ? <div className="p-12 text-center text-white/40">Loading applications...</div> : !briefApps || briefApps.length === 0 ? <div className="p-12"><EmptyState icon={Ghost} title="No Submissions" description="No artists have applied to this brief yet." /></div> : (briefApps || []).map((app) => (<div key={app.id} className="grid grid-cols-12 gap-4 p-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors"><div className="col-span-4"><div onClick={() => navigateToArtist(app.userId)} className="flex items-center gap-3 cursor-pointer group"><div className="w-8 h-8 rounded-full bg-black/50 overflow-hidden"><img src={app.artistAvatar || `https://ui-avatars.com/api/?name=${app.artistName}`} className="w-full h-full object-cover" /></div><span className="font-bold text-white group-hover:text-[#ccff00] transition-colors underline decoration-transparent group-hover:decoration-[#ccff00] underline-offset-4">{app.artistName}</span></div></div><div className="col-span-4 flex items-center gap-2 text-sm text-white/80"><Music className="w-3 h-3 text-[#ccff00]" /> {app.trackTitle}</div><div className="col-span-2 text-xs font-mono text-white/50">{app.submittedDate}</div><div className="col-span-2 text-right"><StatusBadge status={app.status} /></div></div>))}</div></div>
+                        <div className="overflow-x-auto"><div className="min-w-[800px]">{loading ? <div className="p-12 text-center text-white/40">Loading applications...</div> : !briefApps || briefApps.length === 0 ? <div className="p-12"><EmptyState icon={Ghost} title="No Submissions" description="No artists have applied to this brief yet." /></div> : (briefApps || []).map((app) => {
+                             // Construct a temp track object for playback
+                             const tempTrack: Track = { id: app.trackId, title: app.trackTitle, artist: app.artistName, genre: '', tags: [], uploadDate: app.submittedDate, duration: '', audioUrl: app.audioUrl };
+                             const isCurrent = currentTrack?.id === tempTrack.id;
+                             
+                             return (
+                             <div key={app.id} className={`grid grid-cols-12 gap-4 p-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors ${isCurrent ? 'bg-[#ccff00]/5' : ''}`}>
+                                <div className="col-span-4"><div onClick={() => navigateToArtist(app.userId)} className="flex items-center gap-3 cursor-pointer group"><div className="w-8 h-8 rounded-full bg-black/50 overflow-hidden"><img src={app.artistAvatar || `https://ui-avatars.com/api/?name=${app.artistName}`} className="w-full h-full object-cover" /></div><span className="font-bold text-white group-hover:text-[#ccff00] transition-colors underline decoration-transparent group-hover:decoration-[#ccff00] underline-offset-4">{app.artistName}</span></div></div>
+                                <div className="col-span-4 flex items-center gap-2 text-sm text-white/80">
+                                   <button onClick={() => handlePlayTrack(tempTrack)} className="w-6 h-6 rounded-full bg-white/10 hover:bg-[#ccff00] hover:text-black flex items-center justify-center transition-colors">
+                                      {isCurrent && isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3 ml-0.5" />}
+                                   </button>
+                                   <span className={isCurrent ? 'text-[#ccff00] font-bold' : ''}>{app.trackTitle}</span>
+                                </div>
+                                <div className="col-span-2 text-xs font-mono text-white/50">{app.submittedDate}</div>
+                                <div className="col-span-2 text-right"><StatusBadge status={app.status} /></div>
+                             </div>
+                             )
+                        })}</div></div>
                      </div>
                   </motion.div>
                )}
@@ -427,11 +564,36 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
                <div className="min-w-0 flex-1"><div className="text-sm font-bold text-white truncate">{currentTrack.title}</div><div className="text-xs text-white/50 truncate">{currentTrack.artist}</div></div>
                <button onClick={() => setIsPlaying(!isPlaying)} className="md:hidden w-10 h-10 rounded-full bg-white text-black flex items-center justify-center ml-2">{isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}</button>
             </div>
+            
             <div className="flex flex-col items-center gap-2 w-full md:flex-1 md:max-w-lg order-2 md:order-none">
-               <div className="hidden md:flex items-center gap-6"><button className="text-white/40 hover:text-white"><SkipBack className="w-4 h-4" /></button><button onClick={() => setIsPlaying(!isPlaying)} className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform">{isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}</button><button className="text-white/40 hover:text-white"><SkipForward className="w-4 h-4" /></button></div>
-               <div className="w-full flex items-center gap-2 text-[10px] font-mono text-white/40"><span>{formatTime(currentTime)}</span><input type="range" min="0" max={duration || 0} value={currentTime} onChange={(e) => { if(audioRef.current) audioRef.current.currentTime = parseFloat(e.target.value); setCurrentTime(parseFloat(e.target.value)); }} className="flex-1 h-1 bg-white/10 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2 [&::-webkit-slider-thumb]:h-2 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#ccff00]" /><span>{formatTime(duration)}</span></div>
+               <div className="hidden md:flex items-center gap-6">
+                 <button onClick={toggleLoop} className={`hover:text-white transition-colors ${loopMode !== 'off' ? 'text-[#ccff00]' : 'text-white/40'}`}>
+                    {loopMode === 'one' ? <Repeat1 className="w-4 h-4" /> : <Repeat className="w-4 h-4" />}
+                 </button>
+                 <button onClick={handlePrevTrack} className="text-white/40 hover:text-white"><SkipBack className="w-4 h-4" /></button>
+                 <button onClick={() => setIsPlaying(!isPlaying)} className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform">{isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}</button>
+                 <button onClick={() => handleNextTrack()} className="text-white/40 hover:text-white"><SkipForward className="w-4 h-4" /></button>
+                 <div className="w-4 h-4" /> {/* Spacer */}
+               </div>
+               
+               {/* Visual Seek Bar */}
+               <div className="w-full flex items-center gap-2 text-[10px] font-mono text-white/40 select-none">
+                  <span className="w-8 text-right">{formatTime(currentTime)}</span>
+                  <div className="relative flex-1 h-6 flex items-center group cursor-pointer">
+                    <div className="absolute inset-x-0 h-1 bg-white/10 rounded-full overflow-hidden">
+                       <div className="h-full bg-[#ccff00] group-hover:bg-[#d4ff33] transition-colors" style={{ width: `${(currentTime / (duration || 1)) * 100}%` }} />
+                    </div>
+                    <input type="range" min="0" max={duration || 100} value={currentTime} onChange={(e) => { const v = parseFloat(e.target.value); setCurrentTime(v); if(audioRef.current) audioRef.current.currentTime = v; }} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                    <div className="absolute h-3 w-3 bg-white rounded-full shadow-lg pointer-events-none transition-transform group-hover:scale-125" style={{ left: `${(currentTime / (duration || 1)) * 100}%`, transform: 'translateX(-50%)' }} />
+                  </div>
+                  <span className="w-8">{formatTime(duration)}</span>
+               </div>
             </div>
-            <div className="hidden md:flex items-center justify-end gap-2 w-1/4"><Volume2 className="w-4 h-4 text-white/40" /><input type="range" min="0" max="1" step="0.01" value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} className="w-20 h-1 bg-white/10 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2 [&::-webkit-slider-thumb]:h-2 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white" /></div>
+
+            <div className="hidden md:flex items-center justify-end gap-2 w-1/4">
+               <Volume2 className="w-4 h-4 text-white/40" />
+               <input type="range" min="0" max="1" step="0.01" value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} className="w-20 h-1 bg-white/10 rounded-full appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2 [&::-webkit-slider-thumb]:h-2 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white" />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -452,6 +614,64 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
             </motion.div>
           </div>
         )}
+      </AnimatePresence>
+
+      {/* Create Brief Modal */}
+      <AnimatePresence>
+          {isCreateBriefModalOpen && (
+              <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setIsCreateBriefModalOpen(false)} />
+                  <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} className="relative w-full max-w-lg bg-[#1a1b3b] border border-white/10 p-8 rounded-xl shadow-2xl overflow-y-auto max-h-[90vh]">
+                      <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-heading font-bold text-white">Create New Brief</h2>
+                        <button onClick={() => setIsCreateBriefModalOpen(false)} className="text-white/50 hover:text-white"><X className="w-5 h-5" /></button>
+                      </div>
+                      
+                      <form onSubmit={handleCreateBriefSubmit} className="space-y-4">
+                          <div>
+                              <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2">Project Title</label>
+                              <input name="title" required className="w-full bg-black/20 border border-white/10 px-4 py-3 rounded-xl text-white focus:border-[#ccff00] outline-none" placeholder="e.g. Summer Campaign Spot" />
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                  <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2">Client</label>
+                                  <input name="client" required className="w-full bg-black/20 border border-white/10 px-4 py-3 rounded-xl text-white focus:border-[#ccff00] outline-none" placeholder="e.g. Nike" />
+                              </div>
+                              <div>
+                                  <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2">Budget</label>
+                                  <input name="budget" required className="w-full bg-black/20 border border-white/10 px-4 py-3 rounded-xl text-white focus:border-[#ccff00] outline-none" placeholder="e.g. $5,000" />
+                              </div>
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                  <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2">Genre</label>
+                                  <input name="genre" required className="w-full bg-black/20 border border-white/10 px-4 py-3 rounded-xl text-white focus:border-[#ccff00] outline-none" placeholder="e.g. Pop / Electronic" />
+                              </div>
+                              <div>
+                                  <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2">Deadline</label>
+                                  <input name="deadline" required className="w-full bg-black/20 border border-white/10 px-4 py-3 rounded-xl text-white focus:border-[#ccff00] outline-none" placeholder="e.g. 2 Days Left" />
+                              </div>
+                          </div>
+                          <div>
+                              <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2">Tags (comma separated)</label>
+                              <input name="tags" required className="w-full bg-black/20 border border-white/10 px-4 py-3 rounded-xl text-white focus:border-[#ccff00] outline-none" placeholder="e.g. Upbeat, Summer, Vocals" />
+                          </div>
+                          <div>
+                              <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2">Description</label>
+                              <textarea name="description" required rows={4} className="w-full bg-black/20 border border-white/10 px-4 py-3 rounded-xl text-white focus:border-[#ccff00] outline-none" placeholder="Describe the creative direction..." />
+                          </div>
+                          
+                          <div className="flex justify-end gap-4 mt-6">
+                              <button type="button" onClick={() => setIsCreateBriefModalOpen(false)} disabled={isCreatingBrief} className="px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-white/60 hover:text-white text-xs">Cancel</button>
+                              <button type="submit" disabled={isCreatingBrief} className="bg-[#ccff00] text-black px-8 py-3 rounded-xl font-bold uppercase tracking-widest hover:bg-white transition-colors disabled:opacity-50 text-xs flex items-center gap-2">
+                                  {isCreatingBrief && <Loader2 className="w-4 h-4 animate-spin" />}
+                                  {isCreatingBrief ? 'Publishing...' : 'Publish Brief'}
+                              </button>
+                          </div>
+                      </form>
+                  </motion.div>
+              </div>
+          )}
       </AnimatePresence>
     </div>
   );

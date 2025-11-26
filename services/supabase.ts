@@ -1,8 +1,4 @@
 
-
-
-
-
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -230,6 +226,17 @@ export const getBriefs = async (): Promise<SyncBrief[]> => {
   }
 };
 
+export const createBrief = async (brief: Omit<SyncBrief, 'id'>) => {
+  const { data, error } = await supabase
+    .from('briefs')
+    .insert(brief)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data as SyncBrief;
+};
+
 export const getBriefApplicationCounts = async (): Promise<Record<string, number>> => {
   try {
     const { data, error } = await supabase
@@ -417,52 +424,8 @@ export const fetchBriefApplicationsWithDetails = async (briefId: string) => {
 
     if (error) {
        console.error("Fetch apps error:", error.message);
-       // Handle BigInt error specifically to guide user but return empty to prevent crash
        if (error.message.includes("invalid input syntax for type bigint") || error.code === '22P02') {
-         console.warn(`
-CRITICAL DB SCHEMA ERROR: Your tables use Integer IDs but the app uses UUIDs.
-Since you cannot cast directly, you must DROP and RE-CREATE the tables.
-Run this SQL in Supabase:
-
-DROP TABLE IF EXISTS applications;
-DROP TABLE IF EXISTS tracks;
-DROP TABLE IF EXISTS briefs;
-
-CREATE TABLE briefs (
-  id uuid default gen_random_uuid() primary key,
-  title text not null,
-  client text,
-  budget text,
-  genre text,
-  deadline text,
-  description text,
-  tags text[]
-);
-
-CREATE TABLE tracks (
-  id uuid default gen_random_uuid() primary key,
-  user_id uuid references auth.users not null,
-  title text not null,
-  artist text,
-  genre text,
-  tags text[], 
-  upload_date text,
-  duration text,
-  description text,
-  audio_url text
-);
-
-CREATE TABLE applications (
-  id uuid default gen_random_uuid() primary key,
-  user_id uuid references auth.users not null,
-  brief_id uuid references briefs(id) not null,
-  track_id uuid references tracks(id) not null,
-  status text default 'pending',
-  submitted_date text
-);
-
--- Re-enable RLS policies after creating tables
-`);
+         console.warn("Schema Error: Please recreate tables using UUIDs.");
        }
        return [];
     }
@@ -488,7 +451,7 @@ CREATE TABLE applications (
     if (trackIds.length > 0) {
       const { data } = await supabase
         .from('tracks')
-        .select('id, title')
+        .select('id, title, audio_url') // Added audio_url here
         .in('id', trackIds);
       tracks = data || [];
     }
@@ -506,7 +469,8 @@ CREATE TABLE applications (
         submittedDate: a.submitted_date,
         artistName: profile?.full_name || 'Unknown Artist',
         artistAvatar: profile?.avatar_url,
-        trackTitle: track?.title || 'Unknown Track'
+        trackTitle: track?.title || 'Unknown Track',
+        audioUrl: track?.audio_url // Added audioUrl here
       };
     });
   } catch (e) {
