@@ -6,9 +6,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, User as UserIcon, LogOut, ChevronLeft, Music, Play, Pause, SkipBack, SkipForward, Volume2, Grid, Layers, Disc, Activity, Award, Briefcase, X, Link as LinkIcon, Globe, Ghost, ArrowUpRight, Menu, Users, Repeat, Repeat1, Plus, Loader2 } from 'lucide-react';
+import { Search, User as UserIcon, LogOut, ChevronLeft, Music, Play, Pause, SkipBack, SkipForward, Volume2, Grid, Layers, Disc, Activity, Award, Briefcase, X, Link as LinkIcon, Globe, Ghost, ArrowUpRight, Menu, Users, Repeat, Repeat1, Plus, Loader2, Download } from 'lucide-react';
 import { User, Profile, Track, Application, SyncBrief } from '../types';
-import { fetchArtists, fetchArtistTracks, fetchArtistApplications, getBriefs, fetchBriefApplicationsWithDetails, getUserProfile, logoutUser, getBriefApplicationCounts, createBrief } from '../services/supabase';
+import { fetchArtists, fetchArtistTracks, fetchArtistApplications, getBriefs, fetchBriefApplicationsWithDetails, getUserProfile, logoutUser, getBriefApplicationCounts, createBrief, updateApplicationStatus } from '../services/supabase';
 
 interface SupervisorDashboardProps {
   user: User;
@@ -181,12 +181,22 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
       const tagsString = formData.get('tags') as string;
       const tags = tagsString ? tagsString.split(',').map(s => s.trim()).filter(Boolean) : [];
 
+      // Process Date
+      const rawDate = formData.get('deadline') as string;
+      let formattedDeadline = rawDate;
+      if (rawDate) {
+         // Create date using local components to avoid timezone shifts
+         const [y, m, d] = rawDate.split('-').map(Number);
+         const date = new Date(y, m - 1, d); 
+         formattedDeadline = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+
       const newBriefData = {
           title: formData.get('title') as string,
           client: formData.get('client') as string,
           budget: formData.get('budget') as string,
           genre: formData.get('genre') as string,
-          deadline: formData.get('deadline') as string,
+          deadline: formattedDeadline,
           description: formData.get('description') as string,
           tags: tags
       };
@@ -201,6 +211,17 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
       } finally {
           setIsCreatingBrief(false);
       }
+  };
+
+  const handleStatusChange = async (appId: string, newStatus: string) => {
+    // Optimistic update
+    setBriefApps(prev => prev.map(a => a.id === appId ? { ...a, status: newStatus } : a));
+    try {
+        await updateApplicationStatus(appId, newStatus as any);
+    } catch (e) {
+        console.error("Failed to update status", e);
+        alert("Failed to update status");
+    }
   };
 
   // --- Helpers ---
@@ -246,7 +267,7 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
         if (view === 'artist') {
             list = artistTracks;
         } else if (view === 'briefApps') {
-            // Map briefApps to tracks if possible, simplified here
+             // Construct the playback list from brief applications
              list = briefApps.map(a => ({
                  id: a.trackId || a.id,
                  title: a.trackTitle,
@@ -265,15 +286,15 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
 
     setQueue(list);
     
-    // Find index
-    const idx = list.findIndex(t => t.id === track.id);
+    // Find index by ID or matching audioUrl
+    const idx = list.findIndex(t => t.id === track.id || (t.audioUrl && track.audioUrl && t.audioUrl === track.audioUrl));
     
     // If playing same track, toggle pause
-    if (currentTrack?.id === track.id && isPlaying) {
+    if (currentTrack && (currentTrack.id === track.id) && isPlaying) {
       setIsPlaying(false);
     } else {
-      setCurrentTrackIndex(idx);
-      setCurrentTrack(track);
+      setCurrentTrackIndex(idx !== -1 ? idx : 0);
+      setCurrentTrack(list[idx !== -1 ? idx : 0]);
       setIsPlaying(true);
     }
   };
@@ -493,7 +514,21 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
                      </div>
                      <div className="bg-[#1a1b3b]/40 rounded-xl border border-white/10 overflow-hidden">
                         <div className="grid grid-cols-12 gap-4 p-4 border-b border-white/10 bg-black/20 text-xs font-bold uppercase tracking-widest text-white/40 min-w-[600px]"><div className="col-span-1 text-center">#</div><div className="col-span-5">Title</div><div className="col-span-4">Tags</div><div className="col-span-2 text-right">Duration</div></div>
-                        <div className="overflow-x-auto"><div className="min-w-[600px]">{!artistTracks || artistTracks.length === 0 ? <div className="p-12"><EmptyState icon={Music} title="No Tracks" description="This artist hasn't uploaded any tracks yet." /></div> : (artistTracks || []).map((track) => { const isCurrent = currentTrack?.id === track.id; return (<div key={track.id} className={`grid grid-cols-12 gap-4 p-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors group ${isCurrent ? 'bg-[#ccff00]/5' : ''}`} onDoubleClick={() => handlePlayTrack(track)}><div className="col-span-1 flex justify-center"><button onClick={() => handlePlayTrack(track)} className="w-8 h-8 rounded-full flex items-center justify-center text-white/50 hover:text-[#ccff00] hover:bg-white/10 transition-all">{isCurrent && isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}</button></div><div className="col-span-5"><div className={`font-bold ${isCurrent ? 'text-[#ccff00]' : 'text-white'}`}>{track.title}</div><div className="text-xs text-white/40">{track.artist}</div></div><div className="col-span-4 flex gap-2 overflow-hidden">{track.tags.slice(0, 3).map(tag => <span key={tag} className="text-[10px] border border-white/10 px-2 py-0.5 rounded text-white/40 uppercase">{tag}</span>)}</div><div className="col-span-2 text-right text-xs font-mono text-white/40">{track.duration || "0:00"}</div></div>); })}</div></div>
+                        <div className="overflow-x-auto"><div className="min-w-[600px]">{!artistTracks || artistTracks.length === 0 ? <div className="p-12"><EmptyState icon={Music} title="No Tracks" description="This artist hasn't uploaded any tracks yet." /></div> : (artistTracks || []).map((track) => { const isCurrent = currentTrack?.id === track.id; return (
+                           <div key={track.id} className={`grid grid-cols-12 gap-4 p-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors group ${isCurrent ? 'bg-[#ccff00]/5' : ''}`} onDoubleClick={() => handlePlayTrack(track)}>
+                              <div className="col-span-1 flex justify-center"><button onClick={() => handlePlayTrack(track)} className="w-8 h-8 rounded-full flex items-center justify-center text-white/50 hover:text-[#ccff00] hover:bg-white/10 transition-all">{isCurrent && isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}</button></div>
+                              <div className="col-span-5"><div className={`font-bold ${isCurrent ? 'text-[#ccff00]' : 'text-white'}`}>{track.title}</div><div className="text-xs text-white/40">{track.artist}</div></div>
+                              <div className="col-span-4 flex gap-2 overflow-hidden">{track.tags.slice(0, 3).map(tag => <span key={tag} className="text-[10px] border border-white/10 px-2 py-0.5 rounded text-white/40 uppercase">{tag}</span>)}</div>
+                              <div className="col-span-2 text-right flex items-center justify-end gap-2">
+                                 <span className="text-xs font-mono text-white/40">{track.duration || "0:00"}</span>
+                                 {track.audioUrl && (
+                                     <a href={track.audioUrl} download target="_blank" rel="noopener noreferrer" className="p-2 hover:text-[#ccff00] text-white/50" title="Download">
+                                       <Download className="w-4 h-4" />
+                                     </a>
+                                 )}
+                              </div>
+                           </div>
+                        ); })}</div></div>
                      </div>
                   </motion.div>
                )}
@@ -528,11 +563,11 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
                   <motion.div key="briefApps" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
                      <div className="mb-8 bg-[#1a1b3b]/40 border border-white/10 p-8 rounded-xl"><span className="text-[#ccff00] text-xs font-bold uppercase tracking-widest">Reviewing Submissions for</span><h2 className="text-3xl font-heading font-bold text-white mt-2">{selectedBrief.title}</h2><div className="flex gap-6 mt-6 text-sm text-white/50"><div><span className="block text-xs uppercase text-white/30 mb-1">Client</span> {selectedBrief.client}</div><div><span className="block text-xs uppercase text-white/30 mb-1">Budget</span> {selectedBrief.budget}</div><div><span className="block text-xs uppercase text-white/30 mb-1">Genre</span> {selectedBrief.genre}</div></div></div>
                      <div className="bg-[#1a1b3b]/40 rounded-xl border border-white/10 overflow-hidden">
-                        <div className="grid grid-cols-12 gap-4 p-4 border-b border-white/10 bg-black/20 text-xs font-bold uppercase tracking-widest text-white/40 min-w-[800px]"><div className="col-span-4">Artist</div><div className="col-span-4">Track</div><div className="col-span-2">Date</div><div className="col-span-2 text-right">Status</div></div>
+                        <div className="grid grid-cols-12 gap-4 p-4 border-b border-white/10 bg-black/20 text-xs font-bold uppercase tracking-widest text-white/40 min-w-[800px]"><div className="col-span-4">Artist</div><div className="col-span-4">Track</div><div className="col-span-2">Date</div><div className="col-span-2 text-right">Status & Action</div></div>
                         <div className="overflow-x-auto"><div className="min-w-[800px]">{loading ? <div className="p-12 text-center text-white/40">Loading applications...</div> : !briefApps || briefApps.length === 0 ? <div className="p-12"><EmptyState icon={Ghost} title="No Submissions" description="No artists have applied to this brief yet." /></div> : (briefApps || []).map((app) => {
                              // Construct a temp track object for playback
                              const tempTrack: Track = { id: app.trackId, title: app.trackTitle, artist: app.artistName, genre: '', tags: [], uploadDate: app.submittedDate, duration: '', audioUrl: app.audioUrl };
-                             const isCurrent = currentTrack?.id === tempTrack.id;
+                             const isCurrent = currentTrack?.id === tempTrack.id || (currentTrack?.audioUrl && tempTrack.audioUrl && currentTrack.audioUrl === tempTrack.audioUrl);
                              
                              return (
                              <div key={app.id} className={`grid grid-cols-12 gap-4 p-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors ${isCurrent ? 'bg-[#ccff00]/5' : ''}`}>
@@ -544,7 +579,23 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
                                    <span className={isCurrent ? 'text-[#ccff00] font-bold' : ''}>{app.trackTitle}</span>
                                 </div>
                                 <div className="col-span-2 text-xs font-mono text-white/50">{app.submittedDate}</div>
-                                <div className="col-span-2 text-right"><StatusBadge status={app.status} /></div>
+                                <div className="col-span-2 text-right flex items-center justify-end gap-2">
+                                  <select 
+                                    value={app.status}
+                                    onChange={(e) => handleStatusChange(app.id, e.target.value)}
+                                    className="bg-black/20 border border-white/10 rounded-lg text-[10px] uppercase font-bold text-white px-2 py-1 outline-none focus:border-[#ccff00] cursor-pointer"
+                                  >
+                                      <option value="pending">Pending</option>
+                                      <option value="shortlisted">Shortlisted</option>
+                                      <option value="accepted">Accepted</option>
+                                      <option value="rejected">Rejected</option>
+                                  </select>
+                                  {app.audioUrl && (
+                                     <a href={app.audioUrl} download target="_blank" rel="noopener noreferrer" className="p-2 hover:text-[#ccff00] text-white/50" title="Download">
+                                       <Download className="w-4 h-4" />
+                                     </a>
+                                  )}
+                                </div>
                              </div>
                              )
                         })}</div></div>
@@ -649,7 +700,12 @@ const SupervisorDashboard: React.FC<SupervisorDashboardProps> = ({ user }) => {
                               </div>
                               <div>
                                   <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2">Deadline</label>
-                                  <input name="deadline" required className="w-full bg-black/20 border border-white/10 px-4 py-3 rounded-xl text-white focus:border-[#ccff00] outline-none" placeholder="e.g. 2 Days Left" />
+                                  <input 
+                                    name="deadline" 
+                                    type="date"
+                                    required 
+                                    className="w-full bg-black/20 border border-white/10 px-4 py-3 rounded-xl text-white focus:border-[#ccff00] outline-none [color-scheme:dark]" 
+                                  />
                               </div>
                           </div>
                           <div>

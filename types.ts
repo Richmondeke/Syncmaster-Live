@@ -1,4 +1,5 @@
 
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -9,6 +10,9 @@ export interface User {
   email: string | null;
   displayName: string | null;
   role?: 'artist' | 'supervisor';
+  credits?: number;
+  subscriptionTier?: 'free' | 'pro' | 'agency';
+  avatarUrl?: string;
   socials?: {
     spotify?: string;
     appleMusic?: string;
@@ -24,6 +28,8 @@ export interface Profile {
   role: 'artist' | 'supervisor';
   avatar_url?: string;
   genre?: string;
+  credits?: number;
+  subscription_tier?: 'free' | 'pro' | 'agency';
   socials?: {
     spotify?: string;
     appleMusic?: string;

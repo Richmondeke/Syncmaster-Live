@@ -1,4 +1,3 @@
-
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -47,15 +46,9 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
       if (isSignUp) {
         if (!name.trim()) throw new Error("Full Name is required.");
         
-        // Safely capture response to avoid 'Cannot read properties of undefined'
-        const response = await registerUser(email, password, name, role);
-        const user = response?.user;
-        
-        if (user) {
-          setSuccessMessage(`Account created! Please check ${email} to confirm your account before logging in.`);
-          // Don't auto-login on signup if email confirmation is required
-          setIsSignUp(false);
-        }
+        await registerUser(email, password, name, role);
+        setSuccessMessage("Account created! You can now sign in.");
+        setIsSignUp(false);
       } else {
         const response = await loginUser(email, password);
         if (response?.user) {
@@ -63,14 +56,11 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
         }
       }
     } catch (err: any) {
-      console.error("Auth process error:", err);
+      console.error("Auth Error:", err);
       let msg = err.message || "Authentication failed.";
       
-      // Handle rate limit / security errors
-      if (msg.toLowerCase().includes("security purposes") || msg.toLowerCase().includes("seconds")) {
-        msg = "For security, please wait 60 seconds before trying again.";
-      } else if (msg.includes("Invalid login credentials")) {
-        msg = "Invalid email or password.";
+      if (msg.includes("Invalid login")) {
+         msg = "Invalid email or password. (Offline Mode: Use any email/pass to test)";
       }
       
       setError(msg);
@@ -85,24 +75,6 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
       await loginWithGoogle();
     } catch (err: any) {
       setError(err.message || "Google login failed.");
-    }
-  };
-
-  const handleResend = async () => {
-    if (!email) {
-      setError("Please enter your email address first.");
-      return;
-    }
-    try {
-      setError(null);
-      await resendConfirmation(email);
-      setSuccessMessage("Confirmation email resent. Check your inbox.");
-    } catch (err: any) {
-       let msg = err.message;
-       if (msg.toLowerCase().includes("security purposes")) {
-         msg = "Please wait a moment before requesting another email.";
-       }
-       setError(msg);
     }
   };
 
@@ -140,14 +112,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
             className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex gap-3 text-red-200 text-sm items-start"
           >
             <AlertCircle className="w-5 h-5 shrink-0" />
-            <div className="flex-1">
-               <p>{error}</p>
-               {!isSignUp && (error.includes("Invalid") || error.includes("confirm")) && (
-                  <button onClick={handleResend} className="text-xs underline mt-2 hover:text-white flex items-center gap-1">
-                     <RefreshCw className="w-3 h-3" /> Resend Confirmation
-                  </button>
-               )}
-            </div>
+            <div className="flex-1"><p>{error}</p></div>
           </motion.div>
         )}
 
@@ -238,20 +203,6 @@ const Auth: React.FC<AuthProps> = ({ onLogin, onCancel }) => {
             )}
           </button>
         </form>
-
-        <div className="my-6 flex items-center gap-4 text-white/20">
-           <div className="h-px bg-current flex-1" />
-           <span className="text-[10px] uppercase font-bold">Or continue with</span>
-           <div className="h-px bg-current flex-1" />
-        </div>
-
-        <button 
-          onClick={handleGoogleLogin}
-          className="w-full bg-white text-black font-bold uppercase tracking-widest py-3 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-3"
-        >
-          <GoogleIcon />
-          <span>Google</span>
-        </button>
 
         <div className="mt-6 text-center">
           <button

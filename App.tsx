@@ -1,4 +1,5 @@
 
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -15,7 +16,7 @@ import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
 import SupervisorDashboard from './components/SupervisorDashboard';
 import { Artist, ViewState, User } from './types';
-import { subscribeToAuth, seedBriefsIfNeeded, logoutUser } from './services/supabase';
+import { subscribeToAuth, seedBriefsIfNeeded, logoutUser, updateUserSubscription, addUserCredits } from './services/supabase';
 
 // Dummy Data (Re-purposed as Success Stories or Featured Roster)
 const ROSTER: Artist[] = [
@@ -85,6 +86,8 @@ const ROSTER: Artist[] = [
   }
 ];
 
+const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK-e56c2c23b29101ad4b0b1f8cbf637ccc-X';
+
 const App: React.FC = () => {
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
@@ -110,6 +113,9 @@ const App: React.FC = () => {
       setUser(currentUser);
       if (currentUser) {
         setView('dashboard');
+        // Update local plan state if needed
+        if (currentUser.subscriptionTier === 'pro') setPurchasedIndex(1);
+        if (currentUser.subscriptionTier === 'agency') setPurchasedIndex(2);
       } else {
         // If we were in dashboard but not auth'd, go to landing
         if(view === 'dashboard') setView('landing');
@@ -135,19 +141,63 @@ const App: React.FC = () => {
     // The subscribeToAuth listener handles the view switch
   };
 
-  const handleLogout = async () => {
-    await logoutUser();
-    setView('landing');
-  };
-
   const handlePurchase = (index: number) => {
+    if (index === 0) return; // Free plan logic if any
+
+    if (!user) {
+      setView('auth');
+      return;
+    }
+
     setPurchasingIndex(index);
-    setTimeout(() => {
-      setPurchasingIndex(null);
-      setPurchasedIndex(index);
-      // If user is not logged in, maybe prompt auth here in real app
-      if (!user) setView('auth'); 
-    }, 1500);
+
+    const planName = index === 1 ? 'Pro Artist' : 'Agency';
+    const planPrice = index === 1 ? 15 : 45;
+    const planId = index === 1 ? 'pro' : 'agency';
+
+    // Flutterwave Checkout
+    if ((window as any).FlutterwaveCheckout) {
+      (window as any).FlutterwaveCheckout({
+        public_key: FLUTTERWAVE_PUBLIC_KEY,
+        tx_ref: "TX-" + Date.now(),
+        amount: planPrice,
+        currency: "USD",
+        payment_options: "card, mobilemoneyghana, ussd",
+        customer: {
+          email: user.email,
+          name: user.displayName || 'SyncMaster User',
+        },
+        callback: function (data: any) {
+           console.log("Payment successful", data);
+           if (data.status === "successful") {
+              // Update database
+              updateUserSubscription(user.uid, planId as any).then(async () => {
+                 setPurchasedIndex(index);
+                 // Also add some credits as a bonus for upgrading
+                 await addUserCredits(user.uid, 50);
+                 alert(`Successfully upgraded to ${planName} and received 50 credits!`);
+              }).catch(err => {
+                 alert("Payment successful but failed to update profile. Please contact support.");
+                 console.error(err);
+              });
+           } else {
+             alert("Payment failed.");
+           }
+           setPurchasingIndex(null);
+        },
+        onclose: function() {
+           setPurchasingIndex(null);
+        },
+        customizations: {
+          title: `SyncMaster ${planName}`,
+          description: `Upgrade your account to ${planName}`,
+          logo: "https://ui-avatars.com/api/?name=S&background=ccff00&color=000",
+        },
+      });
+    } else {
+       alert("Payment system is loading, please try again in a moment.");
+       setPurchasingIndex(null);
+    }
   };
 
   const handleSubscribe = (e: React.FormEvent) => {

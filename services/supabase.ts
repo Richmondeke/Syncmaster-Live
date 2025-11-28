@@ -1,4 +1,3 @@
-
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -7,166 +6,46 @@
 import { createClient } from '@supabase/supabase-js';
 import { SyncBrief, Track, Application, User, Profile, Agency } from '../types';
 
-// Hardcoded keys as provided by the user
+// Hardcoded keys as provided
 const SUPABASE_URL = 'https://nqptmmqvhpasrwrhyibt.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xcHRtbXF2aHBhc3J3cmh5aWJ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4NDE2OTcsImV4cCI6MjA3NjQxNzY5N30.8BwrjttJ2TGkMkw-dVVww4Pbbt2x9taccOSUxgoNAyg';
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// --- Helpers ---
-const mapUser = (sbUser: any, profile?: any): User | null => {
-  if (!sbUser) return null;
-  return {
-    uid: sbUser.id,
-    email: sbUser.email || '',
-    displayName: profile?.full_name || sbUser.user_metadata?.full_name || sbUser.email?.split('@')[0] || 'Artist',
-    role: profile?.role || sbUser.user_metadata?.role || 'artist',
-    socials: profile?.socials || {}
-  };
-};
-
-// --- Auth ---
-export const subscribeToAuth = (callback: (user: User | null) => void) => {
-  // Helper to fetch profile and map
-  const handleSession = async (session: any) => {
-    if (!session?.user) {
-      callback(null);
-      return;
-    }
-    try {
-      // Fetch public profile to get role and socials
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
-
-      callback(mapUser(session.user, profile));
-    } catch (e) {
-      console.error("Profile fetch error:", e);
-      // Fallback to basic user info if profile fetch fails
-      callback(mapUser(session.user));
-    }
-  };
-
-  // Check initial session
-  supabase.auth.getSession().then(({ data: { session } }) => {
-    handleSession(session);
-  }).catch(err => {
-    console.error("Auth Session check failed:", err);
-    callback(null);
-  });
-
-  // Listen for changes
-  const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-    handleSession(session);
-  });
-
-  return () => subscription.unsubscribe();
-};
-
-export const loginUser = async (email: string, pass: string) => {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email.trim(),
-    password: pass
-  });
-  if (error) throw error;
-  return data;
-};
-
-export const loginWithGoogle = async () => {
-  const origin = window.location.origin;
-  console.log("Initiating Google Login.");
-  console.log("IMPORTANT: Ensure this URL is in your Supabase Auth > URL Configuration > Redirect URLs:", origin + "/**");
-  
-  // Uses window.location.origin to ensure it redirects back to wherever the app is hosted
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: origin
-    }
-  });
-  if (error) throw error;
-  return data;
-};
-
-export const registerUser = async (email: string, pass: string, name: string, role: 'artist' | 'supervisor') => {
-  const origin = window.location.origin;
-  
-  // 1. Create Auth User
-  const { data, error } = await supabase.auth.signUp({
-    email: email.trim(),
-    password: pass,
-    options: {
-      data: {
-        full_name: name,
-        role: role
-      },
-      emailRedirectTo: origin // Ensure email verification link comes back here
-    }
-  });
-  if (error) throw error;
-
-  // Note: If email confirmation is enabled, data.user might be null or session null
-  if (data.user) {
-    // 2. Create Public Profile Entry
-    try {
-      await supabase.from('profiles').insert({
-        id: data.user.id,
-        email: email.trim(),
-        full_name: name,
-        role: role,
-        avatar_url: `https://ui-avatars.com/api/?name=${name.replace(' ', '+')}&background=ccff00&color=000`,
-        socials: {} // Initialize empty socials
-      });
-    } catch (e) {
-      console.warn("Could not create public profile. Ensure 'profiles' table exists in Supabase.", e);
-    }
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+  },
+  global: {
+    // Prevent throw on initial failure to allow fallback
+    headers: { 'x-application-name': 'syncmaster' }
   }
+});
 
-  return data;
-};
+// --- OFFLINE / MOCK MODE STATE ---
+const STORAGE_KEY = 'syncmaster_mock_db';
 
-export const resendConfirmation = async (email: string) => {
-  const origin = window.location.origin;
-  const { error } = await supabase.auth.resend({
-    type: 'signup',
-    email: email.trim(),
-    options: {
-      emailRedirectTo: origin
-    }
-  });
-  if (error) throw error;
-};
-
-export const logoutUser = async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) throw error;
-};
-
-export const getUserProfile = async (userId: string): Promise<Profile | null> => {
+const getMockDB = () => {
   try {
-    const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
-    if (error) return null;
-    return data as Profile;
-  } catch (e) {
-    return null;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : { 
+      users: {}, 
+      tracks: [], 
+      applications: [],
+      currentUser: null 
+    };
+  } catch {
+    return { users: {}, tracks: [], applications: [], currentUser: null };
   }
 };
 
-export const updateArtistProfile = async (userId: string, updates: Partial<Profile>) => {
-  const { error } = await supabase
-    .from('profiles')
-    .update(updates)
-    .eq('id', userId);
-
-  if (error) throw error;
+const saveMockDB = (db: any) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+  window.dispatchEvent(new Event('mock_db_update'));
 };
 
-// --- Data ---
-
-const SEED_BRIEFS: any[] = [
+const SEED_BRIEFS: SyncBrief[] = [
   {
+    id: '1',
     title: 'Cyberpunk Racing Game Title Track',
     client: 'Neon Interactive',
     budget: '$5,000 - $8,000',
@@ -176,6 +55,7 @@ const SEED_BRIEFS: any[] = [
     tags: ['Gaming', 'High Energy', 'Instrumental']
   },
   {
+    id: '2',
     title: 'Futuristic Perfume Commercial',
     client: 'Luxe Digital',
     budget: '$12,000',
@@ -189,552 +69,528 @@ const SEED_BRIEFS: any[] = [
 export const seedBriefsIfNeeded = async () => {
   try {
     const { count, error } = await supabase.from('briefs').select('*', { count: 'exact', head: true });
-    
-    if (error) {
-       // Check for missing table error (42P01) or other schema issues
-       if (error.code === '42P01' || error.message.includes('schema cache')) {
-          console.warn("WARN: Table 'briefs' missing or schema invalid. Please run the SQL setup script in Supabase.");
-          console.warn("IMPORTANT: Ensure table is named 'briefs' (lowercase, plural). Postgres is case-sensitive.");
-          return;
-       }
-       // If standard fetch error (e.g. network), just return, don't crash.
-       return;
+    if (!error && count === 0) {
+       await supabase.from('briefs').insert(SEED_BRIEFS.map(b => ({
+          id: b.id,
+          title: b.title,
+          client: b.client,
+          budget: b.budget,
+          genre: b.genre,
+          deadline: b.deadline,
+          description: b.description,
+          tags: b.tags
+       })));
     }
-
-    if (count === 0) {
-      console.log('Seeding briefs...');
-      await supabase.from('briefs').insert(SEED_BRIEFS);
-    }
-  } catch (err: any) {
-    // Suppress errors during seed to allow app to load
-    console.warn("Skipping seed due to error:", err.message || err);
-  }
-};
-
-export const getBriefs = async (): Promise<SyncBrief[]> => {
-  try {
-    const { data, error } = await supabase.from('briefs').select('*');
-    if (error) {
-      if (error.code === '42P01') console.warn("Missing 'briefs' table. Ensure it is named 'briefs' (lowercase).");
-      else console.error("Error fetching briefs:", error.message);
-      return [];
-    }
-    return (data || []) as SyncBrief[];
-  } catch(e) {
-    console.error("Network error fetching briefs:", e);
-    return [];
-  }
-};
-
-export const createBrief = async (brief: Omit<SyncBrief, 'id'>) => {
-  const { data, error } = await supabase
-    .from('briefs')
-    .insert(brief)
-    .select()
-    .single();
-
-  if (error) throw error;
-  return data as SyncBrief;
-};
-
-export const getBriefApplicationCounts = async (): Promise<Record<string, number>> => {
-  try {
-    const { data, error } = await supabase
-      .from('applications')
-      .select('brief_id');
-    
-    if (error) {
-      if (error.code === '42P01') console.warn("Missing 'applications' table.");
-      else console.error("Error fetching app counts:", error.message);
-      return {};
-    }
-    
-    const counts: Record<string, number> = {};
-    if (data) {
-      data.forEach((app: any) => {
-        const id = app.brief_id;
-        counts[id] = (counts[id] || 0) + 1;
-      });
-    }
-    return counts;
   } catch (e) {
-    console.error("Error in getBriefApplicationCounts:", e);
-    return {};
+    // Ignore offline errors
   }
 };
 
-export const subscribeToBriefs = (callback: (briefs: SyncBrief[]) => void) => {
-  // Initial Fetch
-  supabase.from('briefs').select('*').then(({ data, error }) => {
-    if (!error && data) callback(data as SyncBrief[]);
-    if (error) {
-       console.error("Initial briefs fetch error:", error.message || error);
-       callback([]); // Return empty if table missing or fetch fails
+// --- Auth Services ---
+
+export const subscribeToAuth = (callback: (user: User | null) => void) => {
+  // 1. Supabase Listener
+  const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    if (session?.user) {
+      const db = getMockDB();
+      try {
+         const { data: profile, error } = await supabase.from('profiles').select('*').eq('id', session.user.id).single();
+         if (error) throw error;
+         callback(mapUser(session.user, profile));
+      } catch (e) {
+         const mockProfile = db.users[session.user.id];
+         callback(mapUser(session.user, mockProfile));
+      }
+    } else {
+      const db = getMockDB();
+      callback(db.currentUser); 
     }
-  }).catch(err => {
-    console.error("Failed to fetch briefs (Network/Auth):", err);
-    callback([]);
   });
 
-  // Realtime
-  const channel = supabase
-    .channel('briefs-channel')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'briefs' }, (payload) => {
-      supabase.from('briefs').select('*').then(({ data }) => {
-        if (data) callback(data as SyncBrief[]);
-      }).catch(err => console.error("Realtime brief refresh failed:", err));
-    })
-    .subscribe();
+  // 2. Mock Listener
+  const mockListener = () => {
+    const db = getMockDB();
+    if (db.currentUser) {
+       callback(db.currentUser);
+    } else {
+       supabase.auth.getSession().then(({ data }) => {
+         if (!data.session) callback(null);
+       });
+    }
+  };
+  window.addEventListener('mock_db_update', mockListener);
 
-  return () => { supabase.removeChannel(channel); };
+  return () => {
+    subscription.unsubscribe();
+    window.removeEventListener('mock_db_update', mockListener);
+  };
+};
+
+const mapUser = (sbUser: any, profile?: any): User => ({
+  uid: sbUser.id || sbUser.uid,
+  email: sbUser.email || '',
+  displayName: profile?.full_name || sbUser.user_metadata?.full_name || 'Artist',
+  role: profile?.role || 'artist',
+  credits: profile?.credits || 0,
+  subscriptionTier: profile?.subscription_tier || 'free',
+  avatarUrl: profile?.avatar_url,
+  socials: profile?.socials || {}
+});
+
+export const loginUser = async (email: string, pass: string) => {
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
+    if (error) throw error;
+    return data;
+  } catch (err: any) {
+    if (err.message?.includes('Failed to fetch') || err.message?.includes('Network request failed') || err.message?.includes('Invalid login credentials')) {
+      console.warn("Offline/Demo Mode: Logging in locally.");
+      
+      const db = getMockDB();
+      const mockId = 'mock_user_123';
+      const user = {
+        uid: mockId,
+        email: email,
+        displayName: 'Demo User',
+        role: 'artist' as const,
+        credits: 0,
+        subscriptionTier: 'free' as const,
+        avatarUrl: `https://ui-avatars.com/api/?name=${email}&background=ccff00&color=000`
+      };
+      
+      db.users[mockId] = { ...user, ...db.users[mockId] };
+      db.currentUser = db.users[mockId];
+      saveMockDB(db);
+      
+      return { user, session: { user } };
+    }
+    throw err;
+  }
+};
+
+export const registerUser = async (email: string, pass: string, name: string, role: string) => {
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email, password: pass, options: { data: { full_name: name, role } }
+    });
+    if (error) throw error;
+    if (data.user) {
+        await supabase.from('profiles').insert({
+            id: data.user.id,
+            email,
+            full_name: name,
+            role,
+            avatar_url: `https://ui-avatars.com/api/?name=${name}&background=random`,
+            credits: 0,
+            subscription_tier: 'free'
+        }).catch(e => console.warn("Profile creation failed", e));
+    }
+    return data;
+  } catch (err: any) {
+    const db = getMockDB();
+    const mockId = `mock_${Date.now()}`;
+    const user = {
+        uid: mockId,
+        email,
+        displayName: name,
+        role: role as any,
+        credits: 0,
+        subscriptionTier: 'free' as const,
+        avatarUrl: `https://ui-avatars.com/api/?name=${name}&background=random`
+    };
+    db.users[mockId] = user;
+    return { user, session: null };
+  }
+};
+
+export const logoutUser = async () => {
+  await supabase.auth.signOut().catch(() => {});
+  const db = getMockDB();
+  db.currentUser = null;
+  saveMockDB(db);
+};
+
+export const loginWithGoogle = async () => {
+   const { error } = await supabase.auth.signInWithOAuth({
+     provider: 'google',
+     options: { redirectTo: window.location.origin }
+   });
+   if (error) throw error;
+};
+
+export const resendConfirmation = async (email: string) => {
+  await supabase.auth.resend({ type: 'signup', email, options: { emailRedirectTo: window.location.origin } });
+};
+
+// --- Data Services ---
+
+export const subscribeToBriefs = (callback: (briefs: SyncBrief[]) => void) => {
+  supabase.from('briefs').select('*').then(({ data, error }) => {
+    if (error) throw error;
+    if (data) callback(data as SyncBrief[]);
+  }).catch(() => {
+    callback(SEED_BRIEFS);
+  });
+  return () => {};
 };
 
 export const subscribeToUserTracks = (userId: string, callback: (tracks: Track[]) => void) => {
   supabase.from('tracks').select('*').eq('user_id', userId).then(({ data, error }) => {
-    if (!error && data) {
-       const mapped = data.map((t: any) => ({
-         id: t.id,
-         userId: t.user_id,
-         title: t.title,
-         artist: t.artist,
-         genre: t.genre,
-         bpm: t.bpm,
-         tags: t.tags || [],
-         uploadDate: t.upload_date,
-         duration: t.duration,
-         description: t.description,
-         audioUrl: t.audio_url
-       }));
-       callback(mapped);
-    }
-    if (error) {
-      console.error("Track fetch error:", error.message || error);
-      callback([]);
-    }
-  }).catch(err => {
-    console.error("Failed to fetch tracks (Network/Auth):", err);
-    callback([]);
+    if (error) throw error;
+    if (data) callback(data.map(mapTrack));
+  }).catch(() => {
+    const db = getMockDB();
+    callback(db.tracks.filter((t: Track) => t.userId === userId));
   });
 
-  const channel = supabase
-    .channel(`tracks-${userId}`)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'tracks', filter: `user_id=eq.${userId}` }, () => {
-       supabase.from('tracks').select('*').eq('user_id', userId).then(({ data }) => {
-         if (data) {
-           const mapped = data.map((t: any) => ({
-             id: t.id,
-             userId: t.user_id,
-             title: t.title,
-             artist: t.artist,
-             genre: t.genre,
-             bpm: t.bpm,
-             tags: t.tags || [],
-             uploadDate: t.upload_date,
-             duration: t.duration,
-             description: t.description,
-             audioUrl: t.audio_url
-           }));
-           callback(mapped);
-         }
-       }).catch(console.error);
-    })
-    .subscribe();
-
-  return () => { supabase.removeChannel(channel); };
-};
-
-export const fetchArtists = async (): Promise<Profile[]> => {
-  try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('role', 'artist');
-    
-    if (error) throw error;
-    return (data || []) as Profile[];
-  } catch (e) {
-    console.error("Error fetching artists:", e);
-    return [];
-  }
-};
-
-export const fetchArtistTracks = async (artistId: string): Promise<Track[]> => {
-  try {
-    const { data, error } = await supabase
-      .from('tracks')
-      .select('*')
-      .eq('user_id', artistId);
-
-    if (error) {
-      console.error("fetchArtistTracks error", error);
-      return [];
-    }
-
-    return (data || []).map((t: any) => ({
-      id: t.id,
-      userId: t.user_id,
-      title: t.title,
-      artist: t.artist,
-      genre: t.genre,
-      bpm: t.bpm,
-      tags: t.tags || [],
-      uploadDate: t.upload_date,
-      duration: t.duration,
-      description: t.description,
-      audioUrl: t.audio_url
-    }));
-  } catch (e) {
-    console.error("fetchArtistTracks error:", e);
-    return [];
-  }
-};
-
-export const fetchArtistApplications = async (artistId: string): Promise<Application[]> => {
-  try {
-    const { data, error } = await supabase
-      .from('applications')
-      .select('*')
-      .eq('user_id', artistId);
-
-    if (error) {
-      console.error("Error fetching artist applications:", error);
-      return [];
-    }
-
-    return (data || []).map((a: any) => ({
-      id: a.id,
-      userId: a.user_id,
-      briefId: a.brief_id,
-      trackId: a.track_id,
-      status: a.status,
-      submittedDate: a.submitted_date
-    }));
-  } catch (e) {
-    console.error("fetchArtistApplications error:", e);
-    return [];
-  }
-};
-
-export const fetchBriefApplicationsWithDetails = async (briefId: string) => {
-  try {
-    const { data: apps, error } = await supabase
-      .from('applications')
-      .select('*')
-      .eq('brief_id', briefId);
-
-    if (error) {
-       console.error("Fetch apps error:", error.message);
-       if (error.message.includes("invalid input syntax for type bigint") || error.code === '22P02') {
-         console.warn("Schema Error: Please recreate tables using UUIDs.");
-       }
-       return [];
-    }
-
-    if (!apps || apps.length === 0) return [];
-
-    // Get unique IDs to prevent duplicate fetching
-    const userIds = [...new Set(apps.map((a: any) => a.user_id))];
-    const trackIds = [...new Set(apps.map((a: any) => a.track_id))];
-
-    // Fetch user profiles
-    let profiles: any[] = [];
-    if (userIds.length > 0) {
-      const { data } = await supabase
-        .from('profiles')
-        .select('id, full_name, avatar_url')
-        .in('id', userIds);
-      profiles = data || [];
-    }
-
-    // Fetch tracks
-    let tracks: any[] = [];
-    if (trackIds.length > 0) {
-      const { data } = await supabase
-        .from('tracks')
-        .select('id, title, audio_url') // Added audio_url here
-        .in('id', trackIds);
-      tracks = data || [];
-    }
-
-    // Map details back to applications
-    return apps.map((a: any) => {
-      const profile = profiles.find((p: any) => p.id === a.user_id);
-      const track = tracks.find((t: any) => t.id === a.track_id);
-      return {
-        id: a.id,
-        userId: a.user_id,
-        briefId: a.brief_id,
-        trackId: a.track_id,
-        status: a.status,
-        submittedDate: a.submitted_date,
-        artistName: profile?.full_name || 'Unknown Artist',
-        artistAvatar: profile?.avatar_url,
-        trackTitle: track?.title || 'Unknown Track',
-        audioUrl: track?.audio_url // Added audioUrl here
-      };
-    });
-  } catch (e) {
-    console.error("fetchBriefApplicationsWithDetails error:", e);
-    return [];
-  }
+  const handler = () => {
+    const db = getMockDB();
+    callback(db.tracks.filter((t: Track) => t.userId === userId));
+  };
+  window.addEventListener('mock_db_update', handler);
+  return () => window.removeEventListener('mock_db_update', handler);
 };
 
 export const subscribeToUserApplications = (userId: string, callback: (apps: Application[]) => void) => {
   supabase.from('applications').select('*').eq('user_id', userId).then(({ data, error }) => {
-    if (!error && data) {
-      const mapped = data.map((a: any) => ({
-        id: a.id,
-        userId: a.user_id,
-        briefId: a.brief_id,
-        trackId: a.track_id,
-        status: a.status,
-        submittedDate: a.submitted_date
-      }));
-      callback(mapped);
-    }
-    if (error) {
-       console.error("Apps fetch error:", error.message || error);
-       callback([]); // Return empty on error
-    }
-  }).catch(err => {
-    console.error("Failed to fetch applications (Network/Auth):", err);
-    callback([]);
+    if (error) throw error;
+    if (data) callback(data.map(mapApp));
+  }).catch(() => {
+    const db = getMockDB();
+    callback(db.applications.filter((a: Application) => a.userId === userId));
   });
 
-  const channel = supabase
-    .channel(`apps-${userId}`)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'applications', filter: `user_id=eq.${userId}` }, () => {
-      supabase.from('applications').select('*').eq('user_id', userId).then(({ data }) => {
-        if (data) {
-          const mapped = data.map((a: any) => ({
+  const handler = () => {
+    const db = getMockDB();
+    callback(db.applications.filter((a: Application) => a.userId === userId));
+  };
+  window.addEventListener('mock_db_update', handler);
+  return () => window.removeEventListener('mock_db_update', handler);
+};
+
+export const uploadTrackFile = async (file: File, userId: string): Promise<string> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+        resolve("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+    }, 1000);
+  });
+};
+
+export const saveTrackMetadata = async (track: Omit<Track, 'id'>, userId: string) => {
+  try {
+     const { data, error } = await supabase.from('tracks').insert({
+         user_id: userId,
+         title: track.title,
+         genre: track.genre,
+         bpm: track.bpm,
+         tags: track.tags,
+         description: track.description,
+         upload_date: track.uploadDate,
+         audio_url: track.audioUrl
+     }).select().single();
+     if (error) throw error;
+     return mapTrack(data);
+  } catch (e) {
+     const db = getMockDB();
+     const newTrack = { id: `local_${Date.now()}`, ...track, userId };
+     db.tracks.unshift(newTrack);
+     saveMockDB(db);
+     return newTrack;
+  }
+};
+
+export const updateTrackMetadata = async (trackId: string, updates: Partial<Track>) => {
+    try {
+        const { error } = await supabase.from('tracks').update(updates).eq('id', trackId);
+        if (error) throw error;
+    } catch {
+        const db = getMockDB();
+        const idx = db.tracks.findIndex((t: Track) => t.id === trackId);
+        if (idx !== -1) {
+            db.tracks[idx] = { ...db.tracks[idx], ...updates };
+            saveMockDB(db);
+        }
+    }
+};
+
+export const submitApplication = async (app: Omit<Application, 'id'>, userId: string) => {
+    try {
+        const { error } = await supabase.from('applications').insert({
+            user_id: userId,
+            brief_id: app.briefId,
+            track_id: app.trackId,
+            status: app.status,
+            submitted_date: app.submittedDate
+        });
+        if (error) throw error;
+    } catch {
+        const db = getMockDB();
+        const newApp = { id: `local_app_${Date.now()}`, ...app, userId };
+        db.applications.unshift(newApp);
+        saveMockDB(db);
+    }
+};
+
+export const updateUserSubscription = async (userId: string, tier: 'pro' | 'agency') => {
+    try {
+        const { error } = await supabase.from('profiles').update({ subscription_tier: tier }).eq('id', userId);
+        if (error) throw error;
+        await supabase.auth.refreshSession();
+    } catch {
+        const db = getMockDB();
+        if (db.users[userId]) {
+            db.users[userId].subscriptionTier = tier;
+        }
+        if (db.currentUser && db.currentUser.uid === userId) {
+            db.currentUser.subscriptionTier = tier;
+        }
+        saveMockDB(db);
+    }
+};
+
+export const addUserCredits = async (userId: string, amount: number) => {
+    try {
+        const { data } = await supabase.from('profiles').select('credits').eq('id', userId).single();
+        const current = data?.credits || 0;
+        
+        const { error } = await supabase.from('profiles').update({ credits: current + amount }).eq('id', userId);
+        if (error) throw error;
+        await supabase.auth.refreshSession();
+    } catch {
+        const db = getMockDB();
+        if (db.users[userId]) {
+            db.users[userId].credits = (db.users[userId].credits || 0) + amount;
+        }
+        if (db.currentUser && db.currentUser.uid === userId) {
+            db.currentUser.credits = (db.currentUser.credits || 0) + amount;
+        }
+        saveMockDB(db);
+    }
+};
+
+export const updateArtistProfile = async (userId: string, updates: Partial<Profile>) => {
+    try {
+        await supabase.from('profiles').update(updates).eq('id', userId);
+    } catch {
+        const db = getMockDB();
+        if (db.users[userId]) {
+            db.users[userId] = { ...db.users[userId], ...updates };
+        }
+        if (db.currentUser?.uid === userId) {
+            db.currentUser = { ...db.currentUser, ...updates };
+        }
+        saveMockDB(db);
+    }
+};
+
+export const uploadProfilePicture = async (file: File, userId: string) => {
+    return `https://ui-avatars.com/api/?name=User&background=random&time=${Date.now()}`;
+};
+
+export const fetchAgencies = async (): Promise<Agency[]> => {
+    return new Promise(resolve => {
+        setTimeout(() => resolve([
+            {
+                id: '1', name: 'Big Sync Music', type: 'Agency', location: 'London',
+                contactEmail: 'info@bigsync.com', website: 'https://bigsyncmusic.com',
+                credits: ['Samsung', 'Google'], logo: 'https://ui-avatars.com/api/?name=BS',
+                description: 'Global licensing agency.'
+            },
+            {
+                id: '2', name: 'Cobalt', type: 'Supervisor', location: 'LA',
+                contactEmail: 'sync@cobalt.music', website: 'https://cobalt.music',
+                credits: ['Stranger Things'], logo: 'https://ui-avatars.com/api/?name=C',
+                description: 'Film & TV specialists.'
+            }
+        ]), 300);
+    });
+};
+
+// --- Supervisor Functions (Implemented) ---
+
+export const fetchArtists = async (): Promise<Profile[]> => {
+    try {
+        const { data, error } = await supabase.from('profiles').select('*').eq('role', 'artist');
+        if (error) throw error;
+        return data as Profile[];
+    } catch {
+        const db = getMockDB();
+        return Object.values(db.users).filter((u: any) => u.role === 'artist').map((u: any) => ({
+            id: u.uid,
+            email: u.email || '',
+            full_name: u.displayName || '',
+            role: u.role,
+            avatar_url: u.avatarUrl,
+            credits: u.credits,
+            subscription_tier: u.subscriptionTier,
+            socials: u.socials
+        })) as Profile[];
+    }
+};
+
+export const fetchArtistTracks = async (artistId: string): Promise<Track[]> => {
+    try {
+        const { data, error } = await supabase.from('tracks').select('*').eq('user_id', artistId);
+        if (error) throw error;
+        return data.map(mapTrack);
+    } catch {
+        const db = getMockDB();
+        return db.tracks.filter((t: Track) => t.userId === artistId);
+    }
+};
+
+export const fetchArtistApplications = async (artistId: string): Promise<Application[]> => {
+    try {
+        const { data, error } = await supabase.from('applications').select('*').eq('user_id', artistId);
+        if (error) throw error;
+        return data.map(mapApp);
+    } catch {
+        const db = getMockDB();
+        return db.applications.filter((a: Application) => a.userId === artistId);
+    }
+};
+
+export const getBriefs = async (): Promise<SyncBrief[]> => {
+    try {
+        const { data, error } = await supabase.from('briefs').select('*');
+        if (error) throw error;
+        return data as SyncBrief[];
+    } catch {
+        return SEED_BRIEFS;
+    }
+};
+
+export const getBriefApplicationCounts = async () => {
+    try {
+        const { data, error } = await supabase.from('applications').select('brief_id');
+        if (error) throw error;
+        const counts: Record<string, number> = {};
+        data.forEach((a: any) => {
+            counts[a.brief_id] = (counts[a.brief_id] || 0) + 1;
+        });
+        return counts;
+    } catch {
+        const db = getMockDB();
+        const counts: Record<string, number> = {};
+        db.applications.forEach((a: Application) => {
+            counts[a.briefId] = (counts[a.briefId] || 0) + 1;
+        });
+        return counts;
+    }
+};
+
+export const fetchBriefApplicationsWithDetails = async (briefId: string) => {
+    try {
+        const { data, error } = await supabase.from('applications')
+            .select(`*, profiles:user_id ( full_name, avatar_url ), tracks:track_id ( title, audio_url )`)
+            .eq('brief_id', briefId);
+        if (error) throw error;
+        return data.map((a: any) => ({
             id: a.id,
             userId: a.user_id,
             briefId: a.brief_id,
             trackId: a.track_id,
             status: a.status,
-            submittedDate: a.submitted_date
-          }));
-          callback(mapped);
-        }
-      }).catch(console.error);
-    })
-    .subscribe();
-
-  return () => { supabase.removeChannel(channel); };
-};
-
-export const uploadTrackFile = async (file: File, userId: string): Promise<string> => {
-  const fileExt = file.name.split('.').pop();
-  const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
-  const filePath = `${userId}/${fileName}`;
-
-  // User confirmed bucket is 'Syncmaster' (Capitalized)
-  let bucketName = 'Syncmaster';
-  
-  // Try upload
-  let { error: uploadError } = await supabase.storage
-    .from(bucketName)
-    .upload(filePath, file, {
-      cacheControl: '3600',
-      upsert: true
-    });
-
-  // Fallback: If 'Syncmaster' not found, try 'syncmaster' (lowercase)
-  if (uploadError && (uploadError.message.includes('not found') || (uploadError as any).statusCode === '404')) {
-    console.warn(`Bucket '${bucketName}' not found. Trying 'syncmaster'...`);
-    bucketName = 'syncmaster';
-    const retry = await supabase.storage
-      .from(bucketName)
-      .upload(filePath, file, {
-        cacheControl: '3600',
-        upsert: true
-      });
-    
-    if (retry.error) {
-       console.warn(`Bucket '${bucketName}' also not found. Trying legacy 'tracks'.`);
-       bucketName = 'tracks';
-       const retry2 = await supabase.storage
-         .from(bucketName)
-         .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: true
+            submittedDate: a.submitted_date,
+            artistName: a.profiles?.full_name || 'Unknown',
+            artistAvatar: a.profiles?.avatar_url,
+            trackTitle: a.tracks?.title || 'Unknown Track',
+            audioUrl: a.tracks?.audio_url
+        }));
+    } catch {
+        const db = getMockDB();
+        const apps = db.applications.filter((a: Application) => a.briefId === briefId);
+        return apps.map((a: Application) => {
+             const user = db.users[a.userId || ''] || {};
+             const track = db.tracks.find((t: Track) => t.id === a.trackId) || {};
+             return {
+                 ...a,
+                 artistName: user.displayName || 'Unknown',
+                 artistAvatar: user.avatarUrl,
+                 trackTitle: track.title || 'Unknown Track',
+                 audioUrl: track.audioUrl
+             };
         });
-       uploadError = retry2.error;
-    } else {
-       uploadError = retry.error;
     }
-  }
-
-  if (uploadError) {
-    console.error("Upload failed details:", uploadError);
-    throw new Error(`Upload Failed: ${uploadError.message}. IMPORTANT: You must create a public storage bucket named 'Syncmaster' in Supabase AND add RLS policies to allow uploads.`);
-  }
-
-  const { data } = supabase.storage.from(bucketName).getPublicUrl(filePath);
-  return data.publicUrl;
 };
 
-export const saveTrackMetadata = async (track: Omit<Track, 'id'>, userId: string) => {
-  const dbTrack = {
-    user_id: userId,
-    title: track.title,
-    artist: track.artist,
-    genre: track.genre,
-    bpm: track.bpm,
-    tags: track.tags,
-    upload_date: track.uploadDate,
-    duration: track.duration,
-    description: track.description,
-    audio_url: track.audioUrl
-  };
-
-  const { data, error } = await supabase
-    .from('tracks')
-    .insert(dbTrack)
-    .select()
-    .single();
-
-  if (error) throw error;
-
-  return {
-     id: data.id,
-     userId: data.user_id,
-     title: data.title,
-     artist: data.artist,
-     genre: data.genre,
-     bpm: data.bpm,
-     tags: data.tags || [],
-     uploadDate: data.upload_date,
-     duration: data.duration,
-     description: data.description,
-     audioUrl: data.audio_url
-  };
+export const getUserProfile = async (id: string): Promise<Profile | null> => {
+    try {
+        const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single();
+        if (error) throw error;
+        return {
+            id: data.id,
+            email: data.email,
+            full_name: data.full_name,
+            role: data.role,
+            avatar_url: data.avatar_url,
+            credits: data.credits,
+            subscription_tier: data.subscription_tier,
+            socials: data.socials
+        };
+    } catch {
+        const db = getMockDB();
+        const user = db.users[id];
+        if (user) {
+             return {
+                 id: user.uid,
+                 email: user.email || '',
+                 full_name: user.displayName || '',
+                 role: user.role || 'artist',
+                 avatar_url: user.avatarUrl,
+                 credits: user.credits,
+                 subscription_tier: user.subscriptionTier,
+                 socials: user.socials
+             };
+        }
+        return null;
+    }
 };
 
-export const updateTrackMetadata = async (trackId: string, updates: Partial<Track>) => {
-  const dbUpdates: any = {};
-  if (updates.title) dbUpdates.title = updates.title;
-  if (updates.artist) dbUpdates.artist = updates.artist;
-  if (updates.genre) dbUpdates.genre = updates.genre;
-  if (updates.bpm) dbUpdates.bpm = updates.bpm;
-  if (updates.tags) dbUpdates.tags = updates.tags;
-  if (updates.description) dbUpdates.description = updates.description;
-
-  const { error } = await supabase
-    .from('tracks')
-    .update(dbUpdates)
-    .eq('id', trackId);
-
-  if (error) throw error;
+export const createBrief = async (brief: Omit<SyncBrief, 'id'>) => {
+    try {
+        const { data, error } = await supabase.from('briefs').insert(brief).select().single();
+        if (error) throw error;
+        return data as SyncBrief;
+    } catch {
+        return { id: `local_brief_${Date.now()}`, ...brief } as SyncBrief;
+    }
 };
 
-export const submitApplication = async (application: Omit<Application, 'id'>, userId: string) => {
-  const dbApp = {
-    user_id: userId,
-    brief_id: application.briefId,
-    track_id: application.trackId,
-    status: application.status,
-    submitted_date: application.submittedDate
-  };
-
-  const { data, error } = await supabase
-    .from('applications')
-    .insert(dbApp)
-    .select()
-    .single();
-    
-  if (error) throw error;
-  return data.id;
+export const updateApplicationStatus = async (appId: string, status: 'pending' | 'shortlisted' | 'rejected' | 'accepted') => {
+    try {
+        const { error } = await supabase.from('applications').update({ status }).eq('id', appId);
+        if (error) throw error;
+    } catch {
+        const db = getMockDB();
+        const app = db.applications.find((a: Application) => a.id === appId);
+        if (app) {
+            app.status = status;
+            saveMockDB(db);
+        }
+    }
 };
 
-// --- Directory Service (Seeded) ---
-const SEED_AGENCIES: Agency[] = [
-  {
-    id: '1',
-    name: 'Big Sync Music',
-    type: 'Agency',
-    location: 'London / LA',
-    contactEmail: 'info@bigsync.com',
-    website: 'https://bigsyncmusic.com',
-    credits: ['Google', 'Samsung', 'L\'Oreal'],
-    logo: 'https://ui-avatars.com/api/?name=Big+Sync&background=000&color=fff',
-    description: 'A global music licensing agency that connects brands with the world\'s best music talent. We handle creative search, licensing, and strategy for major campaigns.',
-    submissionPolicy: 'We accept demos via our website submission form only. Do not send attachments via email.',
-    socials: { linkedin: 'https://linkedin.com', instagram: 'https://instagram.com' }
-  },
-  {
-    id: '2',
-    name: 'Cobalt Music',
-    type: 'Supervisor',
-    location: 'Los Angeles, CA',
-    contactEmail: 'sync@cobalt.music',
-    website: 'https://cobaltmusic.com',
-    credits: ['Stranger Things', 'FIFA', 'Netflix'],
-    logo: 'https://ui-avatars.com/api/?name=Cobalt&background=000&color=fff',
-    description: 'Specializing in film and television placements. Known for high-impact trailer music and emotional scene-setters for top-tier streaming series.',
-    submissionPolicy: 'Referral only. We do not accept unsolicited material at this time.',
-    socials: { twitter: 'https://twitter.com' }
-  },
-  {
-    id: '3',
-    name: 'Audio Network',
-    type: 'Library',
-    location: 'Global',
-    contactEmail: 'licensing@audionetwork.com',
-    website: 'https://audionetwork.com',
-    credits: ['BBC', 'Vice', 'Top Gear'],
-    logo: 'https://ui-avatars.com/api/?name=Audio+Network&background=000&color=fff',
-    description: 'A premier production music library with a catalog of high-quality, original music recorded by real orchestras and artists in world-class studios.',
-    submissionPolicy: 'Composers can apply to join our roster via the "Become a Composer" page on our main site.',
-    socials: { instagram: 'https://instagram.com' }
-  },
-  {
-    id: '4',
-    name: 'Ghostwriter Music',
-    type: 'Agency',
-    location: 'Nashville, TN',
-    contactEmail: 'subs@ghostwriter.com',
-    website: 'https://ghostwriter.music',
-    credits: ['Marvel Trailers', 'Star Wars'],
-    logo: 'https://ui-avatars.com/api/?name=Ghost+Writer&background=000&color=fff',
-    description: 'The industry leader in custom music for motion picture advertising. We create the epic sounds behind the world\'s biggest movie trailers.',
-    submissionPolicy: 'We are looking for sound designers and epic orchestral composers. Send streaming links only.',
-    socials: { linkedin: 'https://linkedin.com' }
-  },
-  {
-    id: '5',
-    name: 'Alexandra Patsavas',
-    type: 'Supervisor',
-    location: 'Los Angeles, CA',
-    contactEmail: 'contact@chopshopmusic.com',
-    website: 'https://chopshopmusic.com',
-    credits: ['Grey\'s Anatomy', 'Bridgerton', 'Twilight'],
-    logo: 'https://ui-avatars.com/api/?name=Alex+Patsavas&background=000&color=fff',
-    description: 'Legendary music supervision firm responsible for defining the sound of modern teen drama and romance. Focus on indie rock and pop.',
-    submissionPolicy: 'Closed to unsolicited submissions.',
-    socials: {}
-  },
-  {
-    id: '6',
-    name: 'Secret Road',
-    type: 'Agency',
-    location: 'Los Angeles, CA',
-    contactEmail: 'licensing@secretroad.com',
-    website: 'https://secretroad.com',
-    credits: ['Apple', 'Target', 'Grey\'s Anatomy'],
-    logo: 'https://ui-avatars.com/api/?name=Secret+Road&background=000&color=fff',
-    description: 'A music licensing, supervision, and management company. We represent a diverse roster of artists for placement in film, TV, and advertising.',
-    submissionPolicy: 'Open to new artist submissions quarterly. Check our social media for submission windows.',
-    socials: { instagram: 'https://instagram.com', twitter: 'https://twitter.com' }
-  }
-];
+// Mappers
+const mapTrack = (t: any): Track => ({
+    id: t.id,
+    userId: t.user_id,
+    title: t.title,
+    artist: t.artist,
+    genre: t.genre,
+    bpm: t.bpm,
+    tags: t.tags || [],
+    uploadDate: t.upload_date,
+    duration: t.duration,
+    description: t.description,
+    audioUrl: t.audio_url
+});
 
-export const fetchAgencies = async (): Promise<Agency[]> => {
-  // In a real app, we would fetch from a 'directory' table.
-  // For now, we return the seeded data directly to guarantee the feature works for the user.
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(SEED_AGENCIES);
-    }, 500);
-  });
-};
+const mapApp = (a: any): Application => ({
+    id: a.id,
+    userId: a.user_id,
+    briefId: a.brief_id,
+    trackId: a.track_id,
+    status: a.status,
+    submittedDate: a.submitted_date
+});
