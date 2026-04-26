@@ -1,7 +1,11 @@
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
+import { Plus } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { BriefList, type BriefWithProducer } from '@/components/briefs/BriefList'
-import { BriefForm } from '@/components/briefs/BriefForm'
+import { buttonVariants } from '@/components/ui/button'
+
+export const dynamic = 'force-dynamic'
 
 export default async function BriefsPage() {
   const supabase = await createClient()
@@ -58,7 +62,7 @@ export default async function BriefsPage() {
     )
   }
 
-  // ── Producer: see own briefs + create form ──────────────────────────────────
+  // ── Producer: see own briefs ────────────────────────────────────────────────
   if (profile.role === 'producer') {
     const { data: producer } = await supabase
       .from('producers')
@@ -83,27 +87,23 @@ export default async function BriefsPage() {
 
     return (
       <div className="flex flex-col gap-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Briefs</h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Submit a brief and we'll hand-pick 3–5 vetted composers for you.
-          </p>
-        </div>
-
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <h2 className="text-base font-semibold mb-1">New brief</h2>
-          <p className="text-sm text-muted-foreground mb-4">
-            Describe what you need. Our team will curate the right composers and follow up directly.
-          </p>
-          <BriefForm />
-        </div>
-
-        {briefs.length > 0 && (
-          <div className="flex flex-col gap-3">
-            <h2 className="text-base font-semibold">Your briefs</h2>
-            <BriefList briefs={briefs} />
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Briefs</h1>
+            <p className="text-muted-foreground text-sm mt-1">
+              Submit a brief and we'll hand-pick 3–5 vetted composers for you.
+            </p>
           </div>
-        )}
+          <Link
+            href="/dashboard/briefs/new"
+            className={buttonVariants({ variant: 'default', size: 'sm' })}
+          >
+            <Plus className="h-4 w-4" />
+            New brief
+          </Link>
+        </div>
+
+        <BriefList briefs={briefs} />
       </div>
     )
   }

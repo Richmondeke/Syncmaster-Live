@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { FileText } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import type { Database, BriefStatus } from '@/types/database.types'
+import { Plus } from 'lucide-react'
 
 export type BriefWithProducer = Database['public']['Tables']['briefs']['Row'] & {
   producers?: {
@@ -39,8 +40,17 @@ export function BriefList({ briefs, showProducer = false, emptyMessage }: Props)
         <p className="text-xs text-muted-foreground mt-1">
           {emptyMessage ?? (showProducer
             ? 'Briefs from producers will appear here once submitted.'
-            : 'Submit your first brief to get started.')}
+            : 'Create your first brief to get started.')}
         </p>
+        {!showProducer && (
+          <Link
+            href="/dashboard/briefs/new"
+            className={buttonVariants({ size: 'sm' }) + ' mt-4 inline-flex gap-1.5'}
+          >
+            <Plus className="h-4 w-4" />
+            New brief
+          </Link>
+        )}
       </div>
     )
   }
