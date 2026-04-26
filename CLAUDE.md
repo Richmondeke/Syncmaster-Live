@@ -1,5 +1,4 @@
 @AGENTS.md
-@PRD.md
 
 # CLAUDE.md — Project Build Context
 > Paste this file into every Claude Code session. Update the three fields marked [UPDATE] before each session.
@@ -10,7 +9,7 @@
 
 **Project:** [PROJECT_NAME]
 **Session #:** [N]
-**Current Build Phase:** [Phase 1: Foundation | Phase 2: Core Build | Phase 3: Production | Phase 4: Ship It]
+**Current Build Phase:** [Phase A: Foundation ✓ | Phase B: Core Loop | Phase C: Schema Extension | Phase D: AI Layer | Phase E: Production + Ship]
 **Session Goal:** [ONE specific feature — e.g. "Build the track upload flow with Supabase Storage"]
 
 ---
@@ -55,6 +54,7 @@ e.g.
 | Storage | Supabase Storage |
 | Email | Resend + React Email |
 | Deployment | Vercel + Vercel Cron |
+| AI Layer | Anthropic SDK (`@anthropic-ai/sdk`) — via `services/ai.ts` only |
 
 ---
 
@@ -128,6 +128,35 @@ type Track = Database['public']['Tables']['tracks']['Row']
 
 // ❌ WRONG
 const track: any = ...
+```
+
+### AI calls — agents/ and services/ only. Never inline.
+```typescript
+// ✅ CORRECT — server action calls an agent
+import { matchComposers } from '@/agents/composer-matcher'
+const suggestions = await matchComposers(briefId)
+
+// ✅ CORRECT — agent calls services/ai.ts
+import { ai } from '@/services/ai'
+const result = await ai.messages.create({ ... })
+
+// ❌ WRONG — Anthropic SDK called directly in a server action or component
+import Anthropic from '@anthropic-ai/sdk'  // not here
+```
+
+Use plain Anthropic SDK calls (via `services/ai.ts`) for all V1.5 AI work.
+Only introduce LangGraph if a workflow requires branching agent chains or multi-step tool loops — simple scoring and ranking does not qualify.
+
+### Security — enforce at every boundary
+```typescript
+// ✅ Admin-only server action — always verify role server-side
+const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+if (profile?.role !== 'admin') throw new Error('Forbidden')
+
+// ✅ Rate-limit auth endpoints via middleware (proxy.ts)
+// ✅ Validate all external input at the boundary — never trust form data
+// ✅ Webhook handlers must verify signatures before processing
+// ✅ Never expose Supabase service_role key to the browser
 ```
 
 ---
@@ -247,6 +276,15 @@ import { AlertCircle } from 'lucide-react'
 │   └── actions/
 │       ├── auth.ts             ← signIn, signUp, signOut
 │       └── [entity].ts         ← CRUD for each entity
+├── agents/                     ← AI agents — one file per domain
+│   ├── brief-analyzer.ts       ← scores brief, returns genre/mood tags
+│   └── composer-matcher.ts     ← ranks active composers against a brief
+├── core/
+│   └── workflows/              ← state machine transition logic
+│       ├── brief-workflow.ts
+│       └── submission-workflow.ts
+├── services/
+│   └── ai.ts                   ← single Anthropic SDK client — import ONLY from agents/
 ├── components/
 │   ├── ui/                     ← shadcn/ui — DO NOT EDIT
 │   └── [feature]/              ← your components, kebab-case files
@@ -261,7 +299,13 @@ import { AlertCircle } from 'lucide-react'
 ├── types/
 │   └── database.types.ts       ← generated, never hand-edit
 ├── emails/                     ← React Email templates
-├── middleware.ts               ← auth guard
+├── docs/                       ← PRD topic files — load only what session needs
+│   ├── prd-vision.md
+│   ├── prd-states-and-flows.md
+│   ├── prd-features-v1.md
+│   ├── prd-features-v1.5.md
+│   └── prd-roadmap.md
+├── proxy.ts                    ← auth guard middleware
 ├── CLAUDE.md                   ← this file
 └── .env.local                  ← never commit
 ```
@@ -298,6 +342,10 @@ import { AlertCircle } from 'lucide-react'
 ✗ Do not create API routes for data that should use Server Actions
 ✗ Do not use localStorage for auth state — Supabase SSR handles cookies
 ✗ Do not truncate code output — always write complete files
+✗ Do not import @anthropic-ai/sdk anywhere except services/ai.ts
+✗ Do not call agents/ functions from components or pages — only from server actions
+✗ Do not skip role verification in server actions — always check user.role server-side
+✗ Do not introduce LangGraph unless a workflow has branching multi-step agent loops
 ```
 
 ---
@@ -305,30 +353,44 @@ import { AlertCircle } from 'lucide-react'
 ## BUILD PHASES — Current position in the arc
 
 ```
-Phase 1 — Foundation          [Sessions 1–2]
+Phase A — Foundation (COMPLETE)
   ✓ Supabase project + schema + RLS
   ✓ Next.js scaffold + Tailwind + shadcn/ui
   ✓ Auth flow: login, signup, signout, middleware guard
   ✓ Dashboard shell: layout, sidebar, header
-  → Output: Working auth. Empty dashboard. No features yet.
+  ✓ Admin composer vetting (approve / reject)
+  → Output: Working auth. Role-gated dashboard. No product loop yet.
 
-Phase 2 — Core Build          [Sessions 3–5]
-  → One feature per session. One testable output per session.
+Phase B — Core Product Loop   [Sessions 3–5] ← CURRENT
+  → Brief creation + management (producer + admin)
+  → Outreach: admin invites composers to a brief
+  → Composer submission flow (up to 3 tracks per brief)
+  → Placement logging (admin: fee + commission)
+  → Placements view (all roles) + Settings page
   → Pattern: DB action → Server Action → Server Component → Client UI
-  → Output: Main product loop works end-to-end.
+  → Output: Full loop runs end-to-end. Real data flows.
 
-Phase 3 — Production Features [Sessions 6–7]
-  → Email notifications (Resend + React Email)
-  → Error boundaries + toast feedback
-  → Loading skeletons
-  → Mobile responsiveness audit
-  → Output: Production-quality UX.
+Phase C — Schema Extension    [1 session, non-breaking]
+  → Add AI metadata columns (ai_score, ai_tags, ai_match_reason, ai_suggested_composers)
+  → Migration: supabase/migrations/002_ai_fields.sql
+  → Update types/database.types.ts
+  → Output: Schema is V1.5-ready. All existing code unchanged.
 
-Phase 4 — Ship It             [Session 8]
-  → Vercel deploy
-  → Env vars set in production
+Phase D — AI Layer            [1–2 sessions]
+  → services/ai.ts — Anthropic SDK client
+  → agents/brief-analyzer.ts — tags briefs with genre/mood on activation
+  → agents/composer-matcher.ts — scores active composers against a brief
+  → Wire into admin brief view as suggestions (human still decides)
+  → Output: Admin sees AI-ranked composer list. Hybrid mode.
+
+Phase E — Production + Ship   [Sessions 6–8]
+  → Email notifications on all state transitions
+  → Error boundaries + toast feedback on all mutations
+  → Loading skeletons on all data pages
+  → Mobile audit (375px baseline)
+  → Vercel deploy + env vars in production
   → Smoke test all critical flows
-  → Output: Live URL.
+  → Output: Live URL. Production-quality UX.
 ```
 
 ---
@@ -353,15 +415,40 @@ Claude must always structure output as:
 
 ---
 
+## PRD REFERENCE — Load only what the session needs
+
+Do NOT load the full PRD every session. Reference only the relevant doc from `/docs/`:
+
+| Session task | Load this doc |
+|-------------|---------------|
+| Auth, signup, roles, middleware | `docs/prd-states-and-flows.md` |
+| Briefs (create, manage, activate) | `docs/prd-states-and-flows.md` + `docs/prd-features-v1.md` |
+| Outreach (inviting composers) | `docs/prd-states-and-flows.md` + `docs/prd-features-v1.md` |
+| Submissions (composer submits tracks) | `docs/prd-states-and-flows.md` + `docs/prd-features-v1.md` |
+| Placements + Settings | `docs/prd-features-v1.md` |
+| Workflow state guards (core/workflows/) | `docs/prd-features-v1.5.md` |
+| AI layer (agents, services) | `docs/prd-features-v1.5.md` |
+| Schema migration | `docs/prd-features-v1.5.md` |
+| Production polish (emails, skeletons, toasts) | `docs/prd-features-v1.5.md` |
+| Roadmap questions or competitor context | `docs/prd-roadmap.md` |
+| Personas or product vision | `docs/prd-vision.md` |
+
+Add the relevant `@docs/prd-*.md` reference to the [UPDATE 3] block in each session prompt.
+
+---
+
 ## SESSION PROMPT TEMPLATE
 > Copy this block, fill in the three [UPDATE] fields at the top, and paste it as your opening message in Claude Code.
 
 ```
-I'm working on [PROJECT_NAME].
+I'm working on SyncMaster.
 
 Read CLAUDE.md for full project context.
+PRD reference for this session: @docs/prd-[relevant-file].md
 
 Session goal: [SINGLE FEATURE — be specific]
+
+Current phase: [Phase A ✓ | Phase B | Phase C | Phase D | Phase E]
 
 Files I'm giving you permission to modify:
 - [file 1]
@@ -372,7 +459,7 @@ Where we left off:
 [2–3 sentences of previous session state]
 
 Constraints this session:
-- No new npm packages
+- No new npm packages unless listed below
 - Mobile-first
 - Complete files only — no truncation
 - Follow all rules in CLAUDE.md

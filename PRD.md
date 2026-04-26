@@ -2,7 +2,7 @@
 > Source of truth for all build sessions. Claude Code reads this before writing any feature code.
 > Notebook source: https://notebooklm.google.com/notebook/5b1d4485-3ed6-43e4-ba3d-5a16271a3ef2
 
-**Version:** 1.0
+**Version:** 1.5
 **Last updated:** April 2026
 
 ---
@@ -71,7 +71,7 @@ draft → active → matched → closed
 | DB State | UX Label | Trigger |
 |----------|----------|---------|
 | `draft` | Saved, not submitted | Producer saves |
-| `active` | Curating / Live | Admin moves from draft; invites composers |
+| `active` | Curating / Live | Admin activates (Phase D+: AI analysis also runs) |
 | `matched` | Shortlisting / Intro made | Admin after submission deadline |
 | `closed` | Placed or No placement | Admin closes |
 
@@ -110,12 +110,13 @@ invited → accepted → declined
 1. /signup → selects Producer → immediate dashboard access
 2. Creates brief: title, description, genres, budget, deadline
 3. Brief saved as draft → admin notified
-4. Admin curates: selects 3–5 matching active composers via outreach
-5. Composers receive invite → submit up to 3 tracks + creative note
-6. Admin shortlists → producer reviews curated tracks
-7. Producer selects preferred track
-8. Admin sends warm intro email externally
-9. Deal closes → placement logged with fee + commission
+4. Admin activates brief → manually selects 3–5 composers (Phase D+: AI ranks suggestions)
+5. Admin creates outreach records → composers notified
+6. Composers receive invite → submit up to 3 tracks + creative note
+7. Admin shortlists → producer reviews curated tracks
+8. Producer selects preferred track
+9. Admin sends warm intro email externally
+10. Deal closes → placement logged with fee + commission
 ```
 
 ### Flow 3 — Composer Submits to Brief
@@ -134,8 +135,8 @@ invited → accepted → declined
 1. New application → pending count on /dashboard/composers
 2. Reviews application → approves or rejects
 3. New brief from producer → reviews at /dashboard/briefs
-4. Identifies 3–5 active composers → creates outreach records
-5. Composers notified → submissions arrive
+4. Activates brief → manually identifies 3–5 composers (Phase D+: AI ranks suggestions)
+5. Creates outreach records → composers notified → submissions arrive
 6. Admin curates shortlist → moves brief to matched
 7. Producer selects → admin sends warm intro externally
 8. Logs placement: fee, commission → status: confirmed
@@ -177,9 +178,22 @@ invited → accepted → declined
 
 ---
 
-### V1.5 — Production Polish *(Phase 3 — Sessions 6–7)*
-> Same data model. Production-quality UX.
+### V1.5 — AI-Assisted Admin + Production Polish *(Phase C–E — Sessions 6–8)*
+> Same data model. AI suggestions layer on top of manual admin workflow. Admin still decides everything.
 
+**Schema Extension (non-breaking)**
+- [ ] `ai_score`, `ai_tags` on `composers`
+- [ ] `ai_match_score`, `ai_match_reason` on `submissions`
+- [ ] `ai_suggested_composers` on `briefs`
+
+**AI Layer (admin-facing only)**
+- [ ] `services/ai.ts` — Anthropic SDK client (model: claude-sonnet-4-6)
+- [ ] `agents/brief-analyzer.ts` — tags brief with genre/mood on activation
+- [ ] `agents/composer-matcher.ts` — ranks active composers against brief with reasoning
+- [ ] Admin brief view shows AI-ranked composer suggestions with match reasons
+- [ ] Admin can accept or ignore suggestions — AI never auto-creates outreach
+
+**Production Polish**
 - [ ] Email notifications on all key state transitions
 - [ ] Loading skeletons on all data pages
 - [ ] Error boundaries on all routes
