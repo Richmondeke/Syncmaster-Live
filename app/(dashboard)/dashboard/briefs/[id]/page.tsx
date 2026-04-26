@@ -2,7 +2,7 @@ import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
-import { updateBriefStatus } from '@/app/actions/briefs'
+import { BriefStatusControl } from '@/components/briefs/BriefStatusControl'
 import { Button, buttonVariants } from '@/components/ui/button'
 import type { BriefStatus } from '@/types/database.types'
 
@@ -178,52 +178,7 @@ export default async function BriefDetailPage({ params }: Props) {
       </div>
 
       {/* Admin: status controls */}
-      {profile.role === 'admin' && (
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <p className="text-sm font-semibold mb-3">Status controls</p>
-          <div className="flex flex-wrap gap-2">
-            {brief.status === 'draft' && (
-              <form action={updateBriefStatus}>
-                <input type="hidden" name="briefId" value={brief.id} />
-                <input type="hidden" name="status" value="active" />
-                <Button type="submit" size="sm">
-                  Activate brief
-                </Button>
-              </form>
-            )}
-            {brief.status === 'active' && (
-              <>
-                <form action={updateBriefStatus}>
-                  <input type="hidden" name="briefId" value={brief.id} />
-                  <input type="hidden" name="status" value="matched" />
-                  <Button type="submit" size="sm">
-                    Mark as matched
-                  </Button>
-                </form>
-                <form action={updateBriefStatus}>
-                  <input type="hidden" name="briefId" value={brief.id} />
-                  <input type="hidden" name="status" value="draft" />
-                  <Button type="submit" variant="outline" size="sm">
-                    Revert to draft
-                  </Button>
-                </form>
-              </>
-            )}
-            {(brief.status === 'active' || brief.status === 'matched') && (
-              <form action={updateBriefStatus}>
-                <input type="hidden" name="briefId" value={brief.id} />
-                <input type="hidden" name="status" value="closed" />
-                <Button type="submit" variant="destructive" size="sm">
-                  Close brief
-                </Button>
-              </form>
-            )}
-            {brief.status === 'closed' && (
-              <p className="text-sm text-muted-foreground">This brief is closed. No further actions available.</p>
-            )}
-          </div>
-        </div>
-      )}
+      {profile.role === 'admin' && <BriefStatusControl briefId={brief.id} currentStatus={brief.status} />}
 
       {/* Producer: what happens next */}
       {profile.role === 'producer' && (
