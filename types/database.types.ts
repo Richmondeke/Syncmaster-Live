@@ -33,6 +33,7 @@ export type Database = {
           avatar_url?: string | null
           updated_at?: string
         }
+        Relationships: []
       }
       composers: {
         Row: {
@@ -62,6 +63,15 @@ export type Database = {
           status?: ComposerStatus
           updated_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: 'composers_profile_id_fkey'
+            columns: ['profile_id']
+            isOneToOne: true
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          }
+        ]
       }
       producers: {
         Row: {
@@ -88,16 +98,27 @@ export type Database = {
           profile_complete?: boolean
           updated_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: 'producers_profile_id_fkey'
+            columns: ['profile_id']
+            isOneToOne: true
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          }
+        ]
       }
       genres: {
         Row: { id: string; name: string }
         Insert: { id?: string; name: string }
         Update: { name?: string }
+        Relationships: []
       }
       communities: {
         Row: { id: string; name: string }
         Insert: { id?: string; name: string }
         Update: { name?: string }
+        Relationships: []
       }
       briefs: {
         Row: {
@@ -136,6 +157,15 @@ export type Database = {
           status?: BriefStatus
           updated_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: 'briefs_producer_id_fkey'
+            columns: ['producer_id']
+            isOneToOne: false
+            referencedRelation: 'producers'
+            referencedColumns: ['id']
+          }
+        ]
       }
       submissions: {
         Row: {
@@ -164,6 +194,22 @@ export type Database = {
           status?: SubmissionStatus
           updated_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: 'submissions_brief_id_fkey'
+            columns: ['brief_id']
+            isOneToOne: false
+            referencedRelation: 'briefs'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'submissions_composer_id_fkey'
+            columns: ['composer_id']
+            isOneToOne: false
+            referencedRelation: 'composers'
+            referencedColumns: ['id']
+          }
+        ]
       }
       placements: {
         Row: {
@@ -190,6 +236,15 @@ export type Database = {
           status?: PlacementStatus
           updated_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: 'placements_submission_id_fkey'
+            columns: ['submission_id']
+            isOneToOne: false
+            referencedRelation: 'submissions'
+            referencedColumns: ['id']
+          }
+        ]
       }
       outreach: {
         Row: {
@@ -212,6 +267,22 @@ export type Database = {
           status?: OutreachStatus
           responded_at?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: 'outreach_brief_id_fkey'
+            columns: ['brief_id']
+            isOneToOne: false
+            referencedRelation: 'briefs'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'outreach_composer_id_fkey'
+            columns: ['composer_id']
+            isOneToOne: false
+            referencedRelation: 'composers'
+            referencedColumns: ['id']
+          }
+        ]
       }
       tasks: {
         Row: {
@@ -248,6 +319,7 @@ export type Database = {
           due_date?: string | null
           updated_at?: string
         }
+        Relationships: []
       }
     }
     Views: Record<string, never>

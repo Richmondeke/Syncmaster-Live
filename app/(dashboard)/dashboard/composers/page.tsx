@@ -12,7 +12,7 @@ export default async function ComposersPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('role')
+    .select('*')
     .eq('id', user.id)
     .single()
 
