@@ -1,11 +1,13 @@
 'use client'
 
+import { useTransition } from 'react'
 import { LogOut } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -41,6 +43,12 @@ function getInitials(fullName: string | null, email: string): string {
 }
 
 export function Header({ user }: Props) {
+  const [pending, startTransition] = useTransition()
+
+  function handleSignOut() {
+    startTransition(() => signOut())
+  }
+
   return (
     <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between border-b bg-background px-4 md:px-6">
       {/* Spacer keeps content right-aligned on mobile when hamburger is visible */}
@@ -64,24 +72,26 @@ export function Header({ user }: Props) {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col gap-0.5">
-                {user.fullName && (
-                  <p className="text-sm font-medium leading-none">{user.fullName}</p>
-                )}
-                <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-              </div>
-            </DropdownMenuLabel>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col gap-0.5">
+                  {user.fullName && (
+                    <p className="text-sm font-medium leading-none">{user.fullName}</p>
+                  )}
+                  <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+                </div>
+              </DropdownMenuLabel>
+            </DropdownMenuGroup>
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem asChild>
-              <form action={signOut} className="w-full">
-                <button type="submit" className="flex w-full cursor-pointer items-center gap-2">
-                  <LogOut className="h-4 w-4" aria-hidden="true" />
-                  Sign out
-                </button>
-              </form>
+            <DropdownMenuItem
+              onClick={handleSignOut}
+              disabled={pending}
+              className="cursor-pointer gap-2"
+            >
+              <LogOut className="h-4 w-4" aria-hidden="true" />
+              {pending ? 'Signing out…' : 'Sign out'}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

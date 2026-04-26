@@ -2,6 +2,8 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { sendEmail } from '@/lib/email/send'
+import { applicationReceivedEmail } from '@/emails/application-received'
 import type { Role } from '@/types/database.types'
 
 export type AuthState = {
@@ -57,10 +59,18 @@ export async function signUp(
     return { error: 'Something went wrong. Please try again.' }
   }
 
+  if (role === 'composer') {
+    await sendEmail({
+      to: email,
+      subject: 'Your SyncMaster application has been received',
+      html: applicationReceivedEmail(fullName),
+    })
+  }
+
   redirect('/dashboard')
 }
 
-export async function signOut(_formData: FormData): Promise<void> {
+export async function signOut(): Promise<void> {
   const supabase = await createClient()
   await supabase.auth.signOut()
   redirect('/login')
