@@ -299,6 +299,8 @@ import { AlertCircle } from 'lucide-react'
 ├── types/
 │   └── database.types.ts       ← generated, never hand-edit
 ├── emails/                     ← React Email templates
+├── scripts/
+│   └── gen-session.mjs         ← run `npm run session` to generate session prompt
 ├── docs/                       ← PRD topic files — load only what session needs
 │   ├── prd-vision.md
 │   ├── prd-states-and-flows.md

@@ -9,12 +9,12 @@
 
 ## Admin Tools
 - [x] Composer vetting: approve / reject
-- [ ] Brief management: review, activate, status transitions
+- [x] Brief management: review, activate, status transitions
 - [ ] Outreach: invite specific composers to a brief
 - [ ] Placement logging: fee + commission entry
 
 ## Producer Flow
-- [ ] Create and manage briefs
+- [x] Create and manage briefs
 - [ ] View curated shortlist when ready
 - [ ] Select preferred track
 
