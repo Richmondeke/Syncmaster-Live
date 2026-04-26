@@ -87,7 +87,7 @@ export async function updateBriefStatus(formData: FormData): Promise<void> {
   const briefId = formData.get('briefId') as string
   const status = formData.get('status') as BriefStatus
 
-  if (!briefId || !['active', 'matched', 'closed'].includes(status)) {
+  if (!briefId || !['draft', 'active', 'matched', 'closed'].includes(status)) {
     throw new Error('Invalid input')
   }
 

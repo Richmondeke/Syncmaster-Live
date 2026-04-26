@@ -192,13 +192,22 @@ export default async function BriefDetailPage({ params }: Props) {
               </form>
             )}
             {brief.status === 'active' && (
-              <form action={updateBriefStatus}>
-                <input type="hidden" name="briefId" value={brief.id} />
-                <input type="hidden" name="status" value="matched" />
-                <Button type="submit" size="sm">
-                  Mark as matched
-                </Button>
-              </form>
+              <>
+                <form action={updateBriefStatus}>
+                  <input type="hidden" name="briefId" value={brief.id} />
+                  <input type="hidden" name="status" value="matched" />
+                  <Button type="submit" size="sm">
+                    Mark as matched
+                  </Button>
+                </form>
+                <form action={updateBriefStatus}>
+                  <input type="hidden" name="briefId" value={brief.id} />
+                  <input type="hidden" name="status" value="draft" />
+                  <Button type="submit" variant="outline" size="sm">
+                    Revert to draft
+                  </Button>
+                </form>
+              </>
             )}
             {(brief.status === 'active' || brief.status === 'matched') && (
               <form action={updateBriefStatus}>
