@@ -43,6 +43,8 @@ export type Database = {
           genres: string[] | null
           portfolio_url: string | null
           status: ComposerStatus
+          ai_score: number | null
+          ai_tags: string[] | null
           created_at: string
           updated_at: string
         }
@@ -53,6 +55,8 @@ export type Database = {
           genres?: string[] | null
           portfolio_url?: string | null
           status?: ComposerStatus
+          ai_score?: number | null
+          ai_tags?: string[] | null
           created_at?: string
           updated_at?: string
         }
@@ -61,6 +65,8 @@ export type Database = {
           genres?: string[] | null
           portfolio_url?: string | null
           status?: ComposerStatus
+          ai_score?: number | null
+          ai_tags?: string[] | null
           updated_at?: string
         }
         Relationships: [
@@ -131,6 +137,7 @@ export type Database = {
           budget_max: number | null
           deadline: string | null
           status: BriefStatus
+          ai_suggested_composers: string[] | null
           created_at: string
           updated_at: string
         }
@@ -144,6 +151,7 @@ export type Database = {
           budget_max?: number | null
           deadline?: string | null
           status?: BriefStatus
+          ai_suggested_composers?: string[] | null
           created_at?: string
           updated_at?: string
         }
@@ -155,6 +163,7 @@ export type Database = {
           budget_max?: number | null
           deadline?: string | null
           status?: BriefStatus
+          ai_suggested_composers?: string[] | null
           updated_at?: string
         }
         Relationships: [
@@ -175,6 +184,8 @@ export type Database = {
           track_url: string
           notes: string | null
           status: SubmissionStatus
+          ai_match_score: number | null
+          ai_match_reason: string | null
           created_at: string
           updated_at: string
         }
@@ -185,6 +196,8 @@ export type Database = {
           track_url: string
           notes?: string | null
           status?: SubmissionStatus
+          ai_match_score?: number | null
+          ai_match_reason?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -192,6 +205,8 @@ export type Database = {
           track_url?: string
           notes?: string | null
           status?: SubmissionStatus
+          ai_match_score?: number | null
+          ai_match_reason?: string | null
           updated_at?: string
         }
         Relationships: [

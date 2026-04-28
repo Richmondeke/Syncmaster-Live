@@ -40,7 +40,7 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Briefs',
     href: '/dashboard/briefs',
     icon: FileText,
-    roles: ['producer', 'admin'],
+    roles: ['composer', 'producer', 'admin'],
   },
   {
     label: 'Placements',
