@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { adminClient } from '@/lib/supabase/admin'
+import { getAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { sendEmail } from '@/services/email'
 import { composerApprovedEmail } from '@/emails/composer-approved'
@@ -41,7 +41,7 @@ export async function vetComposer(formData: FormData): Promise<void> {
 
   // Send email — best effort
   try {
-    const { data: authUser } = await adminClient.auth.admin.getUserById(profileId)
+    const { data: authUser } = await getAdminClient().auth.admin.getUserById(profileId)
     const { data: composerProfile } = await supabase
       .from('profiles')
       .select('full_name')

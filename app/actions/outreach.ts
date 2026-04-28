@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { adminClient } from '@/lib/supabase/admin'
+import { getAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { sendEmail } from '@/services/email'
 import { outreachInviteEmail } from '@/emails/outreach-invite'
@@ -62,7 +62,7 @@ export async function inviteComposer(formData: FormData): Promise<void> {
       .single()
 
     if (composerRow) {
-      const { data: authUser } = await adminClient.auth.admin.getUserById(composerRow.profile_id)
+      const { data: authUser } = await getAdminClient().auth.admin.getUserById(composerRow.profile_id)
       const email = authUser.user?.email
       const name = (composerRow.profiles as unknown as { full_name: string | null })?.full_name ?? 'Composer'
       const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
