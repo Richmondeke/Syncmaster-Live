@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { BriefStatusControl } from '@/components/briefs/BriefStatusControl'
 import { OutreachPanel, type ComposerForOutreach } from '@/components/briefs/OutreachPanel'
 import { OutreachResponse } from '@/components/briefs/OutreachResponse'
+import { AiSuggestionsPanel } from '@/components/briefs/AiSuggestionsPanel'
 import { buttonVariants } from '@/components/ui/button'
 import type { BriefStatus, Database } from '@/types/database.types'
 
@@ -39,6 +40,7 @@ type BriefDetail = {
   budget_max: number | null
   deadline: string | null
   status: BriefStatus
+  ai_suggested_composers: string[] | null
   created_at: string
   updated_at: string
   producers: {
@@ -74,7 +76,8 @@ export default async function BriefDetailPage({ params }: Props) {
   const { data, error } = await supabase
     .from('briefs')
     .select(
-      `id, producer_id, title, description, genres, budget_min, budget_max, deadline, status, created_at, updated_at,
+      `id, producer_id, title, description, genres, budget_min, budget_max, deadline, status,
+      ai_suggested_composers, created_at, updated_at,
       producers!inner ( company, profiles!inner ( full_name ) )`,
     )
     .eq('id', id)
@@ -218,6 +221,16 @@ export default async function BriefDetailPage({ params }: Props) {
     outreachRecords = (outreachResult.data ?? []) as OutreachRow[]
   }
 
+  // Build AI suggestions: order composers by ai_suggested_composers ranking
+  const suggestedComposers =
+    brief.ai_suggested_composers && brief.ai_suggested_composers.length > 0
+      ? brief.ai_suggested_composers
+          .map((cid) => composers.find((c) => c.id === cid))
+          .filter((c): c is ComposerForOutreach => c !== undefined)
+      : []
+
+  const invitedIds = new Set(outreachRecords.map((o) => o.composer_id))
+
   const producerName = brief.producers?.profiles?.full_name ?? 'Unknown'
   const producerCompany = brief.producers?.company
 
@@ -307,16 +320,22 @@ export default async function BriefDetailPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Admin: status controls + outreach */}
+      {/* Admin: status controls + AI suggestions + outreach */}
       {profile.role === 'admin' && (
         <>
           <BriefStatusControl briefId={brief.id} currentStatus={brief.status} />
           {brief.status === 'active' && (
-            <OutreachPanel
-              briefId={brief.id}
-              composers={composers}
-              outreachRecords={outreachRecords}
-            />
+            <>
+              <AiSuggestionsPanel
+                composers={suggestedComposers}
+                invitedIds={invitedIds}
+              />
+              <OutreachPanel
+                briefId={brief.id}
+                composers={composers}
+                outreachRecords={outreachRecords}
+              />
+            </>
           )}
         </>
       )}

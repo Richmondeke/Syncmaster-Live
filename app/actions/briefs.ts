@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { analyzeBrief } from '@/agents/brief-analyzer'
 import type { BriefStatus } from '@/types/database.types'
 
 export type BriefFormState = { error: string | null }
@@ -92,8 +93,15 @@ export async function updateBriefStatus(formData: FormData): Promise<void> {
   }
 
   const { error } = await supabase.from('briefs').update({ status }).eq('id', briefId)
-
   if (error) throw error
+
+  if (status === 'active') {
+    try {
+      await analyzeBrief(briefId)
+    } catch {
+      // AI analysis is best-effort — status update succeeds regardless
+    }
+  }
 
   revalidatePath('/dashboard/briefs')
   revalidatePath(`/dashboard/briefs/${briefId}`)
