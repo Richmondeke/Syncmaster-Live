@@ -88,7 +88,7 @@ test.describe('Outreach — composer responds', () => {
     await respondBtn.click()
     await expect(page).toHaveURL(/dashboard\/briefs\/.+/)
     await page.getByRole('button', { name: 'Accept brief' }).click()
-    await expect(page.getByText("You've accepted this brief")).toBeVisible()
+    await expect(page.getByText('Submit tracks')).toBeVisible()
   })
 
   test('composer can decline an invitation', async ({ page }) => {
