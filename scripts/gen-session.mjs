@@ -247,11 +247,11 @@ function suggestFiles(item) {
 // ─── PRD doc suggestion ───────────────────────────────────────────────────────
 
 function suggestPRDDoc(phase) {
-  if (phase === 'B') return '@docs/prd-states-and-flows.md @docs/prd-features-v1.md'
-  if (phase === 'C') return '@docs/prd-features-v1.5.md'
-  if (phase === 'D') return '@docs/prd-features-v1.5.md'
-  if (phase === 'E') return '@docs/prd-features-v1.5.md'
-  return '@docs/prd-vision.md'
+  if (phase === 'B') return '@01_PRD/STATES-AND-FLOWS.md @01_PRD/FEATURES/checklist-v1.md'
+  if (phase === 'C') return '@01_PRD/FEATURES/ai-layer.md'
+  if (phase === 'D') return '@01_PRD/FEATURES/ai-layer.md'
+  if (phase === 'E') return '@01_PRD/FEATURES/ai-layer.md'
+  return '@01_PRD/OVERVIEW.md'
 }
 
 // ─── Git context ──────────────────────────────────────────────────────────────
@@ -277,8 +277,8 @@ const PHASE_LABELS = {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
-const v1  = parseCheckboxes(read('docs/prd-features-v1.md'))
-const v15 = parseCheckboxes(read('docs/prd-features-v1.5.md'))
+const v1  = parseCheckboxes(read('01_PRD/FEATURES/checklist-v1.md'))
+const v15 = parseCheckboxes(read('01_PRD/FEATURES/ai-layer.md'))
 
 const phase       = detectPhase(v1, v15)
 const activeList  = phase === 'B' ? v1 : v15

@@ -4,8 +4,8 @@
 **Roles affected:** Composer (submit), Admin (review)
 
 ## What it does
-- Composer uploads up to 3 tracks per brief
-- Track stored in Supabase Storage
+- Composer submits up to 3 track URLs + creative note per brief
+- Track URLs only — no file upload in V1 (Supabase Storage not used for tracks)
 - Admin can view all submissions per brief
 
 ## Constraints

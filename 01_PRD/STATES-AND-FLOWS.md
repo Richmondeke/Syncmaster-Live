@@ -38,6 +38,8 @@ pending → confirmed → paid
 invited → accepted → declined
 ```
 
+---
+
 ## User Flows
 
 ### Flow 1 — Composer Onboarding
@@ -59,7 +61,7 @@ Phase B (manual):
 3. Brief saved as draft → admin notified
 4. Admin activates brief → manually identifies 3–5 matching active composers
 5. Admin creates outreach records → composers notified
-6. Composers receive invite → submit up to 3 tracks + creative note
+6. Composers receive invite → submit up to 3 track URLs + creative note
 7. Admin shortlists → producer reviews curated tracks
 8. Producer selects preferred track
 9. Admin sends warm intro email externally

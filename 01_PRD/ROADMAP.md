@@ -32,7 +32,10 @@
 - Global Music Supervisor tier: premium access, bulk licensing
 - Mobile app (iOS + Android)
 
+---
+
 ## Monetisation
+
 | Version | Model |
 |---------|-------|
 | V1.0 | Commission on placement fee (15–20%). Manual invoicing. |
@@ -40,7 +43,10 @@
 | V3.0 | Composer premium tier + Supervisor API access fee |
 | V4.0 | Publishing admin fee. White-label licensing. Enterprise contracts. |
 
+---
+
 ## Competitors Reference
+
 | Platform | Relevant Feature | SyncMaster Version |
 |----------|-----------------|-------------------|
 | TAXI | Human A&R feedback on rejections | V1.5 |

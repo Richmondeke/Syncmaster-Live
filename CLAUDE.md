@@ -145,9 +145,10 @@ E — Production        →  Emails, toasts, skeletons, mobile audit, Vercel dep
 
 | Task | Doc |
 |------|-----|
-| AI layer, agents, schema | `docs/prd-features-v1.5.md` |
-| Briefs, outreach, submissions | `docs/prd-features-v1.md` + `docs/prd-states-and-flows.md` |
-| Production polish | `docs/prd-features-v1.5.md` |
-| Vision, personas | `docs/prd-vision.md` |
+| AI layer, agents, production polish | `01_PRD/FEATURES/ai-layer.md` |
+| Briefs, outreach, submissions | `01_PRD/FEATURES/briefs.md` + `01_PRD/STATES-AND-FLOWS.md` |
+| State machines + user flows | `01_PRD/STATES-AND-FLOWS.md` |
+| Vision, personas, out-of-scope | `01_PRD/OVERVIEW.md` |
+| Post-V1.5 roadmap | `01_PRD/ROADMAP.md` |
 
 Session prompt templates → `08_CONTEXT/PROMPTS.md`

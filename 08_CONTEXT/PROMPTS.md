@@ -6,7 +6,7 @@
 I'm working on SyncMaster.
 
 Read CLAUDE.md for full project context.
-PRD reference for this session: @docs/prd-[relevant-file].md
+PRD reference for this session: @01_PRD/FEATURES/[relevant-feature].md
 
 Session goal: [SINGLE FEATURE]
 Current phase: [Phase D | Phase E]
@@ -28,6 +28,11 @@ Constraints:
 ## Phase D (AI layer) opener
 
 ```
+I'm working on SyncMaster.
+
+Read CLAUDE.md for full project context.
+PRD reference: @01_PRD/FEATURES/ai-layer.md
+
 Session goal: Build agents/brief-analyzer.ts — tags briefs with genre/mood on activation
 
 Files allowed:
@@ -39,11 +44,22 @@ Where we left off:
 - Phase C complete. ai_score, ai_tags, ai_match_reason, ai_suggested_composers columns exist.
 - services/ai.ts not yet created.
 - No agents/ files yet.
+
+Constraints:
+- No new npm packages unless listed
+- Mobile-first
+- Complete files only — no truncation
+- Follow all rules in CLAUDE.md
 ```
 
 ## Phase E (production polish) opener
 
 ```
+I'm working on SyncMaster.
+
+Read CLAUDE.md for full project context.
+PRD reference: @01_PRD/FEATURES/ai-layer.md
+
 Session goal: Email notifications on all brief/submission status transitions
 
 Files allowed:
@@ -51,4 +67,10 @@ Files allowed:
 - lib/email/send.ts
 - app/actions/briefs.ts
 - app/actions/submissions.ts
+
+Constraints:
+- No new npm packages unless listed
+- Mobile-first
+- Complete files only — no truncation
+- Follow all rules in CLAUDE.md
 ```

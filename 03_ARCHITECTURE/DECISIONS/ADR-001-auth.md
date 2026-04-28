@@ -1,30 +1,30 @@
-# ADR-001: Email Magic Link Authentication
+# ADR-001: Email/Password Authentication
 
 ## Decision
-Use Supabase Auth with email magic link (no OAuth in Phase 1).
+Use Supabase Auth with email/password (no OAuth, no magic link in Phase 1).
 
 ## Context
 - Phase 1 is validation; simplicity > features
-- Target users may not have OAuth accounts
-- Magic link has lower friction for new users
-- Reduces dependency on OAuth providers
-- Works for all geographies
+- Email/password gives composers and producers familiar, low-friction onboarding
+- Reduces dependency on third-party OAuth providers
+- Works for all geographies including markets where Google/GitHub accounts are less common
+- Supabase SSR handles cookies — no localStorage for auth state
 
 ## Consequences
-✓ Faster onboarding
+✓ Straightforward onboarding
 ✓ No third-party dependency for auth
 ✓ Works globally
-⚠️ Email delivery is critical (must use Resend)
+✓ Role stored in `profiles.role` — checked server-side on every admin action
+⚠️ Password reset flow must be implemented (Supabase handles this)
 ⚠️ No social login (can add Phase 2 if needed)
 
 ## Alternatives Considered
-- OAuth (Google, GitHub): Adds complexity early, fewer signup options
+- Magic link: Lower friction but email delivery becomes critical path; less familiar to some users
+- OAuth (Google, GitHub): Adds complexity early, not universal in target markets
 - Phone SMS: More expensive, different delivery challenges
-- Username/password: Higher friction, password reset overhead
 
 ## Status
 ACCEPTED
 
 ## Link in Code
-See: /app/auth/route.ts line 15
-
+See: `app/actions/auth.ts`, `proxy.ts`
