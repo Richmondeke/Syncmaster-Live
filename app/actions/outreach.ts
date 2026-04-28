@@ -1,7 +1,10 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { adminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
+import { sendEmail } from '@/services/email'
+import { outreachInviteEmail } from '@/emails/outreach-invite'
 import type { OutreachStatus } from '@/types/database.types'
 
 export async function inviteComposer(formData: FormData): Promise<void> {
@@ -27,7 +30,7 @@ export async function inviteComposer(formData: FormData): Promise<void> {
 
   const { data: brief } = await supabase
     .from('briefs')
-    .select('status')
+    .select('status, title')
     .eq('id', briefId)
     .single()
 
@@ -49,6 +52,32 @@ export async function inviteComposer(formData: FormData): Promise<void> {
   })
 
   if (error) throw error
+
+  // Send invite email — best effort
+  try {
+    const { data: composerRow } = await supabase
+      .from('composers')
+      .select('profile_id, profiles!inner(full_name)')
+      .eq('id', composerId)
+      .single()
+
+    if (composerRow) {
+      const { data: authUser } = await adminClient.auth.admin.getUserById(composerRow.profile_id)
+      const email = authUser.user?.email
+      const name = (composerRow.profiles as unknown as { full_name: string | null })?.full_name ?? 'Composer'
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
+
+      if (email) {
+        await sendEmail(
+          email,
+          `You've been invited to submit for: ${brief.title}`,
+          outreachInviteEmail(name, brief.title, `${appUrl}/dashboard/briefs/${briefId}`),
+        )
+      }
+    }
+  } catch {
+    // Email failure must not roll back the invite
+  }
 
   revalidatePath(`/dashboard/briefs/${briefId}`)
 }

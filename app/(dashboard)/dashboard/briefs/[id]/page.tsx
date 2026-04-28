@@ -106,6 +106,13 @@ export default async function BriefDetailPage({ params }: Props) {
 
     if (!outreach) redirect('/dashboard/briefs')
 
+    const { data: submissions } = await supabase
+      .from('submissions')
+      .select('id, track_url, notes, status')
+      .eq('brief_id', id)
+      .eq('composer_id', composer.id)
+      .order('created_at', { ascending: true })
+
     const producerName = brief.producers?.profiles?.full_name ?? 'Unknown'
     const producerCompany = brief.producers?.company
 
@@ -185,7 +192,12 @@ export default async function BriefDetailPage({ params }: Props) {
           )}
         </div>
 
-        <OutreachResponse outreachId={outreach.id} status={outreach.status} />
+        <OutreachResponse
+          outreachId={outreach.id}
+          status={outreach.status}
+          briefId={id}
+          submissions={submissions ?? []}
+        />
       </div>
     )
   }

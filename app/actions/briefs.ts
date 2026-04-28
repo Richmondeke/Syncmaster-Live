@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { analyzeBrief } from '@/agents/brief-analyzer'
+import { assertValidBriefTransition } from '@/core/workflows/brief-workflow'
 import type { BriefStatus } from '@/types/database.types'
 
 export type BriefFormState = { error: string | null }
@@ -91,6 +92,8 @@ export async function updateBriefStatus(formData: FormData): Promise<void> {
   if (!briefId || !['draft', 'active', 'matched', 'closed'].includes(status)) {
     throw new Error('Invalid input')
   }
+
+  await assertValidBriefTransition(supabase, briefId, status)
 
   const { error } = await supabase.from('briefs').update({ status }).eq('id', briefId)
   if (error) throw error

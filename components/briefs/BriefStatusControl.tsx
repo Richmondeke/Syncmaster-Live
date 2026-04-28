@@ -66,6 +66,7 @@ type Props = {
 export function BriefStatusControl({ briefId, currentStatus }: Props) {
   const [pendingAction, setPendingAction] = useState<StatusAction | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const actions = STATUS_ACTIONS[currentStatus]
 
@@ -82,14 +83,17 @@ export function BriefStatusControl({ briefId, currentStatus }: Props) {
     if (!pendingAction) return
 
     setIsSubmitting(true)
+    setError(null)
     try {
       const formData = new FormData()
       formData.set('briefId', briefId)
       formData.set('status', pendingAction.nextStatus)
       await updateBriefStatus(formData)
+      setPendingAction(null)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong')
     } finally {
       setIsSubmitting(false)
-      setPendingAction(null)
     }
   }
 
@@ -97,6 +101,9 @@ export function BriefStatusControl({ briefId, currentStatus }: Props) {
     <>
       <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
         <p className="text-sm font-semibold mb-3">Status controls</p>
+        {error && (
+          <p className="text-sm text-destructive mb-3">{error}</p>
+        )}
         <div className="flex flex-wrap gap-2">
           {actions.map((action) => (
             <Button

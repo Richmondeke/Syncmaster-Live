@@ -4,30 +4,30 @@ import { useActionState } from 'react'
 import { respondToOutreach, type OutreachResponseState } from '@/app/actions/outreach'
 import { Button } from '@/components/ui/button'
 import type { OutreachStatus } from '@/types/database.types'
+import { SubmitTrackForm } from './SubmitTrackForm'
+
+type Submission = {
+  id: string
+  track_url: string
+  notes: string | null
+  status: string
+}
+
+type Props = {
+  outreachId: string
+  status: OutreachStatus
+  briefId: string
+  submissions: Submission[]
+}
 
 const INITIAL: OutreachResponseState = { error: null }
 
-export function OutreachResponse({
-  outreachId,
-  status,
-}: {
-  outreachId: string
-  status: OutreachStatus
-}) {
+export function OutreachResponse({ outreachId, status, briefId, submissions }: Props) {
   const [acceptState, acceptAction, acceptPending] = useActionState(respondToOutreach, INITIAL)
   const [declineState, declineAction, declinePending] = useActionState(respondToOutreach, INITIAL)
 
   if (status === 'accepted') {
-    return (
-      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-        <p className="text-sm font-semibold text-green-700 dark:text-green-400 mb-1">
-          You've accepted this brief
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Submit your tracks once you've prepared your work.
-        </p>
-      </div>
-    )
+    return <SubmitTrackForm briefId={briefId} submissions={submissions} />
   }
 
   if (status === 'declined') {
