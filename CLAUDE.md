@@ -79,11 +79,11 @@ lib/supabase/server.ts / client.ts
 types/database.types.ts  ← generated, never hand-edit
 emails/               ← React Email templates
 middleware.ts          ← auth guard (edge middleware)
-01_PRD/               ← all PRD docs, load only what the session needs
-00_SYSTEM/            ← guardrails, tooling reference
-01_PRD/FEATURES/      ← per-feature specs
-06_ITERATION/         ← bugs, changelog, improvements
-08_CONTEXT/PROMPTS.md ← session prompt templates
+docs/01_PRD/          ← all PRD docs, load only what the session needs
+docs/00_SYSTEM/       ← guardrails, tooling reference
+docs/01_PRD/FEATURES/ ← per-feature specs
+docs/06_ITERATION/    ← bugs, changelog, improvements
+docs/08_CONTEXT/PROMPTS.md ← session prompt templates
 ```
 
 ---
@@ -145,10 +145,10 @@ E — Production        →  Emails, toasts, skeletons, mobile audit, Vercel dep
 
 | Task | Doc |
 |------|-----|
-| AI layer, agents, production polish | `01_PRD/FEATURES/ai-layer.md` |
-| Briefs, outreach, submissions | `01_PRD/FEATURES/briefs.md` + `01_PRD/STATES-AND-FLOWS.md` |
-| State machines + user flows | `01_PRD/STATES-AND-FLOWS.md` |
-| Vision, personas, out-of-scope | `01_PRD/OVERVIEW.md` |
-| Post-V1.5 roadmap | `01_PRD/ROADMAP.md` |
+| AI layer, agents, production polish | `docs/01_PRD/FEATURES/ai-layer.md` |
+| Briefs, outreach, submissions | `docs/01_PRD/FEATURES/briefs.md` + `docs/01_PRD/STATES-AND-FLOWS.md` |
+| State machines + user flows | `docs/01_PRD/STATES-AND-FLOWS.md` |
+| Vision, personas, out-of-scope | `docs/01_PRD/OVERVIEW.md` |
+| Post-V1.5 roadmap | `docs/01_PRD/ROADMAP.md` |
 
-Session prompt templates → `08_CONTEXT/PROMPTS.md`
+Session prompt templates → `docs/08_CONTEXT/PROMPTS.md`
