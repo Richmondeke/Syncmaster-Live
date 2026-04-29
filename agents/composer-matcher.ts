@@ -18,7 +18,9 @@ export type BriefInput = {
 
 export type RankedComposer = {
   composer_id: string
-  score: number
+  match_score: number
+  match_reason: string
+  confidence: number
 }
 
 export async function matchComposers(
@@ -61,8 +63,10 @@ export async function matchComposers(
                 properties: {
                   composer_id: { type: 'string' },
                   score: { type: 'number', description: 'Match score 0–10' },
+                  match_reason: { type: 'string', description: 'Why this composer matches (2–3 sentences)' },
+                  confidence: { type: 'number', description: 'Confidence in match (0–1)' },
                 },
-                required: ['composer_id', 'score'],
+                required: ['composer_id', 'score', 'match_reason', 'confidence'],
               },
             },
           },
@@ -85,7 +89,10 @@ Budget: ${budgetStr}
 COMPOSERS
 ${JSON.stringify(composerList, null, 2)}
 
-Return all composers ranked best to worst. Score each 0–10 based on genre fit, style, and profile.`,
+Return all composers ranked best to worst. For each:
+- Score 0–10 based on genre fit, style, and profile
+- Explain why in 2–3 sentences
+- Confidence 0–1 (how sure are you about this match)`,
       },
     ],
   })
@@ -98,5 +105,5 @@ Return all composers ranked best to worst. Score each 0–10 based on genre fit,
 
   return input.rankings
     .filter((r) => validIds.has(r.composer_id))
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => b.match_score - a.match_score)
 }

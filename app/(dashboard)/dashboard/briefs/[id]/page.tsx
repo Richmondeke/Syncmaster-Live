@@ -41,6 +41,13 @@ type BriefDetail = {
   deadline: string | null
   status: BriefStatus
   ai_suggested_composers: string[] | null
+  ai_match_status?: 'pending' | 'running' | 'complete' | 'failed' | 'no_composers'
+  ai_suggested_composers_detail?: Array<{
+    composer_id: string
+    match_score: number
+    match_reason: string
+    confidence: number
+  }> | null
   created_at: string
   updated_at: string
   producers: {
@@ -77,7 +84,7 @@ export default async function BriefDetailPage({ params }: Props) {
     .from('briefs')
     .select(
       `id, producer_id, title, description, genres, budget_min, budget_max, deadline, status,
-      ai_suggested_composers, created_at, updated_at,
+      ai_suggested_composers, ai_match_status, ai_suggested_composers_detail, created_at, updated_at,
       producers!inner ( company, profiles!inner ( full_name ) )`,
     )
     .eq('id', id)
@@ -338,11 +345,7 @@ export default async function BriefDetailPage({ params }: Props) {
           <BriefStatusControl briefId={brief.id} currentStatus={brief.status} />
           {brief.status === 'active' && (
             <>
-              <AiSuggestionsPanel
-                composers={suggestedComposers}
-                hasSuggestions={!!brief.ai_suggested_composers?.length}
-                invitedIds={invitedIds}
-              />
+              <AiSuggestionsPanel briefId={brief.id} />
               <OutreachPanel
                 briefId={brief.id}
                 composers={composers}

@@ -138,6 +138,13 @@ export type Database = {
           deadline: string | null
           status: BriefStatus
           ai_suggested_composers: string[] | null
+          ai_match_status: 'pending' | 'running' | 'complete' | 'failed' | 'no_composers'
+          ai_suggested_composers_detail: Array<{
+            composer_id: string
+            match_score: number
+            match_reason: string
+            confidence: number
+          }> | null
           created_at: string
           updated_at: string
         }
@@ -152,6 +159,13 @@ export type Database = {
           deadline?: string | null
           status?: BriefStatus
           ai_suggested_composers?: string[] | null
+          ai_match_status?: 'pending' | 'running' | 'complete' | 'failed' | 'no_composers'
+          ai_suggested_composers_detail?: Array<{
+            composer_id: string
+            match_score: number
+            match_reason: string
+            confidence: number
+          }> | null
           created_at?: string
           updated_at?: string
         }
@@ -164,6 +178,13 @@ export type Database = {
           deadline?: string | null
           status?: BriefStatus
           ai_suggested_composers?: string[] | null
+          ai_match_status?: 'pending' | 'running' | 'complete' | 'failed' | 'no_composers'
+          ai_suggested_composers_detail?: Array<{
+            composer_id: string
+            match_score: number
+            match_reason: string
+            confidence: number
+          }> | null
           updated_at?: string
         }
         Relationships: [

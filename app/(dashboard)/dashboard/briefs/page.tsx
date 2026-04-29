@@ -50,7 +50,7 @@ export default async function BriefsPage() {
     const { data, error } = await supabase
       .from('briefs')
       .select(
-        `id, producer_id, title, description, genres, budget_min, budget_max, deadline, status, ai_suggested_composers, created_at, updated_at,
+        `id, producer_id, title, description, genres, budget_min, budget_max, deadline, status, ai_suggested_composers, ai_match_status, ai_suggested_composers_detail, created_at, updated_at,
         producers!inner ( company, profiles!inner ( full_name ) )`,
       )
       .order('created_at', { ascending: false })
@@ -98,7 +98,7 @@ export default async function BriefsPage() {
       const { data, error } = await supabase
         .from('briefs')
         .select(
-          'id, producer_id, title, description, genres, budget_min, budget_max, deadline, status, ai_suggested_composers, created_at, updated_at',
+          'id, producer_id, title, description, genres, budget_min, budget_max, deadline, status, ai_suggested_composers, ai_match_status, ai_suggested_composers_detail, created_at, updated_at',
         )
         .eq('producer_id', producer.id)
         .order('created_at', { ascending: false })
