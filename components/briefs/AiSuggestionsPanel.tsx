@@ -1,4 +1,4 @@
-import { Sparkles } from 'lucide-react'
+import { Sparkles, Loader2, AlertCircle } from 'lucide-react'
 
 type SuggestedComposer = {
   id: string
@@ -8,10 +8,37 @@ type SuggestedComposer = {
 
 type Props = {
   composers: SuggestedComposer[]
+  hasSuggestions: boolean
   invitedIds: Set<string>
 }
 
-export function AiSuggestionsPanel({ composers, invitedIds }: Props) {
+export function AiSuggestionsPanel({ composers, hasSuggestions, invitedIds }: Props) {
+  // Brief is active but AI hasn't written suggestions yet — still processing or failed
+  if (!hasSuggestions) {
+    return (
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex flex-col gap-3">
+        <div className="flex items-center gap-2">
+          <Sparkles className="h-4 w-4 text-muted-foreground" />
+          <p className="text-sm font-semibold">AI Suggested Composers</p>
+        </div>
+        <div className="flex items-start gap-3 rounded-md border border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950 px-4 py-3">
+          <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 mt-0.5 shrink-0" />
+          <div className="flex flex-col gap-0.5">
+            <p className="text-sm font-medium text-amber-900 dark:text-amber-200">
+              Suggestions pending
+            </p>
+            <p className="text-xs text-amber-800 dark:text-amber-300">
+              AI matching did not complete when this brief was activated — likely no active
+              composers in the system at the time, or the AI call failed. Reactivate the brief
+              (revert to draft then activate) to trigger a fresh analysis.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Suggestions exist but none resolved to a known composer (edge case)
   if (composers.length === 0) return null
 
   return (

@@ -340,6 +340,7 @@ export default async function BriefDetailPage({ params }: Props) {
             <>
               <AiSuggestionsPanel
                 composers={suggestedComposers}
+                hasSuggestions={!!brief.ai_suggested_composers?.length}
                 invitedIds={invitedIds}
               />
               <OutreachPanel
