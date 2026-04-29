@@ -65,12 +65,16 @@ export default async function DashboardPage() {
   }
 
   const firstName = profile.full_name?.split(' ')[0] ?? 'there'
+  const accountAgeMs = Date.now() - new Date(user.created_at).getTime()
+  const isNewUser = accountAgeMs < 2 * 60 * 1000
 
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
       <p className="text-muted-foreground">
-        Welcome back, {firstName}. More features coming soon.
+        {isNewUser
+          ? `Welcome to SyncMaster, ${firstName}!`
+          : `Welcome back, ${firstName}.`}
       </p>
     </div>
   )

@@ -101,16 +101,13 @@ export function BriefStatusControl({ briefId, currentStatus }: Props) {
     <>
       <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
         <p className="text-sm font-semibold mb-3">Status controls</p>
-        {error && (
-          <p className="text-sm text-destructive mb-3">{error}</p>
-        )}
         <div className="flex flex-wrap gap-2">
           {actions.map((action) => (
             <Button
               key={action.nextStatus}
               size="sm"
               variant={action.variant || 'default'}
-              onClick={() => setPendingAction(action)}
+              onClick={() => { setError(null); setPendingAction(action) }}
               disabled={isSubmitting}
             >
               {action.label}
@@ -119,15 +116,19 @@ export function BriefStatusControl({ briefId, currentStatus }: Props) {
         </div>
       </div>
 
-      <Dialog open={!!pendingAction} onOpenChange={(open) => !open && setPendingAction(null)}>
+      <Dialog open={!!pendingAction} onOpenChange={(open) => { if (!open) { setPendingAction(null); setError(null) } }}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirm status change</DialogTitle>
             <DialogDescription>{pendingAction?.description}</DialogDescription>
           </DialogHeader>
 
+          {error && (
+            <p className="text-sm text-destructive">{error}</p>
+          )}
+
           <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setPendingAction(null)} disabled={isSubmitting}>
+            <Button variant="outline" onClick={() => { setPendingAction(null); setError(null) }} disabled={isSubmitting}>
               Cancel
             </Button>
             <Button

@@ -15,15 +15,17 @@ type OutreachWithBrief = {
   briefs: BriefWithProducer
 }
 
-const OUTREACH_CLASSES: Record<OutreachStatus, string> = {
+const OUTREACH_CLASSES: Record<OutreachStatus | 'submitted', string> = {
   invited: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
   accepted: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  submitted: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
   declined: 'bg-muted text-muted-foreground',
 }
 
-const OUTREACH_LABELS: Record<OutreachStatus, string> = {
+const OUTREACH_LABELS: Record<OutreachStatus | 'submitted', string> = {
   invited: 'Invited',
   accepted: 'Accepted',
+  submitted: 'Submitted',
   declined: 'Declined',
 }
 
@@ -137,19 +139,27 @@ export default async function BriefsPage() {
       .single()
 
     let outreachWithBriefs: OutreachWithBrief[] = []
+    let submittedBriefIds = new Set<string>()
 
     if (composer) {
-      const { data, error } = await supabase
-        .from('outreach')
-        .select(
-          `id, status, sent_at,
-          briefs!inner ( id, producer_id, title, description, genres, budget_min, budget_max, deadline, status, ai_suggested_composers, created_at, updated_at )`,
-        )
-        .eq('composer_id', composer.id)
-        .order('sent_at', { ascending: false })
+      const [outreachResult, submissionsResult] = await Promise.all([
+        supabase
+          .from('outreach')
+          .select(
+            `id, status, sent_at,
+            briefs!inner ( id, producer_id, title, description, genres, budget_min, budget_max, deadline, status, ai_suggested_composers, created_at, updated_at )`,
+          )
+          .eq('composer_id', composer.id)
+          .order('sent_at', { ascending: false }),
+        supabase
+          .from('submissions')
+          .select('brief_id')
+          .eq('composer_id', composer.id),
+      ])
 
-      if (error) throw error
-      outreachWithBriefs = (data ?? []) as unknown as OutreachWithBrief[]
+      if (outreachResult.error) throw outreachResult.error
+      outreachWithBriefs = (outreachResult.data ?? []) as unknown as OutreachWithBrief[]
+      submittedBriefIds = new Set((submissionsResult.data ?? []).map((s) => s.brief_id))
     }
 
     return (
@@ -171,7 +181,12 @@ export default async function BriefsPage() {
           </div>
         ) : (
           <div className="flex flex-col gap-3">
-            {outreachWithBriefs.map(({ id: outreachId, status: outreachStatus, briefs: brief }) => (
+            {outreachWithBriefs.map(({ id: outreachId, status: outreachStatus, briefs: brief }) => {
+              const displayStatus: OutreachStatus | 'submitted' =
+                outreachStatus === 'accepted' && submittedBriefIds.has(brief.id)
+                  ? 'submitted'
+                  : outreachStatus
+              return (
               <div
                 key={outreachId}
                 className="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
@@ -179,9 +194,9 @@ export default async function BriefsPage() {
                 <div className="flex flex-col gap-1.5 min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
                     <span
-                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${OUTREACH_CLASSES[outreachStatus]}`}
+                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${OUTREACH_CLASSES[displayStatus]}`}
                     >
-                      {OUTREACH_LABELS[outreachStatus]}
+                      {OUTREACH_LABELS[displayStatus]}
                     </span>
                     {brief.deadline && (
                       <span className="text-xs text-muted-foreground">
@@ -226,7 +241,8 @@ export default async function BriefsPage() {
                   </Link>
                 </div>
               </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>

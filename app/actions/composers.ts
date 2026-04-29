@@ -59,9 +59,10 @@ export async function vetComposer(formData: FormData): Promise<void> {
         await sendEmail(email, 'Your SyncMaster application update', composerRejectedEmail(name, rejectionNote))
       }
     }
-  } catch {
-    // Email failure must not roll back the status update
+  } catch (err) {
+    console.error('[vetComposer] email send failed:', err)
   }
 
   revalidatePath('/dashboard/composers')
+  revalidatePath('/dashboard')
 }
