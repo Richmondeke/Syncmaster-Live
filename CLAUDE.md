@@ -82,6 +82,7 @@ middleware.ts          ← auth guard (edge middleware)
 docs/01_PRD/          ← all PRD docs, load only what the session needs
 docs/00_SYSTEM/       ← guardrails, tooling reference
 docs/01_PRD/FEATURES/ ← per-feature specs
+docs/build/           ← build notes (FRONTEND / BACKEND / COMPONENTS)
 docs/06_ITERATION/    ← bugs, changelog, improvements
 docs/08_CONTEXT/PROMPTS.md ← session prompt templates
 ```
