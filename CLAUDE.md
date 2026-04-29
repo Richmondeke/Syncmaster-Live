@@ -78,8 +78,8 @@ components/ui/        ← shadcn — READ ONLY, never edit
 lib/supabase/server.ts / client.ts
 types/database.types.ts  ← generated, never hand-edit
 emails/               ← React Email templates
-proxy.ts              ← middleware auth guard
-docs/                 ← PRD files, load only what the session needs
+middleware.ts          ← auth guard (edge middleware)
+01_PRD/               ← all PRD docs, load only what the session needs
 00_SYSTEM/            ← guardrails, tooling reference
 01_PRD/FEATURES/      ← per-feature specs
 06_ITERATION/         ← bugs, changelog, improvements
