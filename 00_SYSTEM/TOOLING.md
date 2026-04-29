@@ -23,7 +23,7 @@
 ## Email
 - Provider: Resend
 - Templates: React Email (`emails/` directory)
-- Sender utility: `lib/email/send.ts`
+- Sender utility: `services/email.ts`
 
 ## Testing
 - E2E: Playwright

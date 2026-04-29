@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { sendEmail } from '@/lib/email/send'
+import { sendEmail } from '@/services/email'
 import { applicationReceivedEmail } from '@/emails/application-received'
 import type { Role } from '@/types/database.types'
 
@@ -60,11 +60,11 @@ export async function signUp(
   }
 
   if (role === 'composer') {
-    await sendEmail({
-      to: email,
-      subject: 'Your SyncMaster application has been received',
-      html: applicationReceivedEmail(fullName),
-    })
+    try {
+      await sendEmail(email, 'Your SyncMaster application has been received', applicationReceivedEmail(fullName))
+    } catch (err) {
+      console.error('[signUp] application email failed:', err)
+    }
   }
 
   redirect('/dashboard')
