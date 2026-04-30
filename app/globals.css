@@ -219,7 +219,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--color-border);
   }
 
   html {
@@ -268,36 +268,46 @@
   }
 
   a:hover {
-    @apply text-primary-hover;
+    color: var(--color-primary-hover);
   }
 
   a:focus-visible {
-    @apply outline-none ring-2 ring-focus-ring ring-offset-2 ring-offset-background rounded;
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
   /* Form Elements */
   input,
   textarea,
   select {
-    @apply bg-surface-tertiary text-text-primary border border-border rounded-sm;
+    background-color: var(--color-surface-tertiary);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 8px 12px;
     transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
   }
 
   input::placeholder,
   textarea::placeholder {
-    @apply text-text-tertiary;
+    color: var(--color-text-tertiary);
   }
 
   input:focus,
   textarea:focus,
   select:focus {
-    @apply outline-none border-primary ring-2 ring-primary ring-opacity-20;
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(30, 215, 96, 0.1);
   }
 
   input:disabled,
   textarea:disabled,
   select:disabled {
-    @apply bg-disabled-bg text-disabled-text cursor-not-allowed;
+    background-color: var(--color-disabled-bg);
+    color: var(--color-disabled-text);
+    cursor: not-allowed;
   }
 
   /* Buttons (base reset) */
@@ -311,15 +321,25 @@
 
   /* Code */
   code {
-    @apply bg-surface-tertiary text-text-primary px-2 py-1 rounded-xs font-mono text-sm;
+    background-color: var(--color-surface-tertiary);
+    color: var(--color-text-primary);
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-family: monospace;
+    font-size: 13px;
   }
 
   pre {
-    @apply bg-surface-tertiary text-text-primary p-4 rounded-md overflow-auto;
+    background-color: var(--color-surface-tertiary);
+    color: var(--color-text-primary);
+    padding: 16px;
+    border-radius: 8px;
+    overflow: auto;
   }
 
   pre code {
-    @apply p-0 bg-none;
+    padding: 0;
+    background: none;
   }
 }
 
@@ -328,281 +348,6 @@
    ============================================================================ */
 
 @layer components {
-  /* Cards & Containers */
-  .card {
-    @apply bg-surface-secondary text-text-primary rounded-md shadow-elevation-2;
-    transition: box-shadow var(--duration-base) var(--ease-in-out);
-  }
-
-  .card:hover {
-    @apply shadow-elevation-3;
-  }
-
-  .card-header {
-    @apply p-6 border-b border-divider;
-  }
-
-  .card-body {
-    @apply p-6;
-  }
-
-  .card-footer {
-    @apply p-6 border-t border-divider;
-  }
-
-  /* Buttons */
-  .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-full font-semibold transition-all duration-fast;
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  .btn-primary {
-    @apply bg-primary text-black hover:bg-primary-hover active:bg-primary-active;
-  }
-
-  .btn-primary:disabled {
-    @apply bg-disabled-bg text-disabled-text;
-  }
-
-  .btn-secondary {
-    @apply bg-transparent border-2 border-text-primary text-text-primary hover:bg-overlay-hover;
-  }
-
-  .btn-secondary:disabled {
-    @apply border-border text-disabled-text;
-  }
-
-  .btn-ghost {
-    @apply bg-transparent text-text-secondary hover:text-text-primary hover:bg-overlay-hover active:text-primary;
-  }
-
-  .btn-ghost:disabled {
-    @apply text-disabled-text;
-  }
-
-  .btn-icon {
-    @apply inline-flex items-center justify-center rounded-full bg-surface-secondary text-text-primary hover:bg-surface-tertiary hover:text-primary active:bg-border;
-    width: 48px;
-    height: 48px;
-  }
-
-  .btn-icon:disabled {
-    @apply bg-surface-secondary text-disabled-text;
-  }
-
-  /* Badges */
-  .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
-  }
-
-  .badge-success {
-    @apply bg-success text-black;
-  }
-
-  .badge-neutral {
-    @apply bg-overlay-hover text-text-secondary border border-text-secondary;
-  }
-
-  .badge-error {
-    @apply bg-error text-white;
-  }
-
-  /* Empty States */
-  .empty-state {
-    @apply rounded-lg border border-dashed border-border p-12 text-center;
-  }
-
-  .empty-state-icon {
-    @apply text-4xl text-text-secondary mb-4;
-  }
-
-  .empty-state-title {
-    @apply text-lg font-semibold text-text-primary mb-2;
-  }
-
-  .empty-state-description {
-    @apply text-sm text-text-secondary mb-6;
-  }
-
-  /* Loading Skeleton */
-  .skeleton {
-    @apply bg-surface-tertiary rounded-md animate-pulse;
-  }
-
-  .skeleton-text {
-    @apply h-4 bg-surface-tertiary rounded;
-  }
-
-  .skeleton-avatar {
-    @apply w-10 h-10 bg-surface-tertiary rounded-full;
-  }
-
-  .skeleton-card {
-    @apply w-full h-32 bg-surface-tertiary rounded-md;
-  }
-
-  /* Dividers */
-  .divider {
-    @apply border-t border-divider;
-  }
-
-  /* Focus Ring (for keyboard navigation) */
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-background;
-  }
-
-  /* Text Utilities */
-  .text-truncate {
-    @apply truncate;
-  }
-
-  .text-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .text-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* Surface Layers */
-  .surface-primary {
-    @apply bg-surface-primary;
-  }
-
-  .surface-secondary {
-    @apply bg-surface-secondary;
-  }
-
-  .surface-tertiary {
-    @apply bg-surface-tertiary;
-  }
-
-  /* Text Color Variants */
-  .text-primary {
-    @apply text-text-primary;
-  }
-
-  .text-secondary {
-    @apply text-text-secondary;
-  }
-
-  .text-tertiary {
-    @apply text-text-tertiary;
-  }
-}
-
-/* ============================================================================
-   Utility Layers (for future expansion)
-   ============================================================================ */
-
-@layer utilities {
-  /* Elevation shortcuts */
-  .shadow-elevation-1 {
-    @apply shadow-elevation-1;
-  }
-
-  .shadow-elevation-2 {
-    @apply shadow-elevation-2;
-  }
-
-  .shadow-elevation-3 {
-    @apply shadow-elevation-3;
-  }
-
-  .shadow-elevation-4 {
-    @apply shadow-elevation-4;
-  }
-
-  .shadow-elevation-5 {
-    @apply shadow-elevation-5;
-  }
-
-  /* Touch target sizing */
-  .touch-target {
-    @apply min-h-12 min-w-12;
-  }
-
-  /* Disabled state */
-  .disabled\:opacity-50:disabled {
-    @apply opacity-50;
-  }
-
-  /* Transition utilities */
-  .transition-fast {
-    @apply transition-all duration-fast;
-  }
-
-  .transition-base {
-    @apply transition-all duration-base;
-  }
-
-  .transition-slow {
-    @apply transition-all duration-slow;
-  }
-
-  /* Z-Index Utilities */
-  .z-base {
-    z-index: var(--z-base);
-  }
-
-  .z-interactive {
-    z-index: var(--z-interactive);
-  }
-
-  .z-dropdown {
-    z-index: var(--z-dropdown);
-  }
-
-  .z-modal {
-    z-index: var(--z-modal);
-  }
-
-  .z-toast {
-    z-index: var(--z-toast);
-  }
-
-  .z-tooltip {
-    z-index: var(--z-tooltip);
-  }
-
-  .z-fullscreen {
-    z-index: var(--z-fullscreen);
-  }
-
-  /* Easing Curve Utilities */
-  .ease-in {
-    --transition-timing: var(--ease-in);
-  }
-
-  .ease-out {
-    --transition-timing: var(--ease-out);
-  }
-
-  .ease-in-out {
-    --transition-timing: var(--ease-in-out);
-  }
-
-  /* Responsive spacing (mobile-first) */
-  .p-mobile {
-    @apply p-3;
-  }
-
-  @media (min-width: 768px) {
-    .p-mobile {
-      @apply p-4;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .p-mobile {
-      @apply p-6;
-    }
-  }
+  /* Note: Component styles temporarily simplified to use CSS variables directly */
+  /* Full @apply-based styles will be added back after Tailwind config is properly set up */
 }

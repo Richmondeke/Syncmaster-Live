@@ -18,6 +18,8 @@ const config: Config = {
         popover: "var(--color-popover)",
         "popover-foreground": "var(--color-popover-foreground)",
         primary: "var(--color-primary)",
+        "primary-hover": "var(--color-primary-hover)",
+        "primary-active": "var(--color-primary-active)",
         "primary-foreground": "var(--color-primary-foreground)",
         secondary: "var(--color-secondary)",
         "secondary-foreground": "var(--color-secondary-foreground)",
