@@ -1,24 +1,34 @@
 {
   "communities": {
     "0": [
+      "admin_getadminclient",
       "app_actions_auth_ts",
+      "app_actions_outreach_ts",
       "app_dashboard_dashboard_briefs_new_page_tsx",
       "app_dashboard_dashboard_page_tsx",
       "application_received_applicationreceivedemail",
       "auth_signin",
       "auth_signout",
       "auth_signup",
+      "email_sendemail",
       "emails_application_received_ts",
+      "emails_outreach_invite_ts",
+      "lib_supabase_admin_ts",
       "lib_supabase_server_ts",
+      "outreach_invite_outreachinviteemail",
+      "outreach_invitecomposer",
+      "outreach_respondtooutreach",
       "page_dashboardpage",
       "page_newbriefpage",
-      "server_createclient"
+      "server_createclient",
+      "services_email_ts"
     ],
     "1": [
       "agents_brief_analyzer_ts",
       "agents_composer_matcher_ts",
       "app_actions_briefs_ts",
       "brief_analyzer_analyzebrief",
+      "brief_analyzer_updatebriefstatus",
       "brief_workflow_assertvalidbrieftransition",
       "briefs_createbrief",
       "briefs_updatebriefstatus",
@@ -28,7 +38,20 @@
       "core_workflows_brief_workflow_ts"
     ],
     "2": [
-      "admin_getadminclient",
+      "anthropic_ai",
+      "feature_ai_layer",
+      "feature_auth",
+      "feature_placements",
+      "nextjs_16_framework",
+      "phase_a_foundation",
+      "phase_b_core_loop",
+      "phase_d_ai_layer",
+      "resend_email",
+      "supabase_db",
+      "syncmaster_project",
+      "typescript_strict"
+    ],
+    "3": [
       "app_actions_composers_ts",
       "components_composers_composerlist_tsx",
       "composer_approved_composerapprovedemail",
@@ -36,17 +59,7 @@
       "composerlist_handlereject",
       "composers_vetcomposer",
       "emails_composer_approved_ts",
-      "emails_composer_rejected_ts",
-      "lib_supabase_admin_ts"
-    ],
-    "3": [
-      "app_actions_outreach_ts",
-      "email_sendemail",
-      "emails_outreach_invite_ts",
-      "outreach_invite_outreachinviteemail",
-      "outreach_invitecomposer",
-      "outreach_respondtooutreach",
-      "services_email_ts"
+      "emails_composer_rejected_ts"
     ],
     "4": [
       "gen_session_detectphase",
@@ -58,11 +71,13 @@
       "scripts_gen_session_mjs"
     ],
     "5": [
-      "brief_analyzer_agent",
-      "composer_matcher_agent",
-      "improvement_brief_analyzer_agent",
-      "improvement_composer_matcher_agent",
-      "phase_d_ai_layer"
+      "agent_brief_analyzer",
+      "agent_composer_matcher",
+      "arch_mutations_server_actions",
+      "entity_briefs_table",
+      "entity_composers_table",
+      "feature_brief_management",
+      "service_ai"
     ],
     "6": [
       "app_actions_submissions_ts",
@@ -92,13 +107,12 @@
       "tests_submissions_spec_ts"
     ],
     "11": [
-      "outreach_feature",
-      "placements_feature",
-      "submissions_feature"
-    ],
-    "12": [
       "middleware_middleware",
       "middleware_ts"
+    ],
+    "12": [
+      "test_api_js",
+      "test_api_testapi"
     ],
     "13": [
       "app_layout_tsx",
@@ -117,142 +131,161 @@
       "error_briefserror"
     ],
     "17": [
+      "aisuggestionspanel_handleinvite",
+      "components_briefs_aisuggestionspanel_tsx"
+    ],
+    "18": [
       "avatar_cn",
       "components_ui_avatar_tsx"
     ],
-    "18": [
+    "19": [
       "button_cn",
       "components_ui_button_tsx"
     ],
-    "19": [
+    "20": [
       "components_ui_dialog_tsx",
       "dialog_cn"
     ],
-    "20": [
+    "21": [
       "components_ui_dropdown_menu_tsx",
       "dropdown_menu_cn"
     ],
-    "21": [
+    "22": [
       "components_ui_label_tsx",
       "label_cn"
     ],
-    "22": [
+    "23": [
       "components_ui_separator_tsx",
       "separator_cn"
     ],
-    "23": [
+    "24": [
       "client_createclient",
       "lib_supabase_client_ts"
     ],
-    "24": [
+    "25": [
       "scripts_seed_composers_mjs",
       "seed_composers_run"
     ],
-    "25": [
+    "26": [
       "auth_loginas",
       "tests_helpers_auth_ts"
     ],
-    "26": [
-      "next_env_d_ts"
-    ],
     "27": [
-      "next_config_ts"
+      "arch_security_role_verification",
+      "role_admin"
     ],
     "28": [
-      "playwright_config_ts"
+      "feature_outreach",
+      "role_composer"
     ],
     "29": [
-      "postcss_config_mjs"
+      "feature_submissions",
+      "role_producer"
     ],
     "30": [
-      "app_auth_login_page_tsx"
+      "next_env_d_ts"
     ],
     "31": [
-      "app_auth_signup_page_tsx"
+      "next_config_ts"
     ],
     "32": [
-      "app_dashboard_layout_tsx"
+      "playwright_config_ts"
     ],
     "33": [
-      "app_dashboard_dashboard_loading_tsx"
+      "postcss_config_mjs"
     ],
     "34": [
-      "app_dashboard_dashboard_briefs_loading_tsx"
+      "app_auth_login_page_tsx"
     ],
     "35": [
-      "app_dashboard_dashboard_briefs_page_tsx"
+      "app_auth_signup_page_tsx"
     ],
     "36": [
-      "app_dashboard_dashboard_briefs_id_page_tsx"
+      "app_dashboard_layout_tsx"
     ],
     "37": [
-      "app_dashboard_dashboard_composers_page_tsx"
+      "app_dashboard_dashboard_loading_tsx"
     ],
     "38": [
-      "components_briefs_aisuggestionspanel_tsx"
+      "app_dashboard_dashboard_briefs_loading_tsx"
     ],
     "39": [
-      "components_briefs_briefform_tsx"
+      "app_dashboard_dashboard_briefs_page_tsx"
     ],
     "40": [
-      "components_briefs_brieflist_tsx"
+      "app_dashboard_dashboard_briefs_id_page_tsx"
     ],
     "41": [
-      "components_briefs_outreachpanel_tsx"
+      "app_dashboard_dashboard_composers_page_tsx"
     ],
     "42": [
-      "components_briefs_outreachresponse_tsx"
+      "components_briefs_briefform_tsx"
     ],
     "43": [
-      "components_briefs_submittrackform_tsx"
+      "components_briefs_brieflist_tsx"
     ],
     "44": [
-      "components_dashboard_sidebar_tsx"
+      "components_briefs_outreachpanel_tsx"
     ],
     "45": [
-      "components_ui_input_tsx"
+      "components_briefs_outreachresponse_tsx"
     ],
     "46": [
-      "services_ai_ts"
+      "components_briefs_submittrackform_tsx"
     ],
     "47": [
-      "tests_auth_spec_ts"
+      "components_dashboard_sidebar_tsx"
     ],
     "48": [
-      "tests_briefs_spec_ts"
+      "components_ui_input_tsx"
     ],
     "49": [
-      "tests_outreach_spec_ts"
+      "services_ai_ts"
     ],
     "50": [
-      "types_database_types_ts"
+      "tests_auth_spec_ts"
     ],
     "51": [
-      "adr_001_auth"
+      "tests_briefs_spec_ts"
     ],
     "52": [
-      "adr_002_rls"
+      "tests_outreach_spec_ts"
     ],
     "53": [
-      "adr_003_playwright"
+      "types_database_types_ts"
     ],
     "54": [
-      "phase_e_production_polish"
+      "tailwind_shadcn"
+    ],
+    "55": [
+      "supabase_auth"
+    ],
+    "56": [
+      "vercel_deployment"
+    ],
+    "57": [
+      "phase_c_schema_ext"
+    ],
+    "58": [
+      "phase_e_production"
+    ],
+    "59": [
+      "vision_curated_sync_licensing"
     ]
   },
   "cohesion": {
-    "0": 0.2,
+    "0": 0.12,
     "1": 0.18,
-    "2": 0.2,
-    "3": 0.29,
+    "2": 0.17,
+    "3": 0.25,
     "4": 0.29,
-    "5": 0.4,
+    "5": 0.29,
     "6": 0.5,
     "7": 0.5,
     "8": 0.67,
     "9": 0.67,
     "10": 0.67,
-    "11": 0.67,
+    "11": 1.0,
     "12": 1.0,
     "13": 1.0,
     "14": 1.0,
@@ -295,18 +328,33 @@
     "51": 1.0,
     "52": 1.0,
     "53": 1.0,
-    "54": 1.0
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0
   },
   "gods": [
     {
       "id": "server_createclient",
       "label": "createClient()",
-      "degree": 14
+      "degree": 15
+    },
+    {
+      "id": "syncmaster_project",
+      "label": "SyncMaster 1.0",
+      "degree": 8
     },
     {
       "id": "composers_vetcomposer",
       "label": "vetComposer()",
       "degree": 7
+    },
+    {
+      "id": "brief_analyzer_analyzebrief",
+      "label": "analyzeBrief()",
+      "degree": 5
     },
     {
       "id": "briefs_updatebriefstatus",
@@ -317,11 +365,6 @@
       "id": "outreach_invitecomposer",
       "label": "inviteComposer()",
       "degree": 5
-    },
-    {
-      "id": "brief_analyzer_analyzebrief",
-      "label": "analyzeBrief()",
-      "degree": 4
     },
     {
       "id": "auth_signup",
@@ -339,13 +382,8 @@
       "degree": 4
     },
     {
-      "id": "phase_d_ai_layer",
-      "label": "Phase D: AI Layer",
-      "degree": 4
-    },
-    {
-      "id": "submissions_submittrack",
-      "label": "submitTrack()",
+      "id": "brief_analyzer_updatebriefstatus",
+      "label": "updateBriefStatus()",
       "degree": 3
     }
   ],
@@ -362,18 +400,29 @@
       "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities; peripheral node `createBrief()` unexpectedly reaches hub `createClient()`"
     },
     {
-      "source": "respondToOutreach()",
+      "source": "analyzeBrief()",
       "target": "createClient()",
       "source_files": [
-        "app\\actions\\outreach.ts",
+        "agents\\brief-analyzer.ts",
         "lib\\supabase\\server.ts"
       ],
       "confidence": "INFERRED",
       "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities; peripheral node `respondToOutreach()` unexpectedly reaches hub `createClient()`"
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
     },
     {
       "source": "analyzeBrief()",
+      "target": "matchComposers()",
+      "source_files": [
+        "agents\\brief-analyzer.ts",
+        "agents\\composer-matcher.ts"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `matchComposers()` unexpectedly reaches hub `analyzeBrief()`"
+    },
+    {
+      "source": "updateBriefStatus()",
       "target": "createClient()",
       "source_files": [
         "agents\\brief-analyzer.ts",
@@ -393,39 +442,28 @@
       "confidence": "INFERRED",
       "relation": "calls",
       "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `DashboardPage()` unexpectedly reaches hub `createClient()`"
-    },
-    {
-      "source": "NewBriefPage()",
-      "target": "createClient()",
-      "source_files": [
-        "app\\(dashboard)\\dashboard\\briefs\\new\\page.tsx",
-        "lib\\supabase\\server.ts"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `NewBriefPage()` unexpectedly reaches hub `createClient()`"
     }
   ],
   "questions": [
     {
       "type": "bridge_node",
-      "question": "Why does `createClient()` connect `Community 0` to `Community 1`, `Community 2`, `Community 3`, `Community 6`?",
-      "why": "High betweenness centrality (0.085) - this node is a cross-community bridge."
+      "question": "Why does `createClient()` connect `Community 0` to `Community 1`, `Community 3`, `Community 6`?",
+      "why": "High betweenness centrality (0.065) - this node is a cross-community bridge."
     },
     {
       "type": "bridge_node",
-      "question": "Why does `vetComposer()` connect `Community 2` to `Community 0`, `Community 3`?",
-      "why": "High betweenness centrality (0.035) - this node is a cross-community bridge."
+      "question": "Why does `vetComposer()` connect `Community 3` to `Community 0`?",
+      "why": "High betweenness centrality (0.026) - this node is a cross-community bridge."
     },
     {
       "type": "bridge_node",
       "question": "Why does `updateBriefStatus()` connect `Community 1` to `Community 0`?",
-      "why": "High betweenness centrality (0.022) - this node is a cross-community bridge."
+      "why": "High betweenness centrality (0.016) - this node is a cross-community bridge."
     },
     {
       "type": "verify_inferred",
-      "question": "Are the 13 inferred relationships involving `createClient()` (e.g. with `analyzeBrief()` and `DashboardPage()`) actually correct?",
-      "why": "`createClient()` has 13 INFERRED edges - model-reasoned connections that need verification."
+      "question": "Are the 14 inferred relationships involving `createClient()` (e.g. with `analyzeBrief()` and `updateBriefStatus()`) actually correct?",
+      "why": "`createClient()` has 14 INFERRED edges - model-reasoned connections that need verification."
     },
     {
       "type": "verify_inferred",
@@ -434,13 +472,13 @@
     },
     {
       "type": "verify_inferred",
-      "question": "Are the 4 inferred relationships involving `updateBriefStatus()` (e.g. with `createClient()` and `assertValidBriefTransition()`) actually correct?",
-      "why": "`updateBriefStatus()` has 4 INFERRED edges - model-reasoned connections that need verification."
+      "question": "Are the 3 inferred relationships involving `analyzeBrief()` (e.g. with `createClient()` and `matchComposers()`) actually correct?",
+      "why": "`analyzeBrief()` has 3 INFERRED edges - model-reasoned connections that need verification."
     },
     {
       "type": "verify_inferred",
-      "question": "Are the 4 inferred relationships involving `inviteComposer()` (e.g. with `createClient()` and `getAdminClient()`) actually correct?",
-      "why": "`inviteComposer()` has 4 INFERRED edges - model-reasoned connections that need verification."
+      "question": "Are the 4 inferred relationships involving `updateBriefStatus()` (e.g. with `createClient()` and `assertValidBriefTransition()`) actually correct?",
+      "why": "`updateBriefStatus()` has 4 INFERRED edges - model-reasoned connections that need verification."
     }
   ]
 }

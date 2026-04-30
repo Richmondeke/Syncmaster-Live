@@ -43,6 +43,20 @@
       "source_location": "L1"
     },
     {
+      "id": "test_api_js",
+      "label": "test-api.js",
+      "file_type": "code",
+      "source_file": "test-api.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "test_api_testapi",
+      "label": "testAPI()",
+      "file_type": "code",
+      "source_file": "test-api.js",
+      "source_location": "L10"
+    },
+    {
       "id": "agents_brief_analyzer_ts",
       "label": "brief-analyzer.ts",
       "file_type": "code",
@@ -57,6 +71,13 @@
       "source_location": "L4"
     },
     {
+      "id": "brief_analyzer_updatebriefstatus",
+      "label": "updateBriefStatus()",
+      "file_type": "code",
+      "source_file": "agents\\brief-analyzer.ts",
+      "source_location": "L61"
+    },
+    {
       "id": "agents_composer_matcher_ts",
       "label": "composer-matcher.ts",
       "file_type": "code",
@@ -68,7 +89,7 @@
       "label": "matchComposers()",
       "file_type": "code",
       "source_file": "agents\\composer-matcher.ts",
-      "source_location": "L24"
+      "source_location": "L26"
     },
     {
       "id": "app_layout_tsx",
@@ -314,6 +335,13 @@
       "file_type": "code",
       "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
       "source_location": "L1"
+    },
+    {
+      "id": "aisuggestionspanel_handleinvite",
+      "label": "handleInvite()",
+      "file_type": "code",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L142"
     },
     {
       "id": "components_briefs_briefform_tsx",
@@ -820,136 +848,190 @@
       "source_location": "L1"
     },
     {
-      "id": "outreach_feature",
-      "label": "Outreach (Composer Invitations) Feature",
+      "id": "syncmaster_project",
+      "label": "SyncMaster 1.0",
       "file_type": "document",
-      "source_file": "docs/01_PRD/FEATURES/outreach.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "source_file": "CLAUDE.md"
     },
     {
-      "id": "placements_feature",
-      "label": "Placement Logging Feature",
-      "file_type": "document",
-      "source_file": "docs/01_PRD/FEATURES/placements.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "id": "nextjs_16_framework",
+      "label": "Next.js 16 App Router",
+      "file_type": "code",
+      "source_file": "CLAUDE.md"
     },
     {
-      "id": "submissions_feature",
-      "label": "Track Submissions Feature",
-      "file_type": "document",
-      "source_file": "docs/01_PRD/FEATURES/submissions.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "id": "typescript_strict",
+      "label": "TypeScript Strict Mode",
+      "file_type": "code",
+      "source_file": "CLAUDE.md"
     },
     {
-      "id": "adr_001_auth",
-      "label": "ADR-001: Email/Password Authentication",
-      "file_type": "document",
-      "source_file": "docs/03_ARCHITECTURE/DECISIONS/ADR-001-auth.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "id": "tailwind_shadcn",
+      "label": "Tailwind CSS + shadcn/ui",
+      "file_type": "code",
+      "source_file": "CLAUDE.md"
     },
     {
-      "id": "adr_002_rls",
-      "label": "ADR-002: RLS at Database Layer",
-      "file_type": "document",
-      "source_file": "docs/03_ARCHITECTURE/DECISIONS/ADR-002-rls.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "id": "supabase_db",
+      "label": "Supabase (Postgres + RLS)",
+      "file_type": "code",
+      "source_file": "CLAUDE.md"
     },
     {
-      "id": "adr_003_playwright",
-      "label": "ADR-003: Playwright for E2E Testing",
+      "id": "supabase_auth",
+      "label": "Supabase Auth SSR",
+      "file_type": "code",
+      "source_file": "CLAUDE.md"
+    },
+    {
+      "id": "anthropic_ai",
+      "label": "Anthropic SDK via services/ai.ts",
+      "file_type": "code",
+      "source_file": "CLAUDE.md"
+    },
+    {
+      "id": "resend_email",
+      "label": "Resend + React Email",
+      "file_type": "code",
+      "source_file": "CLAUDE.md"
+    },
+    {
+      "id": "vercel_deployment",
+      "label": "Vercel + Vercel Cron",
+      "file_type": "code",
+      "source_file": "CLAUDE.md"
+    },
+    {
+      "id": "phase_a_foundation",
+      "label": "Phase A: Foundation",
       "file_type": "document",
-      "source_file": "docs/03_ARCHITECTURE/DECISIONS/ADR-003-playwright.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "source_file": "CLAUDE.md"
+    },
+    {
+      "id": "phase_b_core_loop",
+      "label": "Phase B: Core Loop",
+      "file_type": "document",
+      "source_file": "CLAUDE.md"
+    },
+    {
+      "id": "phase_c_schema_ext",
+      "label": "Phase C: Schema Extension",
+      "file_type": "document",
+      "source_file": "CLAUDE.md"
     },
     {
       "id": "phase_d_ai_layer",
       "label": "Phase D: AI Layer",
       "file_type": "document",
-      "source_file": "docs/06_ITERATION/CHANGELOG.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "source_file": "CLAUDE.md"
     },
     {
-      "id": "phase_e_production_polish",
+      "id": "phase_e_production",
       "label": "Phase E: Production Polish",
       "file_type": "document",
-      "source_file": "docs/06_ITERATION/IMPROVEMENTS.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "source_file": "CLAUDE.md"
     },
     {
-      "id": "improvement_brief_analyzer_agent",
-      "label": "Brief analyzer agent: tag briefs with genre/mood on activation",
+      "id": "vision_curated_sync_licensing",
+      "label": "Curated sync licensing platform for African composers",
       "file_type": "document",
-      "source_file": "docs/06_ITERATION/IMPROVEMENTS.md",
-      "source_location": "I-006",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "source_file": "docs/01_PRD/OVERVIEW.md"
     },
     {
-      "id": "improvement_composer_matcher_agent",
-      "label": "Composer matcher agent: rank active composers against a brief",
+      "id": "role_admin",
+      "label": "Admin Role",
       "file_type": "document",
-      "source_file": "docs/06_ITERATION/IMPROVEMENTS.md",
-      "source_location": "I-007",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "source_file": "CLAUDE.md"
     },
     {
-      "id": "brief_analyzer_agent",
-      "label": "Brief Analyzer Agent",
+      "id": "role_producer",
+      "label": "Producer Role",
       "file_type": "document",
-      "source_file": "docs/06_ITERATION/IMPROVEMENTS.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "source_file": "CLAUDE.md"
     },
     {
-      "id": "composer_matcher_agent",
-      "label": "Composer Matcher Agent",
+      "id": "role_composer",
+      "label": "Composer Role",
       "file_type": "document",
-      "source_file": "docs/06_ITERATION/IMPROVEMENTS.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null
+      "source_file": "CLAUDE.md"
+    },
+    {
+      "id": "entity_composers_table",
+      "label": "composers table (status, ai_score, ai_tags)",
+      "file_type": "code",
+      "source_file": "docs/01_PRD/FEATURES/ai-layer.md"
+    },
+    {
+      "id": "entity_briefs_table",
+      "label": "briefs table (status, ai_suggested_composers)",
+      "file_type": "code",
+      "source_file": "docs/01_PRD/FEATURES/briefs.md"
+    },
+    {
+      "id": "feature_brief_management",
+      "label": "Feature: Brief Management",
+      "file_type": "document",
+      "source_file": "docs/01_PRD/FEATURES/briefs.md"
+    },
+    {
+      "id": "feature_outreach",
+      "label": "Feature: Outreach (Composer Invitations)",
+      "file_type": "document",
+      "source_file": "docs/01_PRD/FEATURES/outreach.md"
+    },
+    {
+      "id": "feature_submissions",
+      "label": "Feature: Track Submissions",
+      "file_type": "document",
+      "source_file": "docs/01_PRD/FEATURES/submissions.md"
+    },
+    {
+      "id": "feature_placements",
+      "label": "Feature: Placement Logging",
+      "file_type": "document",
+      "source_file": "docs/01_PRD/FEATURES/placements.md"
+    },
+    {
+      "id": "feature_auth",
+      "label": "Feature: Auth + Role-Gated Access",
+      "file_type": "document",
+      "source_file": "docs/01_PRD/FEATURES/auth.md"
+    },
+    {
+      "id": "feature_ai_layer",
+      "label": "Feature: AI Layer + Production Polish",
+      "file_type": "document",
+      "source_file": "docs/01_PRD/FEATURES/ai-layer.md"
+    },
+    {
+      "id": "agent_brief_analyzer",
+      "label": "Agent: brief-analyzer.ts",
+      "file_type": "code",
+      "source_file": "docs/01_PRD/FEATURES/ai-layer.md"
+    },
+    {
+      "id": "agent_composer_matcher",
+      "label": "Agent: composer-matcher.ts",
+      "file_type": "code",
+      "source_file": "docs/01_PRD/FEATURES/ai-layer.md"
+    },
+    {
+      "id": "service_ai",
+      "label": "Service: services/ai.ts",
+      "file_type": "code",
+      "source_file": "docs/01_PRD/FEATURES/ai-layer.md"
+    },
+    {
+      "id": "arch_mutations_server_actions",
+      "label": "Architecture: Mutations \u2192 Server Actions only",
+      "file_type": "document",
+      "source_file": "CLAUDE.md"
+    },
+    {
+      "id": "arch_security_role_verification",
+      "label": "Architecture: Security \u2192 verify role server-side in every admin action",
+      "file_type": "document",
+      "source_file": "CLAUDE.md"
     }
   ],
   "edges": [
@@ -982,7 +1064,7 @@
     },
     {
       "source": "next_env_d_ts",
-      "target": "next_dev_types_routes_d_ts",
+      "target": "next_types_routes_d_ts",
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "next-env.d.ts",
@@ -1035,6 +1117,33 @@
       "weight": 1.0
     },
     {
+      "source": "test_api_js",
+      "target": "dotenv",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "test-api.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "test_api_js",
+      "target": "sdk",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "test-api.js",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "test_api_js",
+      "target": "test_api_testapi",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "test-api.js",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
       "source": "agents_brief_analyzer_ts",
       "target": "server",
       "relation": "imports_from",
@@ -1062,6 +1171,24 @@
       "weight": 1.0
     },
     {
+      "source": "agents_brief_analyzer_ts",
+      "target": "brief_analyzer_updatebriefstatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "agents\\brief-analyzer.ts",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "brief_analyzer_analyzebrief",
+      "target": "brief_analyzer_updatebriefstatus",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "agents\\brief-analyzer.ts",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
       "source": "agents_composer_matcher_ts",
       "target": "ai",
       "relation": "imports_from",
@@ -1076,7 +1203,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "agents\\composer-matcher.ts",
-      "source_location": "L24",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -1963,11 +2090,56 @@
     },
     {
       "source": "components_briefs_aisuggestionspanel_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_briefs_aisuggestionspanel_tsx",
       "target": "lucide_react",
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
-      "source_location": "L1",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "components_briefs_aisuggestionspanel_tsx",
+      "target": "client",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_briefs_aisuggestionspanel_tsx",
+      "target": "outreach",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "components_briefs_aisuggestionspanel_tsx",
+      "target": "button",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "components_briefs_aisuggestionspanel_tsx",
+      "target": "aisuggestionspanel_handleinvite",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L142",
       "weight": 1.0
     },
     {
@@ -3346,7 +3518,17 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "agents\\brief-analyzer.ts",
-      "source_location": "L22",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "brief_analyzer_updatebriefstatus",
+      "target": "server_createclient",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "agents\\brief-analyzer.ts",
+      "source_location": "L62",
       "weight": 1.0
     },
     {
@@ -3620,2469 +3802,147 @@
       "weight": 1.0
     },
     {
-      "source": "middleware_ts",
-      "target": "ssr",
-      "relation": "imports_from",
+      "source": "syncmaster_project",
+      "target": "nextjs_16_framework",
+      "relation": "uses",
       "confidence": "EXTRACTED",
-      "source_file": "middleware.ts",
-      "source_location": "L1",
-      "weight": 1.0
+      "confidence_score": 1.0
     },
     {
-      "source": "middleware_ts",
-      "target": "server",
-      "relation": "imports_from",
+      "source": "syncmaster_project",
+      "target": "typescript_strict",
+      "relation": "uses",
       "confidence": "EXTRACTED",
-      "source_file": "middleware.ts",
-      "source_location": "L2",
-      "weight": 1.0
+      "confidence_score": 1.0
     },
     {
-      "source": "middleware_ts",
-      "target": "middleware_middleware",
-      "relation": "contains",
+      "source": "syncmaster_project",
+      "target": "supabase_db",
+      "relation": "uses",
       "confidence": "EXTRACTED",
-      "source_file": "middleware.ts",
-      "source_location": "L4",
-      "weight": 1.0
+      "confidence_score": 1.0
     },
     {
-      "source": "next_env_d_ts",
-      "target": "next_dev_types_routes_d_ts",
-      "relation": "imports_from",
+      "source": "syncmaster_project",
+      "target": "anthropic_ai",
+      "relation": "uses",
       "confidence": "EXTRACTED",
-      "source_file": "next-env.d.ts",
-      "source_location": "L3",
-      "weight": 1.0
+      "confidence_score": 1.0
     },
     {
-      "source": "next_config_ts",
-      "target": "next",
-      "relation": "imports_from",
+      "source": "syncmaster_project",
+      "target": "resend_email",
+      "relation": "uses",
       "confidence": "EXTRACTED",
-      "source_file": "next.config.ts",
-      "source_location": "L1",
-      "weight": 1.0
+      "confidence_score": 1.0
     },
     {
-      "source": "next_config_ts",
-      "target": "path",
-      "relation": "imports_from",
+      "source": "syncmaster_project",
+      "target": "phase_a_foundation",
+      "relation": "implements",
       "confidence": "EXTRACTED",
-      "source_file": "next.config.ts",
-      "source_location": "L2",
-      "weight": 1.0
+      "confidence_score": 1.0
     },
     {
-      "source": "playwright_config_ts",
-      "target": "test",
-      "relation": "imports_from",
+      "source": "syncmaster_project",
+      "target": "phase_b_core_loop",
+      "relation": "implements",
       "confidence": "EXTRACTED",
-      "source_file": "playwright.config.ts",
-      "source_location": "L1",
-      "weight": 1.0
+      "confidence_score": 1.0
     },
     {
-      "source": "playwright_config_ts",
-      "target": "dotenv",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "playwright.config.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "playwright_config_ts",
-      "target": "path",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "playwright.config.ts",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "agents_brief_analyzer_ts",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "agents\\brief-analyzer.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "agents_brief_analyzer_ts",
-      "target": "agents_composer_matcher",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "agents\\brief-analyzer.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "agents_brief_analyzer_ts",
-      "target": "brief_analyzer_analyzebrief",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "agents\\brief-analyzer.ts",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "agents_composer_matcher_ts",
-      "target": "ai",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "agents\\composer-matcher.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "agents_composer_matcher_ts",
-      "target": "composer_matcher_matchcomposers",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "agents\\composer-matcher.ts",
-      "source_location": "L24",
-      "weight": 1.0
-    },
-    {
-      "source": "app_layout_tsx",
-      "target": "next",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\layout.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "app_layout_tsx",
-      "target": "google",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\layout.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "app_layout_tsx",
-      "target": "app_globals_css",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\layout.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_layout_tsx",
-      "target": "layout_rootlayout",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\layout.tsx",
-      "source_location": "L20",
-      "weight": 1.0
-    },
-    {
-      "source": "app_page_tsx",
-      "target": "navigation",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\page.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "app_page_tsx",
-      "target": "page_rootpage",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\page.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_login_page_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\login\\page.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_login_page_tsx",
-      "target": "link",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\login\\page.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_login_page_tsx",
-      "target": "auth",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\login\\page.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_login_page_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\login\\page.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_login_page_tsx",
-      "target": "input",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\login\\page.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_login_page_tsx",
-      "target": "label",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\login\\page.tsx",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_login_page_tsx",
-      "target": "card",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\login\\page.tsx",
-      "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_signup_page_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\signup\\page.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_signup_page_tsx",
-      "target": "link",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\signup\\page.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_signup_page_tsx",
-      "target": "auth",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\signup\\page.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_signup_page_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\signup\\page.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_signup_page_tsx",
-      "target": "input",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\signup\\page.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_signup_page_tsx",
-      "target": "label",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\signup\\page.tsx",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
-      "source": "app_auth_signup_page_tsx",
-      "target": "card",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(auth)\\signup\\page.tsx",
-      "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_layout_tsx",
-      "target": "navigation",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\layout.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_layout_tsx",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\layout.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_layout_tsx",
-      "target": "sidebar",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\layout.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_layout_tsx",
-      "target": "header",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\layout.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_layout_tsx",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\layout.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_error_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\error.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_error_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\error.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_error_tsx",
-      "target": "error_dashboarderror",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\error.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_page_tsx",
-      "target": "navigation",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\page.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_page_tsx",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\page.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_page_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\page.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_page_tsx",
-      "target": "page_dashboardpage",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\page.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_error_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\error.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_error_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\error.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_error_tsx",
-      "target": "error_briefserror",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\error.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_page_tsx",
-      "target": "navigation",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\page.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_page_tsx",
-      "target": "link",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\page.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_page_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\page.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_page_tsx",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\page.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_page_tsx",
-      "target": "brieflist",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\page.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_page_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\page.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_page_tsx",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\page.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_new_page_tsx",
-      "target": "navigation",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\new\\page.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_new_page_tsx",
-      "target": "link",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\new\\page.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_new_page_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\new\\page.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_new_page_tsx",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\new\\page.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_new_page_tsx",
-      "target": "briefform",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\new\\page.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_new_page_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\new\\page.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_new_page_tsx",
-      "target": "page_newbriefpage",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\new\\page.tsx",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_id_page_tsx",
-      "target": "navigation",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\[id]\\page.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_id_page_tsx",
-      "target": "link",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\[id]\\page.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_id_page_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\[id]\\page.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_id_page_tsx",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\[id]\\page.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_id_page_tsx",
-      "target": "briefstatuscontrol",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\[id]\\page.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_id_page_tsx",
-      "target": "outreachpanel",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\[id]\\page.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_id_page_tsx",
-      "target": "outreachresponse",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\[id]\\page.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_id_page_tsx",
-      "target": "aisuggestionspanel",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\[id]\\page.tsx",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_id_page_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\[id]\\page.tsx",
-      "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_briefs_id_page_tsx",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\briefs\\[id]\\page.tsx",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_composers_page_tsx",
-      "target": "navigation",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\composers\\page.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_composers_page_tsx",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\composers\\page.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "app_dashboard_dashboard_composers_page_tsx",
-      "target": "composerlist",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\(dashboard)\\dashboard\\composers\\page.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_auth_ts",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\auth.ts",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_auth_ts",
-      "target": "navigation",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\auth.ts",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_auth_ts",
-      "target": "email",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\auth.ts",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_auth_ts",
-      "target": "application_received",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\auth.ts",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_auth_ts",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\auth.ts",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_auth_ts",
-      "target": "auth_signin",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\auth.ts",
-      "source_location": "L13",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_auth_ts",
-      "target": "auth_signup",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\auth.ts",
-      "source_location": "L31",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_auth_ts",
-      "target": "auth_signout",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\auth.ts",
-      "source_location": "L73",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_briefs_ts",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\briefs.ts",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_briefs_ts",
-      "target": "cache",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\briefs.ts",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_briefs_ts",
-      "target": "navigation",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\briefs.ts",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_briefs_ts",
-      "target": "brief_analyzer",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\briefs.ts",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_briefs_ts",
-      "target": "brief_workflow",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\briefs.ts",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_briefs_ts",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\briefs.ts",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_briefs_ts",
-      "target": "briefs_createbrief",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\briefs.ts",
-      "source_location": "L12",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_briefs_ts",
-      "target": "briefs_updatebriefstatus",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\briefs.ts",
-      "source_location": "L73",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_composers_ts",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\composers.ts",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_composers_ts",
-      "target": "admin",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\composers.ts",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_composers_ts",
-      "target": "cache",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\composers.ts",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_composers_ts",
-      "target": "email",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\composers.ts",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_composers_ts",
-      "target": "composer_approved",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\composers.ts",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_composers_ts",
-      "target": "composer_rejected",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\composers.ts",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_composers_ts",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\composers.ts",
-      "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_composers_ts",
-      "target": "composers_vetcomposer",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\composers.ts",
-      "source_location": "L11",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_outreach_ts",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\outreach.ts",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_outreach_ts",
-      "target": "admin",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\outreach.ts",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_outreach_ts",
-      "target": "cache",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\outreach.ts",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_outreach_ts",
-      "target": "email",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\outreach.ts",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_outreach_ts",
-      "target": "outreach_invite",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\outreach.ts",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_outreach_ts",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\outreach.ts",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_outreach_ts",
-      "target": "outreach_invitecomposer",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\outreach.ts",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_outreach_ts",
-      "target": "outreach_respondtooutreach",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\outreach.ts",
-      "source_location": "L87",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_submissions_ts",
-      "target": "server",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\submissions.ts",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_submissions_ts",
-      "target": "cache",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\submissions.ts",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_submissions_ts",
-      "target": "submission_workflow",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\submissions.ts",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "app_actions_submissions_ts",
-      "target": "submissions_submittrack",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "app\\actions\\submissions.ts",
-      "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_aisuggestionspanel_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefform_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefForm.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefform_tsx",
-      "target": "briefs",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefForm.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefform_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefForm.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefform_tsx",
-      "target": "input",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefForm.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefform_tsx",
-      "target": "label",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefForm.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_brieflist_tsx",
-      "target": "link",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefList.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_brieflist_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefList.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_brieflist_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefList.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_brieflist_tsx",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefList.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_brieflist_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefList.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefstatuscontrol_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefStatusControl.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefstatuscontrol_tsx",
-      "target": "briefs",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefStatusControl.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefstatuscontrol_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefStatusControl.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefstatuscontrol_tsx",
-      "target": "dialog",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefStatusControl.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefstatuscontrol_tsx",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefStatusControl.tsx",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_briefstatuscontrol_tsx",
-      "target": "briefstatuscontrol_handleconfirm",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\BriefStatusControl.tsx",
-      "source_location": "L82",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_outreachpanel_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\OutreachPanel.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_outreachpanel_tsx",
-      "target": "outreach",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\OutreachPanel.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_outreachpanel_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\OutreachPanel.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_outreachpanel_tsx",
-      "target": "badge",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\OutreachPanel.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_outreachpanel_tsx",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\OutreachPanel.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_outreachresponse_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\OutreachResponse.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_outreachresponse_tsx",
-      "target": "outreach",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\OutreachResponse.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_outreachresponse_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\OutreachResponse.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_outreachresponse_tsx",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\OutreachResponse.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_outreachresponse_tsx",
-      "target": "components_briefs_submittrackform",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\OutreachResponse.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_submittrackform_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\SubmitTrackForm.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_submittrackform_tsx",
-      "target": "submissions",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\SubmitTrackForm.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_submittrackform_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\SubmitTrackForm.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_submittrackform_tsx",
-      "target": "input",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\SubmitTrackForm.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "components_briefs_submittrackform_tsx",
-      "target": "label",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\briefs\\SubmitTrackForm.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "components_composers_composerlist_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_composers_composerlist_tsx",
-      "target": "composers",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_composers_composerlist_tsx",
-      "target": "badge",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_composers_composerlist_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "components_composers_composerlist_tsx",
-      "target": "dialog",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "components_composers_composerlist_tsx",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L15",
-      "weight": 1.0
-    },
-    {
-      "source": "components_composers_composerlist_tsx",
-      "target": "composerlist_handlereject",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L36",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_header_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Header.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_header_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Header.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_header_tsx",
-      "target": "avatar",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Header.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_header_tsx",
-      "target": "badge",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Header.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_header_tsx",
-      "target": "dropdown_menu",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Header.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_header_tsx",
-      "target": "auth",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Header.tsx",
-      "source_location": "L16",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_header_tsx",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Header.tsx",
-      "source_location": "L17",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_header_tsx",
-      "target": "header_getinitials",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Header.tsx",
-      "source_location": "L33",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_header_tsx",
-      "target": "header_handlesignout",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Header.tsx",
-      "source_location": "L48",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_sidebar_tsx",
-      "target": "link",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Sidebar.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_sidebar_tsx",
-      "target": "navigation",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Sidebar.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_sidebar_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Sidebar.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_sidebar_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Sidebar.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_sidebar_tsx",
-      "target": "utils",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Sidebar.tsx",
-      "source_location": "L18",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_sidebar_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Sidebar.tsx",
-      "source_location": "L19",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_sidebar_tsx",
-      "target": "separator",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Sidebar.tsx",
-      "source_location": "L20",
-      "weight": 1.0
-    },
-    {
-      "source": "components_dashboard_sidebar_tsx",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\dashboard\\Sidebar.tsx",
-      "source_location": "L21",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_avatar_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\avatar.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_avatar_tsx",
-      "target": "avatar",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\avatar.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_avatar_tsx",
-      "target": "utils",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\avatar.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_avatar_tsx",
-      "target": "avatar_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\avatar.tsx",
-      "source_location": "L61",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_avatar_tsx",
-      "target": "avatar_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\avatar.tsx",
-      "source_location": "L77",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_avatar_tsx",
-      "target": "avatar_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\avatar.tsx",
-      "source_location": "L93",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_badge_tsx",
-      "target": "merge_props",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\badge.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_badge_tsx",
-      "target": "use_render",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\badge.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_badge_tsx",
-      "target": "class_variance_authority",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\badge.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_badge_tsx",
-      "target": "utils",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\badge.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_badge_tsx",
-      "target": "badge_badge",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\badge.tsx",
-      "source_location": "L30",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_button_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\button.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_button_tsx",
-      "target": "class_variance_authority",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\button.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_button_tsx",
-      "target": "utils",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\button.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_button_tsx",
-      "target": "button_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\button.tsx",
-      "source_location": "L52",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_card_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\card.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_card_tsx",
-      "target": "utils",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\card.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_card_tsx",
-      "target": "card_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\card.tsx",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_card_tsx",
-      "target": "card_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\card.tsx",
-      "source_location": "L27",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_card_tsx",
-      "target": "card_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\card.tsx",
-      "source_location": "L40",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_card_tsx",
-      "target": "card_cardaction",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\card.tsx",
-      "source_location": "L59",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dialog_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dialog.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dialog_tsx",
-      "target": "dialog",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dialog.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dialog_tsx",
-      "target": "utils",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dialog.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dialog_tsx",
-      "target": "button",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dialog.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dialog_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dialog.tsx",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dialog_tsx",
-      "target": "dialog_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dialog.tsx",
-      "source_location": "L104",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dropdown_menu_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dropdown-menu.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dropdown_menu_tsx",
-      "target": "menu",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dropdown-menu.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dropdown_menu_tsx",
-      "target": "utils",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dropdown-menu.tsx",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dropdown_menu_tsx",
-      "target": "lucide_react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dropdown-menu.tsx",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dropdown_menu_tsx",
-      "target": "dropdown_menu_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dropdown-menu.tsx",
-      "source_location": "L44",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dropdown_menu_tsx",
-      "target": "dropdown_menu_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dropdown-menu.tsx",
-      "source_location": "L138",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_dropdown_menu_tsx",
-      "target": "dropdown_menu_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\dropdown-menu.tsx",
-      "source_location": "L243",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_input_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\input.tsx",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_input_tsx",
-      "target": "input",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\input.tsx",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_input_tsx",
-      "target": "utils",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\input.tsx",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_label_tsx",
-      "target": "react",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\label.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_label_tsx",
-      "target": "utils",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\label.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_label_tsx",
-      "target": "label_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\label.tsx",
-      "source_location": "L11",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_separator_tsx",
-      "target": "separator",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\separator.tsx",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_separator_tsx",
-      "target": "utils",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\separator.tsx",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "components_ui_separator_tsx",
-      "target": "separator_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "components\\ui\\separator.tsx",
-      "source_location": "L16",
-      "weight": 1.0
-    },
-    {
-      "source": "core_workflows_brief_workflow_ts",
-      "target": "supabase_js",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "core\\workflows\\brief-workflow.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "core_workflows_brief_workflow_ts",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "core\\workflows\\brief-workflow.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "core_workflows_brief_workflow_ts",
-      "target": "brief_workflow_assertvalidbrieftransition",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "core\\workflows\\brief-workflow.ts",
-      "source_location": "L13",
-      "weight": 1.0
-    },
-    {
-      "source": "core_workflows_submission_workflow_ts",
-      "target": "supabase_js",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "core\\workflows\\submission-workflow.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "core_workflows_submission_workflow_ts",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "core\\workflows\\submission-workflow.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "core_workflows_submission_workflow_ts",
-      "target": "submission_workflow_assertsubmissionallowed",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "core\\workflows\\submission-workflow.ts",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
-      "source": "emails_application_received_ts",
-      "target": "application_received_applicationreceivedemail",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "emails\\application-received.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "emails_composer_approved_ts",
-      "target": "composer_approved_composerapprovedemail",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "emails\\composer-approved.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "emails_composer_rejected_ts",
-      "target": "composer_rejected_composerrejectedemail",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "emails\\composer-rejected.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "emails_outreach_invite_ts",
-      "target": "outreach_invite_outreachinviteemail",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "emails\\outreach-invite.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_utils_ts",
-      "target": "clsx",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\utils.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_utils_ts",
-      "target": "tailwind_merge",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\utils.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_utils_ts",
-      "target": "utils_cn",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\utils.ts",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_supabase_admin_ts",
-      "target": "supabase_js",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\supabase\\admin.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_supabase_admin_ts",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\supabase\\admin.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_supabase_admin_ts",
-      "target": "admin_getadminclient",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\supabase\\admin.ts",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_supabase_client_ts",
-      "target": "ssr",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\supabase\\client.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_supabase_client_ts",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\supabase\\client.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_supabase_client_ts",
-      "target": "client_createclient",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\supabase\\client.ts",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_supabase_server_ts",
-      "target": "ssr",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\supabase\\server.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_supabase_server_ts",
-      "target": "headers",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\supabase\\server.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_supabase_server_ts",
-      "target": "database_types",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\supabase\\server.ts",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_supabase_server_ts",
-      "target": "server_createclient",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "lib\\supabase\\server.ts",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_gen_session_mjs",
-      "target": "fs",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\gen-session.mjs",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_gen_session_mjs",
-      "target": "path",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\gen-session.mjs",
-      "source_location": "L11",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_gen_session_mjs",
-      "target": "url",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\gen-session.mjs",
-      "source_location": "L12",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_gen_session_mjs",
-      "target": "child_process",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\gen-session.mjs",
-      "source_location": "L13",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_gen_session_mjs",
-      "target": "gen_session_read",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\gen-session.mjs",
-      "source_location": "L20",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_gen_session_mjs",
-      "target": "gen_session_parsecheckboxes",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\gen-session.mjs",
-      "source_location": "L31",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_gen_session_mjs",
-      "target": "gen_session_detectphase",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\gen-session.mjs",
-      "source_location": "L57",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_gen_session_mjs",
-      "target": "gen_session_suggestfiles",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\gen-session.mjs",
-      "source_location": "L237",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_gen_session_mjs",
-      "target": "gen_session_suggestprddoc",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\gen-session.mjs",
-      "source_location": "L249",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_gen_session_mjs",
-      "target": "gen_session_getgitcontext",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\gen-session.mjs",
-      "source_location": "L259",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_seed_composers_mjs",
-      "target": "supabase_js",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\seed-composers.mjs",
-      "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_seed_composers_mjs",
-      "target": "fs",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\seed-composers.mjs",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_seed_composers_mjs",
-      "target": "path",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\seed-composers.mjs",
-      "source_location": "L11",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_seed_composers_mjs",
-      "target": "url",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\seed-composers.mjs",
-      "source_location": "L12",
-      "weight": 1.0
-    },
-    {
-      "source": "scripts_seed_composers_mjs",
-      "target": "seed_composers_run",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "scripts\\seed-composers.mjs",
-      "source_location": "L64",
-      "weight": 1.0
-    },
-    {
-      "source": "services_ai_ts",
-      "target": "sdk",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "services\\ai.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "services_email_ts",
-      "target": "resend",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "services\\email.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "services_email_ts",
-      "target": "email_sendemail",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "services\\email.ts",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_auth_spec_ts",
-      "target": "test",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\auth.spec.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_auth_spec_ts",
-      "target": "tests_helpers_auth",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\auth.spec.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_briefs_spec_ts",
-      "target": "test",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\briefs.spec.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_briefs_spec_ts",
-      "target": "tests_helpers_auth",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\briefs.spec.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_outreach_spec_ts",
-      "target": "test",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\outreach.spec.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_outreach_spec_ts",
-      "target": "tests_helpers_auth",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\outreach.spec.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_submissions_spec_ts",
-      "target": "test",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\submissions.spec.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_submissions_spec_ts",
-      "target": "tests_helpers_auth",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\submissions.spec.ts",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_submissions_spec_ts",
-      "target": "submissions_spec_resetoutreach",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\submissions.spec.ts",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_submissions_spec_ts",
-      "target": "submissions_spec_deletesubmissions",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\submissions.spec.ts",
-      "source_location": "L23",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_helpers_auth_ts",
-      "target": "test",
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\helpers\\auth.ts",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_helpers_auth_ts",
-      "target": "auth_loginas",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "tests\\helpers\\auth.ts",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "outreach_feature",
-      "target": "submissions_feature",
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "docs/01_PRD/FEATURES/outreach.md",
-      "source_location": null,
-      "weight": 1.0
-    },
-    {
-      "source": "submissions_feature",
-      "target": "placements_feature",
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.9,
-      "source_file": "docs/01_PRD/FEATURES/submissions.md",
-      "source_location": null,
-      "weight": 1.0
-    },
-    {
-      "source": "improvement_brief_analyzer_agent",
+      "source": "syncmaster_project",
       "target": "phase_d_ai_layer",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "entity_briefs_table",
+      "target": "feature_brief_management",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "feature_outreach",
+      "target": "role_composer",
       "relation": "references",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/06_ITERATION/IMPROVEMENTS.md",
-      "source_location": "I-006",
-      "weight": 1.0
+      "confidence_score": 1.0
     },
     {
-      "source": "improvement_composer_matcher_agent",
-      "target": "phase_d_ai_layer",
+      "source": "feature_submissions",
+      "target": "role_producer",
       "relation": "references",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/06_ITERATION/IMPROVEMENTS.md",
-      "source_location": "I-007",
-      "weight": 1.0
+      "confidence_score": 1.0
     },
     {
-      "source": "brief_analyzer_agent",
+      "source": "feature_placements",
+      "target": "phase_b_core_loop",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "feature_auth",
+      "target": "phase_a_foundation",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "feature_ai_layer",
       "target": "phase_d_ai_layer",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "agent_brief_analyzer",
+      "target": "service_ai",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "agent_composer_matcher",
+      "target": "service_ai",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "agent_brief_analyzer",
+      "target": "entity_composers_table",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "agent_composer_matcher",
+      "target": "entity_briefs_table",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "arch_mutations_server_actions",
+      "target": "feature_brief_management",
       "relation": "conceptually_related_to",
       "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "docs/06_ITERATION/IMPROVEMENTS.md",
-      "source_location": "I-006",
-      "weight": 1.0
+      "confidence_score": 0.75
     },
     {
-      "source": "composer_matcher_agent",
-      "target": "phase_d_ai_layer",
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "docs/06_ITERATION/IMPROVEMENTS.md",
-      "source_location": "I-007",
-      "weight": 1.0
+      "source": "arch_security_role_verification",
+      "target": "role_admin",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
     }
   ],
-  "hyperedges": [
-    {
-      "id": "feature_flow_outreach_submission_placement",
-      "label": "Core feature flow: Outreach \u00e2\u2020\u2019 Submission \u00e2\u2020\u2019 Placement",
-      "nodes": [
-        "outreach_feature",
-        "submissions_feature",
-        "placements_feature"
-      ],
-      "relation": "participate_in",
-      "confidence": "EXTRACTED",
-      "confidence_score": 0.95,
-      "source_file": "docs/06_ITERATION/CHANGELOG.md"
-    },
-    {
-      "id": "phase_d_ai_tasks",
-      "label": "Phase D AI layer tasks",
-      "nodes": [
-        "improvement_brief_analyzer_agent",
-        "improvement_composer_matcher_agent"
-      ],
-      "relation": "participate_in",
-      "confidence": "EXTRACTED",
-      "confidence_score": 0.9,
-      "source_file": "docs/06_ITERATION/IMPROVEMENTS.md"
-    }
-  ],
-  "input_tokens": 0,
-  "output_tokens": 0
+  "hyperedges": [],
+  "input_tokens": 69404,
+  "output_tokens": 8500
 }

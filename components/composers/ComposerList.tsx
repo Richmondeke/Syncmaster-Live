@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 import { vetComposer } from '@/app/actions/composers'
+import { useToast } from '@/components/Toast'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -29,25 +30,51 @@ const STATUS_BADGE: Record<ComposerStatus, { label: string; variant: 'default' |
 }
 
 export function ComposerList({ composers }: { composers: ComposerWithProfile[] }) {
+  const { addToast } = useToast()
   const [rejectTarget, setRejectTarget] = useState<ComposerWithProfile | null>(null)
   const [rejectionNote, setRejectionNote] = useState('')
-  const [isPending, setIsPending] = useState(false)
 
-  const handleReject = async () => {
-    if (!rejectTarget) return
-    setIsPending(true)
-    try {
-      const fd = new FormData()
-      fd.set('profileId', rejectTarget.profile_id)
-      fd.set('status', 'rejected')
-      if (rejectionNote.trim()) fd.set('rejectionNote', rejectionNote.trim())
-      await vetComposer(fd)
-    } finally {
-      setIsPending(false)
+  const [approveState, approveAction, approveIsPending] = useActionState<
+    Awaited<ReturnType<typeof vetComposer>>,
+    FormData
+  >(
+    (_prev, formData: FormData) => vetComposer(formData),
+    { ok: false, error: '' }
+  )
+
+  const [rejectState, rejectAction, rejectIsPending] = useActionState<
+    Awaited<ReturnType<typeof vetComposer>>,
+    FormData
+  >(
+    (_prev, formData: FormData) => vetComposer(formData),
+    { ok: false, error: '' }
+  )
+
+  useEffect(() => {
+    if (approveState.ok) {
+      if (approveState.emailFailed) {
+        addToast(approveState.error, 'error')
+      } else {
+        addToast('Composer approved!', 'success')
+      }
+    } else if ('error' in approveState) {
+      addToast(approveState.error, 'error')
+    }
+  }, [approveState, addToast])
+
+  useEffect(() => {
+    if (rejectState.ok) {
+      if (rejectState.emailFailed) {
+        addToast(rejectState.error, 'error')
+      } else {
+        addToast('Composer rejected', 'info')
+      }
       setRejectTarget(null)
       setRejectionNote('')
+    } else if ('error' in rejectState) {
+      addToast(rejectState.error, 'error')
     }
-  }
+  }, [rejectState, addToast])
 
   if (composers.length === 0) {
     return (
@@ -93,11 +120,18 @@ export function ComposerList({ composers }: { composers: ComposerWithProfile[] }
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">
                       {composer.status !== 'active' && (
-                        <form action={vetComposer}>
+                        <form action={approveAction}>
                           <input type="hidden" name="profileId" value={composer.profile_id} />
                           <input type="hidden" name="status" value="active" />
-                          <Button type="submit" size="sm" variant="default">
-                            Approve
+                          <Button type="submit" size="sm" variant="default" disabled={approveIsPending}>
+                            {approveIsPending ? (
+                              <>
+                                <span className="inline-block w-4 h-4 border-2 border-transparent border-t-current rounded-full animate-spin mr-2" />
+                                Approving…
+                              </>
+                            ) : (
+                              'Approve'
+                            )}
                           </Button>
                         </form>
                       )}
@@ -106,6 +140,7 @@ export function ComposerList({ composers }: { composers: ComposerWithProfile[] }
                           size="sm"
                           variant="destructive"
                           onClick={() => setRejectTarget(composer)}
+                          disabled={rejectIsPending}
                         >
                           Reject
                         </Button>
@@ -136,28 +171,47 @@ export function ComposerList({ composers }: { composers: ComposerWithProfile[] }
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="rejection-note" className="text-sm font-medium">
-              Feedback <span className="text-muted-foreground font-normal">(optional)</span>
-            </label>
-            <textarea
-              id="rejection-note"
-              rows={4}
-              placeholder="e.g. Strong production but catalogue lacks sync-ready stems."
-              value={rejectionNote}
-              onChange={(e) => setRejectionNote(e.target.value)}
-              className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-none"
-            />
-          </div>
+          <form action={rejectAction} className="flex flex-col gap-4">
+            <input type="hidden" name="profileId" value={rejectTarget?.profile_id ?? ''} />
+            <input type="hidden" name="status" value="rejected" />
 
-          <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => { setRejectTarget(null); setRejectionNote('') }} disabled={isPending}>
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={handleReject} disabled={isPending}>
-              {isPending ? 'Rejecting…' : 'Reject application'}
-            </Button>
-          </DialogFooter>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="rejection-note" className="text-sm font-medium">
+                Feedback <span className="text-muted-foreground font-normal">(optional)</span>
+              </label>
+              <textarea
+                id="rejection-note"
+                name="rejectionNote"
+                rows={4}
+                placeholder="e.g. Strong production but catalogue lacks sync-ready stems."
+                value={rejectionNote}
+                onChange={(e) => setRejectionNote(e.target.value)}
+                disabled={rejectIsPending}
+                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring resize-none disabled:opacity-50"
+              />
+            </div>
+
+            <DialogFooter className="gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => { setRejectTarget(null); setRejectionNote('') }}
+                disabled={rejectIsPending}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" variant="destructive" disabled={rejectIsPending}>
+                {rejectIsPending ? (
+                  <>
+                    <span className="inline-block w-4 h-4 border-2 border-transparent border-t-current rounded-full animate-spin mr-2" />
+                    Rejecting…
+                  </>
+                ) : (
+                  'Reject application'
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
     </>

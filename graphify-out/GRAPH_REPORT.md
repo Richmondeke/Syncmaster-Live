@@ -1,12 +1,12 @@
 # Graph Report - .  (2026-04-29)
 
 ## Corpus Check
-- Corpus is ~21,152 words - fits in a single context window. You may not need a graph.
+- Corpus is ~25,085 words - fits in a single context window. You may not need a graph.
 
 ## Summary
-- 129 nodes · 87 edges · 55 communities detected
-- Extraction: 62% EXTRACTED · 38% INFERRED · 0% AMBIGUOUS · INFERRED: 33 edges (avg confidence: 0.81)
-- Token cost: 0 input · 0 output
+- 152 nodes · 106 edges · 60 communities detected
+- Extraction: 71% EXTRACTED · 29% INFERRED · 0% AMBIGUOUS · INFERRED: 31 edges (avg confidence: 0.8)
+- Token cost: 69,404 input · 8,500 output
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Community 0|Community 0]]
@@ -64,60 +64,61 @@
 - [[_COMMUNITY_Community 52|Community 52]]
 - [[_COMMUNITY_Community 53|Community 53]]
 - [[_COMMUNITY_Community 54|Community 54]]
+- [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `createClient()` - 14 edges
-2. `vetComposer()` - 7 edges
-3. `updateBriefStatus()` - 5 edges
-4. `inviteComposer()` - 5 edges
-5. `analyzeBrief()` - 4 edges
-6. `signUp()` - 4 edges
-7. `getAdminClient()` - 4 edges
-8. `sendEmail()` - 4 edges
-9. `Phase D: AI Layer` - 4 edges
-10. `submitTrack()` - 3 edges
+1. `createClient()` - 15 edges
+2. `SyncMaster 1.0` - 8 edges
+3. `vetComposer()` - 7 edges
+4. `analyzeBrief()` - 5 edges
+5. `updateBriefStatus()` - 5 edges
+6. `inviteComposer()` - 5 edges
+7. `signUp()` - 4 edges
+8. `getAdminClient()` - 4 edges
+9. `sendEmail()` - 4 edges
+10. `updateBriefStatus()` - 3 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `createBrief()` --calls--> `createClient()`  [INFERRED]
   app\actions\briefs.ts → lib\supabase\server.ts
-- `respondToOutreach()` --calls--> `createClient()`  [INFERRED]
-  app\actions\outreach.ts → lib\supabase\server.ts
 - `analyzeBrief()` --calls--> `createClient()`  [INFERRED]
+  agents\brief-analyzer.ts → lib\supabase\server.ts
+- `analyzeBrief()` --calls--> `matchComposers()`  [INFERRED]
+  agents\brief-analyzer.ts → agents\composer-matcher.ts
+- `updateBriefStatus()` --calls--> `createClient()`  [INFERRED]
   agents\brief-analyzer.ts → lib\supabase\server.ts
 - `DashboardPage()` --calls--> `createClient()`  [INFERRED]
   app\(dashboard)\dashboard\page.tsx → lib\supabase\server.ts
-- `NewBriefPage()` --calls--> `createClient()`  [INFERRED]
-  app\(dashboard)\dashboard\briefs\new\page.tsx → lib\supabase\server.ts
-
-## Hyperedges (group relationships)
-- **Core feature flow: Outreach â†’ Submission â†’ Placement** — outreach_feature, submissions_feature, placements_feature [EXTRACTED 0.95]
-- **Phase D AI layer tasks** — improvement_brief_analyzer_agent, improvement_composer_matcher_agent [EXTRACTED 0.90]
 
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.2
-Nodes (7): applicationReceivedEmail(), signIn(), signOut(), signUp(), DashboardPage(), NewBriefPage(), createClient()
+Cohesion: 0.12
+Nodes (12): getAdminClient(), applicationReceivedEmail(), signIn(), signOut(), signUp(), sendEmail(), outreachInviteEmail(), inviteComposer() (+4 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.18
-Nodes (6): analyzeBrief(), assertValidBriefTransition(), createBrief(), updateBriefStatus(), handleConfirm(), matchComposers()
+Nodes (7): analyzeBrief(), updateBriefStatus(), assertValidBriefTransition(), createBrief(), updateBriefStatus(), handleConfirm(), matchComposers()
 
 ### Community 2 - "Community 2"
-Cohesion: 0.2
-Nodes (5): getAdminClient(), composerApprovedEmail(), composerRejectedEmail(), handleReject(), vetComposer()
+Cohesion: 0.17
+Nodes (12): Anthropic SDK via services/ai.ts, Feature: AI Layer + Production Polish, Feature: Auth + Role-Gated Access, Feature: Placement Logging, Next.js 16 App Router, Phase A: Foundation, Phase B: Core Loop, Phase D: AI Layer (+4 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.29
-Nodes (4): sendEmail(), outreachInviteEmail(), inviteComposer(), respondToOutreach()
+Cohesion: 0.25
+Nodes (4): composerApprovedEmail(), composerRejectedEmail(), handleReject(), vetComposer()
 
 ### Community 4 - "Community 4"
 Cohesion: 0.29
 Nodes (0): 
 
 ### Community 5 - "Community 5"
-Cohesion: 0.4
-Nodes (5): Brief Analyzer Agent, Composer Matcher Agent, Brief analyzer agent: tag briefs with genre/mood on activation, Composer matcher agent: rank active composers against a brief, Phase D: AI Layer
+Cohesion: 0.29
+Nodes (7): Agent: brief-analyzer.ts, Agent: composer-matcher.ts, Architecture: Mutations → Server Actions only, briefs table (status, ai_suggested_composers), composers table (status, ai_score, ai_tags), Feature: Brief Management, Service: services/ai.ts
 
 ### Community 6 - "Community 6"
 Cohesion: 0.5
@@ -140,8 +141,8 @@ Cohesion: 0.67
 Nodes (0): 
 
 ### Community 11 - "Community 11"
-Cohesion: 0.67
-Nodes (3): Outreach (Composer Invitations) Feature, Placement Logging Feature, Track Submissions Feature
+Cohesion: 1.0
+Nodes (0): 
 
 ### Community 12 - "Community 12"
 Cohesion: 1.0
@@ -205,15 +206,15 @@ Nodes (0):
 
 ### Community 27 - "Community 27"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (2): Architecture: Security → verify role server-side in every admin action, Admin Role
 
 ### Community 28 - "Community 28"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (2): Feature: Outreach (Composer Invitations), Composer Role
 
 ### Community 29 - "Community 29"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (2): Feature: Track Submissions, Producer Role
 
 ### Community 30 - "Community 30"
 Cohesion: 1.0
@@ -301,24 +302,46 @@ Nodes (0):
 
 ### Community 51 - "Community 51"
 Cohesion: 1.0
-Nodes (1): ADR-001: Email/Password Authentication
+Nodes (0): 
 
 ### Community 52 - "Community 52"
 Cohesion: 1.0
-Nodes (1): ADR-002: RLS at Database Layer
+Nodes (0): 
 
 ### Community 53 - "Community 53"
 Cohesion: 1.0
-Nodes (1): ADR-003: Playwright for E2E Testing
+Nodes (0): 
 
 ### Community 54 - "Community 54"
 Cohesion: 1.0
+Nodes (1): Tailwind CSS + shadcn/ui
+
+### Community 55 - "Community 55"
+Cohesion: 1.0
+Nodes (1): Supabase Auth SSR
+
+### Community 56 - "Community 56"
+Cohesion: 1.0
+Nodes (1): Vercel + Vercel Cron
+
+### Community 57 - "Community 57"
+Cohesion: 1.0
+Nodes (1): Phase C: Schema Extension
+
+### Community 58 - "Community 58"
+Cohesion: 1.0
 Nodes (1): Phase E: Production Polish
 
+### Community 59 - "Community 59"
+Cohesion: 1.0
+Nodes (1): Curated sync licensing platform for African composers
+
 ## Knowledge Gaps
-- **10 isolated node(s):** `Outreach (Composer Invitations) Feature`, `Placement Logging Feature`, `ADR-001: Email/Password Authentication`, `ADR-002: RLS at Database Layer`, `ADR-003: Playwright for E2E Testing` (+5 more)
+- **22 isolated node(s):** `Next.js 16 App Router`, `TypeScript Strict Mode`, `Tailwind CSS + shadcn/ui`, `Supabase (Postgres + RLS)`, `Supabase Auth SSR` (+17 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 12`** (2 nodes): `middleware()`, `middleware.ts`
+- **Thin community `Community 11`** (2 nodes): `middleware()`, `middleware.ts`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 12`** (2 nodes): `test-api.js`, `testAPI()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 13`** (2 nodes): `layout.tsx`, `RootLayout()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -328,97 +351,89 @@ Nodes (1): Phase E: Production Polish
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 16`** (2 nodes): `error.tsx`, `BriefsError()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 17`** (2 nodes): `cn()`, `avatar.tsx`
+- **Thin community `Community 17`** (2 nodes): `handleInvite()`, `AiSuggestionsPanel.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 18`** (2 nodes): `cn()`, `button.tsx`
+- **Thin community `Community 18`** (2 nodes): `cn()`, `avatar.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 19`** (2 nodes): `dialog.tsx`, `cn()`
+- **Thin community `Community 19`** (2 nodes): `cn()`, `button.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 20`** (2 nodes): `dropdown-menu.tsx`, `cn()`
+- **Thin community `Community 20`** (2 nodes): `dialog.tsx`, `cn()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 21`** (2 nodes): `label.tsx`, `cn()`
+- **Thin community `Community 21`** (2 nodes): `dropdown-menu.tsx`, `cn()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 22`** (2 nodes): `separator.tsx`, `cn()`
+- **Thin community `Community 22`** (2 nodes): `label.tsx`, `cn()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 23`** (2 nodes): `createClient()`, `client.ts`
+- **Thin community `Community 23`** (2 nodes): `separator.tsx`, `cn()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 24`** (2 nodes): `seed-composers.mjs`, `run()`
+- **Thin community `Community 24`** (2 nodes): `createClient()`, `client.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 25`** (2 nodes): `loginAs()`, `auth.ts`
+- **Thin community `Community 25`** (2 nodes): `seed-composers.mjs`, `run()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 26`** (1 nodes): `next-env.d.ts`
+- **Thin community `Community 26`** (2 nodes): `loginAs()`, `auth.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 27`** (1 nodes): `next.config.ts`
+- **Thin community `Community 27`** (2 nodes): `Architecture: Security → verify role server-side in every admin action`, `Admin Role`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 28`** (1 nodes): `playwright.config.ts`
+- **Thin community `Community 28`** (2 nodes): `Feature: Outreach (Composer Invitations)`, `Composer Role`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 29`** (1 nodes): `postcss.config.mjs`
+- **Thin community `Community 29`** (2 nodes): `Feature: Track Submissions`, `Producer Role`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 30`** (1 nodes): `page.tsx`
+- **Thin community `Community 30`** (1 nodes): `next-env.d.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 31`** (1 nodes): `page.tsx`
+- **Thin community `Community 31`** (1 nodes): `next.config.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 32`** (1 nodes): `layout.tsx`
+- **Thin community `Community 32`** (1 nodes): `playwright.config.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 33`** (1 nodes): `loading.tsx`
+- **Thin community `Community 33`** (1 nodes): `postcss.config.mjs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 34`** (1 nodes): `loading.tsx`
+- **Thin community `Community 34`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 35`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 36`** (1 nodes): `page.tsx`
+- **Thin community `Community 36`** (1 nodes): `layout.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 37`** (1 nodes): `page.tsx`
+- **Thin community `Community 37`** (1 nodes): `loading.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 38`** (1 nodes): `AiSuggestionsPanel.tsx`
+- **Thin community `Community 38`** (1 nodes): `loading.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 39`** (1 nodes): `BriefForm.tsx`
+- **Thin community `Community 39`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 40`** (1 nodes): `BriefList.tsx`
+- **Thin community `Community 40`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 41`** (1 nodes): `OutreachPanel.tsx`
+- **Thin community `Community 41`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 42`** (1 nodes): `OutreachResponse.tsx`
+- **Thin community `Community 42`** (1 nodes): `BriefForm.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 43`** (1 nodes): `SubmitTrackForm.tsx`
+- **Thin community `Community 43`** (1 nodes): `BriefList.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 44`** (1 nodes): `Sidebar.tsx`
+- **Thin community `Community 44`** (1 nodes): `OutreachPanel.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 45`** (1 nodes): `input.tsx`
+- **Thin community `Community 45`** (1 nodes): `OutreachResponse.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 46`** (1 nodes): `ai.ts`
+- **Thin community `Community 46`** (1 nodes): `SubmitTrackForm.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 47`** (1 nodes): `auth.spec.ts`
+- **Thin community `Community 47`** (1 nodes): `Sidebar.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 48`** (1 nodes): `briefs.spec.ts`
+- **Thin community `Community 48`** (1 nodes): `input.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 49`** (1 nodes): `outreach.spec.ts`
+- **Thin community `Community 49`** (1 nodes): `ai.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 50`** (1 nodes): `database.types.ts`
+- **Thin community `Community 50`** (1 nodes): `auth.spec.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 51`** (1 nodes): `ADR-001: Email/Password Authentication`
+- **Thin community `Community 51`** (1 nodes): `briefs.spec.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 52`** (1 nodes): `ADR-002: RLS at Database Layer`
+- **Thin community `Community 52`** (1 nodes): `outreach.spec.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 53`** (1 nodes): `ADR-003: Playwright for E2E Testing`
+- **Thin community `Community 53`** (1 nodes): `database.types.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 54`** (1 nodes): `Phase E: Production Polish`
+- **Thin community `Community 54`** (1 nodes): `Tailwind CSS + shadcn/ui`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-
-## Suggested Questions
-_Questions this graph is uniquely positioned to answer:_
-
-- **Why does `createClient()` connect `Community 0` to `Community 1`, `Community 2`, `Community 3`, `Community 6`?**
-  _High betweenness centrality (0.085) - this node is a cross-community bridge._
-- **Why does `vetComposer()` connect `Community 2` to `Community 0`, `Community 3`?**
-  _High betweenness centrality (0.035) - this node is a cross-community bridge._
-- **Why does `updateBriefStatus()` connect `Community 1` to `Community 0`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
-- **Are the 13 inferred relationships involving `createClient()` (e.g. with `analyzeBrief()` and `DashboardPage()`) actually correct?**
-  _`createClient()` has 13 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 6 inferred relationships involving `vetComposer()` (e.g. with `createClient()` and `getAdminClient()`) actually correct?**
-  _`vetComposer()` has 6 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 4 inferred relationships involving `updateBriefStatus()` (e.g. with `createClient()` and `assertValidBriefTransition()`) actually correct?**
-  _`updateBriefStatus()` has 4 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 4 inferred relationships involving `inviteComposer()` (e.g. with `createClient()` and `getAdminClient()`) actually correct?**
-  _`inviteComposer()` has 4 INFERRED edges - model-reasoned connections that need verification._
+- **Thin community `Community 55`** (1 nodes): `Supabase Auth SSR`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 56`** (1 nodes): `Vercel + Vercel Cron`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 57`** (1 nodes): `Phase C: Schema Extension`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 58`** (1 nodes): `Phase E: Production Polish`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 59`** (1 nodes): `Curated sync licensing platform for African composers`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.

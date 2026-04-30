@@ -43,6 +43,20 @@
       "source_location": "L1"
     },
     {
+      "id": "test_api_js",
+      "label": "test-api.js",
+      "file_type": "code",
+      "source_file": "test-api.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "test_api_testapi",
+      "label": "testAPI()",
+      "file_type": "code",
+      "source_file": "test-api.js",
+      "source_location": "L10"
+    },
+    {
       "id": "agents_brief_analyzer_ts",
       "label": "brief-analyzer.ts",
       "file_type": "code",
@@ -57,6 +71,13 @@
       "source_location": "L4"
     },
     {
+      "id": "brief_analyzer_updatebriefstatus",
+      "label": "updateBriefStatus()",
+      "file_type": "code",
+      "source_file": "agents\\brief-analyzer.ts",
+      "source_location": "L61"
+    },
+    {
       "id": "agents_composer_matcher_ts",
       "label": "composer-matcher.ts",
       "file_type": "code",
@@ -68,7 +89,7 @@
       "label": "matchComposers()",
       "file_type": "code",
       "source_file": "agents\\composer-matcher.ts",
-      "source_location": "L24"
+      "source_location": "L26"
     },
     {
       "id": "app_layout_tsx",
@@ -314,6 +335,13 @@
       "file_type": "code",
       "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
       "source_location": "L1"
+    },
+    {
+      "id": "aisuggestionspanel_handleinvite",
+      "label": "handleInvite()",
+      "file_type": "code",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L142"
     },
     {
       "id": "components_briefs_briefform_tsx",
@@ -850,7 +878,7 @@
     },
     {
       "source": "next_env_d_ts",
-      "target": "next_dev_types_routes_d_ts",
+      "target": "next_types_routes_d_ts",
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "next-env.d.ts",
@@ -903,6 +931,33 @@
       "weight": 1.0
     },
     {
+      "source": "test_api_js",
+      "target": "dotenv",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "test-api.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "test_api_js",
+      "target": "sdk",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "test-api.js",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "test_api_js",
+      "target": "test_api_testapi",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "test-api.js",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
       "source": "agents_brief_analyzer_ts",
       "target": "server",
       "relation": "imports_from",
@@ -930,6 +985,24 @@
       "weight": 1.0
     },
     {
+      "source": "agents_brief_analyzer_ts",
+      "target": "brief_analyzer_updatebriefstatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "agents\\brief-analyzer.ts",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "brief_analyzer_analyzebrief",
+      "target": "brief_analyzer_updatebriefstatus",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "agents\\brief-analyzer.ts",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
       "source": "agents_composer_matcher_ts",
       "target": "ai",
       "relation": "imports_from",
@@ -944,7 +1017,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "agents\\composer-matcher.ts",
-      "source_location": "L24",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -1831,11 +1904,56 @@
     },
     {
       "source": "components_briefs_aisuggestionspanel_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_briefs_aisuggestionspanel_tsx",
       "target": "lucide_react",
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
-      "source_location": "L1",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "components_briefs_aisuggestionspanel_tsx",
+      "target": "client",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "components_briefs_aisuggestionspanel_tsx",
+      "target": "outreach",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "components_briefs_aisuggestionspanel_tsx",
+      "target": "button",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "components_briefs_aisuggestionspanel_tsx",
+      "target": "aisuggestionspanel_handleinvite",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\briefs\\AiSuggestionsPanel.tsx",
+      "source_location": "L142",
       "weight": 1.0
     },
     {
@@ -3214,7 +3332,17 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "agents\\brief-analyzer.ts",
-      "source_location": "L22",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "brief_analyzer_updatebriefstatus",
+      "target": "server_createclient",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "agents\\brief-analyzer.ts",
+      "source_location": "L62",
       "weight": 1.0
     },
     {
