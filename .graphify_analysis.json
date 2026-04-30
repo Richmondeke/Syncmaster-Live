@@ -2,66 +2,45 @@
   "communities": {
     "0": [
       "admin_getadminclient",
-      "app_actions_auth_ts",
+      "app_actions_composers_ts",
       "app_actions_outreach_ts",
+      "composer_approved_composerapprovedemail",
+      "composer_rejected_composerrejectedemail",
+      "composers_vetcomposer",
+      "email_sendemail",
+      "emails_composer_approved_ts",
+      "emails_composer_rejected_ts",
+      "emails_outreach_invite_ts",
+      "lib_supabase_admin_ts",
+      "outreach_invite_outreachinviteemail",
+      "outreach_invitecomposer",
+      "outreach_respondtooutreach",
+      "services_email_ts"
+    ],
+    "1": [
+      "app_actions_auth_ts",
       "app_dashboard_dashboard_briefs_new_page_tsx",
       "app_dashboard_dashboard_page_tsx",
       "application_received_applicationreceivedemail",
       "auth_signin",
       "auth_signout",
       "auth_signup",
-      "email_sendemail",
       "emails_application_received_ts",
-      "emails_outreach_invite_ts",
-      "lib_supabase_admin_ts",
       "lib_supabase_server_ts",
-      "outreach_invite_outreachinviteemail",
-      "outreach_invitecomposer",
-      "outreach_respondtooutreach",
       "page_dashboardpage",
       "page_newbriefpage",
-      "server_createclient",
-      "services_email_ts"
+      "server_createclient"
     ],
-    "1": [
-      "agents_brief_analyzer_ts",
-      "agents_composer_matcher_ts",
+    "2": [
       "app_actions_briefs_ts",
-      "brief_analyzer_analyzebrief",
-      "brief_analyzer_updatebriefstatus",
       "brief_workflow_assertvalidbrieftransition",
       "briefs_createbrief",
       "briefs_updatebriefstatus",
       "briefstatuscontrol_handleconfirm",
       "components_briefs_briefstatuscontrol_tsx",
-      "composer_matcher_matchcomposers",
       "core_workflows_brief_workflow_ts"
     ],
-    "2": [
-      "anthropic_ai",
-      "feature_ai_layer",
-      "feature_auth",
-      "feature_placements",
-      "nextjs_16_framework",
-      "phase_a_foundation",
-      "phase_b_core_loop",
-      "phase_d_ai_layer",
-      "resend_email",
-      "supabase_db",
-      "syncmaster_project",
-      "typescript_strict"
-    ],
     "3": [
-      "app_actions_composers_ts",
-      "components_composers_composerlist_tsx",
-      "composer_approved_composerapprovedemail",
-      "composer_rejected_composerrejectedemail",
-      "composerlist_handlereject",
-      "composers_vetcomposer",
-      "emails_composer_approved_ts",
-      "emails_composer_rejected_ts"
-    ],
-    "4": [
       "gen_session_detectphase",
       "gen_session_getgitcontext",
       "gen_session_parsecheckboxes",
@@ -70,26 +49,30 @@
       "gen_session_suggestprddoc",
       "scripts_gen_session_mjs"
     ],
-    "5": [
-      "agent_brief_analyzer",
-      "agent_composer_matcher",
-      "arch_mutations_server_actions",
-      "entity_briefs_table",
-      "entity_composers_table",
-      "feature_brief_management",
-      "service_ai"
+    "4": [
+      "agents_brief_analyzer_ts",
+      "agents_composer_matcher_ts",
+      "brief_analyzer_analyzebrief",
+      "brief_analyzer_updatebriefstatus",
+      "composer_matcher_matchcomposers"
     ],
-    "6": [
+    "5": [
       "app_actions_submissions_ts",
       "core_workflows_submission_workflow_ts",
       "submission_workflow_assertsubmissionallowed",
       "submissions_submittrack"
     ],
-    "7": [
+    "6": [
       "badge_badge",
       "components_ui_badge_tsx",
       "lib_utils_ts",
       "utils_cn"
+    ],
+    "7": [
+      "ai_service",
+      "anthropic_sdk",
+      "brief_analyzer_agent",
+      "composer_matcher_agent"
     ],
     "8": [
       "components_dashboard_header_tsx",
@@ -171,28 +154,26 @@
       "tests_helpers_auth_ts"
     ],
     "27": [
-      "arch_security_role_verification",
-      "role_admin"
+      "ai_brief_analysis",
+      "syncmaster"
     ],
     "28": [
-      "feature_outreach",
-      "role_composer"
-    ],
-    "29": [
-      "feature_submissions",
-      "role_producer"
-    ],
-    "30": [
       "next_env_d_ts"
     ],
-    "31": [
+    "29": [
       "next_config_ts"
     ],
-    "32": [
+    "30": [
       "playwright_config_ts"
     ],
-    "33": [
+    "31": [
       "postcss_config_mjs"
+    ],
+    "32": [
+      "test_anthropic_api_js"
+    ],
+    "33": [
+      "test_anthropic_api_mjs"
     ],
     "34": [
       "app_auth_login_page_tsx"
@@ -219,67 +200,76 @@
       "app_dashboard_dashboard_composers_page_tsx"
     ],
     "42": [
-      "components_briefs_briefform_tsx"
+      "components_toast_tsx"
     ],
     "43": [
-      "components_briefs_brieflist_tsx"
+      "components_briefs_briefform_tsx"
     ],
     "44": [
-      "components_briefs_outreachpanel_tsx"
+      "components_briefs_brieflist_tsx"
     ],
     "45": [
-      "components_briefs_outreachresponse_tsx"
+      "components_briefs_outreachpanel_tsx"
     ],
     "46": [
-      "components_briefs_submittrackform_tsx"
+      "components_briefs_outreachresponse_tsx"
     ],
     "47": [
-      "components_dashboard_sidebar_tsx"
+      "components_briefs_submittrackform_tsx"
     ],
     "48": [
-      "components_ui_input_tsx"
+      "components_composers_composerlist_tsx"
     ],
     "49": [
-      "services_ai_ts"
+      "components_dashboard_sidebar_tsx"
     ],
     "50": [
-      "tests_auth_spec_ts"
+      "components_ui_input_tsx"
     ],
     "51": [
-      "tests_briefs_spec_ts"
+      "services_ai_ts"
     ],
     "52": [
-      "tests_outreach_spec_ts"
+      "tests_auth_spec_ts"
     ],
     "53": [
-      "types_database_types_ts"
+      "tests_briefs_spec_ts"
     ],
     "54": [
-      "tailwind_shadcn"
+      "tests_composers_spec_ts"
     ],
     "55": [
-      "supabase_auth"
+      "tests_outreach_spec_ts"
     ],
     "56": [
-      "vercel_deployment"
+      "tests_phase_e_quick_spec_ts"
     ],
     "57": [
-      "phase_c_schema_ext"
+      "tests_phase_e_spec_ts"
     ],
     "58": [
-      "phase_e_production"
+      "types_database_types_ts"
     ],
     "59": [
-      "vision_curated_sync_licensing"
+      "contact_sync"
+    ],
+    "60": [
+      "auth_feature"
+    ],
+    "61": [
+      "briefs_feature"
+    ],
+    "62": [
+      "supabase"
     ]
   },
   "cohesion": {
-    "0": 0.12,
-    "1": 0.18,
-    "2": 0.17,
-    "3": 0.25,
-    "4": 0.29,
-    "5": 0.29,
+    "0": 0.14,
+    "1": 0.2,
+    "2": 0.29,
+    "3": 0.29,
+    "4": 0.5,
+    "5": 0.5,
     "6": 0.5,
     "7": 0.5,
     "8": 0.67,
@@ -333,152 +323,9 @@
     "56": 1.0,
     "57": 1.0,
     "58": 1.0,
-    "59": 1.0
-  },
-  "gods": [
-    {
-      "id": "server_createclient",
-      "label": "createClient()",
-      "degree": 15
-    },
-    {
-      "id": "syncmaster_project",
-      "label": "SyncMaster 1.0",
-      "degree": 8
-    },
-    {
-      "id": "composers_vetcomposer",
-      "label": "vetComposer()",
-      "degree": 7
-    },
-    {
-      "id": "brief_analyzer_analyzebrief",
-      "label": "analyzeBrief()",
-      "degree": 5
-    },
-    {
-      "id": "briefs_updatebriefstatus",
-      "label": "updateBriefStatus()",
-      "degree": 5
-    },
-    {
-      "id": "outreach_invitecomposer",
-      "label": "inviteComposer()",
-      "degree": 5
-    },
-    {
-      "id": "auth_signup",
-      "label": "signUp()",
-      "degree": 4
-    },
-    {
-      "id": "admin_getadminclient",
-      "label": "getAdminClient()",
-      "degree": 4
-    },
-    {
-      "id": "email_sendemail",
-      "label": "sendEmail()",
-      "degree": 4
-    },
-    {
-      "id": "brief_analyzer_updatebriefstatus",
-      "label": "updateBriefStatus()",
-      "degree": 3
-    }
-  ],
-  "surprises": [
-    {
-      "source": "createBrief()",
-      "target": "createClient()",
-      "source_files": [
-        "app\\actions\\briefs.ts",
-        "lib\\supabase\\server.ts"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities; peripheral node `createBrief()` unexpectedly reaches hub `createClient()`"
-    },
-    {
-      "source": "analyzeBrief()",
-      "target": "createClient()",
-      "source_files": [
-        "agents\\brief-analyzer.ts",
-        "lib\\supabase\\server.ts"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
-    },
-    {
-      "source": "analyzeBrief()",
-      "target": "matchComposers()",
-      "source_files": [
-        "agents\\brief-analyzer.ts",
-        "agents\\composer-matcher.ts"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `matchComposers()` unexpectedly reaches hub `analyzeBrief()`"
-    },
-    {
-      "source": "updateBriefStatus()",
-      "target": "createClient()",
-      "source_files": [
-        "agents\\brief-analyzer.ts",
-        "lib\\supabase\\server.ts"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
-    },
-    {
-      "source": "DashboardPage()",
-      "target": "createClient()",
-      "source_files": [
-        "app\\(dashboard)\\dashboard\\page.tsx",
-        "lib\\supabase\\server.ts"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `DashboardPage()` unexpectedly reaches hub `createClient()`"
-    }
-  ],
-  "questions": [
-    {
-      "type": "bridge_node",
-      "question": "Why does `createClient()` connect `Community 0` to `Community 1`, `Community 3`, `Community 6`?",
-      "why": "High betweenness centrality (0.065) - this node is a cross-community bridge."
-    },
-    {
-      "type": "bridge_node",
-      "question": "Why does `vetComposer()` connect `Community 3` to `Community 0`?",
-      "why": "High betweenness centrality (0.026) - this node is a cross-community bridge."
-    },
-    {
-      "type": "bridge_node",
-      "question": "Why does `updateBriefStatus()` connect `Community 1` to `Community 0`?",
-      "why": "High betweenness centrality (0.016) - this node is a cross-community bridge."
-    },
-    {
-      "type": "verify_inferred",
-      "question": "Are the 14 inferred relationships involving `createClient()` (e.g. with `analyzeBrief()` and `updateBriefStatus()`) actually correct?",
-      "why": "`createClient()` has 14 INFERRED edges - model-reasoned connections that need verification."
-    },
-    {
-      "type": "verify_inferred",
-      "question": "Are the 6 inferred relationships involving `vetComposer()` (e.g. with `createClient()` and `getAdminClient()`) actually correct?",
-      "why": "`vetComposer()` has 6 INFERRED edges - model-reasoned connections that need verification."
-    },
-    {
-      "type": "verify_inferred",
-      "question": "Are the 3 inferred relationships involving `analyzeBrief()` (e.g. with `createClient()` and `matchComposers()`) actually correct?",
-      "why": "`analyzeBrief()` has 3 INFERRED edges - model-reasoned connections that need verification."
-    },
-    {
-      "type": "verify_inferred",
-      "question": "Are the 4 inferred relationships involving `updateBriefStatus()` (e.g. with `createClient()` and `assertValidBriefTransition()`) actually correct?",
-      "why": "`updateBriefStatus()` has 4 INFERRED edges - model-reasoned connections that need verification."
-    }
-  ]
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0
+  }
 }

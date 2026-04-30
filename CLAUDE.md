@@ -19,7 +19,7 @@ Current phase: **Phase D — AI Layer** (A, B, C complete).
 | Auth | Supabase Auth SSR (cookie-based) |
 | Storage | Supabase Storage |
 | Email | Resend + React Email (`emails/`) |
-| AI | `@anthropic-ai/sdk` via `services/ai.ts` only |
+| AI | AWS Bedrock via `@aws-sdk/client-bedrock-runtime`, called only through `services/ai.ts` |
 | Deployment | Vercel + Vercel Cron |
 
 ---
@@ -116,7 +116,7 @@ docs/08_CONTEXT/PROMPTS.md ← session prompt templates
 ```
 ✗ Never edit /components/ui/
 ✗ Never use `any`
-✗ Never import @anthropic-ai/sdk outside services/ai.ts
+✗ Never import @aws-sdk/* outside services/ai.ts
 ✗ Never call agents/ from components or pages — server actions only
 ✗ Never create API routes for mutations or data fetching
 ✗ Never use localStorage for auth state

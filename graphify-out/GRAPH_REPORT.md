@@ -1,12 +1,12 @@
-# Graph Report - .  (2026-04-29)
+# Graph Report - .  (2026-04-30)
 
 ## Corpus Check
-- Corpus is ~25,085 words - fits in a single context window. You may not need a graph.
+- Corpus is ~44,435 words - fits in a single context window. You may not need a graph.
 
 ## Summary
-- 152 nodes · 106 edges · 60 communities detected
-- Extraction: 71% EXTRACTED · 29% INFERRED · 0% AMBIGUOUS · INFERRED: 31 edges (avg confidence: 0.8)
-- Token cost: 69,404 input · 8,500 output
+- 136 nodes · 88 edges · 63 communities detected
+- Extraction: 67% EXTRACTED · 33% INFERRED · 0% AMBIGUOUS · INFERRED: 29 edges (avg confidence: 0.8)
+- Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Community 0|Community 0]]
@@ -69,64 +69,67 @@
 - [[_COMMUNITY_Community 57|Community 57]]
 - [[_COMMUNITY_Community 58|Community 58]]
 - [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
+- [[_COMMUNITY_Community 61|Community 61]]
+- [[_COMMUNITY_Community 62|Community 62]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `createClient()` - 15 edges
-2. `SyncMaster 1.0` - 8 edges
-3. `vetComposer()` - 7 edges
-4. `analyzeBrief()` - 5 edges
-5. `updateBriefStatus()` - 5 edges
-6. `inviteComposer()` - 5 edges
-7. `signUp()` - 4 edges
-8. `getAdminClient()` - 4 edges
-9. `sendEmail()` - 4 edges
-10. `updateBriefStatus()` - 3 edges
+2. `vetComposer()` - 6 edges
+3. `analyzeBrief()` - 5 edges
+4. `updateBriefStatus()` - 5 edges
+5. `inviteComposer()` - 5 edges
+6. `signUp()` - 4 edges
+7. `getAdminClient()` - 4 edges
+8. `sendEmail()` - 4 edges
+9. `updateBriefStatus()` - 3 edges
+10. `submitTrack()` - 3 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `createBrief()` --calls--> `createClient()`  [INFERRED]
   app\actions\briefs.ts → lib\supabase\server.ts
+- `respondToOutreach()` --calls--> `createClient()`  [INFERRED]
+  app\actions\outreach.ts → lib\supabase\server.ts
 - `analyzeBrief()` --calls--> `createClient()`  [INFERRED]
   agents\brief-analyzer.ts → lib\supabase\server.ts
 - `analyzeBrief()` --calls--> `matchComposers()`  [INFERRED]
   agents\brief-analyzer.ts → agents\composer-matcher.ts
-- `updateBriefStatus()` --calls--> `createClient()`  [INFERRED]
-  agents\brief-analyzer.ts → lib\supabase\server.ts
-- `DashboardPage()` --calls--> `createClient()`  [INFERRED]
-  app\(dashboard)\dashboard\page.tsx → lib\supabase\server.ts
+- `updateBriefStatus()` --calls--> `analyzeBrief()`  [INFERRED]
+  app\actions\briefs.ts → agents\brief-analyzer.ts
 
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.12
-Nodes (12): getAdminClient(), applicationReceivedEmail(), signIn(), signOut(), signUp(), sendEmail(), outreachInviteEmail(), inviteComposer() (+4 more)
+Cohesion: 0.14
+Nodes (8): getAdminClient(), composerApprovedEmail(), composerRejectedEmail(), vetComposer(), sendEmail(), outreachInviteEmail(), inviteComposer(), respondToOutreach()
 
 ### Community 1 - "Community 1"
-Cohesion: 0.18
-Nodes (7): analyzeBrief(), updateBriefStatus(), assertValidBriefTransition(), createBrief(), updateBriefStatus(), handleConfirm(), matchComposers()
+Cohesion: 0.2
+Nodes (7): applicationReceivedEmail(), signIn(), signOut(), signUp(), DashboardPage(), NewBriefPage(), createClient()
 
 ### Community 2 - "Community 2"
-Cohesion: 0.17
-Nodes (12): Anthropic SDK via services/ai.ts, Feature: AI Layer + Production Polish, Feature: Auth + Role-Gated Access, Feature: Placement Logging, Next.js 16 App Router, Phase A: Foundation, Phase B: Core Loop, Phase D: AI Layer (+4 more)
+Cohesion: 0.29
+Nodes (4): assertValidBriefTransition(), createBrief(), updateBriefStatus(), handleConfirm()
 
 ### Community 3 - "Community 3"
-Cohesion: 0.25
-Nodes (4): composerApprovedEmail(), composerRejectedEmail(), handleReject(), vetComposer()
-
-### Community 4 - "Community 4"
 Cohesion: 0.29
 Nodes (0): 
 
-### Community 5 - "Community 5"
-Cohesion: 0.29
-Nodes (7): Agent: brief-analyzer.ts, Agent: composer-matcher.ts, Architecture: Mutations → Server Actions only, briefs table (status, ai_suggested_composers), composers table (status, ai_score, ai_tags), Feature: Brief Management, Service: services/ai.ts
+### Community 4 - "Community 4"
+Cohesion: 0.5
+Nodes (3): analyzeBrief(), updateBriefStatus(), matchComposers()
 
-### Community 6 - "Community 6"
+### Community 5 - "Community 5"
 Cohesion: 0.5
 Nodes (2): assertSubmissionAllowed(), submitTrack()
 
-### Community 7 - "Community 7"
+### Community 6 - "Community 6"
 Cohesion: 0.5
 Nodes (2): Badge(), cn()
+
+### Community 7 - "Community 7"
+Cohesion: 0.5
+Nodes (4): AI Service (services/ai.ts), Anthropic AI SDK (@anthropic-ai/sdk), Brief Analyzer Agent, Composer Matcher Agent
 
 ### Community 8 - "Community 8"
 Cohesion: 0.67
@@ -206,15 +209,15 @@ Nodes (0):
 
 ### Community 27 - "Community 27"
 Cohesion: 1.0
-Nodes (2): Architecture: Security → verify role server-side in every admin action, Admin Role
+Nodes (2): AI Brief Analysis, SyncMaster
 
 ### Community 28 - "Community 28"
 Cohesion: 1.0
-Nodes (2): Feature: Outreach (Composer Invitations), Composer Role
+Nodes (0): 
 
 ### Community 29 - "Community 29"
 Cohesion: 1.0
-Nodes (2): Feature: Track Submissions, Producer Role
+Nodes (0): 
 
 ### Community 30 - "Community 30"
 Cohesion: 1.0
@@ -314,30 +317,42 @@ Nodes (0):
 
 ### Community 54 - "Community 54"
 Cohesion: 1.0
-Nodes (1): Tailwind CSS + shadcn/ui
+Nodes (0): 
 
 ### Community 55 - "Community 55"
 Cohesion: 1.0
-Nodes (1): Supabase Auth SSR
+Nodes (0): 
 
 ### Community 56 - "Community 56"
 Cohesion: 1.0
-Nodes (1): Vercel + Vercel Cron
+Nodes (0): 
 
 ### Community 57 - "Community 57"
 Cohesion: 1.0
-Nodes (1): Phase C: Schema Extension
+Nodes (0): 
 
 ### Community 58 - "Community 58"
 Cohesion: 1.0
-Nodes (1): Phase E: Production Polish
+Nodes (0): 
 
 ### Community 59 - "Community 59"
 Cohesion: 1.0
-Nodes (1): Curated sync licensing platform for African composers
+Nodes (1): Contact Sync Feature
+
+### Community 60 - "Community 60"
+Cohesion: 1.0
+Nodes (1): Authentication & Role-Gated Access
+
+### Community 61 - "Community 61"
+Cohesion: 1.0
+Nodes (1): Brief Management
+
+### Community 62 - "Community 62"
+Cohesion: 1.0
+Nodes (1): Supabase
 
 ## Knowledge Gaps
-- **22 isolated node(s):** `Next.js 16 App Router`, `TypeScript Strict Mode`, `Tailwind CSS + shadcn/ui`, `Supabase (Postgres + RLS)`, `Supabase Auth SSR` (+17 more)
+- **9 isolated node(s):** `SyncMaster`, `Contact Sync Feature`, `AI Brief Analysis`, `Brief Analyzer Agent`, `Composer Matcher Agent` (+4 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **Thin community `Community 11`** (2 nodes): `middleware()`, `middleware.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -371,19 +386,19 @@ Nodes (1): Curated sync licensing platform for African composers
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 26`** (2 nodes): `loginAs()`, `auth.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 27`** (2 nodes): `Architecture: Security → verify role server-side in every admin action`, `Admin Role`
+- **Thin community `Community 27`** (2 nodes): `AI Brief Analysis`, `SyncMaster`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 28`** (2 nodes): `Feature: Outreach (Composer Invitations)`, `Composer Role`
+- **Thin community `Community 28`** (1 nodes): `next-env.d.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 29`** (2 nodes): `Feature: Track Submissions`, `Producer Role`
+- **Thin community `Community 29`** (1 nodes): `next.config.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 30`** (1 nodes): `next-env.d.ts`
+- **Thin community `Community 30`** (1 nodes): `playwright.config.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 31`** (1 nodes): `next.config.ts`
+- **Thin community `Community 31`** (1 nodes): `postcss.config.mjs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 32`** (1 nodes): `playwright.config.ts`
+- **Thin community `Community 32`** (1 nodes): `test-anthropic-api.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 33`** (1 nodes): `postcss.config.mjs`
+- **Thin community `Community 33`** (1 nodes): `test-anthropic-api.mjs`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 34`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
@@ -401,39 +416,45 @@ Nodes (1): Curated sync licensing platform for African composers
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 41`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 42`** (1 nodes): `BriefForm.tsx`
+- **Thin community `Community 42`** (1 nodes): `Toast.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 43`** (1 nodes): `BriefList.tsx`
+- **Thin community `Community 43`** (1 nodes): `BriefForm.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 44`** (1 nodes): `OutreachPanel.tsx`
+- **Thin community `Community 44`** (1 nodes): `BriefList.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 45`** (1 nodes): `OutreachResponse.tsx`
+- **Thin community `Community 45`** (1 nodes): `OutreachPanel.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 46`** (1 nodes): `SubmitTrackForm.tsx`
+- **Thin community `Community 46`** (1 nodes): `OutreachResponse.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 47`** (1 nodes): `Sidebar.tsx`
+- **Thin community `Community 47`** (1 nodes): `SubmitTrackForm.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 48`** (1 nodes): `input.tsx`
+- **Thin community `Community 48`** (1 nodes): `ComposerList.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 49`** (1 nodes): `ai.ts`
+- **Thin community `Community 49`** (1 nodes): `Sidebar.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 50`** (1 nodes): `auth.spec.ts`
+- **Thin community `Community 50`** (1 nodes): `input.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 51`** (1 nodes): `briefs.spec.ts`
+- **Thin community `Community 51`** (1 nodes): `ai.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 52`** (1 nodes): `outreach.spec.ts`
+- **Thin community `Community 52`** (1 nodes): `auth.spec.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 53`** (1 nodes): `database.types.ts`
+- **Thin community `Community 53`** (1 nodes): `briefs.spec.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 54`** (1 nodes): `Tailwind CSS + shadcn/ui`
+- **Thin community `Community 54`** (1 nodes): `composers.spec.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 55`** (1 nodes): `Supabase Auth SSR`
+- **Thin community `Community 55`** (1 nodes): `outreach.spec.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 56`** (1 nodes): `Vercel + Vercel Cron`
+- **Thin community `Community 56`** (1 nodes): `phase-e-quick.spec.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 57`** (1 nodes): `Phase C: Schema Extension`
+- **Thin community `Community 57`** (1 nodes): `phase-e.spec.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 58`** (1 nodes): `Phase E: Production Polish`
+- **Thin community `Community 58`** (1 nodes): `database.types.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 59`** (1 nodes): `Curated sync licensing platform for African composers`
+- **Thin community `Community 59`** (1 nodes): `Contact Sync Feature`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 60`** (1 nodes): `Authentication & Role-Gated Access`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 61`** (1 nodes): `Brief Management`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 62`** (1 nodes): `Supabase`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.

@@ -1,5 +1,10 @@
+tailwind.config.ts
+agents\composer-matcher.ts
+scripts\test-bedrock-integration.mjs
+services\ai.ts
 AGENTS.md
 CLAUDE.md
+ENV.md
 README.md
 docs\00_SYSTEM\GUARDRAILS.md
 docs\00_SYSTEM\TOOLING.md
@@ -23,7 +28,13 @@ docs\06_ITERATION\AI_MATCH_IMPLEMENTATION.md
 docs\06_ITERATION\BUGS.md
 docs\06_ITERATION\CHANGELOG.md
 docs\06_ITERATION\IMPROVEMENTS.md
+docs\06_ITERATION\PHASE_E_COMPLETION.md
 docs\07_DEPLOYMENT\CI_CD.md
 docs\07_DEPLOYMENT\ENV.md
 docs\08_CONTEXT\PROMPTS.md
+graphify-out\graph.html
 graphify-out\GRAPH_REPORT.md
+test-results\phase-e-quick-Phase-E-Core-7f587-tate-appears-when-approving-chromium\error-context.md
+test-results\phase-e-quick-Phase-E-Core-7f587-tate-appears-when-approving-chromium-retry1\error-context.md
+test-results\phase-e-quick-Phase-E-Core-7f587-tate-appears-when-approving-chromium\test-failed-1.png
+test-results\phase-e-quick-Phase-E-Core-7f587-tate-appears-when-approving-chromium-retry1\test-failed-1.png

@@ -43,6 +43,20 @@
       "source_location": "L1"
     },
     {
+      "id": "test_anthropic_api_js",
+      "label": "test-anthropic-api.js",
+      "file_type": "code",
+      "source_file": "test-anthropic-api.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "test_anthropic_api_mjs",
+      "label": "test-anthropic-api.mjs",
+      "file_type": "code",
+      "source_file": "test-anthropic-api.mjs",
+      "source_location": "L1"
+    },
+    {
       "id": "test_api_js",
       "label": "test-api.js",
       "file_type": "code",
@@ -103,7 +117,7 @@
       "label": "RootLayout()",
       "file_type": "code",
       "source_file": "app\\layout.tsx",
-      "source_location": "L20"
+      "source_location": "L21"
     },
     {
       "id": "app_page_tsx",
@@ -292,7 +306,7 @@
       "label": "vetComposer()",
       "file_type": "code",
       "source_file": "app\\actions\\composers.ts",
-      "source_location": "L11"
+      "source_location": "L16"
     },
     {
       "id": "app_actions_outreach_ts",
@@ -328,6 +342,13 @@
       "file_type": "code",
       "source_file": "app\\actions\\submissions.ts",
       "source_location": "L9"
+    },
+    {
+      "id": "components_toast_tsx",
+      "label": "Toast.tsx",
+      "file_type": "code",
+      "source_file": "components\\Toast.tsx",
+      "source_location": "L1"
     },
     {
       "id": "components_briefs_aisuggestionspanel_tsx",
@@ -398,13 +419,6 @@
       "file_type": "code",
       "source_file": "components\\composers\\ComposerList.tsx",
       "source_location": "L1"
-    },
-    {
-      "id": "composerlist_handlereject",
-      "label": "handleReject()",
-      "file_type": "code",
-      "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L36"
     },
     {
       "id": "components_dashboard_header_tsx",
@@ -782,7 +796,7 @@
       "label": "sendEmail()",
       "file_type": "code",
       "source_file": "services\\email.ts",
-      "source_location": "L5"
+      "source_location": "L9"
     },
     {
       "id": "tests_auth_spec_ts",
@@ -799,10 +813,31 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_composers_spec_ts",
+      "label": "composers.spec.ts",
+      "file_type": "code",
+      "source_file": "tests\\composers.spec.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_outreach_spec_ts",
       "label": "outreach.spec.ts",
       "file_type": "code",
       "source_file": "tests\\outreach.spec.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_phase_e_quick_spec_ts",
+      "label": "phase-e-quick.spec.ts",
+      "file_type": "code",
+      "source_file": "tests\\phase-e-quick.spec.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_phase_e_spec_ts",
+      "label": "phase-e.spec.ts",
+      "file_type": "code",
+      "source_file": "tests\\phase-e.spec.ts",
       "source_location": "L1"
     },
     {
@@ -931,6 +966,42 @@
       "weight": 1.0
     },
     {
+      "source": "test_anthropic_api_js",
+      "target": "sdk",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "test-anthropic-api.js",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "test_anthropic_api_mjs",
+      "target": "sdk",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "test-anthropic-api.mjs",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "test_anthropic_api_mjs",
+      "target": "fs",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "test-anthropic-api.mjs",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "test_anthropic_api_mjs",
+      "target": "path",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "test-anthropic-api.mjs",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
       "source": "test_api_js",
       "target": "dotenv",
       "relation": "imports_from",
@@ -1040,7 +1111,7 @@
     },
     {
       "source": "app_layout_tsx",
-      "target": "app_globals_css",
+      "target": "toast",
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "app\\layout.tsx",
@@ -1049,11 +1120,20 @@
     },
     {
       "source": "app_layout_tsx",
+      "target": "app_globals_css",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\layout.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "app_layout_tsx",
       "target": "layout_rootlayout",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app\\layout.tsx",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -1791,7 +1871,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "app\\actions\\composers.ts",
-      "source_location": "L11",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -1900,6 +1980,24 @@
       "confidence": "EXTRACTED",
       "source_file": "app\\actions\\submissions.ts",
       "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "components_toast_tsx",
+      "target": "react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\Toast.tsx",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "components_toast_tsx",
+      "target": "lucide_react",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "components\\Toast.tsx",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -2255,7 +2353,7 @@
     },
     {
       "source": "components_composers_composerlist_tsx",
-      "target": "badge",
+      "target": "toast",
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "components\\composers\\ComposerList.tsx",
@@ -2264,7 +2362,7 @@
     },
     {
       "source": "components_composers_composerlist_tsx",
-      "target": "button",
+      "target": "badge",
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "components\\composers\\ComposerList.tsx",
@@ -2273,7 +2371,7 @@
     },
     {
       "source": "components_composers_composerlist_tsx",
-      "target": "dialog",
+      "target": "button",
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "components\\composers\\ComposerList.tsx",
@@ -2282,20 +2380,20 @@
     },
     {
       "source": "components_composers_composerlist_tsx",
-      "target": "database_types",
+      "target": "dialog",
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L15",
+      "source_location": "L8",
       "weight": 1.0
     },
     {
       "source": "components_composers_composerlist_tsx",
-      "target": "composerlist_handlereject",
-      "relation": "contains",
+      "target": "database_types",
+      "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L36",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -3204,7 +3302,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "services\\email.ts",
-      "source_location": "L5",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -3244,6 +3342,24 @@
       "weight": 1.0
     },
     {
+      "source": "tests_composers_spec_ts",
+      "target": "test",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "tests\\composers.spec.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_composers_spec_ts",
+      "target": "tests_helpers_auth",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "tests\\composers.spec.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
       "source": "tests_outreach_spec_ts",
       "target": "test",
       "relation": "imports_from",
@@ -3258,6 +3374,42 @@
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "tests\\outreach.spec.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_phase_e_quick_spec_ts",
+      "target": "test",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "tests\\phase-e-quick.spec.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_phase_e_quick_spec_ts",
+      "target": "tests_helpers_auth",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "tests\\phase-e-quick.spec.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_phase_e_spec_ts",
+      "target": "test",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "tests\\phase-e.spec.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_phase_e_spec_ts",
+      "target": "tests_helpers_auth",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "tests\\phase-e.spec.ts",
       "source_location": "L2",
       "weight": 1.0
     },
@@ -3462,7 +3614,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app\\actions\\composers.ts",
-      "source_location": "L12",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -3472,17 +3624,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app\\actions\\composers.ts",
-      "source_location": "L44",
-      "weight": 1.0
-    },
-    {
-      "source": "composers_vetcomposer",
-      "target": "email_sendemail",
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "app\\actions\\composers.ts",
-      "source_location": "L57",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -3492,7 +3634,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app\\actions\\composers.ts",
-      "source_location": "L57",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -3502,7 +3644,17 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "app\\actions\\composers.ts",
-      "source_location": "L59",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "composers_vetcomposer",
+      "target": "email_sendemail",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app\\actions\\composers.ts",
+      "source_location": "L69",
       "weight": 1.0
     },
     {
@@ -3583,16 +3735,6 @@
       "confidence_score": 0.8,
       "source_file": "components\\briefs\\BriefStatusControl.tsx",
       "source_location": "L91",
-      "weight": 1.0
-    },
-    {
-      "source": "composerlist_handlereject",
-      "target": "composers_vetcomposer",
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "components\\composers\\ComposerList.tsx",
-      "source_location": "L44",
       "weight": 1.0
     },
     {

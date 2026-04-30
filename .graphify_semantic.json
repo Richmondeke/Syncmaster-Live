@@ -1,335 +1,111 @@
 {
   "nodes": [
     {
-      "id": "syncmaster_project",
-      "label": "SyncMaster 1.0",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
+      "id": "syncmaster",
+      "label": "SyncMaster",
+      "file_type": "project",
+      "source_file": "CLAUDE.md",
+      "source_location": null
     },
     {
-      "id": "nextjs_16_framework",
-      "label": "Next.js 16 App Router",
-      "file_type": "code",
-      "source_file": "CLAUDE.md"
+      "id": "contact_sync",
+      "label": "Contact Sync Feature",
+      "file_type": "feature",
+      "source_file": "CLAUDE.md",
+      "source_location": null
     },
     {
-      "id": "typescript_strict",
-      "label": "TypeScript Strict Mode",
-      "file_type": "code",
-      "source_file": "CLAUDE.md"
+      "id": "ai_brief_analysis",
+      "label": "AI Brief Analysis",
+      "file_type": "feature",
+      "source_file": "ai-layer.md",
+      "source_location": null
     },
     {
-      "id": "tailwind_shadcn",
-      "label": "Tailwind CSS + shadcn/ui",
-      "file_type": "code",
-      "source_file": "CLAUDE.md"
+      "id": "brief_analyzer_agent",
+      "label": "Brief Analyzer Agent",
+      "file_type": "module",
+      "source_file": "ai-layer.md",
+      "source_location": null
     },
     {
-      "id": "supabase_db",
-      "label": "Supabase (Postgres + RLS)",
-      "file_type": "code",
-      "source_file": "CLAUDE.md"
+      "id": "composer_matcher_agent",
+      "label": "Composer Matcher Agent",
+      "file_type": "module",
+      "source_file": "ai-layer.md",
+      "source_location": null
     },
     {
-      "id": "supabase_auth",
-      "label": "Supabase Auth SSR",
-      "file_type": "code",
-      "source_file": "CLAUDE.md"
+      "id": "ai_service",
+      "label": "AI Service (services/ai.ts)",
+      "file_type": "module",
+      "source_file": "ai-layer.md",
+      "source_location": null
     },
     {
-      "id": "anthropic_ai",
-      "label": "Anthropic SDK via services/ai.ts",
-      "file_type": "code",
-      "source_file": "CLAUDE.md"
+      "id": "anthropic_sdk",
+      "label": "Anthropic AI SDK (@anthropic-ai/sdk)",
+      "file_type": "technology",
+      "source_file": "CLAUDE.md",
+      "source_location": null
     },
     {
-      "id": "resend_email",
-      "label": "Resend + React Email",
-      "file_type": "code",
-      "source_file": "CLAUDE.md"
+      "id": "auth_feature",
+      "label": "Authentication & Role-Gated Access",
+      "file_type": "feature",
+      "source_file": "CLAUDE.md",
+      "source_location": null
     },
     {
-      "id": "vercel_deployment",
-      "label": "Vercel + Vercel Cron",
-      "file_type": "code",
-      "source_file": "CLAUDE.md"
+      "id": "briefs_feature",
+      "label": "Brief Management",
+      "file_type": "feature",
+      "source_file": "CLAUDE.md",
+      "source_location": null
     },
     {
-      "id": "phase_a_foundation",
-      "label": "Phase A: Foundation",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
-    },
-    {
-      "id": "phase_b_core_loop",
-      "label": "Phase B: Core Loop",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
-    },
-    {
-      "id": "phase_c_schema_ext",
-      "label": "Phase C: Schema Extension",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
-    },
-    {
-      "id": "phase_d_ai_layer",
-      "label": "Phase D: AI Layer",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
-    },
-    {
-      "id": "phase_e_production",
-      "label": "Phase E: Production Polish",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
-    },
-    {
-      "id": "vision_curated_sync_licensing",
-      "label": "Curated sync licensing platform for African composers",
-      "file_type": "document",
-      "source_file": "docs/01_PRD/OVERVIEW.md"
-    },
-    {
-      "id": "role_admin",
-      "label": "Admin Role",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
-    },
-    {
-      "id": "role_producer",
-      "label": "Producer Role",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
-    },
-    {
-      "id": "role_composer",
-      "label": "Composer Role",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
-    },
-    {
-      "id": "entity_composers_table",
-      "label": "composers table (status, ai_score, ai_tags)",
-      "file_type": "code",
-      "source_file": "docs/01_PRD/FEATURES/ai-layer.md"
-    },
-    {
-      "id": "entity_briefs_table",
-      "label": "briefs table (status, ai_suggested_composers)",
-      "file_type": "code",
-      "source_file": "docs/01_PRD/FEATURES/briefs.md"
-    },
-    {
-      "id": "feature_brief_management",
-      "label": "Feature: Brief Management",
-      "file_type": "document",
-      "source_file": "docs/01_PRD/FEATURES/briefs.md"
-    },
-    {
-      "id": "feature_outreach",
-      "label": "Feature: Outreach (Composer Invitations)",
-      "file_type": "document",
-      "source_file": "docs/01_PRD/FEATURES/outreach.md"
-    },
-    {
-      "id": "feature_submissions",
-      "label": "Feature: Track Submissions",
-      "file_type": "document",
-      "source_file": "docs/01_PRD/FEATURES/submissions.md"
-    },
-    {
-      "id": "feature_placements",
-      "label": "Feature: Placement Logging",
-      "file_type": "document",
-      "source_file": "docs/01_PRD/FEATURES/placements.md"
-    },
-    {
-      "id": "feature_auth",
-      "label": "Feature: Auth + Role-Gated Access",
-      "file_type": "document",
-      "source_file": "docs/01_PRD/FEATURES/auth.md"
-    },
-    {
-      "id": "feature_ai_layer",
-      "label": "Feature: AI Layer + Production Polish",
-      "file_type": "document",
-      "source_file": "docs/01_PRD/FEATURES/ai-layer.md"
-    },
-    {
-      "id": "agent_brief_analyzer",
-      "label": "Agent: brief-analyzer.ts",
-      "file_type": "code",
-      "source_file": "docs/01_PRD/FEATURES/ai-layer.md"
-    },
-    {
-      "id": "agent_composer_matcher",
-      "label": "Agent: composer-matcher.ts",
-      "file_type": "code",
-      "source_file": "docs/01_PRD/FEATURES/ai-layer.md"
-    },
-    {
-      "id": "service_ai",
-      "label": "Service: services/ai.ts",
-      "file_type": "code",
-      "source_file": "docs/01_PRD/FEATURES/ai-layer.md"
-    },
-    {
-      "id": "arch_mutations_server_actions",
-      "label": "Architecture: Mutations \u2192 Server Actions only",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
-    },
-    {
-      "id": "arch_security_role_verification",
-      "label": "Architecture: Security \u2192 verify role server-side in every admin action",
-      "file_type": "document",
-      "source_file": "CLAUDE.md"
+      "id": "supabase",
+      "label": "Supabase",
+      "file_type": "technology",
+      "source_file": "CLAUDE.md",
+      "source_location": null
     }
   ],
   "edges": [
     {
-      "source": "syncmaster_project",
-      "target": "nextjs_16_framework",
+      "source": "syncmaster",
+      "target": "ai_brief_analysis",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md"
+    },
+    {
+      "source": "brief_analyzer_agent",
+      "target": "anthropic_sdk",
       "relation": "uses",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0
+      "confidence_score": 1.0,
+      "source_file": "ai-layer.md"
     },
     {
-      "source": "syncmaster_project",
-      "target": "typescript_strict",
+      "source": "composer_matcher_agent",
+      "target": "anthropic_sdk",
       "relation": "uses",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0
+      "confidence_score": 1.0,
+      "source_file": "ai-layer.md"
     },
     {
-      "source": "syncmaster_project",
-      "target": "supabase_db",
-      "relation": "uses",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "syncmaster_project",
-      "target": "anthropic_ai",
-      "relation": "uses",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "syncmaster_project",
-      "target": "resend_email",
-      "relation": "uses",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "syncmaster_project",
-      "target": "phase_a_foundation",
+      "source": "ai_service",
+      "target": "anthropic_sdk",
       "relation": "implements",
       "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "syncmaster_project",
-      "target": "phase_b_core_loop",
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "syncmaster_project",
-      "target": "phase_d_ai_layer",
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "entity_briefs_table",
-      "target": "feature_brief_management",
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "feature_outreach",
-      "target": "role_composer",
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "feature_submissions",
-      "target": "role_producer",
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "feature_placements",
-      "target": "phase_b_core_loop",
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "feature_auth",
-      "target": "phase_a_foundation",
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "feature_ai_layer",
-      "target": "phase_d_ai_layer",
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "agent_brief_analyzer",
-      "target": "service_ai",
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "agent_composer_matcher",
-      "target": "service_ai",
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "agent_brief_analyzer",
-      "target": "entity_composers_table",
-      "relation": "shares_data_with",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "agent_composer_matcher",
-      "target": "entity_briefs_table",
-      "relation": "shares_data_with",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
-    },
-    {
-      "source": "arch_mutations_server_actions",
-      "target": "feature_brief_management",
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.75
-    },
-    {
-      "source": "arch_security_role_verification",
-      "target": "role_admin",
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0
+      "confidence_score": 1.0,
+      "source_file": "CLAUDE.md"
     }
   ],
   "hyperedges": [],
-  "input_tokens": 69404,
-  "output_tokens": 8500
+  "input_tokens": 0,
+  "output_tokens": 0
 }
