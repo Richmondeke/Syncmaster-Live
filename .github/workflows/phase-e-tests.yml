@@ -1,0 +1,93 @@
+name: Phase E — Automated Tests
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  type-check:
+    name: TypeScript Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run type-check
+        continue-on-error: false
+
+  build:
+    name: Next.js Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+        continue-on-error: false
+      - uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: .next
+
+  smoke-tests:
+    name: E2E Smoke Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install
+      - run: npm run build
+      - run: npm run test:smoke
+        env:
+          TEST_ADMIN_EMAIL: ${{ secrets.TEST_ADMIN_EMAIL }}
+          TEST_ADMIN_PASSWORD: ${{ secrets.TEST_ADMIN_PASSWORD }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report
+
+  accessibility:
+    name: Accessibility Check
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - run: npm run start &
+      - run: sleep 5
+      - run: npx @axe-core/cli http://localhost:3000 --exit
+        continue-on-error: true
+
+  summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [type-check, build, smoke-tests]
+    if: always()
+    steps:
+      - name: Check test status
+        run: |
+          if [ "${{ needs.type-check.result }}" = "failure" ] || [ "${{ needs.build.result }}" = "failure" ] || [ "${{ needs.smoke-tests.result }}" = "failure" ]; then
+            echo "❌ Tests failed"
+            exit 1
+          else
+            echo "✅ All tests passed"
+          fi

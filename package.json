@@ -11,7 +11,11 @@
     "test:ui": "playwright test --ui",
     "test:auth": "playwright test tests/auth.spec.ts",
     "test:briefs": "playwright test tests/briefs.spec.ts",
-    "test:outreach": "playwright test tests/outreach.spec.ts"
+    "test:outreach": "playwright test tests/outreach.spec.ts",
+    "test:smoke": "playwright test tests/smoke.spec.ts",
+    "test:phase-e": "npm run build && npm run test:smoke",
+    "type-check": "tsc --noEmit",
+    "a11y:check": "npm run build && npx @axe-core/cli http://localhost:3000"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.1039.0",
