@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -81,6 +81,10 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* Status colour primitives */
+  --status-green: oklch(0.55 0.17 145);
+  --status-amber: oklch(0.65 0.16 75);
+  --status-blue: oklch(0.55 0.18 245);
 }
 
 .dark {
@@ -115,7 +119,33 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  /* Status colour primitives — lighter for dark backgrounds */
+  --status-green: oklch(0.72 0.17 145);
+  --status-amber: oklch(0.80 0.16 75);
+  --status-blue: oklch(0.68 0.18 245);
 }
+
+/* Semantic token layer — maps intent to UI tokens */
+:root {
+  --color-brand-primary: var(--primary);
+  --color-brand-secondary: var(--secondary);
+  --color-brand-accent: var(--accent);
+  --color-status-error: var(--destructive);
+  --color-status-success: var(--status-green);
+  --color-status-warning: var(--status-amber);
+  --color-status-info: var(--status-blue);
+  --color-interactive-focus: var(--ring);
+  --color-interactive-disabled: var(--muted);
+  --color-surface-background: var(--background);
+  --color-surface-card: var(--card);
+  --color-surface-popover: var(--popover);
+  --color-surface-input: var(--input);
+  --color-border-default: var(--border);
+  --color-text-primary: var(--foreground);
+  --color-text-secondary: var(--muted-foreground);
+}
+
+
 
 @layer base {
   * {
