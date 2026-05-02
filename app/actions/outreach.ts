@@ -5,6 +5,7 @@ import { getAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { sendEmail } from '@/services/email'
 import { outreachInviteEmail } from '@/emails/outreach-invite'
+import { outreachAcceptedEmail } from '@/emails/outreach-accepted'
 import type { OutreachStatus } from '@/types/database.types'
 
 export async function inviteComposer(formData: FormData): Promise<void> {
@@ -125,6 +126,34 @@ export async function respondToOutreach(
     .eq('id', outreachId)
 
   if (error) return { error: error.message }
+
+  if (status === 'accepted' && user.email) {
+    try {
+      const { data: composerProfile } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user.id)
+        .single()
+
+      const { data: brief } = await supabase
+        .from('briefs')
+        .select('title')
+        .eq('id', record.brief_id)
+        .single()
+
+      const emailResult = await sendEmail(
+        user.email,
+        'Your brief invitation was accepted',
+        outreachAcceptedEmail(composerProfile?.full_name ?? 'Composer', brief?.title ?? 'the brief'),
+      )
+
+      if (!emailResult.ok) {
+        console.error('[respondToOutreach] acceptance email failed:', emailResult.error)
+      }
+    } catch (err) {
+      console.error('[respondToOutreach] acceptance email error:', err)
+    }
+  }
 
   revalidatePath('/dashboard/briefs')
   revalidatePath(`/dashboard/briefs/${record.brief_id}`)

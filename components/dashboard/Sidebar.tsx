@@ -66,27 +66,32 @@ type Props = { role: Role }
 
 function NavLink({
   item,
+  index,
   pathname,
   onClick,
 }: {
   item: NavItem
+  index: number
   pathname: string
   onClick?: () => void
 }) {
-  const isActive = pathname === item.href
+  const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
   return (
     <Link
       href={item.href}
       onClick={onClick}
       className={cn(
-        'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+        'flex items-center gap-3 rounded-md border-l-2 px-3 py-2 text-sm font-medium transition-colors',
         isActive
-          ? 'bg-primary text-primary-foreground'
-          : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+          ? 'border-l-primary bg-sidebar-accent text-sidebar-accent-foreground'
+          : 'border-l-transparent text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
       )}
     >
       <item.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
       {item.label}
+      <span className="ml-auto font-mono text-xs text-muted-foreground" aria-hidden="true">
+        {String(index + 1).padStart(2, '0')}
+      </span>
     </Link>
   )
 }
@@ -106,15 +111,27 @@ function SidebarContent({
   return (
     <div className="flex flex-1 flex-col justify-between overflow-y-auto p-4">
       <nav className="flex flex-col gap-1" aria-label="Main navigation">
-        {main.map((item) => (
-          <NavLink key={item.href} item={item} pathname={pathname} onClick={onNavigate} />
+        {main.map((item, index) => (
+          <NavLink
+            key={item.href}
+            item={item}
+            index={index}
+            pathname={pathname}
+            onClick={onNavigate}
+          />
         ))}
       </nav>
 
       <div className="flex flex-col gap-1">
         <Separator className="mb-2" />
-        {bottom.map((item) => (
-          <NavLink key={item.href} item={item} pathname={pathname} onClick={onNavigate} />
+        {bottom.map((item, index) => (
+          <NavLink
+            key={item.href}
+            item={item}
+            index={main.length + index}
+            pathname={pathname}
+            onClick={onNavigate}
+          />
         ))}
       </div>
     </div>

@@ -1,8 +1,8 @@
-import { createClient } from '@/lib/supabase/server'
+import { getAdminClient } from '@/lib/supabase/admin'
 import { matchComposers, type ComposerInput, type RankedComposer } from './composer-matcher'
 
 export async function analyzeBrief(briefId: string): Promise<void> {
-  const supabase = await createClient()
+  const supabase = getAdminClient()
 
   // Set status to running
   await supabase
@@ -59,7 +59,7 @@ export async function analyzeBrief(briefId: string): Promise<void> {
 }
 
 async function updateBriefStatus(briefId: string, status: 'failed' | 'no_composers'): Promise<void> {
-  const supabase = await createClient()
+  const supabase = getAdminClient()
   await supabase
     .from('briefs')
     .update({ ai_match_status: status, ai_suggested_composers_detail: [] })

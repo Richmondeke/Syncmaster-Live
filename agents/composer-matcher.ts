@@ -1,5 +1,7 @@
 import { ai } from '@/services/ai'
 
+const SONNET_MODEL = 'claude-sonnet-4-20250514'
+
 export type ComposerInput = {
   id: string
   bio: string | null
@@ -19,6 +21,13 @@ export type BriefInput = {
 export type RankedComposer = {
   composer_id: string
   match_score: number
+  match_reason: string
+  confidence: number
+}
+
+type RankedComposerToolInput = {
+  composer_id: string
+  score: number
   match_reason: string
   confidence: number
 }
@@ -47,7 +56,7 @@ export async function matchComposers(
           : 'Not specified'
 
   const response = await ai.messages.create({
-    model: 'claude-sonnet-4-6',
+    model: SONNET_MODEL,
     max_tokens: 1024,
     tools: [
       {
@@ -100,10 +109,16 @@ Return all composers ranked best to worst. For each:
   const toolBlock = response.content.find((b) => b.type === 'tool_use')
   if (!toolBlock || toolBlock.type !== 'tool_use') return []
 
-  const input = toolBlock.input as { rankings: RankedComposer[] }
+  const input = toolBlock.input as { rankings: RankedComposerToolInput[] }
   const validIds = new Set(composers.map((c) => c.id))
 
   return input.rankings
-    .filter((r) => validIds.has(r.composer_id))
+    .filter((ranking) => validIds.has(ranking.composer_id))
+    .map((ranking) => ({
+      composer_id: ranking.composer_id,
+      match_score: ranking.score,
+      match_reason: ranking.match_reason,
+      confidence: ranking.confidence,
+    }))
     .sort((a, b) => b.match_score - a.match_score)
 }

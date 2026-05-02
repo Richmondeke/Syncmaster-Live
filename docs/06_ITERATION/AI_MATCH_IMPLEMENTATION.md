@@ -124,7 +124,7 @@ Refactored to support new status lifecycle:
 - Backward compatible: old queries still work (columns default to `null`)
 
 **Claude API Usage:**
-- Model: `claude-sonnet-4-6`
+- Model: `claude-sonnet-4-20250514`
 - Tool use for structured output (rank_composers)
 - Estimated tokens per brief: ~800 input, ~200 output (3 composers)
 
