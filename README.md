@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SyncMaster
+
+Curated sync licensing platform for admins, producers, and composers.
+
+Current baseline: **Phase E2 design-system integration complete**. Read `docs/00_SYSTEM/BASELINE.md`, `CLAUDE.md`, and `AGENTS.md` before continuing development.
 
 ## Getting Started
 
-First, run the development server:
+Run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```powershell
+npm.cmd run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verification
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```powershell
+npx.cmd tsc --noEmit
+npm.cmd run build
+```
 
-## Learn More
+`npm.cmd run build` may need network access because `next/font` fetches Geist from Google Fonts.
 
-To learn more about Next.js, take a look at the following resources:
+## Current Guardrails
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Next.js 16: read local docs in `node_modules/next/dist/docs/` before framework changes.
+- Request boundary is `proxy.ts`, not `middleware.ts`.
+- Mutations live in Server Actions.
+- AI calls go through `agents/` and `services/ai.ts`.
+- Active AI runtime is Anthropic direct API via `ANTHROPIC_API_KEY`.
+- Do not start an AI provider migration unless explicitly requested.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Useful Docs
 
-## Deploy on Vercel
+```text
+docs/00_SYSTEM/BASELINE.md
+docs/00_SYSTEM/GUARDRAILS.md
+docs/01_PRD/OVERVIEW.md
+PHASE-E-PROGRESS.md
+ENV.md
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Environment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Required local variables are documented in `ENV.md` and `docs/07_DEPLOYMENT/ENV.md`.

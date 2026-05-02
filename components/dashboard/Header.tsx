@@ -2,6 +2,7 @@
 
 import { useTransition } from 'react'
 import { LogOut } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -30,6 +31,26 @@ const ROLE_LABEL: Record<Role, string> = {
   admin: 'Admin',
 }
 
+const CRUMB_LABELS: Record<string, string> = {
+  '/dashboard': 'Dashboard',
+  '/dashboard/tracks': 'My Tracks',
+  '/dashboard/submissions': 'Submissions',
+  '/dashboard/briefs': 'Briefs',
+  '/dashboard/placements': 'Placements',
+  '/dashboard/composers': 'Composers',
+  '/dashboard/producers': 'Producers',
+  '/dashboard/tasks': 'Tasks',
+  '/dashboard/settings': 'Settings',
+}
+
+function getCrumb(pathname: string): string {
+  const matchedPath = Object.keys(CRUMB_LABELS)
+    .sort((a, b) => b.length - a.length)
+    .find((path) => pathname === path || pathname.startsWith(`${path}/`))
+
+  return matchedPath ? CRUMB_LABELS[matchedPath] : 'Dashboard'
+}
+
 function getInitials(fullName: string | null, email: string): string {
   if (fullName) {
     return fullName
@@ -43,7 +64,9 @@ function getInitials(fullName: string | null, email: string): string {
 }
 
 export function Header({ user }: Props) {
+  const pathname = usePathname()
   const [pending, startTransition] = useTransition()
+  const crumb = getCrumb(pathname)
 
   function handleSignOut() {
     startTransition(() => signOut())
@@ -54,7 +77,11 @@ export function Header({ user }: Props) {
       {/* Spacer keeps content right-aligned on mobile when hamburger is visible */}
       <div className="w-8 lg:hidden" aria-hidden="true" />
 
-      <div className="flex flex-1 items-center justify-end gap-3">
+      <div className="min-w-0 flex-1">
+        {crumb && <div className="label truncate">{crumb}</div>}
+      </div>
+
+      <div className="flex items-center justify-end gap-3">
         <Badge variant="outline" className="hidden sm:flex">
           {ROLE_LABEL[user.role]}
         </Badge>

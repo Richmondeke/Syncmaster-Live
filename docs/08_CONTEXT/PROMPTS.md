@@ -1,76 +1,77 @@
 # Session Prompt Templates
 
-## Standard session opener
+## Standard Session Opener
 
-```
+```text
 I'm working on SyncMaster.
 
-Read CLAUDE.md for full project context.
-PRD reference for this session: @01_PRD/FEATURES/[relevant-feature].md
+Read CLAUDE.md and docs/00_SYSTEM/BASELINE.md for full project context.
+PRD reference for this session: @docs/01_PRD/FEATURES/[relevant-feature].md
 
-Session goal: [SINGLE FEATURE]
-Current phase: [Phase D | Phase E]
+Session goal: [single feature or fix]
+Current baseline: Phase E2 design-system integration complete
 
 Files I'm giving you permission to modify:
 - [file 1]
 - [file 2]
 
 Where we left off:
-[2–3 sentences]
+[2-3 sentences]
 
 Constraints:
 - No new npm packages unless listed
 - Mobile-first
-- Complete files only — no truncation
+- Complete files only; no truncation
 - Follow all rules in CLAUDE.md
+- Do not migrate AI providers unless explicitly requested
 ```
 
-## Phase D (AI layer) opener
+## AI-Layer Opener
 
-```
+```text
 I'm working on SyncMaster.
 
-Read CLAUDE.md for full project context.
-PRD reference: @01_PRD/FEATURES/ai-layer.md
+Read CLAUDE.md and docs/00_SYSTEM/BASELINE.md for full project context.
+PRD reference: @docs/01_PRD/FEATURES/ai-layer.md
 
-Session goal: Build agents/brief-analyzer.ts — tags briefs with genre/mood on activation
+Session goal: [specific AI-layer change]
 
 Files allowed:
 - services/ai.ts
-- agents/brief-analyzer.ts
-- app/actions/briefs.ts (wire in call on status → active)
+- agents/[agent-name].ts
+- app/actions/[entity].ts
 
 Where we left off:
-- Phase C complete. ai_score, ai_tags, ai_match_reason, ai_suggested_composers columns exist.
-- services/ai.ts not yet created.
-- No agents/ files yet.
+- AI calls use direct Anthropic Messages API through services/ai.ts.
+- ANTHROPIC_API_KEY is the active AI environment variable.
+- Do not migrate providers unless explicitly requested.
 
 Constraints:
 - No new npm packages unless listed
-- Mobile-first
-- Complete files only — no truncation
+- Server-side AI calls only
+- Complete files only; no truncation
 - Follow all rules in CLAUDE.md
 ```
 
-## Phase E (production polish) opener
+## Phase E2 Design-System Opener
 
-```
+```text
 I'm working on SyncMaster.
 
-Read CLAUDE.md for full project context.
-PRD reference: @01_PRD/FEATURES/ai-layer.md
+Read CLAUDE.md and docs/00_SYSTEM/BASELINE.md for full project context.
+Design reference: @PHASE-E-PROGRESS.md
 
-Session goal: Email notifications on all brief/submission status transitions
+Session goal: [specific UI/design-system change]
 
 Files allowed:
-- emails/ (React Email templates)
-- lib/email/send.ts
-- app/actions/briefs.ts
-- app/actions/submissions.ts
+- app/globals.css
+- components/[area]/[component].tsx
+- docs/[relevant-doc].md
 
 Constraints:
 - No new npm packages unless listed
 - Mobile-first
-- Complete files only — no truncation
+- Complete files only; no truncation
+- Preserve Phase E2 design-system baseline
 - Follow all rules in CLAUDE.md
 ```

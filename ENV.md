@@ -1,46 +1,41 @@
 # Environment Variables
 
-## Supabase (Database & Auth)
+## Required
 
-- **NEXT_PUBLIC_SUPABASE_URL** — Supabase project URL (public)
-- **NEXT_PUBLIC_SUPABASE_ANON_KEY** — Public anon key for client-side auth (public)
-- **SUPABASE_SERVICE_ROLE_KEY** — Server-side service role key (secret, never expose)
+| Variable | Purpose | Visibility |
+|----------|---------|------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | Public |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key for browser auth | Public |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only Supabase privileged key | Secret |
+| `ANTHROPIC_API_KEY` | Active AI runtime key for `services/ai.ts` | Secret |
+| `RESEND_API_KEY` | Transactional email | Secret |
+| `RESEND_FROM_EMAIL` | Sender email address | Server |
+| `NEXT_PUBLIC_APP_URL` | Application base URL | Public |
 
-## AWS Bedrock (AI Runtime)
+## Optional / Legacy
 
-- **AWS_REGION** — AWS region for Bedrock access. Set to `eu-north-1` (eu-north-1 chosen because Bedrock model access quotas are approved in this region)
-- **AWS_ACCESS_KEY_ID** — AWS access key (secret, never expose)
-- **AWS_SECRET_ACCESS_KEY** — AWS secret key (secret, never expose)
-- **BEDROCK_MODEL_HAIKU** — Haiku model ID for fast, cheap tasks: `eu.anthropic.claude-haiku-4-5-20251001-v1:0`
-- **BEDROCK_MODEL_SONNET** — Sonnet model ID for complex reasoning: `eu.anthropic.claude-sonnet-4-5-v1:0`
-
-## Email (Resend)
-
-- **RESEND_API_KEY** — Resend API key for sending transactional emails (secret)
-- **RESEND_FROM_EMAIL** — Sender email address, e.g. `"SyncMaster <onboarding@resend.dev>"` (public)
-
-## Application URLs
-
-- **NEXT_PUBLIC_APP_URL** — Application base URL (public)
-  - Local: `http://localhost:3000`
-  - Production: `https://syncmaster-virid.vercel.app/`
-
-## Optional: Google Gemini (Future)
-
-- **GEMINI_API_KEY** — Google Gemini API key (secret, currently unused, kept for V3.0 roadmap)
+| Variable | Status |
+|----------|--------|
+| `AWS_REGION` | Legacy Bedrock experiment; not active baseline |
+| `AWS_ACCESS_KEY_ID` | Legacy Bedrock experiment; not active baseline |
+| `AWS_SECRET_ACCESS_KEY` | Legacy Bedrock experiment; not active baseline |
+| `BEDROCK_MODEL_HAIKU` | Legacy Bedrock experiment; not active baseline |
+| `BEDROCK_MODEL_SONNET` | Legacy Bedrock experiment; not active baseline |
+| `GEMINI_API_KEY` | Future roadmap only; currently unused |
 
 ## Testing
 
-- **TEST_ADMIN_EMAIL** / **TEST_ADMIN_PASSWORD** — Admin test account
-- **TEST_PRODUCER_EMAIL** / **TEST_PRODUCER_PASSWORD** — Producer test account
-- **TEST_COMPOSER_EMAIL** / **TEST_COMPOSER_PASSWORD** — Composer test account
+| Variable | Purpose |
+|----------|---------|
+| `TEST_ADMIN_EMAIL` / `TEST_ADMIN_PASSWORD` | Admin test account |
+| `TEST_PRODUCER_EMAIL` / `TEST_PRODUCER_PASSWORD` | Producer test account |
+| `TEST_COMPOSER_EMAIL` / `TEST_COMPOSER_PASSWORD` | Composer test account |
 
----
+## Rules
 
-### Notes
-
-- All variables prefixed `NEXT_PUBLIC_` are embedded in client bundles—never put secrets there
-- AWS credentials and Resend API keys are server-only (used in Server Actions and Route Handlers)
-- Bedrock calls only happen in `services/ai.ts` and agents. Never call Bedrock directly from components or client code
-- For local development, copy the values above to `.env.local`
-- For Vercel deployment, set all secret variables in Project Settings → Environment Variables
+- Never commit `.env.local`.
+- Never put secrets in variables prefixed with `NEXT_PUBLIC_`.
+- AI calls must go through `services/ai.ts` and server-side agents only.
+- Do not migrate AI providers unless explicitly requested.
+- For local development, copy required variables to `.env.local`.
+- For Vercel deployment, set secrets in Project Settings -> Environment Variables.

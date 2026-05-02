@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Plus, Mail } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { Banner } from '@/components/Banner'
 import { BriefList, type BriefWithProducer } from '@/components/briefs/BriefList'
 import { buttonVariants } from '@/components/ui/button'
 import type { Database, OutreachStatus } from '@/types/database.types'
@@ -16,10 +17,10 @@ type OutreachWithBrief = {
 }
 
 const OUTREACH_CLASSES: Record<OutreachStatus | 'submitted', string> = {
-  invited: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  accepted: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-  submitted: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
-  declined: 'bg-muted text-muted-foreground',
+  invited: 'bg-primary text-primary-foreground',
+  accepted: 'border border-border bg-accent text-accent-foreground',
+  submitted: 'border border-border bg-card text-muted-foreground',
+  declined: 'border border-border bg-muted text-muted-foreground',
 }
 
 const OUTREACH_LABELS: Record<OutreachStatus | 'submitted', string> = {
@@ -74,9 +75,12 @@ export default async function BriefsPage() {
         </div>
 
         {draftCount > 0 && (
-          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300">
+          <Banner>
+            <p className="text-sm text-card-foreground">
+              <span className="label-strong">Review queue</span>{' '}
             {draftCount} brief{draftCount > 1 ? 's' : ''} awaiting review — open to activate
-          </div>
+            </p>
+          </Banner>
         )}
 
         <BriefList briefs={sorted} showProducer />
@@ -172,7 +176,7 @@ export default async function BriefsPage() {
         </div>
 
         {outreachWithBriefs.length === 0 ? (
-          <div className="rounded-lg border border-dashed p-12 text-center">
+          <div className="rounded-md border border-dashed bg-card p-12 text-center">
             <Mail className="mx-auto h-8 w-8 text-muted-foreground mb-3" />
             <p className="font-medium text-sm">No invites yet</p>
             <p className="text-xs text-muted-foreground mt-1">
@@ -189,7 +193,7 @@ export default async function BriefsPage() {
               return (
               <div
                 key={outreachId}
-                className="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
+                className="flex flex-col gap-3 rounded-md border border-border bg-card p-4 text-card-foreground transition-colors hover:border-input hover:bg-card sm:flex-row sm:items-start sm:justify-between"
               >
                 <div className="flex flex-col gap-1.5 min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
@@ -199,7 +203,7 @@ export default async function BriefsPage() {
                       {OUTREACH_LABELS[displayStatus]}
                     </span>
                     {brief.deadline && (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="label">
                         Due {new Date(brief.deadline).toLocaleDateString()}
                       </span>
                     )}
@@ -212,7 +216,7 @@ export default async function BriefsPage() {
                       {brief.genres.map((g) => (
                         <span
                           key={g}
-                          className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs text-muted-foreground"
+                          className="inline-flex items-center rounded-sm border border-border bg-muted/40 px-2 py-0.5 text-xs text-muted-foreground"
                         >
                           {g}
                         </span>
@@ -222,12 +226,14 @@ export default async function BriefsPage() {
 
                   {(brief.budget_min != null || brief.budget_max != null) && (
                     <p className="text-xs text-muted-foreground">
-                      Budget:{' '}
+                      <span className="label">Budget</span>{' '}
+                      <span className="mono">
                       {brief.budget_min != null && brief.budget_max != null
                         ? `$${brief.budget_min.toLocaleString()} – $${brief.budget_max.toLocaleString()}`
                         : brief.budget_min != null
                           ? `from $${brief.budget_min.toLocaleString()}`
                           : `up to $${brief.budget_max!.toLocaleString()}`}
+                      </span>
                     </p>
                   )}
                 </div>

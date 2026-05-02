@@ -1,10 +1,29 @@
 @AGENTS.md
 
-# SyncMaster — Claude Code Context
+# SyncMaster - Claude Code Context
 
-## Project
-Sync licensing platform. Three roles: **admin**, **producer**, **composer**.
-Current phase: **Phase D — AI Layer** (A, B, C complete).
+## Current Baseline
+
+**Baseline date:** 2026-05-02  
+**Status:** Phase E2 design-system integration complete and verified.  
+**Current focus:** stabilization, documentation accuracy, manual QA, and clean commits. Do not start a broad AI/API migration.
+
+Verified after Phase E2:
+
+```powershell
+npx.cmd tsc --noEmit
+npm.cmd run build
+```
+
+`npm.cmd run build` may need network access because `next/font` fetches Geist and Geist Mono from Google Fonts.
+
+---
+
+## Product
+
+SyncMaster is a curated sync licensing platform for three roles: **admin**, **producer**, and **composer**.
+
+The product wedge is the African composer to global brief corridor: human curation, rights clarity, and a small set of vetted matches instead of an open directory.
 
 ---
 
@@ -13,53 +32,86 @@ Current phase: **Phase D — AI Layer** (A, B, C complete).
 | Layer | Technology |
 |-------|------------|
 | Framework | Next.js 16 App Router |
-| Language | TypeScript strict — no `any`, ever |
-| Styling | Tailwind CSS + shadcn/ui |
-| Database | Supabase (Postgres + RLS) |
-| Auth | Supabase Auth SSR (cookie-based) |
+| Language | TypeScript strict |
+| Styling | Tailwind CSS v4 + shadcn/ui + Phase E2 design tokens |
+| Database | Supabase Postgres + RLS |
+| Auth | Supabase Auth SSR, cookie-based |
 | Storage | Supabase Storage |
-| Email | Resend + React Email (`emails/`) |
-| AI | AWS Bedrock via `@aws-sdk/client-bedrock-runtime`, called only through `services/ai.ts` |
-| Deployment | Vercel + Vercel Cron |
+| Email | Resend + React Email |
+| AI | Anthropic Messages API through `services/ai.ts` only |
+| Deployment | Vercel |
+
+---
+
+## Next.js 16 Rule
+
+This project uses Next.js 16. Before writing framework-specific code, read the relevant local guide in:
+
+```text
+node_modules/next/dist/docs/
+```
+
+Auth/request boundary file is `proxy.ts`, not `middleware.ts`.
 
 ---
 
 ## Architecture Rules
 
-**Mutations → Server Actions only. Never API routes.**
+**Mutations -> Server Actions only. Never API routes for app mutations.**
+
 ```ts
 // app/actions/[entity].ts
 'use server'
 import { createClient } from '@/lib/supabase/server'
 ```
 
-**API routes → webhooks and cron only** (`app/api/webhooks/`, `app/api/cron/`)
+**API routes -> webhooks and cron only.**
 
-**Supabase clients — never mix:**
-- Server components / actions / route handlers: `@/lib/supabase/server`
-- Client components only: `@/lib/supabase/client`
+Use API routes only under `app/api/webhooks/` and `app/api/cron/`.
 
-**Data fetching → Server Components by default.** Fetch, pass as props to client.
+**Supabase clients must not be mixed.**
 
-**Types → always from generated schema:**
+| Context | Client |
+|---------|--------|
+| Server Components, Server Actions, Route Handlers | `@/lib/supabase/server` |
+| Client Components only | `@/lib/supabase/client` |
+
+**Data fetching -> Server Components by default.**
+
+Fetch on the server, pass data into client components as props.
+
+**Types -> generated schema only.**
+
 ```ts
 import type { Database } from '@/types/database.types'
 type Brief = Database['public']['Tables']['briefs']['Row']
 ```
 
-**AI calls → agents/ → services/ai.ts only. Never inline SDK.**
+**AI calls -> agents -> services/ai.ts only.**
+
 ```ts
-// server action calls agent:
+// server action calls agent
 import { matchComposers } from '@/agents/composer-matcher'
-// agent calls SDK via:
+
+// agent calls service
 import { ai } from '@/services/ai'
 ```
 
-**Forms → `useActionState` + Server Actions. `react-hook-form` is not installed.**
+Do not import Anthropic SDKs or call Anthropic directly outside `services/ai.ts`. The active runtime is direct Anthropic API via `ANTHROPIC_API_KEY`. Bedrock is not the current path.
 
-**Security → verify role server-side in every admin action:**
+**Forms -> `useActionState` + Server Actions.**
+
+`react-hook-form` is not installed.
+
+**Security -> verify role server-side in every privileged action.**
+
 ```ts
-const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single()
+const { data: profile } = await supabase
+  .from('profiles')
+  .select('role')
+  .eq('id', user.id)
+  .single()
+
 if (profile?.role !== 'admin') throw new Error('Forbidden')
 ```
 
@@ -67,25 +119,53 @@ if (profile?.role !== 'admin') throw new Error('Forbidden')
 
 ## Key File Paths
 
+```text
+app/actions/                         all mutations, one file per entity
+app/(auth)/                          login and signup
+app/(dashboard)/                     role-gated dashboard pages
+app/(dashboard)/layout.tsx           auth guard layout
+agents/                              AI agents, one file per domain
+services/ai.ts                       single Anthropic Messages API wrapper
+core/workflows/                      brief and submission workflow helpers
+components/ui/                       shadcn components; do not edit casually
+components/dashboard/Sidebar.tsx     Phase E2 sidebar navigation pattern
+components/dashboard/Header.tsx      Phase E2 breadcrumb pattern
+components/briefs/BriefList.tsx      Phase E2 card/list pattern
+components/Banner.tsx                Phase E2 accent-border banner
+components/ScoreBar.tsx              Phase E2 score visualization
+components/Waveform.tsx              Phase E2 waveform visualization
+app/globals.css                      Tailwind v4 tokens and utilities
+tailwind.config.ts                   radius scale and semantic token map
+proxy.ts                             Next.js 16 auth/request proxy
+lib/supabase/server.ts               server Supabase client
+lib/supabase/client.ts               browser Supabase client
+types/database.types.ts              generated; never hand-edit
+emails/                              React Email templates
+docs/00_SYSTEM/                      guardrails and tooling
+docs/00_SYSTEM/BASELINE.md           current source-of-truth baseline
+docs/01_PRD/                         product requirements
+docs/build/                          build and design-system notes
+docs/06_ITERATION/                   changelog, audits, phase notes
 ```
-app/actions/          ← all mutations (one file per entity)
-app/(auth)/           ← login, signup
-app/(dashboard)/      ← all role-gated pages (layout.tsx = auth guard)
-agents/               ← AI agents, one file per domain
-services/ai.ts        ← single Anthropic SDK client
-core/workflows/       ← brief-workflow.ts, submission-workflow.ts
-components/ui/        ← shadcn — READ ONLY, never edit
-lib/supabase/server.ts / client.ts
-types/database.types.ts  ← generated, never hand-edit
-emails/               ← React Email templates
-middleware.ts          ← auth guard (edge middleware)
-docs/01_PRD/          ← all PRD docs, load only what the session needs
-docs/00_SYSTEM/       ← guardrails, tooling reference
-docs/01_PRD/FEATURES/ ← per-feature specs
-docs/build/           ← build notes (FRONTEND / BACKEND / COMPONENTS)
-docs/06_ITERATION/    ← bugs, changelog, improvements
-docs/08_CONTEXT/PROMPTS.md ← session prompt templates
-```
+
+---
+
+## Design-System Rules
+
+Phase E2 design-system integration is the current UI baseline.
+
+| Pattern | Current Rule |
+|---------|--------------|
+| Accent | Acid lime: `oklch(0.88 0.18 120)` via `--primary` |
+| Radius | Base radius `--radius: 0.375rem`; config scale is 2/4/6/8/12/16px |
+| Cards | Prefer subtle borders over heavy shadows |
+| Active nav | Left primary border + `bg-sidebar-accent` + numeric label |
+| Metadata labels | Use `.label` or `.label-strong` |
+| Numeric/status values | Use `.mono` where useful |
+| Alert/banner | Use `Banner` or `border-l-2 border-l-primary` pattern |
+| Brief list hover | `hover:border-input hover:bg-card` |
+
+Avoid reverting to the old default pattern of `rounded-lg border bg-card shadow-sm` for new design-system work unless the local component already requires it.
 
 ---
 
@@ -94,62 +174,59 @@ docs/08_CONTEXT/PROMPTS.md ← session prompt templates
 | Thing | Convention |
 |-------|------------|
 | Component files | `PascalCase.tsx` |
-| All other files | `kebab-case.ts` |
+| Non-component files | `kebab-case.ts` |
 | DB columns | `snake_case` |
 | Public env vars | `NEXT_PUBLIC_SCREAMING_SNAKE` |
-| Error handling | Surface to UI — no silent catches |
-| Loading states | Every async action needs a loading indicator |
+| Secrets | Server-only, never `NEXT_PUBLIC_` |
+| Error handling | Surface to UI; no silent catches |
+| Loading states | Every async action needs a visible pending state |
 | Empty states | Every list needs an empty state |
-| Mobile | 375px first, 1280px second |
-
-**UI patterns:**
-- Card: `rounded-lg border bg-card text-card-foreground shadow-sm p-6`
-- Page: `<div className="flex flex-col gap-6">` with h1 + muted description
-- Loading button: spinner span inside `<Button disabled={pending}>`
-- Empty state: `rounded-lg border border-dashed p-12 text-center`
-- Error: `<Alert variant="destructive">` with `<AlertCircle>`
+| Responsive baseline | 375px mobile first, then 1280px desktop |
 
 ---
 
 ## Hard Rules
 
-```
-✗ Never edit /components/ui/
-✗ Never use `any`
-✗ Never import @aws-sdk/* outside services/ai.ts
-✗ Never call agents/ from components or pages — server actions only
-✗ Never create API routes for mutations or data fetching
-✗ Never use localStorage for auth state
-✗ Never skip role verification in server actions
-✗ Never add npm packages without noting them in session context
-✗ Never truncate code output — always write complete files
-✗ Never write inline SQL — use Supabase client methods
-✗ Never introduce LangGraph for simple scoring/ranking
-✗ After adding a DB column — update ALL explicit select() strings or Vercel build breaks
+```text
+Never edit components/ui/ unless explicitly requested.
+Never use any.
+Never call agents from client components.
+Never call Anthropic outside services/ai.ts.
+Never create API routes for app mutations or normal data fetching.
+Never use localStorage for auth state.
+Never skip role verification in server actions.
+Never add npm packages without documenting why.
+Never hand-edit types/database.types.ts.
+Never write inline SQL in app code; use Supabase client methods.
+Never introduce LangGraph for simple scoring/ranking.
+After adding a DB column, update all explicit select() strings.
+Before Next.js framework changes, read node_modules/next/dist/docs/.
 ```
 
 ---
 
 ## Build Phases
 
+```text
+A - Foundation                  complete
+B - Core Loop                   complete
+C - Schema Extension            complete
+D - AI Layer                    implemented through Anthropic-direct service; no migration planned
+E - Production Polish           historical complete phase
+E2 - Design System Integration  complete and current baseline
 ```
-A — Foundation        ✓  Auth, RLS, dashboard shell, composer vetting
-B — Core Loop         ✓  Briefs, outreach, submissions, placements
-C — Schema Extension  ✓  ai_score, ai_tags, ai_match_reason, ai_suggested_composers
-D — AI Layer          ←  services/ai.ts, brief-analyzer, composer-matcher, admin UI
-E — Production        →  Emails, toasts, skeletons, mobile audit, Vercel deploy
-```
+
+Use `docs/00_SYSTEM/BASELINE.md` for the current baseline before starting new work.
 
 ---
 
-## PRD Reference (load only what the session needs)
+## PRD Reference
 
 | Task | Doc |
 |------|-----|
-| AI layer, agents, production polish | `docs/01_PRD/FEATURES/ai-layer.md` |
-| Briefs, outreach, submissions | `docs/01_PRD/FEATURES/briefs.md` + `docs/01_PRD/STATES-AND-FLOWS.md` |
-| State machines + user flows | `docs/01_PRD/STATES-AND-FLOWS.md` |
 | Vision, personas, out-of-scope | `docs/01_PRD/OVERVIEW.md` |
-| Post-V1.5 roadmap | `docs/01_PRD/ROADMAP.md` |
-
-Session prompt templates → `docs/08_CONTEXT/PROMPTS.md`
+| Briefs, outreach, submissions | `docs/01_PRD/FEATURES/briefs.md` + `docs/01_PRD/STATES-AND-FLOWS.md` |
+| AI layer | `docs/01_PRD/FEATURES/ai-layer.md` |
+| Roadmap | `docs/01_PRD/ROADMAP.md` |
+| Guardrails | `docs/00_SYSTEM/GUARDRAILS.md` |
+| Current baseline | `docs/00_SYSTEM/BASELINE.md` |

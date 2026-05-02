@@ -1,5 +1,9 @@
 # SyncMaster Design System — Phase E
 
+> Current implementation baseline lives in `docs/00_SYSTEM/BASELINE.md`.
+> Phase E2 uses acid-lime `oklch(0.88 0.18 120)`, a `0.375rem` radius baseline, and border-led dashboard surfaces.
+> Treat older Spotify-green/shadow-heavy examples in this broader spec as historical reference unless they match the current implementation.
+
 Dark editorial. Premium music industry. Spotify meets A&R portal.
 
 ---
@@ -691,12 +695,12 @@ Uploaded 2h ago
 - **Timeline:** Body light, gray text
 
 ### AI Debug Panel (Admin-only)
-Visible in dashboard admin section. Shows Bedrock metrics for transparency.
+Visible in dashboard admin section. Shows Anthropic request metrics for transparency.
 
 ```
 ╔════════════════════════════════════╗
-║ 🧪 Bedrock Metrics                 ║
-║ Model: Claude Haiku 4.5            ║
+║ AI Request Metrics                 ║
+║ Model: Claude Sonnet               ║
 ║ Latency: 2.3s                      ║
 ║ Input tokens: 1,245 | Output: 543  ║
 ║ Estimated cost: $0.000287          ║
