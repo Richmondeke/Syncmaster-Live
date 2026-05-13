@@ -14,6 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Music2 } from 'lucide-react'
 
 const initialState: AuthState = { error: null }
 
@@ -21,23 +22,30 @@ export default function LoginPage() {
   const [state, formAction, pending] = useActionState(signIn, initialState)
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center space-y-1">
-          <CardTitle className="text-2xl font-bold tracking-tight">SyncMaster</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
+    <div className="min-h-screen flex items-center justify-center bg-black px-4 font-sans selection:bg-primary/30">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,153,255,0.05),transparent_50%)] pointer-events-none" />
+      
+      <Card className="w-full max-w-sm bg-black/40 backdrop-blur-xl border-white/10 rounded-[2.5rem] shadow-2xl relative z-10 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        
+        <CardHeader className="text-center space-y-3 pt-10">
+          <div className="mx-auto w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-2">
+            <Music2 className="w-6 h-6 text-primary" />
+          </div>
+          <CardTitle className="text-3xl font-bold tracking-tighter text-white">SyncMaster</CardTitle>
+          <CardDescription className="text-white/50 font-medium">Welcome back to the sync hub</CardDescription>
         </CardHeader>
 
         <form action={formAction}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-5 px-8">
             {state.error && (
-              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              <p className="rounded-2xl bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive animate-in fade-in slide-in-from-top-2">
                 {state.error}
               </p>
             )}
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-2.5">
+              <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-white/40 ml-1">Email address</Label>
               <Input
                 id="email"
                 name="email"
@@ -45,33 +53,47 @@ export default function LoginPage() {
                 placeholder="you@example.com"
                 autoComplete="email"
                 required
+                className="bg-white/5 border-white/10 rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-white/20"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between ml-1">
+                <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-widest text-white/40">Password</Label>
+                <Link href="#" className="text-xs font-medium text-primary/60 hover:text-primary transition-colors">Forgot?</Link>
+              </div>
               <Input
                 id="password"
                 name="password"
                 type="password"
                 autoComplete="current-password"
                 required
+                className="bg-white/5 border-white/10 rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-white/20"
               />
             </div>
           </CardContent>
 
-          <CardFooter className="flex flex-col gap-3 pt-2">
-            <Button type="submit" className="w-full" disabled={pending}>
-              {pending ? 'Signing in…' : 'Sign in'}
+          <CardFooter className="flex flex-col gap-6 pt-6 pb-10 px-8">
+            <Button 
+              type="submit" 
+              className="w-full h-12 rounded-full bg-primary hover:bg-primary/90 text-black font-bold text-base transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100" 
+              disabled={pending}
+            >
+              {pending ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  <span>Signing in…</span>
+                </div>
+              ) : 'Sign in'}
             </Button>
 
-            <p className="text-center text-sm text-muted-foreground">
-              Don&apos;t have an account?{' '}
+            <p className="text-center text-sm text-white/40">
+              New here?{' '}
               <Link
                 href="/signup"
-                className="text-foreground underline underline-offset-4 hover:text-primary"
+                className="text-white font-semibold hover:text-primary transition-colors underline-offset-4 hover:underline"
               >
-                Sign up
+                Create an account
               </Link>
             </p>
           </CardFooter>

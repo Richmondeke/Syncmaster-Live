@@ -1,0 +1,115 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { 
+  Trophy, 
+  DollarSign, 
+  Calendar,
+  Layers,
+  ArrowUpRight
+} from 'lucide-react'
+import Link from 'next/link'
+
+const mockPlacements = [
+  {
+    id: 'plc_1',
+    trackName: 'Neon Pulse',
+    briefTitle: 'Cyberpunk 2077 Expansion',
+    licenseFee: '$4,500',
+    placedAt: '2024-02-15',
+    usage: 'Main Trailer',
+    company: 'CD Projekt Red'
+  },
+  {
+    id: 'plc_2',
+    trackName: 'Arctic Winds',
+    briefTitle: 'Patagonia Winter Campaign',
+    licenseFee: '$2,800',
+    placedAt: '2024-01-22',
+    usage: 'Digital / Social',
+    company: 'Patagonia'
+  }
+]
+
+export default function PlacementsPage() {
+  return (
+    <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-3xl font-bold tracking-tight text-white">Placements</h1>
+        <p className="text-white/50">Your history of successfully synchronized tracks.</p>
+      </div>
+
+      <div className="grid gap-6">
+        {mockPlacements.map((plc) => (
+          <Card key={plc.id} className="bg-white/5 border-white/10 rounded-[2rem] overflow-hidden relative group">
+            <div className="absolute top-0 right-0 p-8">
+              <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                <Trophy className="w-6 h-6" />
+              </div>
+            </div>
+
+            <CardContent className="p-8">
+              <div className="space-y-6">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-2xl font-bold text-white">{plc.trackName}</h3>
+                    <Badge className="bg-primary/20 text-primary border-primary/30 rounded-full font-bold">WIN</Badge>
+                  </div>
+                  <p className="text-white/40 flex items-center gap-1.5">
+                    {plc.company} <span className="text-white/20">•</span> {plc.briefTitle}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                  <div className="space-y-1">
+                    <span className="text-[10px] uppercase tracking-widest text-white/20 font-bold flex items-center gap-1.5">
+                      <DollarSign className="w-3 h-3" /> License Fee
+                    </span>
+                    <p className="text-lg font-semibold text-primary">{plc.licenseFee}</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <span className="text-[10px] uppercase tracking-widest text-white/20 font-bold flex items-center gap-1.5">
+                      <Layers className="w-3 h-3" /> Usage
+                    </span>
+                    <p className="text-lg font-semibold text-white/80">{plc.usage}</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <span className="text-[10px] uppercase tracking-widest text-white/20 font-bold flex items-center gap-1.5">
+                      <Calendar className="w-3 h-3" /> Date
+                    </span>
+                    <p className="text-lg font-semibold text-white/80">{plc.placedAt}</p>
+                  </div>
+
+                  <div className="flex items-end justify-end">
+                    <Link href="#" className="flex items-center gap-2 text-sm font-bold text-white group-hover:text-primary transition-colors">
+                      View Contract <ArrowUpRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+
+        {mockPlacements.length === 0 && (
+          <div className="py-20 flex flex-col items-center justify-center space-y-4 border-2 border-dashed border-white/5 rounded-[2rem]">
+            <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center">
+              <Trophy className="w-10 h-10 text-white/10" />
+            </div>
+            <div className="text-center">
+              <h3 className="text-xl font-bold text-white">No placements yet</h3>
+              <p className="text-white/40">Keep submitting tracks. Your first win is just around the corner.</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}

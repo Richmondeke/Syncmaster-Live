@@ -68,8 +68,8 @@ export default async function BriefsPage() {
     return (
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Briefs</h1>
-          <p className="text-muted-foreground text-sm mt-1">
+          <h1 className="text-4xl md:text-5xl font-medium tracking-[-0.05em] text-white">Briefs</h1>
+          <p className="text-lg text-muted-foreground tracking-tight mt-2">
             Review producer briefs and manage status transitions.
           </p>
         </div>
@@ -115,8 +115,8 @@ export default async function BriefsPage() {
       <div className="flex flex-col gap-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Briefs</h1>
-            <p className="text-muted-foreground text-sm mt-1">
+            <h1 className="text-4xl md:text-5xl font-medium tracking-[-0.05em] text-white">Briefs</h1>
+            <p className="text-lg text-muted-foreground tracking-tight mt-2">
               Submit a brief and we'll hand-pick 3–5 vetted composers for you.
             </p>
           </div>
@@ -169,8 +169,8 @@ export default async function BriefsPage() {
     return (
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Briefs</h1>
-          <p className="text-muted-foreground text-sm mt-1">
+          <h1 className="text-4xl md:text-5xl font-medium tracking-[-0.05em] text-white">Briefs</h1>
+          <p className="text-lg text-muted-foreground tracking-tight mt-2">
             Briefs you've been invited to submit tracks for.
           </p>
         </div>

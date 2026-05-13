@@ -60,7 +60,7 @@ export function BriefList({ briefs, showProducer = false, emptyMessage }: Props)
       {briefs.map((brief) => (
         <div
           key={brief.id}
-          className="flex flex-col gap-3 rounded-md border border-border bg-card p-4 text-card-foreground transition-colors hover:border-input hover:bg-card sm:flex-row sm:items-start sm:justify-between"
+          className="flex flex-col gap-3 rounded-xl bg-black ring-1 ring-[#0099ff]/15 p-6 shadow-glow-blue transition-colors hover:ring-[#0099ff]/30 hover:bg-[#090909] sm:flex-row sm:items-start sm:justify-between"
         >
           <div className="flex flex-col gap-1.5 min-w-0">
             <div className="flex flex-wrap items-center gap-2">

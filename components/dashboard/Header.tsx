@@ -41,6 +41,9 @@ const CRUMB_LABELS: Record<string, string> = {
   '/dashboard/producers': 'Producers',
   '/dashboard/tasks': 'Tasks',
   '/dashboard/settings': 'Settings',
+  '/dashboard/directory': 'Agency Directory',
+  '/dashboard/tagger': 'AI Tagger',
+  '/dashboard/radar': 'Sound Radar',
 }
 
 function getCrumb(pathname: string): string {
@@ -73,7 +76,7 @@ export function Header({ user }: Props) {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center justify-between bg-background/80 backdrop-blur-md px-4 md:px-6">
       {/* Spacer keeps content right-aligned on mobile when hamburger is visible */}
       <div className="w-8 lg:hidden" aria-hidden="true" />
 

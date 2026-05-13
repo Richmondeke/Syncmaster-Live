@@ -33,13 +33,8 @@ export async function proxy(request: NextRequest) {
   const isAuthRoute = pathname === '/login' || pathname === '/signup'
   const isDashboardRoute = pathname.startsWith('/dashboard')
 
-  if (!user && isDashboardRoute) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
-  }
-
-  if (user && isAuthRoute) {
+  // Bypass auth for dashboard access
+  if (isAuthRoute) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)

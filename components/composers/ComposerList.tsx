@@ -86,10 +86,10 @@ export function ComposerList({ composers }: { composers: ComposerWithProfile[] }
 
   return (
     <>
-      <div className="rounded-lg border">
+      <div className="rounded-xl ring-1 ring-[#0099ff]/15 overflow-hidden shadow-glow-blue">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b bg-muted/50">
+            <tr className="border-b border-white/5 bg-[#090909]">
               <th className="px-4 py-3 text-left font-medium text-muted-foreground">Name</th>
               <th className="px-4 py-3 text-left font-medium text-muted-foreground">Genres</th>
               <th className="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
@@ -108,7 +108,7 @@ export function ComposerList({ composers }: { composers: ComposerWithProfile[] }
               })
 
               return (
-                <tr key={composer.id} className="border-b last:border-0 hover:bg-muted/30 transition-colors">
+                <tr key={composer.id} className="border-b border-white/5 bg-black last:border-0 hover:bg-[#090909] transition-colors">
                   <td className="px-4 py-3 font-medium">{name}</td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {composer.genres?.join(', ') || '—'}

@@ -43,8 +43,8 @@ export default async function ComposersPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Composers</h1>
-        <p className="text-muted-foreground text-sm mt-1">
+        <h1 className="text-4xl md:text-5xl font-medium tracking-[-0.05em] text-white">Composers</h1>
+        <p className="text-lg text-muted-foreground tracking-tight mt-2">
           Review applications and manage composer status.
         </p>
       </div>
