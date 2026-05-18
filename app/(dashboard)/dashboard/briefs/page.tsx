@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Plus, Mail } from 'lucide-react'
-import { createClient } from '@/lib/supabase/server'
+import { getAdminClient } from '@/lib/supabase/admin'
 import { Banner } from '@/components/Banner'
 import { BriefList, type BriefWithProducer } from '@/components/briefs/BriefList'
 import { buttonVariants } from '@/components/ui/button'
@@ -33,7 +33,7 @@ const OUTREACH_LABELS: Record<OutreachStatus | 'submitted', string> = {
 }
 
 export default async function BriefsPage() {
-  const supabase = await createClient()
+  const supabase = getAdminClient()
 
   const cookieStore = await cookies()
   const roleOverride = cookieStore.get('role')?.value || 'admin'

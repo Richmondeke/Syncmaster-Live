@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { getAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { analyzeBrief } from '@/agents/brief-analyzer'
@@ -14,7 +14,7 @@ export async function createBrief(
   prevState: BriefFormState,
   formData: FormData,
 ): Promise<BriefFormState> {
-  const supabase = await createClient()
+  const supabase = getAdminClient()
   const cookieStore = await cookies()
   const role = cookieStore.get('role')?.value
   const sessionEmail = cookieStore.get('session_email')?.value
@@ -76,7 +76,7 @@ export async function createBrief(
 
 export async function updateBriefStatus(briefId: string, status: BriefStatus): Promise<{ error?: string }> {
   try {
-    const supabase = await createClient()
+    const supabase = getAdminClient()
     const cookieStore = await cookies()
     const role = cookieStore.get('role')?.value
     const sessionEmail = cookieStore.get('session_email')?.value

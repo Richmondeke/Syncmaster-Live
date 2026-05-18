@@ -1,7 +1,7 @@
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Sparkles } from 'lucide-react'
-import { createClient } from '@/lib/supabase/server'
+import { getAdminClient } from '@/lib/supabase/admin'
 import { BriefStatusControl } from '@/components/briefs/BriefStatusControl'
 import { OutreachPanel, type ComposerForOutreach } from '@/components/briefs/OutreachPanel'
 import { OutreachResponse } from '@/components/briefs/OutreachResponse'
@@ -69,7 +69,7 @@ type Props = { params: Promise<{ id: string }> }
 export default async function BriefDetailPage({ params }: Props) {
   const { id } = await params
 
-  const supabase = await createClient()
+  const supabase = getAdminClient()
   const cookieStore = await cookies()
   const roleOverride = cookieStore.get('role')?.value || 'admin'
   const sessionEmail = cookieStore.get('session_email')?.value

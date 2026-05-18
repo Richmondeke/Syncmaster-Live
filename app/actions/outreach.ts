@@ -1,6 +1,5 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
 import { getAdminClient } from '@/lib/supabase/admin'
 import { getSessionUser } from '@/lib/supabase/session'
 import { revalidatePath } from 'next/cache'
@@ -10,7 +9,7 @@ import { outreachAcceptedEmail } from '@/emails/outreach-accepted'
 import type { OutreachStatus } from '@/types/database.types'
 
 export async function inviteComposer(formData: FormData): Promise<void> {
-  const supabase = await createClient()
+  const supabase = getAdminClient()
 
   const user = await getSessionUser()
   if (!user) throw new Error('Unauthorized')
@@ -88,7 +87,7 @@ export async function respondToOutreach(
   prevState: OutreachResponseState,
   formData: FormData,
 ): Promise<OutreachResponseState> {
-  const supabase = await createClient()
+  const supabase = getAdminClient()
 
   const user = await getSessionUser()
   if (!user) return { error: 'Unauthorized' }

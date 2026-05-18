@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { getAdminClient } from '@/lib/supabase/admin'
 import { Clock, ArrowRight, Sparkles, Search, Building2, CheckSquare, FileText, LayoutGrid, Users, Music2, Radio } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -87,7 +87,7 @@ export default async function DashboardPage() {
   const composer = { status: 'active' }
 
   // Fetch live briefs from mock DB
-  const supabase = await createClient()
+  const supabase = getAdminClient()
   const { data: briefs } = await supabase
     .from('briefs')
     .select('id, title, description, genres, budget_min, budget_max, deadline, status, producers:producers(company, profiles:profiles(full_name))')
