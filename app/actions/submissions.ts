@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
+import { getSessionUser } from '@/lib/supabase/session'
 import { revalidatePath } from 'next/cache'
 import { assertSubmissionAllowed } from '@/core/workflows/submission-workflow'
 
@@ -12,9 +13,7 @@ export async function submitTrack(
 ): Promise<SubmissionFormState> {
   const supabase = await createClient()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getSessionUser()
   if (!user) return { error: 'Unauthorized' }
 
   const { data: composer } = await supabase

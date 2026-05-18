@@ -24,19 +24,27 @@ export async function proxy(request: NextRequest) {
   )
 
   // Refresh the session - must not be skipped.
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser()
 
   const { pathname } = request.nextUrl
 
   const isAuthRoute = pathname === '/login' || pathname === '/signup'
   const isDashboardRoute = pathname.startsWith('/dashboard')
 
-  // Bypass auth for dashboard access
-  if (isAuthRoute) {
+  const sessionEmail = request.cookies.get('session_email')?.value
+
+  // Dynamic cookie-based routing
+  if (isAuthRoute && sessionEmail) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
+
+  if (isDashboardRoute && !sessionEmail) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 

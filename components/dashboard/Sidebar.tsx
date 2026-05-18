@@ -19,11 +19,18 @@ import {
   LogOut,
   Menu,
   X,
+  Headphones,
+  FileText,
+  CheckSquare,
+  Mail,
+  MonitorPlay,
+  Radio
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import type { Role } from '@/types/database.types'
+import { signOut } from '@/app/actions/auth'
 
 type NavItem = {
   label: string
@@ -32,59 +39,66 @@ type NavItem = {
   roles: Role[]
 }
 
-const NAV_ITEMS: NavItem[] = [
-  {
-    label: 'Dashboard',
-    href: '/dashboard',
-    icon: LayoutDashboard,
-    roles: ['composer', 'producer', 'admin'],
-  },
-  { 
-    label: 'My Library', 
-    href: '/dashboard/tracks', 
-    icon: Layers, 
-    roles: ['composer', 'admin'] 
-  },
-  { 
-    label: 'Applications', 
-    href: '/dashboard/submissions', 
-    icon: Activity, 
-    roles: ['composer', 'admin'] 
-  },
-  {
-    label: 'Briefs',
-    href: '/dashboard/briefs',
-    icon: Briefcase,
-    roles: ['composer', 'producer', 'admin'],
-  },
-  {
-    label: 'Agency Directory',
-    href: '/dashboard/directory',
-    icon: Building2,
-    roles: ['composer', 'producer', 'admin'],
-  },
-  {
-    label: 'AI Tagger',
-    href: '/dashboard/tagger',
-    icon: Sparkles,
-    roles: ['composer', 'producer', 'admin'],
-  },
-  {
-    label: 'Sound Radar',
-    href: '/dashboard/radar',
-    icon: Search,
-    roles: ['composer', 'producer', 'admin'],
-  },
-  {
-    label: 'Placements',
-    href: '/dashboard/placements',
-    icon: TrendingUp,
-    roles: ['composer', 'producer', 'admin'],
-  },
-  { label: 'Composers', href: '/dashboard/composers', icon: Users, roles: ['admin'] },
-  { label: 'Producers', href: '/dashboard/producers', icon: Users, roles: ['admin'] },
-  { label: 'Tasks', href: '/dashboard/tasks', icon: ClipboardList, roles: ['admin'] },
-]
+const NAV_GROUPS: Record<string, NavItem[]> = {
+  workspace: [
+    {
+      label: 'Dashboard',
+      href: '/dashboard',
+      icon: LayoutDashboard,
+      roles: ['composer', 'producer', 'admin'],
+    },
+    { 
+      label: 'Catalog', 
+      href: '/dashboard/tracks', 
+      icon: Layers, 
+      roles: ['composer', 'admin'] 
+    },
+    {
+      label: 'Briefs',
+      href: '/dashboard/briefs',
+      icon: Briefcase,
+      roles: ['composer', 'producer', 'admin'],
+    },
+    {
+      label: 'Placements',
+      href: '/dashboard/placements',
+      icon: TrendingUp,
+      roles: ['composer', 'producer', 'admin'],
+    },
+  ],
+  distribution: [
+    {
+      label: 'Pages (EPK)',
+      href: '/dashboard/epks',
+      icon: MonitorPlay,
+      roles: ['admin', 'composer'],
+    },
+    {
+      label: 'Campaigns',
+      href: '/dashboard/campaigns',
+      icon: Mail,
+      roles: ['admin', 'composer'],
+    },
+    {
+      label: 'Radio Directory',
+      href: '/dashboard/radio-directory',
+      icon: Radio,
+      roles: ['admin', 'composer'],
+    }
+  ],
+  network: [
+    { label: 'Composers', href: '/dashboard/composers', icon: Users, roles: ['admin'] },
+    { label: 'Producers', href: '/dashboard/producers', icon: Headphones, roles: ['admin'] },
+  ],
+  operations: [
+    { 
+      label: 'Marketplace', 
+      href: '/dashboard/marketplace', 
+      icon: Building2, 
+      roles: ['admin'] 
+    },
+  ]
+}
 
 const BOTTOM_ITEMS: NavItem[] = [
   {
@@ -95,7 +109,10 @@ const BOTTOM_ITEMS: NavItem[] = [
   },
 ]
 
-type Props = { role: Role }
+type Props = { 
+  role: Role
+  fullName?: string
+}
 
 function NavLink({
   item,
@@ -106,19 +123,29 @@ function NavLink({
   pathname: string
   onClick?: () => void
 }) {
-  const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
+  // Robust isActive logic: exact match for root dashboard, specific prefix for others
+  const normalizedPath = pathname.split('?')[0].split('#')[0].replace(/\/$/, '')
+  const normalizedItemHref = item.href.replace(/\/$/, '')
+  
+  const isActive = normalizedItemHref === '/dashboard' 
+    ? normalizedPath === '/dashboard' 
+    : normalizedPath === normalizedItemHref || normalizedPath.startsWith(`${normalizedItemHref}/`)
+  
   return (
     <Link
       href={item.href}
       onClick={onClick}
       className={cn(
-        'w-full flex items-center gap-3 px-4 py-3 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-all',
+        'w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-black tracking-[-0.068em] transition-all duration-200 group',
         isActive
-          ? 'bg-white text-primary shadow-[0_0_20px_rgba(255,255,255,0.15)]'
-          : 'text-white/70 hover:text-white hover:bg-white/10'
+          ? 'bg-white text-[#4b4bc0] shadow-[0_8px_30px_rgb(0,0,0,0.12)] scale-[1.02] border-r-4 border-[#4b4bc0]/20'
+          : 'text-white/70 hover:text-white hover:bg-white/5 hover:translate-x-1'
       )}
     >
-      <item.icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+      <item.icon className={cn(
+        "h-4 w-4 shrink-0 transition-transform duration-200",
+        isActive ? "scale-110" : "group-hover:scale-110"
+      )} aria-hidden="true" />
       {item.label}
     </Link>
   )
@@ -126,20 +153,30 @@ function NavLink({
 
 function SidebarContent({
   role,
+  fullName,
   pathname,
   onNavigate,
 }: {
   role: Role
+  fullName?: string
   pathname: string
   onNavigate?: () => void
 }) {
-  const main = NAV_ITEMS.filter((item) => item.roles.includes(role))
+  const isAdmin = role === 'admin'
+  const profile = { role, full_name: fullName || 'Godliverse' }
   const bottom = BOTTOM_ITEMS.filter((item) => item.roles.includes(role))
 
-  return (
-    <div className="flex flex-1 flex-col justify-between overflow-y-auto p-4">
-      <nav className="flex flex-col gap-2" aria-label="Main navigation">
-        {main.map((item) => (
+  const renderGroup = (title: string, items: any[]) => {
+    const filteredItems = items.filter((item) => item.roles.includes(role))
+    if (filteredItems.length === 0) return null
+
+    return (
+      <div className="flex flex-col gap-1 mb-7">
+        <div className="px-4 mb-2.5 text-[10px] font-black text-white/40 tracking-[0.05em] flex items-center gap-2">
+          <span className="w-1.5 h-[1px] bg-white/20" />
+          {title}
+        </div>
+        {filteredItems.map((item) => (
           <NavLink
             key={item.href}
             item={item}
@@ -147,10 +184,49 @@ function SidebarContent({
             onClick={onNavigate}
           />
         ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-1 flex-col justify-between overflow-y-auto p-4 pt-6 scrollbar-none">
+      <nav className="flex flex-col" aria-label="Main navigation">
+        {isAdmin ? (
+          <>
+            {renderGroup('Workspace', NAV_GROUPS.workspace)}
+            {renderGroup('Distribution', NAV_GROUPS.distribution)}
+            {renderGroup('Network', NAV_GROUPS.network)}
+            {renderGroup('Operations', NAV_GROUPS.operations)}
+          </>
+        ) : (
+          <div className="flex flex-col gap-1">
+            {NAV_GROUPS.workspace
+              .filter(item => item.roles.includes(role))
+              .map(item => (
+                <NavLink
+                  key={item.href}
+                  item={item}
+                  pathname={pathname}
+                  onClick={onNavigate}
+                />
+              ))}
+            {NAV_GROUPS.distribution
+              .filter(item => item.roles.includes(role))
+              .map(item => (
+                <NavLink
+                  key={item.href}
+                  item={item}
+                  pathname={pathname}
+                  onClick={onNavigate}
+                />
+              ))}
+          </div>
+        )}
       </nav>
 
-      <div className="flex flex-col gap-2">
-        <Separator className="mb-4 bg-white/20" />
+
+      <div className="flex flex-col gap-2 mt-auto pt-6">
+        <Separator className="mb-4 bg-white/10" />
         {bottom.map((item) => (
           <NavLink
             key={item.href}
@@ -161,29 +237,36 @@ function SidebarContent({
         ))}
         
         {/* User Profile Section */}
-        <div className="mt-4 p-4 rounded-2xl bg-black/15 border border-white/15">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-white/15 border border-white/20">
-              <img src={`https://ui-avatars.com/api/?name=${role}&background=4b4bc0&color=fff`} className="w-full h-full object-cover" alt="User" />
+        <div className="mt-4 p-4 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="relative z-10 flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-2xl overflow-hidden bg-white/10 border border-white/20 p-0.5 shadow-xl transition-transform duration-300 group-hover:scale-110">
+              <img 
+                src={`https://ui-avatars.com/api/?name=${encodeURIComponent(profile.full_name)}&background=4b4bc0&color=fff&bold=true`} 
+                className="w-full h-full rounded-[14px] object-cover" 
+                alt={profile.full_name} 
+              />
             </div>
             <div className="overflow-hidden text-left">
-              <div className="font-bold text-white text-xs truncate capitalize">{role}</div>
-              <div className="text-[10px] text-white/60 uppercase tracking-wider">Active Account</div>
+              <div className="font-black text-white text-sm tracking-[-0.04em] truncate">{profile.full_name}</div>
+              <div className="text-[10px] text-white/50 font-bold tracking-tight mt-0.5 capitalize">{profile.role} access</div>
             </div>
           </div>
-          <button 
-            className="w-full flex items-center justify-center gap-2 py-2.5 text-[10px] font-bold text-white/80 hover:bg-white/10 rounded-xl uppercase tracking-widest transition-colors"
-            onClick={() => {/* Implement logout */}}
-          >
-            <LogOut className="w-3 h-3" /> Sign Out
-          </button>
+          <form action={signOut} className="relative z-10 w-full">
+            <button 
+              type="submit"
+              className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-black text-white/60 hover:text-white hover:bg-white/10 rounded-2xl tracking-tight transition-all border border-transparent hover:border-white/10 shadow-lg"
+            >
+              <LogOut className="w-3.5 h-3.5" /> Sign out
+            </button>
+          </form>
         </div>
       </div>
     </div>
   )
 }
 
-export function Sidebar({ role }: Props) {
+export function Sidebar({ role, fullName }: Props) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
@@ -227,7 +310,7 @@ export function Sidebar({ role }: Props) {
             priority
           />
         </div>
-        <SidebarContent role={role} pathname={pathname} onNavigate={() => setOpen(false)} />
+        <SidebarContent role={role} fullName={fullName} pathname={pathname} onNavigate={() => setOpen(false)} />
       </aside>
     </>
   )

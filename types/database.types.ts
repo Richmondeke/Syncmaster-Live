@@ -357,6 +357,54 @@ export type Database = {
         }
         Relationships: []
       }
+      radio_stations: {
+        Row: {
+          id: string
+          state_city: string
+          school: string
+          station: string
+          email: string | null
+          notes: string | null
+          show_name: string | null
+          dj_music_dir: string | null
+          website: string | null
+          phone: string | null
+          address: string | null
+          submitted: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          state_city: string
+          school: string
+          station: string
+          email?: string | null
+          notes?: string | null
+          show_name?: string | null
+          dj_music_dir?: string | null
+          website?: string | null
+          phone?: string | null
+          address?: string | null
+          submitted?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          state_city?: string
+          school?: string
+          station?: string
+          email?: string | null
+          notes?: string | null
+          show_name?: string | null
+          dj_music_dir?: string | null
+          website?: string | null
+          phone?: string | null
+          address?: string | null
+          submitted?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>

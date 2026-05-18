@@ -81,13 +81,14 @@ export function Header({ user }: Props) {
       <div className="w-8 lg:hidden" aria-hidden="true" />
 
       <div className="min-w-0 flex-1">
-        {crumb && <div className="label truncate">{crumb}</div>}
+        {crumb && (
+          <h1 className="text-sm font-black tracking-[-0.068em] text-foreground">
+            {crumb}
+          </h1>
+        )}
       </div>
 
       <div className="flex items-center justify-end gap-3">
-        <Badge variant="outline" className="hidden sm:flex">
-          {ROLE_LABEL[user.role]}
-        </Badge>
 
         <DropdownMenu>
           <DropdownMenuTrigger

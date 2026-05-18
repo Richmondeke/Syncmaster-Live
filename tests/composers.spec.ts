@@ -23,7 +23,7 @@ test.describe('Composers - Email Error Recovery', () => {
     const rejectButton = page.locator('button:has-text("Reject")').first()
     await rejectButton.click()
 
-    const dialog = page.locator('[role="dialog"]')
+    const dialog = page.getByRole('dialog', { name: /Reject application/i })
     await expect(dialog).toBeVisible()
 
     // Fill feedback
@@ -54,7 +54,7 @@ test.describe('Composers - Email Error Recovery', () => {
     const rejectButton = page.locator('button:has-text("Reject")').first()
     await rejectButton.click()
 
-    const dialog = page.locator('[role="dialog"]')
+    const dialog = page.getByRole('dialog', { name: /Reject application/i })
     await expect(dialog).toBeVisible()
 
     const cancelButton = dialog.locator('button:has-text("Cancel")')
@@ -64,7 +64,7 @@ test.describe('Composers - Email Error Recovery', () => {
     await expect(dialog).not.toBeVisible()
 
     // No toast should appear
-    const toast = page.locator('[role="alert"], text=rejected')
+    const toast = page.locator('text=Composer rejected')
     await expect(toast).not.toBeVisible()
   })
 
@@ -95,7 +95,7 @@ test.describe('Composers - Email Error Recovery', () => {
     const rejectButton = page.locator('button:has-text("Reject")').first()
     await rejectButton.click()
 
-    const dialog = page.locator('[role="dialog"]')
+    const dialog = page.getByRole('dialog', { name: /Reject application/i })
     const textarea = dialog.locator('textarea')
 
     // Try rejecting without note first
@@ -140,7 +140,7 @@ test.describe('Composers - Loading States', () => {
 
     await rejectButton.click()
 
-    const dialog = page.locator('[role="dialog"]')
+    const dialog = page.getByRole('dialog', { name: /Reject application/i })
     await expect(dialog).toBeVisible()
 
     // Reject button should now be disabled (since submit is in flight during dialog)
@@ -156,7 +156,7 @@ test.describe('Composers - Loading States', () => {
     const rejectButton = page.locator('button:has-text("Reject")').first()
     await rejectButton.click()
 
-    const dialog = page.locator('[role="dialog"]')
+    const dialog = page.getByRole('dialog', { name: /Reject application/i })
     const textarea = dialog.locator('textarea')
 
     // Initially enabled

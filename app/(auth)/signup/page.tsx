@@ -14,7 +14,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Music2, CheckCircle2 } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
+import Image from 'next/image'
 
 const initialState: AuthState = { error: null }
 
@@ -29,17 +30,23 @@ export default function SignupPage() {
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
         
         <CardHeader className="text-center space-y-3 pt-10">
-          <div className="mx-auto w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-2">
-            <Music2 className="w-6 h-6 text-primary" />
+          <div className="mx-auto relative w-48 h-12 mb-4">
+            <Image 
+              src="/syncmasterwhite.png" 
+              alt="SyncMaster Logo" 
+              fill
+              className="object-contain"
+              priority
+            />
           </div>
-          <CardTitle className="text-3xl font-bold tracking-tighter text-white">Join SyncMaster</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tighter text-white mt-2">Create an account</CardTitle>
           <CardDescription className="text-white/50 font-medium">Create your gateway to the industry</CardDescription>
         </CardHeader>
 
         <form action={formAction}>
           <CardContent className="space-y-5 px-8">
             {state.error && (
-              <p className="rounded-2xl bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive animate-in fade-in slide-in-from-top-2">
+              <p role="alert" className="rounded-2xl bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive animate-in fade-in slide-in-from-top-2">
                 {state.error}
               </p>
             )}

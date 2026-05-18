@@ -19,9 +19,12 @@ test.describe('Phase E: Smoke Tests — Critical Happy Path', () => {
     await page.fill('input[type="password"]', adminPass);
     await page.click('button[type="submit"]');
 
-    // Expect redirect to dashboard → briefs
-    await page.waitForURL(/\/(dashboard|briefs)/);
-    await expect(page).toHaveURL(/\/(dashboard|briefs)/);
+    // Expect redirect to dashboard
+    await page.waitForURL('**/dashboard');
+    await expect(page).toHaveURL(/dashboard/);
+
+    // Navigate to briefs page
+    await page.goto('/dashboard/briefs');
 
     // Verify briefs page loaded
     await expect(page.locator('h1')).toContainText(/briefs|brief/i);
@@ -35,7 +38,8 @@ test.describe('Phase E: Smoke Tests — Critical Happy Path', () => {
     await page.fill('input[type="email"]', adminEmail);
     await page.fill('input[type="password"]', adminPass);
     await page.click('button[type="submit"]');
-    await page.waitForURL(/\/(dashboard|briefs)/);
+    await page.waitForURL('**/dashboard');
+    await page.goto('/dashboard/briefs');
 
     // Try to create a brief (trigger success or error toast)
     const createBtn = page.locator('button:has-text("New Brief"), button:has-text("Create")').first();
@@ -56,23 +60,17 @@ test.describe('Phase E: Smoke Tests — Critical Happy Path', () => {
     const adminPass = process.env.TEST_ADMIN_PASSWORD || 'password';
     await page.fill('input[type="email"]', adminEmail);
     await page.fill('input[type="password"]', adminPass);
-    await page.click('button[type="submit"]');
-    await page.waitForURL(/\/(dashboard|briefs)/);
 
-    // Find an action button and verify it has loading state
     const actionBtn = page.locator('button[type="submit"]').first();
-    const initialDisabled = await actionBtn.isDisabled();
 
-    // Click and immediately check for disabled state
+    // Click and immediately check for disabled state or loading text
     await actionBtn.click();
-    const isDisabledDuringSubmit = await actionBtn.isDisabled({ timeout: 100 }).catch(() => false);
+    const isDisabledDuringSubmit = await actionBtn.isDisabled({ timeout: 200 }).catch(() => false);
+    const textContent = await actionBtn.textContent();
+    const isLoaderVisible = (textContent && textContent.includes('Signing in')) || isDisabledDuringSubmit;
 
-    // Should be disabled during submission OR have aria-busy
-    const hasBusyAttr = await actionBtn.getAttribute('aria-busy').catch(() => null);
-
-    if (isDisabledDuringSubmit || hasBusyAttr === 'true') {
-      console.log('✓ Loading state working');
-    }
+    expect(isLoaderVisible).toBe(true);
+    console.log('✓ Loading state working');
   });
 
   test('no console errors on page load', async ({ page }) => {

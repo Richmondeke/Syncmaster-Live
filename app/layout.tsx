@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import { ToastProvider } from "@/components/Toast";
+import { FirebaseProvider } from "@/components/providers/FirebaseProvider";
 import "./globals.css";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-dm-sans",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -21,9 +22,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`h-full antialiased ${dmSans.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`h-full antialiased ${dmSans.variable}`}>
       <body className="min-h-full flex flex-col font-sans">
-        <ToastProvider>{children}</ToastProvider>
+        <ToastProvider>
+          <FirebaseProvider>{children}</FirebaseProvider>
+        </ToastProvider>
       </body>
     </html>
   );

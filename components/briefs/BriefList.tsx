@@ -20,7 +20,7 @@ const STATUS_LABELS: Record<BriefStatus, string> = {
 
 const STATUS_CLASSES: Record<BriefStatus, string> = {
   draft: 'border border-border bg-muted text-muted-foreground',
-  active: 'bg-primary text-primary-foreground',
+  active: 'bg-acid-lime text-black border border-acid-lime/20',
   matched: 'border border-border bg-accent text-accent-foreground',
   closed: 'border border-border bg-card text-muted-foreground',
 }
@@ -58,14 +58,15 @@ export function BriefList({ briefs, showProducer = false, emptyMessage }: Props)
   return (
     <div className="flex flex-col gap-3">
       {briefs.map((brief) => (
-        <div
+        <Link
           key={brief.id}
-          className="flex flex-col gap-3 rounded-xl bg-black ring-1 ring-[#0099ff]/15 p-6 shadow-glow-blue transition-colors hover:ring-[#0099ff]/30 hover:bg-[#090909] sm:flex-row sm:items-start sm:justify-between"
+          href={`/dashboard/briefs/${brief.id}`}
+          className="group flex flex-col gap-3 rounded-md bg-card border border-border p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md sm:flex-row sm:items-start sm:justify-between"
         >
           <div className="flex flex-col gap-1.5 min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span
-                className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_CLASSES[brief.status]}`}
+                className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold uppercase tracking-wider ${STATUS_CLASSES[brief.status]}`}
               >
                 {STATUS_LABELS[brief.status]}
               </span>
@@ -76,7 +77,9 @@ export function BriefList({ briefs, showProducer = false, emptyMessage }: Props)
               )}
             </div>
 
-            <p className="font-semibold text-sm leading-tight">{brief.title}</p>
+            <p className="font-semibold text-sm leading-tight group-hover:text-primary transition-colors">
+              {brief.title}
+            </p>
 
             {showProducer && brief.producers && (
               <p className="label">
@@ -112,15 +115,14 @@ export function BriefList({ briefs, showProducer = false, emptyMessage }: Props)
             )}
           </div>
 
-          <div className="shrink-0">
-            <Link
-              href={`/dashboard/briefs/${brief.id}`}
-              className={buttonVariants({ variant: 'outline', size: 'sm' })}
+          <div className="shrink-0 sm:pt-1">
+            <span
+              className={buttonVariants({ variant: 'outline', size: 'sm' }) + ' pointer-events-none'}
             >
               View
-            </Link>
+            </span>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   )

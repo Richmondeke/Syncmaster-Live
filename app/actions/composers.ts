@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { getAdminClient } from '@/lib/supabase/admin'
+import { getSessionUser } from '@/lib/supabase/session'
 import { revalidatePath } from 'next/cache'
 import { sendEmail } from '@/services/email'
 import { composerApprovedEmail } from '@/emails/composer-approved'
@@ -16,9 +17,8 @@ export type VetComposerResult =
 export async function vetComposer(formData: FormData): Promise<VetComposerResult> {
   const supabase = await createClient()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getSessionUser()
+  console.log('[vetComposer] Authenticated user:', user?.id, user?.email)
   if (!user) return { ok: false, error: 'Unauthorized' }
 
   const { data: profile } = await supabase
@@ -26,12 +26,15 @@ export async function vetComposer(formData: FormData): Promise<VetComposerResult
     .select('role')
     .eq('id', user.id)
     .single()
+  console.log('[vetComposer] User role profile:', profile)
 
   if (profile?.role !== 'admin') return { ok: false, error: 'Forbidden' }
 
   const profileId = formData.get('profileId') as string
   const status = formData.get('status') as ComposerStatus
   const rejectionNote = (formData.get('rejectionNote') as string | null)?.trim() || null
+
+  console.log('[vetComposer] Inputs:', { profileId, status, rejectionNote })
 
   if (!profileId || !['active', 'rejected'].includes(status)) {
     return { ok: false, error: 'Invalid input' }
@@ -42,7 +45,11 @@ export async function vetComposer(formData: FormData): Promise<VetComposerResult
     .update({ status })
     .eq('profile_id', profileId)
 
-  if (error) return { ok: false, error: error.message }
+  if (error) {
+    console.error('[vetComposer] DB Update error:', error)
+    return { ok: false, error: error.message }
+  }
+  console.log('[vetComposer] DB Update successful')
 
   // Send email
   let emailSent = true

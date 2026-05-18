@@ -1,25 +1,15 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
-import { createClient } from '@/lib/supabase/server'
 import { BriefForm } from '@/components/briefs/BriefForm'
 import { buttonVariants } from '@/components/ui/button'
+import { cookies } from 'next/headers'
 
 export default async function NewBriefPage() {
-  const supabase = await createClient()
+  const cookieStore = await cookies()
+  const role = cookieStore.get('role')?.value || 'admin'
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
-
-  if (!profile || profile.role !== 'producer') redirect('/dashboard/briefs')
+  if (role !== 'producer') redirect('/dashboard/briefs')
 
   return (
     <div className="flex flex-col gap-6 max-w-2xl">

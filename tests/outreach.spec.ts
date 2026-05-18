@@ -67,7 +67,7 @@ test.describe('Outreach — composer responds', () => {
   test.beforeEach(async () => {
     // Reset the test composer's outreach to 'invited' before each respond test
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/outreach?composer_id=eq.a2308014-7225-474f-a2e1-04a02111e348&brief_id=eq.6bfe3fa6-7c8b-452a-9903-d94c6f71b7dc`,
+      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/outreach?composer_id=eq.comp-demo&brief_id=eq.6bfe3fa6-7c8b-452a-9903-d94c6f71b7dc`,
       {
         method: 'PATCH',
         headers: {

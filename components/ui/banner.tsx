@@ -7,8 +7,8 @@ interface BannerProps {
 
 export default function Banner({ children, className = "" }: BannerProps) {
   return (
-    <div className={`bg-white/5 backdrop-blur-md border border-white/10 border-l-[#daf624] border-l-2 p-4 rounded-xl flex items-center justify-between gap-4 shadow-xl ${className}`}>
-      <div className="flex-1 text-white font-medium">
+    <div className={`bg-muted/30 border border-border border-l-primary border-l-2 p-4 rounded-xl flex items-center justify-between gap-4 shadow-sm ${className}`}>
+      <div className="flex-1 text-foreground font-medium">
         {children}
       </div>
     </div>

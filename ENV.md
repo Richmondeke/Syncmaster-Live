@@ -11,6 +11,16 @@
 | `RESEND_API_KEY` | Transactional email | Secret |
 | `RESEND_FROM_EMAIL` | Sender email address | Server |
 | `NEXT_PUBLIC_APP_URL` | Application base URL | Public |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | Firebase Web API Key | Public |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | Firebase Auth Domain | Public |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | Firebase Project ID | Public |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | Firebase Storage Bucket | Public |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase FCM Sender ID | Public |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | Firebase App ID | Public |
+| `NEXT_PUBLIC_FIREBASE_VAPID_KEY` | FCM VAPID Key for notifications | Public |
+| `FIREBASE_PROJECT_ID` | Firebase Admin Project ID | Secret |
+| `FIREBASE_CLIENT_EMAIL` | Firebase Admin Client Email | Secret |
+| `FIREBASE_PRIVATE_KEY` | Firebase Admin Private Key | Secret |
 
 ## Optional / Legacy
 

@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Sidebar } from '@/components/dashboard/Sidebar'
 import { Header } from '@/components/dashboard/Header'
 import type { Database, Role } from '@/types/database.types'
+import { cookies } from 'next/headers'
 
 type ProfileRow = Pick<
   Database['public']['Tables']['profiles']['Row'],
@@ -14,16 +15,25 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const user = { id: 'dummy-id', email: 'admin@example.com' }
+  const cookieStore = await cookies()
+  const sessionEmail = cookieStore.get('session_email')?.value
+  const roleOverride = (cookieStore.get('role')?.value || 'admin') as Role
+  const fullNameOverride = cookieStore.get('full_name')?.value || 'Godliverse'
+
+  if (!sessionEmail && process.env.NODE_ENV === 'production') {
+    redirect('/login')
+  }
+
+  const user = { id: 'dummy-id', email: sessionEmail || 'admin@test.com' }
   const profile: ProfileRow = {
-    role: 'admin',
-    full_name: 'Test Admin',
+    role: roleOverride,
+    full_name: fullNameOverride,
     avatar_url: null,
   }
 
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar role={profile.role as Role} />
+      <Sidebar role={profile.role as Role} fullName={profile.full_name ?? undefined} />
 
       <div className="flex min-w-0 flex-1 flex-col lg:pl-64">
         <Header

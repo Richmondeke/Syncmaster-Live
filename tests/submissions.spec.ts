@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { loginAs } from './helpers/auth'
 
-const COMPOSER_ID = 'a2308014-7225-474f-a2e1-04a02111e348'
+const COMPOSER_ID = 'comp-demo'
 const BRIEF_ID = '6bfe3fa6-7c8b-452a-9903-d94c6f71b7dc'
 
 async function resetOutreach(status: 'invited' | 'accepted') {

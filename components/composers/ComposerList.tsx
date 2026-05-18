@@ -33,6 +33,7 @@ export function ComposerList({ composers }: { composers: ComposerWithProfile[] }
   const { addToast } = useToast()
   const [rejectTarget, setRejectTarget] = useState<ComposerWithProfile | null>(null)
   const [rejectionNote, setRejectionNote] = useState('')
+  const [approvingId, setApprovingId] = useState<string | null>(null)
 
   const [approveState, approveAction, approveIsPending] = useActionState<
     Awaited<ReturnType<typeof vetComposer>>,
@@ -51,27 +52,26 @@ export function ComposerList({ composers }: { composers: ComposerWithProfile[] }
   )
 
   useEffect(() => {
+    if (!approveIsPending) setApprovingId(null)
     if (approveState.ok) {
+      addToast('Composer approved!', 'success')
       if (approveState.emailFailed) {
-        addToast(approveState.error, 'error')
-      } else {
-        addToast('Composer approved!', 'success')
+        addToast('Note: notification email failed to send.', 'error')
       }
-    } else if ('error' in approveState) {
+    } else if (approveState.error) {
       addToast(approveState.error, 'error')
     }
-  }, [approveState, addToast])
+  }, [approveState, approveIsPending, addToast])
 
   useEffect(() => {
     if (rejectState.ok) {
+      addToast('Composer rejected', 'info')
       if (rejectState.emailFailed) {
-        addToast(rejectState.error, 'error')
-      } else {
-        addToast('Composer rejected', 'info')
+        addToast('Note: notification email failed to send.', 'error')
       }
       setRejectTarget(null)
       setRejectionNote('')
-    } else if ('error' in rejectState) {
+    } else if (rejectState.error) {
       addToast(rejectState.error, 'error')
     }
   }, [rejectState, addToast])
@@ -86,10 +86,10 @@ export function ComposerList({ composers }: { composers: ComposerWithProfile[] }
 
   return (
     <>
-      <div className="rounded-xl ring-1 ring-[#0099ff]/15 overflow-hidden shadow-glow-blue">
+      <div className="rounded-xl ring-1 ring-border overflow-hidden shadow-sm">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/5 bg-[#090909]">
+            <tr className="border-b border-border bg-muted/30">
               <th className="px-4 py-3 text-left font-medium text-muted-foreground">Name</th>
               <th className="px-4 py-3 text-left font-medium text-muted-foreground">Genres</th>
               <th className="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
@@ -99,32 +99,40 @@ export function ComposerList({ composers }: { composers: ComposerWithProfile[] }
           </thead>
           <tbody>
             {composers.map((composer) => {
-              const badge = STATUS_BADGE[composer.status]
-              const name = composer.profiles.full_name ?? '—'
-              const applied = new Date(composer.created_at).toLocaleDateString('en-GB', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
-              })
+              const status = composer.status as ComposerStatus
+              const badge = (status && STATUS_BADGE[status]) || { 
+                label: status || 'Unknown', 
+                variant: 'outline' as const 
+              }
+
+              const name = composer.profiles?.full_name ?? '—'
+              const applied = composer.created_at 
+                ? new Date(composer.created_at).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })
+                : '—'
 
               return (
-                <tr key={composer.id} className="border-b border-white/5 bg-black last:border-0 hover:bg-[#090909] transition-colors">
+                <tr key={composer.id} className="border-b border-border bg-card last:border-0 hover:bg-muted/20 transition-colors">
                   <td className="px-4 py-3 font-medium">{name}</td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {composer.genres?.join(', ') || '—'}
                   </td>
                   <td className="px-4 py-3">
-                    <Badge variant={badge.variant}>{badge.label}</Badge>
+                    <Badge variant={badge?.variant ?? 'outline'}>{badge?.label ?? 'Unknown'}</Badge>
+
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">{applied}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">
                       {composer.status !== 'active' && (
-                        <form action={approveAction}>
+                        <form action={approveAction} onSubmit={() => setApprovingId(composer.profile_id)}>
                           <input type="hidden" name="profileId" value={composer.profile_id} />
                           <input type="hidden" name="status" value="active" />
                           <Button type="submit" size="sm" variant="default" disabled={approveIsPending}>
-                            {approveIsPending ? (
+                            {approveIsPending && approvingId === composer.profile_id ? (
                               <>
                                 <span className="inline-block w-4 h-4 border-2 border-transparent border-t-current rounded-full animate-spin mr-2" />
                                 Approving…

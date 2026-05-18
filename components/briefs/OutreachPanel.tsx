@@ -1,4 +1,4 @@
-import { Mail } from 'lucide-react'
+import { Mail, CheckCircle, XCircle } from 'lucide-react'
 import { inviteComposer } from '@/app/actions/outreach'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -15,11 +15,23 @@ export type ComposerForOutreach = ComposerRow & { profiles: ProfileRow }
 
 const OUTREACH_BADGE: Record<
   OutreachStatus,
-  { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }
+  { label: string; icon: any; className: string }
 > = {
-  invited: { label: 'Invited', variant: 'secondary' },
-  accepted: { label: 'Accepted', variant: 'default' },
-  declined: { label: 'Declined', variant: 'destructive' },
+  invited: { 
+    label: 'INVITED', 
+    icon: Mail, 
+    className: 'bg-surface-secondary text-primary border-primary/20' 
+  },
+  accepted: { 
+    label: 'ACCEPTED', 
+    icon: CheckCircle, 
+    className: 'bg-acid-lime text-black border-acid-lime' 
+  },
+  declined: { 
+    label: 'DECLINED', 
+    icon: XCircle, 
+    className: 'bg-muted/50 text-muted-foreground border-border/30' 
+  },
 }
 
 export function OutreachPanel({
@@ -35,55 +47,75 @@ export function OutreachPanel({
 
   if (composers.length === 0) {
     return (
-      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-        <p className="text-sm font-semibold mb-4">Outreach</p>
-        <div className="rounded-lg border border-dashed p-8 text-center">
-          <Mail className="mx-auto h-8 w-8 text-muted-foreground mb-3" />
-          <p className="text-sm font-medium">No active composers</p>
-          <p className="text-xs text-muted-foreground mt-1">
-            Approve composer applications to start inviting.
-          </p>
+      <div className="rounded-[0.375rem] border bg-surface-secondary/50 backdrop-blur-md p-8 flex flex-col gap-6 shadow-elevation-low">
+        <div className="flex items-center gap-2">
+          <Mail className="h-5 w-5 text-muted-foreground" />
+          <h2 className="text-2xl display uppercase tracking-tight">Outreach</h2>
+        </div>
+        <div className="rounded-[0.375rem] border border-dashed p-12 text-center bg-muted/10">
+          <p className="text-sm font-black tracking-widest uppercase text-muted-foreground opacity-50">No active composers found</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 flex flex-col gap-4">
-      <div>
-        <p className="text-sm font-semibold">Outreach</p>
-        <p className="text-xs text-muted-foreground mt-0.5">
-          Invite active composers to submit tracks for this brief.
-        </p>
+    <div className="rounded-[0.375rem] border bg-surface-secondary/50 backdrop-blur-md p-8 flex flex-col gap-6 shadow-elevation-low transition-all">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <Mail className="h-5 w-5 text-primary" />
+          <h2 className="text-2xl display tracking-tight uppercase">Manual Outreach</h2>
+        </div>
+        <span className="label-strong text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full border border-primary/20 tracking-widest">DIRECTORY</span>
       </div>
 
-      <div className="rounded-lg border divide-y">
-        {composers.map((composer) => {
+      <div className="flex flex-col gap-3">
+        {composers.map((composer, index) => {
           const outreach = outreachByComposer.get(composer.id)
-          const badge = outreach ? OUTREACH_BADGE[outreach.status] : null
+          const badgeConfig = outreach ? OUTREACH_BADGE[outreach.status] : null
           const name = composer.profiles.full_name ?? '—'
+          const Icon = badgeConfig?.icon
 
           return (
             <div
               key={composer.id}
-              className="flex items-center justify-between gap-4 px-4 py-3"
+              className="flex items-center justify-between gap-6 px-6 py-5 rounded-[0.375rem] border bg-surface-primary/40 hover:bg-surface-primary/60 transition-all group shadow-elevation-low border-l-2 border-l-transparent hover:border-l-primary"
             >
-              <div className="min-w-0">
-                <p className="text-sm font-medium truncate">{name}</p>
-                {composer.genres && composer.genres.length > 0 && (
-                  <p className="text-xs text-muted-foreground truncate">
-                    {composer.genres.join(', ')}
+              <div className="min-w-0 flex items-center gap-4">
+                <span className="text-[10px] font-mono text-primary/40">{(index + 1).toString().padStart(2, '0')}</span>
+                <div className="flex flex-col gap-0.5">
+                  <p className="text-lg font-black tracking-tighter uppercase group-hover:text-primary transition-colors truncate">
+                    {name}
                   </p>
-                )}
+                  {composer.genres && composer.genres.length > 0 && (
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] truncate">
+                      {composer.genres.join(' / ')}
+                    </p>
+                  )}
+                </div>
               </div>
-              <div className="flex items-center gap-2 shrink-0">
-                {badge && <Badge variant={badge.variant}>{badge.label}</Badge>}
+
+              <div className="flex items-center gap-3 shrink-0">
+                {badgeConfig && (
+                  <Badge 
+                    variant="outline"
+                    className={`rounded-none font-black px-4 py-1 text-[10px] uppercase tracking-widest border-2 ${badgeConfig.className}`}
+                  >
+                    {Icon && <Icon className="h-3 w-3 mr-2 shrink-0" />}
+                    {badgeConfig.label}
+                  </Badge>
+                )}
+
                 {!outreach && (
                   <form action={inviteComposer}>
                     <input type="hidden" name="briefId" value={briefId} />
                     <input type="hidden" name="composerId" value={composer.id} />
-                    <Button type="submit" size="sm" variant="outline">
-                      <Mail className="h-3.5 w-3.5 mr-1.5" />
+                    <Button 
+                      type="submit" 
+                      size="sm" 
+                      className="rounded-full font-black px-6 shadow-elevation-low transition-all active:scale-95 uppercase tracking-widest text-[10px] h-9"
+                    >
+                      <Mail className="h-3 w-3 mr-2" />
                       Invite
                     </Button>
                   </form>
@@ -93,6 +125,10 @@ export function OutreachPanel({
           )
         })}
       </div>
+      
+      <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.2em] text-center mt-2">
+        SyncMaster Messenger v1.2
+      </p>
     </div>
   )
 }

@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { getAdminClient } from '@/lib/supabase/admin'
+import { getSessionUser } from '@/lib/supabase/session'
 import { revalidatePath } from 'next/cache'
 import { sendEmail } from '@/services/email'
 import { outreachInviteEmail } from '@/emails/outreach-invite'
@@ -11,9 +12,7 @@ import type { OutreachStatus } from '@/types/database.types'
 export async function inviteComposer(formData: FormData): Promise<void> {
   const supabase = await createClient()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getSessionUser()
   if (!user) throw new Error('Unauthorized')
 
   const { data: profile } = await supabase
@@ -91,9 +90,7 @@ export async function respondToOutreach(
 ): Promise<OutreachResponseState> {
   const supabase = await createClient()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getSessionUser()
   if (!user) return { error: 'Unauthorized' }
 
   const { data: composer } = await supabase

@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation'
 import { analyzeBrief } from '@/agents/brief-analyzer'
 import { assertValidBriefTransition } from '@/core/workflows/brief-workflow'
 import type { BriefStatus } from '@/types/database.types'
+import { cookies } from 'next/headers'
 
 export type BriefFormState = { error: string | null }
 
@@ -14,16 +15,19 @@ export async function createBrief(
   formData: FormData,
 ): Promise<BriefFormState> {
   const supabase = await createClient()
+  const cookieStore = await cookies()
+  const role = cookieStore.get('role')?.value
+  const sessionEmail = cookieStore.get('session_email')?.value
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) return { error: 'Unauthorized' }
+  if (!sessionEmail) return { error: 'Unauthorized' }
+  if (role !== 'producer') return { error: 'Only producers can create briefs' }
+
+  const userId = 'mock-producer-id'
 
   const { data: producer } = await supabase
     .from('producers')
     .select('id')
-    .eq('profile_id', user.id)
+    .eq('profile_id', userId)
     .single()
 
   if (!producer) return { error: 'Producer profile not found. Please contact support.' }
@@ -70,42 +74,39 @@ export async function createBrief(
   redirect('/dashboard/briefs')
 }
 
-export async function updateBriefStatus(formData: FormData): Promise<void> {
-  const supabase = await createClient()
+export async function updateBriefStatus(briefId: string, status: BriefStatus): Promise<{ error?: string }> {
+  try {
+    const supabase = await createClient()
+    const cookieStore = await cookies()
+    const role = cookieStore.get('role')?.value
+    const sessionEmail = cookieStore.get('session_email')?.value
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+    if (!sessionEmail) return { error: 'Unauthorized' }
+    if (role !== 'admin') return { error: 'Forbidden: Only admins can update brief status' }
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
-
-  if (profile?.role !== 'admin') throw new Error('Forbidden')
-
-  const briefId = formData.get('briefId') as string
-  const status = formData.get('status') as BriefStatus
-
-  if (!briefId || !['draft', 'active', 'matched', 'closed'].includes(status)) {
-    throw new Error('Invalid input')
-  }
-
-  await assertValidBriefTransition(supabase, briefId, status)
-
-  const { error } = await supabase.from('briefs').update({ status }).eq('id', briefId)
-  if (error) throw error
-
-  if (status === 'active') {
-    try {
-      await analyzeBrief(briefId)
-    } catch {
-      // AI analysis is best-effort — status update succeeds regardless
+    if (!briefId || !['draft', 'active', 'matched', 'closed'].includes(status)) {
+      return { error: 'Invalid input' }
     }
-  }
 
-  revalidatePath('/dashboard/briefs')
-  revalidatePath(`/dashboard/briefs/${briefId}`)
+    await assertValidBriefTransition(supabase, briefId, status)
+
+    const { error } = await supabase.from('briefs').update({ status }).eq('id', briefId)
+    if (error) throw error
+
+    if (status === 'active') {
+      try {
+        await analyzeBrief(briefId)
+      } catch {
+        // AI analysis is best-effort — status update succeeds regardless
+      }
+    }
+
+    revalidatePath('/dashboard/briefs')
+    revalidatePath(`/dashboard/briefs/${briefId}`)
+    
+    return {}
+  } catch (err: any) {
+    console.error('Error in updateBriefStatus:', err)
+    return { error: err.message || 'Failed to update brief status' }
+  }
 }

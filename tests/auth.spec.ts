@@ -21,5 +21,5 @@ test('invalid credentials show error', async ({ page }) => {
   await page.getByLabel(/email/i).fill('nobody@example.com')
   await page.getByLabel(/password/i).fill('wrongpassword')
   await page.getByRole('button', { name: /sign in|log in/i }).click()
-  await expect(page.getByRole('alert')).toBeVisible()
+  await expect(page.locator('p[role="alert"]')).toBeVisible()
 })
