@@ -31,7 +31,7 @@ export default function LoginPage() {
         <CardHeader className="text-center space-y-3 pt-10">
           <div className="mx-auto relative w-48 h-12 mb-4">
             <Image 
-              src="/Syncdark.png" 
+              src="/syncmasterwhite.png" 
               alt="SyncMaster Logo" 
               fill
               className="object-contain"
