@@ -22,23 +22,23 @@ export default function LoginPage() {
   const [state, formAction, pending] = useActionState(signIn, initialState)
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black px-4 font-sans selection:bg-primary/30">
+    <div className="min-h-screen flex items-center justify-center bg-white px-4 font-sans selection:bg-primary/30">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,153,255,0.05),transparent_50%)] pointer-events-none" />
       
-      <Card className="w-full max-w-sm bg-black/40 backdrop-blur-xl border-white/10 rounded-[2.5rem] shadow-2xl relative z-10 overflow-hidden">
+      <Card className="w-full max-w-sm bg-white/80 backdrop-blur-xl border-black/10 rounded-[2.5rem] shadow-2xl relative z-10 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
         
         <CardHeader className="text-center space-y-3 pt-10">
           <div className="mx-auto relative w-48 h-12 mb-4">
             <Image 
-              src="/syncmasterwhite.png" 
+              src="/Syncdark.png" 
               alt="SyncMaster Logo" 
               fill
               className="object-contain"
               priority
             />
           </div>
-          <CardDescription className="text-white/50 font-medium">Welcome back to the sync hub</CardDescription>
+          <CardDescription className="text-black/50 font-medium">Welcome back to the sync hub</CardDescription>
         </CardHeader>
 
         <form action={formAction}>
@@ -50,7 +50,7 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-2.5">
-              <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-white/40 ml-1">Email address</Label>
+              <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-black/50 ml-1">Email address</Label>
               <Input
                 id="email"
                 name="email"
@@ -58,14 +58,14 @@ export default function LoginPage() {
                 placeholder="you@example.com"
                 autoComplete="email"
                 required
-                className="bg-white/5 border-white/10 rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-white/20"
+                className="bg-black/5 border-black/10 text-black rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-black/30"
               />
             </div>
 
             <div className="space-y-2.5">
               <div className="flex items-center justify-between ml-1">
-                <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-widest text-white/40">Password</Label>
-                <Link href="#" className="text-xs font-medium text-primary/60 hover:text-primary transition-colors">Forgot?</Link>
+                <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-widest text-black/50">Password</Label>
+                <Link href="#" className="text-xs font-medium text-primary/80 hover:text-primary transition-colors">Forgot?</Link>
               </div>
               <Input
                 id="password"
@@ -73,7 +73,7 @@ export default function LoginPage() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="bg-white/5 border-white/10 rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-white/20"
+                className="bg-black/5 border-black/10 text-black rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-black/30"
               />
             </div>
           </CardContent>
@@ -81,22 +81,22 @@ export default function LoginPage() {
           <CardFooter className="flex flex-col gap-6 pt-6 pb-10 px-8">
             <Button 
               type="submit" 
-              className="w-full h-12 rounded-full bg-primary hover:bg-primary/90 text-black font-bold text-base transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100" 
+              className="w-full h-12 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-base transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100" 
               disabled={pending}
             >
               {pending ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   <span>Signing in…</span>
                 </div>
               ) : 'Sign in'}
             </Button>
 
-            <p className="text-center text-sm text-white/40">
+            <p className="text-center text-sm text-black/50">
               New here?{' '}
               <Link
                 href="/signup"
-                className="text-white font-semibold hover:text-primary transition-colors underline-offset-4 hover:underline"
+                className="text-black font-semibold hover:text-primary transition-colors underline-offset-4 hover:underline"
               >
                 Create an account
               </Link>
