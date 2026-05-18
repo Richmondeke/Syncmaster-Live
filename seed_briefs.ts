@@ -3,20 +3,13 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const accessToken = "eyJhbGciOiJFUzI1NiIsImtpZCI6IjY4MDUxN2QwLTJkN2UtNDQ0Yi04MGQ3LWZmMGUxMWJlMDk3YSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2ZmdGZuaWtidWxmYXlycmprdHVvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJmNGJmY2MwYy01ZDE0LTRlZTctYWYwYi02Njg5MGZmNjUyNTYiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzc5MTQ4MTkxLCJpYXQiOjE3NzkxNDQ1OTEsImVtYWlsIjoic29waGlhMkBzeW5jbWFzdGVyLmlvIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6InNvcGhpYTJAc3luY21hc3Rlci5pbyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJTb3BoaWEiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInJvbGUiOiJwcm9kdWNlciIsInN1YiI6ImY0YmZjYzBjLTVkMTQtNGVlNy1hZjBiLTY2ODkwZmY2NTI1NiJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNzc5MTQ0NTkxfV0sInNlc3Npb25faWQiOiJjOTY0M2UxNC1hOWY4LTQ1ZTEtODQ5NC0yNTFhNmJmNTNjYzEiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.A05VNsIuovpc7YMtVWmmP3KanrPO4jD2nDtFsA5DGOq47dJPhRmpuO-mooiVYlgX6A5-bC7e5h0b7dotbRDhPg";
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Create client with the access token injected so it bypasses RLS
-const supabase = createClient(supabaseUrl, supabaseKey, {
-  global: {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  },
-});
+// Create client with the service_role key to bypass RLS
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 async function main() {
-  const producer_id = "f4bfcc0c-5d14-4ee7-af0b-66890ff65256";
+  const producer_id = "f44d1e7d-07e8-43e1-944b-6dcd6b41a2e9";
   const now = new Date();
   
   const briefs = [
