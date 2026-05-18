@@ -3,6 +3,9 @@ import { createClient } from '@/lib/supabase/server'
 import { getSessionUser } from '@/lib/supabase/session'
 import { ComposerList, type ComposerWithProfile } from '@/components/composers/ComposerList'
 
+export const dynamic = 'force-dynamic'
+
+
 export default async function ComposersPage() {
   const supabase = await createClient()
 

@@ -78,7 +78,7 @@ export function OutreachPanel({
 
           return (
             <div
-              key={composer.id}
+              key={`${composer.id}-${index}`}
               className="flex items-center justify-between gap-6 px-6 py-5 rounded-[0.375rem] border bg-surface-primary/40 hover:bg-surface-primary/60 transition-all group shadow-elevation-low border-l-2 border-l-transparent hover:border-l-primary"
             >
               <div className="min-w-0 flex items-center gap-4">

@@ -25,7 +25,11 @@ export async function getSessionUser(): Promise<MockUser | null> {
   let role = cookieStore.get('role')?.value || 'admin'
   let id = 'mock-admin-id'
 
-  if (sessionEmail.includes('composer')) {
+  // Specific known admin emails take priority
+  if (sessionEmail === 'richmond@guava.earth') {
+    id = 'richmond-admin-id'
+    role = 'admin'
+  } else if (sessionEmail.includes('composer')) {
     id = 'a2308014-7225-474f-a2e1-04a02111e348'
     role = 'composer'
   } else if (sessionEmail.includes('producer')) {

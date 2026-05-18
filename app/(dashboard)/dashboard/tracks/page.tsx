@@ -26,7 +26,9 @@ import {
   ListPlus,
   ArrowRight,
   GripVertical,
-  Download
+  Download,
+  Upload,
+  Loader2
 } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { cn } from '@/lib/utils'
@@ -45,48 +47,26 @@ import { TrackMetadataModal } from '@/components/tracks/TrackMetadataModal'
 import { PlaylistSaveModal } from '@/components/tracks/PlaylistSaveModal'
 import { SharePlaylistModal } from '@/components/tracks/SharePlaylistModal'
 
-const initialTracks = [
-  {
-    id: 'tr_1',
-    title: 'Midnight Horizon',
-    genre: 'Ambient / Cinematic',
-    duration: '3:45',
-    bpm: '72',
-    key: 'Am',
-    plays: '1.2k',
-    versions: [
-      { id: 'tr_1_main', title: 'Main Mix', type: 'Full' },
-      { id: 'tr_1_inst', title: 'Instrumental', type: 'Instrumental' },
-      { id: 'tr_1_stem_1', title: 'Drum Stem', type: 'Stem' }
-    ]
-  },
-  {
-    id: 'tr_2',
-    title: 'Neon Pulse',
-    genre: 'Cyberpunk / Electronic',
-    duration: '2:30',
-    bpm: '124',
-    key: 'Fm',
-    plays: '850',
-    versions: [
-      { id: 'tr_2_main', title: 'Main Mix', type: 'Full' },
-      { id: 'tr_2_inst', title: 'Instrumental', type: 'Instrumental' }
-    ]
-  },
-  {
-    id: 'tr_3',
-    title: 'Ethereal Echoes',
-    genre: 'Atmospheric / Vocal',
-    duration: '4:12',
-    bpm: '65',
-    key: 'C#m',
-    plays: '2.4k',
-    versions: []
-  }
-]
+const API_BASE = '/api/supabase'
+const HEADERS = { 'Content-Type': 'application/json', 'Accept': 'application/json', 'apikey': 'mock-key' }
+
+async function apiGet(path: string) {
+  const res = await fetch(`${API_BASE}/${path}`, { headers: HEADERS })
+  return res.ok ? res.json() : []
+}
+async function apiPost(path: string, body: any) {
+  const res = await fetch(`${API_BASE}/${path}`, { method: 'POST', headers: HEADERS, body: JSON.stringify(body) })
+  return res.ok ? res.json() : null
+}
+async function apiPatch(path: string, body: any) {
+  await fetch(`${API_BASE}/${path}`, { method: 'PATCH', headers: HEADERS, body: JSON.stringify(body) })
+}
+async function apiDelete(path: string) {
+  await fetch(`${API_BASE}/${path}`, { method: 'DELETE', headers: HEADERS })
+}
 
 export default function TracksPage() {
-  const [tracks, setTracks] = useState(initialTracks)
+  const [tracks, setTracks] = useState<any[]>([])
   const [selectedTracks, setSelectedTracks] = useState<string[]>([])
   const [isPlaylistPanelOpen, setIsPlaylistPanelOpen] = useState(false)
   const [activeModal, setActiveModal] = useState<string | null>(null)
@@ -96,27 +76,24 @@ export default function TracksPage() {
   const [toasts, setToasts] = useState<Toast[]>([])
   const [playingTrackId, setPlayingTrackId] = useState<string | null>(null)
 
-  // Persistence logic
+  // Playlist direct-add state variables
+  const [playlistAddMode, setPlaylistAddMode] = useState<'none' | 'catalog' | 'upload'>('none')
+  const [playlistCatalogSearch, setPlaylistCatalogSearch] = useState('')
+  const [playlistCatalogDropdownOpen, setPlaylistCatalogDropdownOpen] = useState(false)
+  const [playlistUploadProgress, setPlaylistUploadProgress] = useState(0)
+  const [isPlaylistUploading, setIsPlaylistUploading] = useState(false)
+
+  // Load from API on mount
   useEffect(() => {
-    const savedTracks = localStorage.getItem('syncmaster_tracks')
+    apiGet('rest/v1/tracks').then(data => { if (Array.isArray(data)) setTracks(data) })
     const savedPlaylist = localStorage.getItem('syncmaster_playlist')
     const savedPlaylistName = localStorage.getItem('syncmaster_playlist_name')
-    if (savedTracks) setTracks(JSON.parse(savedTracks))
     if (savedPlaylist) setPlaylistTracks(JSON.parse(savedPlaylist))
     if (savedPlaylistName) setPlaylistName(savedPlaylistName)
   }, [])
 
-  useEffect(() => {
-    localStorage.setItem('syncmaster_tracks', JSON.stringify(tracks))
-  }, [tracks])
-
-  useEffect(() => {
-    localStorage.setItem('syncmaster_playlist', JSON.stringify(playlistTracks))
-  }, [playlistTracks])
-
-  useEffect(() => {
-    localStorage.setItem('syncmaster_playlist_name', playlistName)
-  }, [playlistName])
+  useEffect(() => { localStorage.setItem('syncmaster_playlist', JSON.stringify(playlistTracks)) }, [playlistTracks])
+  useEffect(() => { localStorage.setItem('syncmaster_playlist_name', playlistName) }, [playlistName])
 
   const showToast = (message: string, type: ToastType = 'success') => {
     const id = Math.random().toString(36).substr(2, 9)
@@ -144,8 +121,9 @@ export default function TracksPage() {
     setPlaylistTracks(prev => prev.filter(t => t.id !== id))
   }
 
-  const handleDeleteTrack = (id: string) => {
+  const handleDeleteTrack = async (id: string) => {
     const track = tracks.find(t => t.id === id)
+    await apiDelete(`rest/v1/tracks?id=eq.${id}`)
     setTracks(prev => prev.filter(t => t.id !== id))
     setSelectedTracks(prev => prev.filter(t => t !== id))
     setPlaylistTracks(prev => prev.filter(t => t.id !== id))
@@ -157,7 +135,8 @@ export default function TracksPage() {
     setActiveModal('metadata')
   }
 
-  const handleBulkDelete = () => {
+  const handleBulkDelete = async () => {
+    await Promise.all(selectedTracks.map(id => apiDelete(`rest/v1/tracks?id=eq.${id}`)))
     setTracks(prev => prev.filter(t => !selectedTracks.includes(t.id)))
     setSelectedTracks([])
   }
@@ -227,9 +206,90 @@ export default function TracksPage() {
     }
   }
 
-  const handleSaveTrack = (updatedTrack: any) => {
-    setTracks(prev => prev.map(t => t.id === updatedTrack.id ? updatedTrack : t))
+  const handleSaveTrack = async (updatedTrack: any) => {
+    const { id, ...rest } = updatedTrack
+    await apiPatch(`rest/v1/tracks?id=eq.${id}`, rest)
+    setTracks(prev => prev.map(t => t.id === id ? updatedTrack : t))
     showToast(`Updated metadata for: ${updatedTrack.title}`)
+  }
+
+  const handleAddTrack = async (newTrack: Omit<typeof tracks[0], 'id' | 'plays' | 'versions'> & Record<string, any>) => {
+    const created = await apiPost('rest/v1/tracks', { ...newTrack, plays: '0', versions: [] })
+    if (created) setTracks(prev => [...prev, created])
+  }
+
+  const handlePlaylistSelectCatalogTrack = (track: any) => {
+    if (playlistTracks.some(t => t.id === track.id)) {
+      showToast('This track is already in the playlist', 'info')
+      return
+    }
+    setPlaylistTracks(prev => [...prev, track])
+    setPlaylistCatalogSearch('')
+    setPlaylistCatalogDropdownOpen(false)
+    showToast(`Added track: ${track.title}`)
+  }
+
+  const handlePlaylistAudioUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const titleWithoutExtension = file.name.substring(0, file.name.lastIndexOf('.')) || file.name
+
+    const audioUrl = URL.createObjectURL(file)
+    const audio = new Audio(audioUrl)
+    
+    let duration = '3:00'
+    audio.addEventListener('loadedmetadata', () => {
+      const totalSeconds = Math.round(audio.duration)
+      const minutes = Math.floor(totalSeconds / 60)
+      const seconds = totalSeconds % 60
+      duration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+    })
+
+    setIsPlaylistUploading(true)
+    setPlaylistUploadProgress(0)
+    
+    let progress = 0
+    const interval = setInterval(async () => {
+      progress += 10
+      if (progress >= 100) {
+        clearInterval(interval)
+        setPlaylistUploadProgress(100)
+        
+        const songIdx = Math.floor(Math.random() * 16) + 1
+        const mockAudioUrl = `https://www.soundhelix.com/examples/mp3/SoundHelix-Song-${songIdx}.mp3`
+        
+        const newTrackData = {
+          title: titleWithoutExtension,
+          genre: 'Uploaded',
+          duration: duration,
+          bpm: '120',
+          key: 'Cmin',
+          audio_url: mockAudioUrl,
+          plays: '0',
+          versions: []
+        }
+        
+        const createdTrack = await apiPost('rest/v1/tracks', newTrackData)
+        
+        if (createdTrack) {
+          setTracks(prev => [createdTrack, ...prev])
+          setPlaylistTracks(prev => [...prev, createdTrack])
+          showToast(`Successfully uploaded "${titleWithoutExtension}" and added to playlist!`)
+        } else {
+          const localTrack = { id: `tr_uploaded_${Date.now()}`, ...newTrackData }
+          setTracks(prev => [localTrack, ...prev])
+          setPlaylistTracks(prev => [...prev, localTrack])
+          showToast(`Uploaded "${titleWithoutExtension}" (saved locally)`)
+        }
+        
+        setIsPlaylistUploading(false)
+        setPlaylistUploadProgress(0)
+        setPlaylistAddMode('none')
+      } else {
+        setPlaylistUploadProgress(progress)
+      }
+    }, 150)
   }
 
   return (
@@ -411,7 +471,7 @@ export default function TracksPage() {
                         View Versions & Stems
                       </AccordionTrigger>
                       <AccordionContent className="bg-white p-0">
-                        {track.versions.map((version) => (
+                        {track.versions.map((version: any) => (
                           <div key={version.id} className="flex items-center gap-4 px-14 py-4 border-t border-border/30 hover:bg-primary/5 transition-all group/version">
                             <div className="w-8 h-8 rounded-md bg-muted/50 flex items-center justify-center text-muted-foreground/40 group-hover/version:bg-primary group-hover/version:text-white transition-all">
                               <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
@@ -467,6 +527,127 @@ export default function TracksPage() {
                 onChange={(e) => setPlaylistName(e.target.value)}
                 className="w-full bg-muted/30 border border-border rounded-md px-4 h-11 text-sm font-bold focus:ring-1 focus:ring-primary outline-none transition-all"
               />
+            </div>
+
+            {/* Direct track add options */}
+            <div className="border border-border/60 bg-muted/20 rounded-md p-3.5 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Add Tracks</span>
+                <div className="flex items-center gap-1">
+                  <button 
+                    type="button"
+                    onClick={() => setPlaylistAddMode(playlistAddMode === 'catalog' ? 'none' : 'catalog')}
+                    className={cn(
+                      "px-2.5 py-1 text-[9px] font-extrabold uppercase rounded-md transition-all border border-border/30",
+                      playlistAddMode === 'catalog' 
+                        ? "bg-primary text-white border-primary" 
+                        : "text-muted-foreground hover:bg-muted"
+                    )}
+                  >
+                    Catalog
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => setPlaylistAddMode(playlistAddMode === 'upload' ? 'none' : 'upload')}
+                    className={cn(
+                      "px-2.5 py-1 text-[9px] font-extrabold uppercase rounded-md transition-all border border-border/30",
+                      playlistAddMode === 'upload' 
+                        ? "bg-primary text-white border-primary" 
+                        : "text-muted-foreground hover:bg-muted"
+                    )}
+                  >
+                    Upload
+                  </button>
+                </div>
+              </div>
+
+              {playlistAddMode === 'catalog' && (
+                <div className="relative group">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40 group-focus-within:text-primary transition-colors" />
+                  <input 
+                    type="text" 
+                    placeholder="Search catalog by title..." 
+                    value={playlistCatalogSearch}
+                    onChange={(e) => {
+                      setPlaylistCatalogSearch(e.target.value)
+                      setPlaylistCatalogDropdownOpen(true)
+                    }}
+                    onFocus={() => setPlaylistCatalogDropdownOpen(true)}
+                    className="w-full bg-background border border-border rounded-md pl-9 pr-8 h-10 text-xs font-bold focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm"
+                  />
+                  {playlistCatalogSearch && (
+                    <button 
+                      type="button"
+                      onClick={() => { setPlaylistCatalogSearch(''); setPlaylistCatalogDropdownOpen(false); }}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+
+                  {/* Dropdown for search results */}
+                  {playlistCatalogDropdownOpen && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-md shadow-2xl z-50 max-h-48 overflow-y-auto animate-in fade-in duration-200">
+                      {tracks
+                        .filter(track => 
+                          !playlistTracks.some(pt => pt.id === track.id) &&
+                          (track.title.toLowerCase().includes(playlistCatalogSearch.toLowerCase()) ||
+                           track.genre.toLowerCase().includes(playlistCatalogSearch.toLowerCase()))
+                        )
+                        .map(track => (
+                          <button
+                            key={track.id}
+                            type="button"
+                            onClick={() => handlePlaylistSelectCatalogTrack(track)}
+                            className="w-full text-left px-3 py-2.5 text-xs font-bold hover:bg-primary/5 border-b border-border/50 last:border-0 flex items-center justify-between transition-colors"
+                          >
+                            <span className="truncate pr-2">{track.title}</span>
+                            <span className="text-[9px] uppercase bg-primary/10 text-primary px-2 py-0.5 rounded-full shrink-0 font-extrabold">{track.genre}</span>
+                          </button>
+                        ))}
+                      {tracks.filter(track => 
+                        !playlistTracks.some(pt => pt.id === track.id) &&
+                        (track.title.toLowerCase().includes(playlistCatalogSearch.toLowerCase()) ||
+                         track.genre.toLowerCase().includes(playlistCatalogSearch.toLowerCase()))
+                      ).length === 0 && (
+                        <div className="p-3.5 text-center text-xs text-muted-foreground">
+                          No matching catalog tracks
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {playlistAddMode === 'upload' && (
+                <div className="space-y-2 animate-in fade-in duration-200">
+                  <div className="relative border-2 border-dashed border-primary/20 hover:border-primary/40 rounded-md p-4 text-center transition-all bg-background hover:bg-primary/[0.01] cursor-pointer">
+                    <input 
+                      type="file" 
+                      accept="audio/*" 
+                      onChange={handlePlaylistAudioUpload}
+                      disabled={isPlaylistUploading}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                    />
+                    <Upload className="w-5 h-5 mx-auto text-primary/40 mb-1.5" />
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase">Upload Song File</p>
+                    <p className="text-[8px] text-muted-foreground/60">MP3, WAV, M4A up to 20MB</p>
+                  </div>
+                  {isPlaylistUploading && (
+                    <div className="space-y-1.5 p-1">
+                      <div className="flex items-center justify-between text-[8px] font-black uppercase text-primary">
+                        <span className="flex items-center gap-1">
+                          <Loader2 className="w-2.5 h-2.5 animate-spin" /> Uploading & Parsing...
+                        </span>
+                        <span>{playlistUploadProgress}%</span>
+                      </div>
+                      <div className="w-full bg-muted rounded-full h-1 overflow-hidden">
+                        <div className="bg-primary h-1 rounded-full transition-all duration-300" style={{ width: `${playlistUploadProgress}%` }}></div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -584,12 +765,13 @@ export default function TracksPage() {
         isOpen={activeModal === 'upload'} 
         onClose={() => setActiveModal(null)} 
       />
-      <TrackMetadataModal 
-        isOpen={activeModal === 'metadata'} 
-        onClose={() => setActiveModal(null)}
-        onSave={handleSaveTrack}
-        track={currentTrack}
-      />
+      {activeModal === 'metadata' && (
+        <TrackMetadataModal 
+          onClose={() => setActiveModal(null)}
+          onSave={handleSaveTrack}
+          track={currentTrack}
+        />
+      )}
       <PlaylistSaveModal 
         isOpen={activeModal === 'playlist-save'} 
         onClose={() => setActiveModal(null)}

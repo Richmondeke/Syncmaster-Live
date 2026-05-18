@@ -46,56 +46,58 @@ export default function PlacementsPage() {
 
       <div className="grid gap-6">
         {mockPlacements.map((plc) => (
-          <Card key={plc.id} className="bg-card border-border rounded-[2rem] overflow-hidden relative group hover:border-primary/40 hover:shadow-lg transition-all">
-            <div className="absolute top-0 right-0 p-8">
-              <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                <Trophy className="w-6 h-6" />
-              </div>
-            </div>
-
-            <CardContent className="p-8">
-              <div className="space-y-6">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-2xl font-black tracking-[-0.04em] text-foreground">{plc.trackName}</h3>
-                    <Badge className="bg-primary/20 text-primary border-primary/30 rounded-full font-bold">WIN</Badge>
-                  </div>
-                  <p className="text-muted-foreground flex items-center gap-1.5">
-                    {plc.company} <span className="text-muted-foreground/40">•</span> {plc.briefTitle}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                  <div className="space-y-1">
-                    <span className="text-[10px] uppercase tracking-widest text-muted-foreground/50 font-bold flex items-center gap-1.5">
-                      <DollarSign className="w-3 h-3" /> License Fee
-                    </span>
-                    <p className="text-lg font-semibold text-primary">{plc.licenseFee}</p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <span className="text-[10px] uppercase tracking-widest text-muted-foreground/50 font-bold flex items-center gap-1.5">
-                      <Layers className="w-3 h-3" /> Usage
-                    </span>
-                    <p className="text-lg font-semibold text-foreground/80">{plc.usage}</p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <span className="text-[10px] uppercase tracking-widest text-muted-foreground/50 font-bold flex items-center gap-1.5">
-                      <Calendar className="w-3 h-3" /> Date
-                    </span>
-                    <p className="text-lg font-semibold text-foreground/80">{plc.placedAt}</p>
-                  </div>
-
-                  <div className="flex items-end justify-end">
-                    <Link href="#" className="flex items-center gap-2 text-sm font-bold text-foreground group-hover:text-primary transition-colors">
-                      View Contract <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                  </div>
+          <Link key={plc.id} href={`/dashboard/placements/${plc.id}`} className="block group">
+            <Card className="bg-card border-border rounded-[2rem] overflow-hidden relative hover:border-primary/40 hover:shadow-lg transition-all cursor-pointer">
+              <div className="absolute top-0 right-0 p-8">
+                <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                  <Trophy className="w-6 h-6" />
                 </div>
               </div>
-            </CardContent>
-          </Card>
+
+              <CardContent className="p-8">
+                <div className="space-y-6">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-2xl font-black tracking-[-0.04em] text-foreground group-hover:text-primary transition-colors">{plc.trackName}</h3>
+                      <Badge className="bg-primary/20 text-primary border-primary/30 rounded-full font-bold">WIN</Badge>
+                    </div>
+                    <p className="text-muted-foreground flex items-center gap-1.5">
+                      {plc.company} <span className="text-muted-foreground/40">•</span> {plc.briefTitle}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div className="space-y-1">
+                      <span className="text-[10px] uppercase tracking-widest text-muted-foreground/50 font-bold flex items-center gap-1.5">
+                        <DollarSign className="w-3 h-3" /> License Fee
+                      </span>
+                      <p className="text-lg font-semibold text-primary">{plc.licenseFee}</p>
+                    </div>
+
+                    <div className="space-y-1">
+                      <span className="text-[10px] uppercase tracking-widest text-muted-foreground/50 font-bold flex items-center gap-1.5">
+                        <Layers className="w-3 h-3" /> Usage
+                      </span>
+                      <p className="text-lg font-semibold text-foreground/80">{plc.usage}</p>
+                    </div>
+
+                    <div className="space-y-1">
+                      <span className="text-[10px] uppercase tracking-widest text-muted-foreground/50 font-bold flex items-center gap-1.5">
+                        <Calendar className="w-3 h-3" /> Date
+                      </span>
+                      <p className="text-lg font-semibold text-foreground/80">{plc.placedAt}</p>
+                    </div>
+
+                    <div className="flex items-end justify-end">
+                      <span className="flex items-center gap-2 text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                        View Details <ArrowUpRight className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
 
         {mockPlacements.length === 0 && (

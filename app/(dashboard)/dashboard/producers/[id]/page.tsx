@@ -4,6 +4,9 @@ import { createClient } from '@/lib/supabase/server'
 import { Building2, ArrowLeft, Mail, Globe, MapPin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
+export const dynamic = 'force-dynamic'
+
+
 export default async function ProducerDetailsPage({ params }: { params: { id: string } }) {
   const { id } = await params
   const supabase = await createClient()

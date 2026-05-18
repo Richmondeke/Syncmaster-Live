@@ -27,7 +27,7 @@ test.describe('Phase E: Smoke Tests — Critical Happy Path', () => {
     await page.goto('/dashboard/briefs');
 
     // Verify briefs page loaded
-    await expect(page.locator('h1')).toContainText(/briefs|brief/i);
+    await expect(page.locator('h1').first()).toContainText(/briefs|brief/i);
   });
 
   test('toast notifications appear on action', async ({ page }) => {

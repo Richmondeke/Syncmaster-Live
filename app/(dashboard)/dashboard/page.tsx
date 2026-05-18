@@ -1,71 +1,11 @@
 import { createClient } from '@/lib/supabase/server'
-import { Clock, ArrowRight, Sparkles, Search, Building2, CheckSquare, FileText, LayoutGrid, Users, Headphones, Radio } from 'lucide-react'
+import { Clock, ArrowRight, Sparkles, Search, Building2, CheckSquare, FileText, LayoutGrid, Users, Music2, Radio } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button, buttonVariants } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { buttonVariants } from '@/components/ui/button'
 import { BriefCard, type BriefCardData } from '@/components/briefs/BriefCard'
 import { cookies } from 'next/headers'
 import type { Role } from '@/types/database.types'
-
-// Mock top briefs data for Godliverse Admin dashboard
-const TOP_BRIEFS: BriefCardData[] = [
-  {
-    id: 'brief-001',
-    title: 'Upbeat Indie Pop for Summer Fashion Campaign',
-    description: 'Looking for bright, energetic indie pop tracks with catchy hooks for a major fashion brand summer campaign.',
-    genres: ['Indie Pop', 'Synth Pop', 'Electronic'],
-    budget_min: 5000,
-    budget_max: 15000,
-    deadline: '2026-06-15',
-    status: 'active',
-    producers: { company: 'Vogue Studios', profiles: { full_name: 'Sarah Mitchell' } },
-  },
-  {
-    id: 'brief-002',
-    title: 'Cinematic Orchestral Score for Documentary',
-    description: 'Epic orchestral compositions needed for a nature documentary series airing on Netflix.',
-    genres: ['Orchestral', 'Cinematic', 'Ambient'],
-    budget_min: 10000,
-    budget_max: 30000,
-    deadline: '2026-07-01',
-    status: 'active',
-    producers: { company: 'Nature Films Inc.', profiles: { full_name: 'James Porter' } },
-  },
-  {
-    id: 'brief-003',
-    title: 'Lo-Fi Hip Hop for Mobile Gaming App',
-    description: 'Chill lo-fi beats for a casual puzzle game. Must be loopable and non-distracting.',
-    genres: ['Lo-Fi', 'Hip Hop', 'Chillhop'],
-    budget_min: 2000,
-    budget_max: 5000,
-    deadline: '2026-05-30',
-    status: 'matched',
-    producers: { company: 'PixelPlay Games', profiles: { full_name: 'Alex Chen' } },
-  },
-  {
-    id: 'brief-004',
-    title: 'Emotional Acoustic Guitar for Insurance Ad',
-    description: 'Warm, emotional acoustic guitar piece for a 60-second television commercial.',
-    genres: ['Acoustic', 'Folk', 'Singer-Songwriter'],
-    budget_min: 3000,
-    budget_max: 8000,
-    deadline: '2026-06-20',
-    status: 'draft',
-    producers: { company: 'SecureLife Insurance', profiles: { full_name: 'Maria Gonzalez' } },
-  },
-  {
-    id: 'brief-005',
-    title: 'Dark Electronic for Sci-Fi Trailer',
-    description: 'Intense, atmospheric electronic music for a AAA sci-fi game trailer reveal.',
-    genres: ['Electronic', 'Dark Ambient', 'Industrial'],
-    budget_min: 8000,
-    budget_max: 20000,
-    deadline: '2026-08-01',
-    status: 'active',
-    producers: { company: 'Stellar Games', profiles: { full_name: 'David Kim' } },
-  },
-]
 
 const TOOLS = [
   {
@@ -146,6 +86,15 @@ export default async function DashboardPage() {
   const profile = { role: roleOverride, full_name: fullNameOverride }
   const composer = { status: 'active' }
 
+  // Fetch live briefs from mock DB
+  const supabase = await createClient()
+  const { data: briefs } = await supabase
+    .from('briefs')
+    .select('id, title, description, genres, budget_min, budget_max, deadline, status, producers:producers(company, profiles:profiles(full_name))')
+    .eq('status', 'active')
+    .limit(5)
+
+  const topBriefs: BriefCardData[] = (briefs || []) as BriefCardData[]
   const filteredTools = TOOLS.filter((tool) => !tool.adminOnly || profile.role === 'admin')
 
   if (composer?.status === 'pending') {
@@ -156,9 +105,7 @@ export default async function DashboardPage() {
           <div className="flex items-start gap-4">
             <Clock className="h-6 w-6 text-primary mt-1 shrink-0" />
             <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">
-                Application under review
-              </h2>
+              <h2 className="text-xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Application under review</h2>
               <p className="text-base text-muted-foreground font-medium leading-relaxed max-w-2xl">
                 We&apos;ve received your application and our team is reviewing it. We manually vet every
                 composer to ensure rights clarity and quality standards. We&apos;ll notify you by email
@@ -260,14 +207,28 @@ export default async function DashboardPage() {
         </div>
 
         <div className="relative -mx-4 md:-mx-6">
-          <div className="flex gap-5 overflow-x-auto px-4 md:px-6 pb-4 scrollbar-hide relative z-0">
-            {TOP_BRIEFS.map((brief) => (
-              <div key={brief.id}>
-                <BriefCard brief={brief} showProducer />
+          {topBriefs.length > 0 ? (
+            <div className="flex gap-5 overflow-x-auto px-4 md:px-6 pb-4 scrollbar-hide relative z-0">
+              {topBriefs.map((brief) => (
+                <div key={brief.id}>
+                  <BriefCard brief={brief} showProducer />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-16 text-center gap-4 rounded-[2rem] border-2 border-dashed border-border/40 bg-muted/20 mx-4 md:mx-6">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <Music2 className="w-7 h-7 text-primary/60" />
               </div>
-            ))}
-          </div>
-          {/* Fade edges */}
+              <div className="space-y-1">
+                <p className="font-bold text-foreground/70">No active briefs yet</p>
+                <p className="text-sm text-muted-foreground">Check back soon — new opportunities are added regularly.</p>
+              </div>
+              <Link href="/dashboard/briefs" className={buttonVariants({ variant: 'outline', size: 'sm' }) + ' rounded-full mt-2'}>
+                Browse all briefs
+              </Link>
+            </div>
+          )}
           <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-background to-transparent z-[5]" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-background to-transparent z-[5]" />
         </div>
