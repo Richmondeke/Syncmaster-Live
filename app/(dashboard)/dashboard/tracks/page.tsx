@@ -47,23 +47,7 @@ import { TrackMetadataModal } from '@/components/tracks/TrackMetadataModal'
 import { PlaylistSaveModal } from '@/components/tracks/PlaylistSaveModal'
 import { SharePlaylistModal } from '@/components/tracks/SharePlaylistModal'
 
-const API_BASE = '/api/supabase'
-const HEADERS = { 'Content-Type': 'application/json', 'Accept': 'application/json', 'apikey': 'mock-key' }
-
-async function apiGet(path: string) {
-  const res = await fetch(`${API_BASE}/${path}`, { headers: HEADERS })
-  return res.ok ? res.json() : []
-}
-async function apiPost(path: string, body: any) {
-  const res = await fetch(`${API_BASE}/${path}`, { method: 'POST', headers: HEADERS, body: JSON.stringify(body) })
-  return res.ok ? res.json() : null
-}
-async function apiPatch(path: string, body: any) {
-  await fetch(`${API_BASE}/${path}`, { method: 'PATCH', headers: HEADERS, body: JSON.stringify(body) })
-}
-async function apiDelete(path: string) {
-  await fetch(`${API_BASE}/${path}`, { method: 'DELETE', headers: HEADERS })
-}
+import { getTracks, createTrack, updateTrack, deleteTrack, deleteTracks, type TrackData } from '@/app/actions/tracks'
 
 export default function TracksPage() {
   const [tracks, setTracks] = useState<any[]>([])
@@ -83,9 +67,9 @@ export default function TracksPage() {
   const [playlistUploadProgress, setPlaylistUploadProgress] = useState(0)
   const [isPlaylistUploading, setIsPlaylistUploading] = useState(false)
 
-  // Load from API on mount
+  // Load from Supabase on mount
   useEffect(() => {
-    apiGet('rest/v1/tracks').then(data => { if (Array.isArray(data)) setTracks(data) })
+    getTracks().then(data => { if (Array.isArray(data)) setTracks(data) })
     const savedPlaylist = localStorage.getItem('syncmaster_playlist')
     const savedPlaylistName = localStorage.getItem('syncmaster_playlist_name')
     if (savedPlaylist) setPlaylistTracks(JSON.parse(savedPlaylist))
@@ -123,7 +107,7 @@ export default function TracksPage() {
 
   const handleDeleteTrack = async (id: string) => {
     const track = tracks.find(t => t.id === id)
-    await apiDelete(`rest/v1/tracks?id=eq.${id}`)
+    await deleteTrack(id)
     setTracks(prev => prev.filter(t => t.id !== id))
     setSelectedTracks(prev => prev.filter(t => t !== id))
     setPlaylistTracks(prev => prev.filter(t => t.id !== id))
@@ -136,7 +120,7 @@ export default function TracksPage() {
   }
 
   const handleBulkDelete = async () => {
-    await Promise.all(selectedTracks.map(id => apiDelete(`rest/v1/tracks?id=eq.${id}`)))
+    await deleteTracks(selectedTracks)
     setTracks(prev => prev.filter(t => !selectedTracks.includes(t.id)))
     setSelectedTracks([])
   }
@@ -207,15 +191,15 @@ export default function TracksPage() {
   }
 
   const handleSaveTrack = async (updatedTrack: any) => {
-    const { id, ...rest } = updatedTrack
-    await apiPatch(`rest/v1/tracks?id=eq.${id}`, rest)
+    const { id, created_at, updated_at, ...rest } = updatedTrack
+    await updateTrack(id, rest)
     setTracks(prev => prev.map(t => t.id === id ? updatedTrack : t))
     showToast(`Updated metadata for: ${updatedTrack.title}`)
   }
 
-  const handleAddTrack = async (newTrack: Omit<typeof tracks[0], 'id' | 'plays' | 'versions'> & Record<string, any>) => {
-    const created = await apiPost('rest/v1/tracks', { ...newTrack, plays: '0', versions: [] })
-    if (created) setTracks(prev => [...prev, created])
+  const handleAddTrack = async (newTrack: any) => {
+    const created = await createTrack({ ...newTrack, plays: 0, versions: [] } as Omit<TrackData, 'id'>)
+    if (created) setTracks(prev => [created, ...prev])
   }
 
   const handlePlaylistSelectCatalogTrack = (track: any) => {
@@ -266,11 +250,11 @@ export default function TracksPage() {
           bpm: '120',
           key: 'Cmin',
           audio_url: mockAudioUrl,
-          plays: '0',
+          plays: 0,
           versions: []
         }
         
-        const createdTrack = await apiPost('rest/v1/tracks', newTrackData)
+        const createdTrack = await createTrack(newTrackData as Omit<TrackData, 'id'>)
         
         if (createdTrack) {
           setTracks(prev => [createdTrack, ...prev])
@@ -280,7 +264,7 @@ export default function TracksPage() {
           const localTrack = { id: `tr_uploaded_${Date.now()}`, ...newTrackData }
           setTracks(prev => [localTrack, ...prev])
           setPlaylistTracks(prev => [...prev, localTrack])
-          showToast(`Uploaded "${titleWithoutExtension}" (saved locally)`)
+          showToast(`Uploaded "${titleWithoutExtension}" (saved locally - check connection)`)
         }
         
         setIsPlaylistUploading(false)
