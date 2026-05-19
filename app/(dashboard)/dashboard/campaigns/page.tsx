@@ -64,7 +64,7 @@ export default function CampaignsPage() {
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Campaigns</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Campaigns</h1>
           <p className="text-muted-foreground font-medium text-sm">Design and distribute email campaigns for your music releases.</p>
         </div>
         <Button className="rounded-full bg-primary hover:bg-primary/90 text-white font-black h-11 px-6 shadow-lg shadow-primary/20 transition-all active:scale-95">

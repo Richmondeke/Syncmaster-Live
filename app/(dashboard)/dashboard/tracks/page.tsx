@@ -48,6 +48,7 @@ import { PlaylistSaveModal } from '@/components/tracks/PlaylistSaveModal'
 import { SharePlaylistModal } from '@/components/tracks/SharePlaylistModal'
 
 import { getTracks, createTrack, updateTrack, deleteTrack, deleteTracks, type TrackData } from '@/app/actions/tracks'
+import { useMusicPlayer, type PlayerTrack } from '@/contexts/MusicPlayerContext'
 
 export default function TracksPage() {
   const [tracks, setTracks] = useState<any[]>([])
@@ -59,6 +60,8 @@ export default function TracksPage() {
   const [currentTrack, setCurrentTrack] = useState<any>(null)
   const [toasts, setToasts] = useState<Toast[]>([])
   const [playingTrackId, setPlayingTrackId] = useState<string | null>(null)
+
+  const { playTrack, currentTrack: playerTrack, isPlaying } = useMusicPlayer()
 
   // Playlist direct-add state variables
   const [playlistAddMode, setPlaylistAddMode] = useState<'none' | 'catalog' | 'upload'>('none')
@@ -181,13 +184,18 @@ export default function TracksPage() {
   }
 
   const handlePlayTrack = (track: any) => {
-    if (playingTrackId === track.id) {
-      setPlayingTrackId(null)
-      showToast(`Paused: ${track.title}`, 'info')
-    } else {
-      setPlayingTrackId(track.id)
-      showToast(`Now Playing: ${track.title}`)
+    if (!track.audio_url) {
+      showToast('No audio URL for this track', 'error')
+      return
     }
+    const playerTracks: PlayerTrack[] = tracks
+      .filter(t => t.audio_url)
+      .map(t => ({ id: t.id, title: t.title, audio_url: t.audio_url, genre: t.genre }))
+    playTrack(
+      { id: track.id, title: track.title, audio_url: track.audio_url, genre: track.genre },
+      playerTracks
+    )
+    setPlayingTrackId(track.id)
   }
 
   const handleSaveTrack = async (updatedTrack: any) => {
@@ -283,7 +291,7 @@ export default function TracksPage() {
         <div className="p-8 pb-4">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="display text-4xl mb-2">Music Catalog</h1>
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground">Music Catalog</h1>
               <p className="label text-muted-foreground uppercase">Manage your tracks and versions</p>
             </div>
             <div className="flex items-center gap-3">
@@ -747,7 +755,8 @@ export default function TracksPage() {
       {/* Modals */}
       <UploadModal 
         isOpen={activeModal === 'upload'} 
-        onClose={() => setActiveModal(null)} 
+        onClose={() => setActiveModal(null)}
+        onUploadComplete={handleAddTrack} 
       />
       {activeModal === 'metadata' && (
         <TrackMetadataModal 

@@ -6,6 +6,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { BriefCard, type BriefCardData } from '@/components/briefs/BriefCard'
 import { cookies } from 'next/headers'
 import type { Role } from '@/types/database.types'
+import { UserBadgeModal } from '@/components/dashboard/UserBadgeModal'
 
 const TOOLS = [
   {
@@ -136,10 +137,11 @@ export default async function DashboardPage() {
   return (
     <div className="flex flex-col gap-10 pt-2 pb-12 max-w-7xl mx-auto">
       {/* Header section with greeting */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-3xl font-black tracking-[-0.068em] leading-[1.2] text-foreground sm:text-5xl">
           Welcome, {profile.full_name}
         </h1>
+        <UserBadgeModal />
       </div>
 
       {/* Hero Banner - Premium & Modern */}

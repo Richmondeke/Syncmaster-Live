@@ -38,7 +38,7 @@ export default function DirectoryPage() {
     <div className="flex flex-col gap-10 pt-4 pb-20 max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="flex flex-col gap-2">
-          <h1 className="text-4xl md:text-5xl font-medium tracking-[-0.05em] text-foreground">Agency Directory</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Agency Directory</h1>
           <p className="text-lg text-muted-foreground tracking-tight">Connect with the world's leading sync agencies and music supervisors.</p>
         </div>
         <div className="flex items-center gap-3 bg-card border border-border p-1.5 rounded-full overflow-x-auto no-scrollbar">

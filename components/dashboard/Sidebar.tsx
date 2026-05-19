@@ -87,8 +87,8 @@ const NAV_GROUPS: Record<string, NavItem[]> = {
     }
   ],
   network: [
-    { label: 'Composers', href: '/dashboard/composers', icon: Users, roles: ['admin'] },
-    { label: 'Producers', href: '/dashboard/producers', icon: Headphones, roles: ['admin'] },
+    { label: 'Composers', href: '/dashboard/composers', icon: Users, roles: ['admin', 'sync_supervisor' as Role] },
+    { label: 'Producers', href: '/dashboard/producers', icon: Headphones, roles: ['admin', 'sync_supervisor' as Role] },
   ],
   operations: [
     { 

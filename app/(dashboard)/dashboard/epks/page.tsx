@@ -26,7 +26,10 @@ import {
   Link2,
   UploadCloud,
   Loader2,
-  ChevronDown
+  ChevronDown,
+  Copy,
+  Share2,
+  CheckCircle2,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
@@ -89,6 +92,11 @@ export default function EPKsPage() {
   // Analytics / Stats Modal State
   const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false)
   const [analyticsEpk, setAnalyticsEpk] = useState<EPK | null>(null)
+
+  // Share Modal State
+  const [shareModalUrl, setShareModalUrl] = useState<string | null>(null)
+  const [shareModalTitle, setShareModalTitle] = useState('')
+  const [copiedUrl, setCopiedUrl] = useState(false)
 
   // Fetch EPKs on load
   const loadEPKs = async () => {
@@ -246,14 +254,16 @@ export default function EPKsPage() {
       }
 
       if (res.success) {
-        addToast(
-          editingEpk 
-            ? `Successfully updated EPK "${title}"` 
-            : `Successfully created EPK "${title}"`, 
-          'success'
-        )
         setIsEditorOpen(false)
         loadEPKs()
+        // Show share modal only on create (not edit)
+        if (!editingEpk) {
+          const publicUrl = `${window.location.origin}/${slug.trim()}`
+          setShareModalUrl(publicUrl)
+          setShareModalTitle(title.trim())
+        } else {
+          addToast(`Successfully updated EPK "${title}"`, 'success')
+        }
       } else {
         setFormError(res.error || 'An unexpected error occurred')
         addToast(res.error || 'Failed to save EPK', 'error')
@@ -354,7 +364,7 @@ export default function EPKsPage() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             EPKs (Press Kits)
           </h1>
           <p className="text-muted-foreground font-medium text-sm">
@@ -1111,6 +1121,117 @@ export default function EPKsPage() {
                     This EPK has been bookmarked by 2 sync licensing supervisors in Los Angeles and London. Keep the audio URLs fully updated!
                   </p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Share / Success Modal */}
+      {shareModalUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="relative w-full max-w-lg overflow-hidden border border-border bg-card shadow-2xl rounded-[2.5rem] p-8 md:p-10 animate-in zoom-in-95 slide-in-from-bottom-10 duration-500">
+            {/* Background Accent Gradients */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] pointer-events-none -z-10 overflow-hidden">
+              <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[400px] h-[300px] bg-primary/20 blur-[100px] rounded-full" />
+              <div className="absolute top-0 left-1/4 w-[200px] h-[200px] bg-fuchsia-500/10 blur-[80px] rounded-full" />
+            </div>
+
+            <button 
+              onClick={() => setShareModalUrl(null)}
+              className="absolute top-6 right-6 p-2 rounded-full border border-border hover:bg-accent/50 text-muted-foreground hover:text-foreground transition-all"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="flex flex-col items-center text-center space-y-6">
+              {/* Success Badge / Icon */}
+              <div className="relative">
+                <div className="w-20 h-20 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center animate-bounce duration-1000">
+                  <CheckCircle2 className="w-10 h-10 text-primary animate-pulse" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-background flex items-center justify-center">
+                  <Check className="w-3 h-3 text-white" />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-3xl font-black tracking-[-0.04em] text-foreground">
+                  Your EPK is Live!
+                </h3>
+                <p className="text-muted-foreground text-sm font-medium max-w-sm mx-auto">
+                  “{shareModalTitle}” is successfully published and ready to share with music supervisors and labels.
+                </p>
+              </div>
+
+              {/* Public URL Field */}
+              <div className="w-full flex items-center gap-2 p-3 bg-muted/50 border border-border/80 rounded-2xl relative group">
+                <Link2 className="w-5 h-5 text-muted-foreground shrink-0 ml-1" />
+                <input 
+                  type="text" 
+                  readOnly 
+                  value={shareModalUrl} 
+                  className="bg-transparent border-0 outline-none text-xs font-mono text-foreground font-medium flex-1 select-all"
+                />
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(shareModalUrl)
+                    setCopiedUrl(true)
+                    addToast('URL copied to clipboard!', 'success')
+                    setTimeout(() => setCopiedUrl(false), 2000)
+                  }}
+                  className="px-4 py-2 bg-foreground text-background hover:bg-foreground/90 font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-sm active:scale-95"
+                >
+                  {copiedUrl ? (
+                    <>
+                      <Check className="w-3.5 h-3.5" />
+                      Copied
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      Copy Link
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Share Actions */}
+              <div className="w-full grid grid-cols-2 gap-3 pt-2">
+                <button
+                  onClick={async () => {
+                    if (navigator.share) {
+                      try {
+                        await navigator.share({
+                          title: shareModalTitle,
+                          text: `Check out our EPK page: ${shareModalTitle}`,
+                          url: shareModalUrl,
+                        })
+                        addToast('Successfully shared!', 'success')
+                      } catch (err) {
+                        console.log('Share canceled or failed', err)
+                      }
+                    } else {
+                      // Fallback: Copy link
+                      navigator.clipboard.writeText(shareModalUrl)
+                      addToast('Copied to clipboard (device share unsupported)', 'success')
+                    }
+                  }}
+                  className="flex items-center justify-center gap-2 py-3 px-4 bg-primary text-primary-foreground hover:bg-primary/95 font-bold text-sm rounded-2xl transition-all shadow-md hover:shadow-lg active:scale-98"
+                >
+                  <Share2 className="w-4 h-4" />
+                  Share Page
+                </button>
+                
+                <button
+                  onClick={() => {
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out our new EPK: ${shareModalTitle}`)}&url=${encodeURIComponent(shareModalUrl)}`, '_blank')
+                  }}
+                  className="flex items-center justify-center gap-2 py-3 px-4 border border-border hover:bg-accent/50 text-foreground font-bold text-sm rounded-2xl transition-all"
+                >
+                  <Globe className="w-4 h-4 text-sky-500" />
+                  Tweet
+                </button>
               </div>
             </div>
           </div>

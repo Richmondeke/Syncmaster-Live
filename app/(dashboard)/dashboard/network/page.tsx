@@ -7,7 +7,7 @@ export default function NetworkPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col gap-1">
-        <h1 className="text-3xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Network</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Network</h1>
         <p className="text-muted-foreground">Connect with other professionals, supervisors, and creators.</p>
       </div>
 

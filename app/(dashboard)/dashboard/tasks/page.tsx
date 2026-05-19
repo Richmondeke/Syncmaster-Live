@@ -2,7 +2,7 @@ export default function TasksPage() {
   return (
     <div className="flex flex-col gap-8 pt-4">
       <div className="flex flex-col gap-2">
-        <h1 className="text-4xl md:text-5xl font-medium tracking-[-0.05em] text-foreground">Admin Tasks</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Admin Tasks</h1>
         <p className="text-lg text-muted-foreground tracking-tight">Review pending submissions, composer applications, and platform alerts.</p>
       </div>
       

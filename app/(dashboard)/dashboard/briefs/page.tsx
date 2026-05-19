@@ -65,7 +65,7 @@ export default async function BriefsPage() {
     return (
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Briefs</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Briefs</h1>
           <p className="text-lg text-muted-foreground tracking-tight mt-2">
             Review producer briefs and manage status transitions.
           </p>
@@ -112,7 +112,7 @@ export default async function BriefsPage() {
       <div className="flex flex-col gap-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Briefs</h1>
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Briefs</h1>
             <p className="text-lg text-muted-foreground tracking-tight mt-2">
               Submit a brief and we'll hand-pick 3–5 vetted composers for you.
             </p>
@@ -166,7 +166,7 @@ export default async function BriefsPage() {
     return (
       <div className="flex flex-col gap-6">
         <div className="mb-2">
-          <h1 className="text-5xl display text-foreground mb-2">Briefs</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground mb-2">Briefs</h1>
           <p className="text-muted-foreground text-sm font-medium max-w-md">
             Exclusive opportunities you've been matched with. Review and submit your best tracks.
           </p>

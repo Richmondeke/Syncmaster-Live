@@ -4,6 +4,8 @@ import { Sidebar } from '@/components/dashboard/Sidebar'
 import { Header } from '@/components/dashboard/Header'
 import type { Database, Role } from '@/types/database.types'
 import { cookies } from 'next/headers'
+import { MusicPlayerProvider } from '@/contexts/MusicPlayerContext'
+import { MusicPlayer } from '@/components/player/MusicPlayer'
 
 type ProfileRow = Pick<
   Database['public']['Tables']['profiles']['Row'],
@@ -32,19 +34,22 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar role={profile.role as Role} fullName={profile.full_name ?? undefined} />
+    <MusicPlayerProvider>
+      <div className="flex min-h-screen bg-background">
+        <Sidebar role={profile.role as Role} fullName={profile.full_name ?? undefined} />
 
-      <div className="flex min-w-0 flex-1 flex-col lg:pl-64">
-        <Header
-          user={{
-            email: user.email ?? '',
-            fullName: profile.full_name,
-            role: profile.role as Role,
-          }}
-        />
-        <main className="flex-1 p-4 md:p-6">{children}</main>
+        <div className="flex min-w-0 flex-1 flex-col lg:pl-64">
+          <Header
+            user={{
+              email: user.email ?? '',
+              fullName: profile.full_name,
+              role: profile.role as Role,
+            }}
+          />
+          <main className="flex-1 p-4 md:p-6 pb-20">{children}</main>
+        </div>
       </div>
-    </div>
+      <MusicPlayer />
+    </MusicPlayerProvider>
   )
 }

@@ -7,7 +7,7 @@ export default function MarketplacePage() {
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col gap-1">
-        <h1 className="text-3xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Marketplace</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Marketplace</h1>
         <p className="text-muted-foreground">Browse and acquire tracks directly from composers and producers.</p>
       </div>
 

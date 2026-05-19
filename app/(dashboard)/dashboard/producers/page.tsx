@@ -57,7 +57,7 @@ export default async function ProducersPage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Producers</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Producers</h1>
           <p className="text-lg text-muted-foreground tracking-tight mt-2">
             Manage approved production companies and their catalog contributions.
           </p>

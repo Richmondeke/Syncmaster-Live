@@ -37,6 +37,21 @@ export async function getTracks() {
   return data ?? []
 }
 
+export async function getTrackByTitle(title: string) {
+  const supabase = getUntypedAdminClient()
+  const { data, error } = await supabase
+    .from('tracks')
+    .select('id')
+    .ilike('title', title)
+    .limit(1)
+  
+  if (error) {
+    console.error('[getTrackByTitle]', error)
+    return null
+  }
+  return data?.[0] || null
+}
+
 export async function createTrack(track: Omit<TrackData, 'id'>) {
   const supabase = getUntypedAdminClient()
   const { data, error } = await supabase

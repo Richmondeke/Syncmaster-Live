@@ -29,7 +29,7 @@ const STATUS_BADGE: Record<ComposerStatus, { label: string; variant: 'default' |
   rejected: { label: 'Rejected', variant: 'destructive' },
 }
 
-export function ComposerList({ composers }: { composers: ComposerWithProfile[] }) {
+export function ComposerList({ composers, isAdmin = false }: { composers: ComposerWithProfile[], isAdmin?: boolean }) {
   const { addToast } = useToast()
   const [rejectTarget, setRejectTarget] = useState<ComposerWithProfile | null>(null)
   const [rejectionNote, setRejectionNote] = useState('')
@@ -127,34 +127,42 @@ export function ComposerList({ composers }: { composers: ComposerWithProfile[] }
                   <td className="px-4 py-3 text-muted-foreground">{applied}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">
-                      {composer.status !== 'active' && (
-                        <form action={approveAction} onSubmit={() => setApprovingId(composer.profile_id)}>
-                          <input type="hidden" name="profileId" value={composer.profile_id} />
-                          <input type="hidden" name="status" value="active" />
-                          <Button type="submit" size="sm" variant="default" disabled={approveIsPending}>
-                            {approveIsPending && approvingId === composer.profile_id ? (
-                              <>
-                                <span className="inline-block w-4 h-4 border-2 border-transparent border-t-current rounded-full animate-spin mr-2" />
-                                Approving…
-                              </>
-                            ) : (
-                              'Approve'
-                            )}
-                          </Button>
-                        </form>
-                      )}
-                      {composer.status !== 'rejected' && (
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={() => setRejectTarget(composer)}
-                          disabled={rejectIsPending}
-                        >
-                          Reject
-                        </Button>
-                      )}
-                      {composer.status === 'active' && (
-                        <span className="text-xs text-muted-foreground">Vetted</span>
+                      {isAdmin ? (
+                        <>
+                          {composer.status !== 'active' && (
+                            <form action={approveAction} onSubmit={() => setApprovingId(composer.profile_id)}>
+                              <input type="hidden" name="profileId" value={composer.profile_id} />
+                              <input type="hidden" name="status" value="active" />
+                              <Button type="submit" size="sm" variant="default" disabled={approveIsPending}>
+                                {approveIsPending && approvingId === composer.profile_id ? (
+                                  <>
+                                    <span className="inline-block w-4 h-4 border-2 border-transparent border-t-current rounded-full animate-spin mr-2" />
+                                    Approving…
+                                  </>
+                                ) : (
+                                  'Approve'
+                                )}
+                              </Button>
+                            </form>
+                          )}
+                          {composer.status !== 'rejected' && (
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => setRejectTarget(composer)}
+                              disabled={rejectIsPending}
+                            >
+                              Reject
+                            </Button>
+                          )}
+                          {composer.status === 'active' && (
+                            <span className="text-xs text-muted-foreground">Vetted</span>
+                          )}
+                        </>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">
+                          {composer.status === 'active' ? 'Active' : composer.status === 'rejected' ? 'Rejected' : 'Pending'}
+                        </span>
                       )}
                     </div>
                   </td>

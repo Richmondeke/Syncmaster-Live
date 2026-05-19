@@ -12,13 +12,12 @@ export default async function ComposersPage() {
   const user = await getSessionUser()
   if (!user) redirect('/login')
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
+  // Trust role from session directly (mock auth uses cookie-based roles)
+  const sessionRole = (user as any).user_metadata?.role || 'composer'
+  const isAllowed = sessionRole === 'admin' || sessionRole === 'sync_supervisor'
+  if (!isAllowed) redirect('/dashboard')
 
-  if (profile?.role !== 'admin') redirect('/dashboard')
+  const isAdmin = sessionRole === 'admin'
 
   const { data: composers, error } = await supabase
     .from('composers')
@@ -81,7 +80,7 @@ export default async function ComposersPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Composers</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Composers</h1>
         <p className="text-lg text-muted-foreground tracking-tight mt-2">
           Review applications and manage composer status.
         </p>
@@ -93,7 +92,7 @@ export default async function ComposersPage() {
         </div>
       )}
 
-      <ComposerList composers={sorted} />
+      <ComposerList composers={sorted} isAdmin={isAdmin} />
     </div>
   )
 }
