@@ -12,11 +12,11 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "SyncMaster — Get your songs synced in TV, Games, Movies and Ads",
-  description: "Join thousands of artistes using Syncmaster to discover and track sync opportunities. Syncmaster provides artistes and labels the tools they need to manage their sync operations.",
+  title: "SyncMaster — African Composers. Global Briefs.",
+  description: "SyncMaster connects vetted African composers with briefs from production houses worldwide. Human curation. Rights clarity. 3–5 curated matches — not 500 unvetted submissions.",
   openGraph: {
-    title: "SyncMaster — Get your songs synced in TV, Games, Movies and Ads",
-    description: "Join thousands of artistes using Syncmaster to discover and track sync opportunities. Syncmaster provides artistes and labels the tools they need to manage their sync operations.",
+    title: "SyncMaster — African Composers. Global Briefs.",
+    description: "SyncMaster connects vetted African composers with briefs from production houses worldwide. Human curation. Rights clarity. 3–5 curated matches — not 500 unvetted submissions.",
     url: "https://syncmaster-live.vercel.app",
     siteName: "SyncMaster",
     images: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
         url: "/syncscreen.png",
         width: 1200,
         height: 630,
-        alt: "SyncMaster — Get your songs synced in TV, Games, Movies and Ads",
+        alt: "SyncMaster — African Composers. Global Briefs.",
       },
     ],
     locale: "en_US",
@@ -32,8 +32,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SyncMaster — Get your songs synced in TV, Games, Movies and Ads",
-    description: "Join thousands of artistes using Syncmaster to discover and track sync opportunities. Syncmaster provides artistes and labels the tools they need to manage their sync operations.",
+    title: "SyncMaster — African Composers. Global Briefs.",
+    description: "SyncMaster connects vetted African composers with briefs from production houses worldwide. Human curation. Rights clarity. 3–5 curated matches — not 500 unvetted submissions.",
     images: ["/syncscreen.png"],
   },
 };
