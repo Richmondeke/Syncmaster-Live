@@ -6,7 +6,7 @@ export function ScoreBar({ score }: ScoreBarProps) {
   const clampedScore = Math.max(0, Math.min(100, score))
   
   const getStatusColor = (s: number) => {
-    if (s >= 85) return "bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.4)]"
+    if (s >= 85) return "bg-primary shadow-[0_0_8px_var(--primary)]"
     if (s >= 70) return "bg-foreground/80"
     return "bg-muted-foreground/30"
   }

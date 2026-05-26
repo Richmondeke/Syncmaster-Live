@@ -13,16 +13,19 @@ export function Waveform({ color = 'var(--muted-foreground)', height = 32 }: Wav
     []
   )
 
+  const PROGRESS_THRESHOLD = 18; // 30% progress
+
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 2, height }}>
+    <div className="flex items-center gap-[2px]" style={{ height }}>
       {bars.map((value, index) => (
         <div
           key={index}
+          className={`w-[2px] transition-all duration-300 ${
+            index < PROGRESS_THRESHOLD ? 'bg-primary opacity-100' : 'opacity-50'
+          }`}
           style={{
-            width: 2,
             height: `${value * 100}%`,
-            background: index < 18 ? 'var(--primary)' : color,
-            opacity: index < 18 ? 1 : 0.5,
+            ...(index >= PROGRESS_THRESHOLD ? { backgroundColor: color } : {}),
           }}
         />
       ))}

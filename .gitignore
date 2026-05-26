@@ -49,3 +49,13 @@ next-env.d.ts
 
 .vercel
 .env*.local
+
+# graphify cache
+graphify-out/cache/
+
+# session handoffs and temp files
+SESSION_HANDOFF/
+SESSION_HANDOFF.zip
+SESSION_HANDOVER.md
+*.tmp.*
+scratch/

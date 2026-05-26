@@ -41,17 +41,17 @@ export function BriefCard({ brief, showProducer = false }: Props) {
   return (
     <Link
       href={`/dashboard/briefs/${brief.id}`}
-      className="group relative z-10 flex flex-col gap-4 rounded-[2.5rem] border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.01] min-w-[340px] max-w-[400px] shrink-0 cursor-pointer"
+      className="group relative z-10 flex flex-col gap-4 rounded-3xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.01] min-w-[340px] max-w-[400px] shrink-0 cursor-pointer"
     >
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <span
-            className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest ${STATUS_CLASSES[brief.status]}`}
+            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-black uppercase tracking-widest ${STATUS_CLASSES[brief.status]}`}
           >
             {STATUS_LABELS[brief.status]}
           </span>
           {brief.deadline && (
-            <span className="text-[10px] font-bold text-muted-foreground bg-muted/30 px-2 py-0.5 rounded-md border border-border/50">
+            <span className="text-xs font-bold text-muted-foreground bg-muted/30 px-2 py-0.5 rounded-md border border-border/50">
               {new Date(brief.deadline).toLocaleDateString()}
             </span>
           )}
@@ -63,7 +63,7 @@ export function BriefCard({ brief, showProducer = false }: Props) {
           </h3>
           {showProducer && brief.producers && (
             <div className="flex items-center gap-2">
-              <div className="h-6 w-6 rounded-full bg-gradient-to-tr from-primary/20 to-purple-500/20 flex items-center justify-center text-[10px] font-bold border border-primary/10">
+              <div className="h-6 w-6 rounded-full bg-gradient-to-tr from-primary/20 to-accent-warm/20 flex items-center justify-center text-xs font-bold border border-primary/10">
                 {brief.producers.profiles?.full_name?.charAt(0) ?? '?'}
               </div>
               <p className="text-xs font-bold text-muted-foreground">
@@ -78,7 +78,7 @@ export function BriefCard({ brief, showProducer = false }: Props) {
             {brief.genres.slice(0, 4).map((genre) => (
               <span
                 key={genre}
-                className="inline-flex items-center rounded-lg border bg-background/50 px-2.5 py-1 text-[10px] font-bold text-primary shadow-sm group-hover:bg-primary/5 transition-colors"
+                className="inline-flex items-center rounded-lg border bg-background/50 px-2.5 py-1 text-xs font-bold text-primary shadow-sm group-hover:bg-primary/5 transition-colors"
               >
                 {genre}
               </span>
@@ -88,7 +88,7 @@ export function BriefCard({ brief, showProducer = false }: Props) {
 
         <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-6">
           <div className="flex flex-col">
-            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
+            <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">
               Budget Range
             </span>
             <span className="text-sm font-black text-foreground">

@@ -88,8 +88,6 @@
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: rgba(255, 255, 255, 0.1);
   --sidebar-ring: #ffffff;
-  /* SyncMaster brand purple */
-  --syncmaster-purple: #4b4bc0;
   /* Status colour primitives */
   --status-green: #22c55e;
   --status-amber: #f59e0b;
@@ -129,12 +127,12 @@
   --sidebar-border: rgba(255, 255, 255, 0.08);
   --sidebar-ring: #22c55e;
   /* Semantic dark mode — maps to orphaned config references */
-  --color-surface-primary: #0f172a;
-  --color-surface-secondary: #1e293b;
-  --color-surface-tertiary: #334155;
-  --color-surface-raised: #475569;
-  --color-text-primary: #f8fafc;
-  --color-text-secondary: #94a3b8;
+  --color-surface-primary: var(--background);
+  --color-surface-secondary: var(--card);
+  --color-surface-tertiary: var(--muted);
+  --color-surface-raised: var(--accent);
+  --color-text-primary: var(--foreground);
+  --color-text-secondary: var(--muted-foreground);
   --color-text-tertiary: #64748b;
   --color-success: #22c55e;
   --color-warning: #f59e0b;
@@ -146,7 +144,7 @@
   --color-accent-taupe: #71717a;
   --color-overlay-dark: rgba(0, 0, 0, 0.7);
   --color-overlay-hover: rgba(255, 255, 255, 0.05);
-  --color-focus-ring: #6366f1;
+  --color-focus-ring: var(--ring);
   --color-disabled-bg: rgba(255, 255, 255, 0.1);
   --color-disabled-text: #475569;
   --color-divider: rgba(255, 255, 255, 0.1);
@@ -234,7 +232,7 @@
   }
 
   .dim {
-    color: #666666;
+    color: var(--muted-foreground);
   }
 
   .accent {

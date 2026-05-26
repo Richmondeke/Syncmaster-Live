@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, CheckCircle2, Film, Sparkles, Shield, Clock, BarChart3, Users, FileSearch, Zap } from 'lucide-react'

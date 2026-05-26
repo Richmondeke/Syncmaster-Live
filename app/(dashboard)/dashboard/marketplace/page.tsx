@@ -1,3 +1,5 @@
+'use client'
+
 import { ShoppingCart } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Button, buttonVariants } from '@/components/ui/button'

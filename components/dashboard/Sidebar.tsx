@@ -138,7 +138,7 @@ function NavLink({
       className={cn(
         'w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-black tracking-[-0.068em] transition-all duration-200 group',
         isActive
-          ? 'bg-white text-[#4b4bc0] shadow-[0_8px_30px_rgb(0,0,0,0.12)] scale-[1.02] border-r-4 border-[#4b4bc0]/20'
+          ? 'bg-white text-primary shadow-xl scale-[1.02] border-r-4 border-primary/20'
           : 'text-white/70 hover:text-white hover:bg-white/5 hover:translate-x-1'
       )}
     >
@@ -172,7 +172,7 @@ function SidebarContent({
 
     return (
       <div className="flex flex-col gap-1 mb-7">
-        <div className="px-4 mb-2.5 text-[10px] font-black text-white/40 tracking-[0.05em] flex items-center gap-2">
+        <div className="px-4 mb-2.5 text-[10px] font-black text-sidebar-foreground/40 tracking-[0.05em] flex items-center gap-2">
           <span className="w-1.5 h-[1px] bg-white/20" />
           {title}
         </div>

@@ -1,0 +1,25 @@
+<svg width="600" height="120" viewBox="0 0 600 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="60" cy="60" r="50" fill="#D4FF00" />
+  
+  <!-- "S" Mark -->
+  <g stroke="#4B4BC0" stroke-width="10" stroke-linecap="round" fill="none">
+    <!-- Top left curve and straight -->
+    <path d="M 76 50 A 16 16 0 0 0 44 50 L 44 62" />
+    <!-- Bottom right curve and straight -->
+    <path d="M 44 70 A 16 16 0 0 0 76 70 L 76 58" />
+  </g>
+
+  <!-- Typography -->
+  <text 
+    x="135" 
+    y="78" 
+    font-family="Montserrat, 'Proxima Nova', 'DM Sans', sans-serif" 
+    font-weight="800" 
+    font-size="52" 
+    fill="#4B4BC0"
+    letter-spacing="-0.02em"
+  >
+    SYNCMASTER
+  </text>
+</svg>
