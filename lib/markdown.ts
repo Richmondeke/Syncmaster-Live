@@ -14,7 +14,23 @@ function escapeHtml(text: string): string {
     .replace(/'/g, '&#39;')
 }
 
-function processInline(text: string): string {
+const INTERNAL_DOMAINS = ['syncmaster.live', 'syncmaster.io']
+
+function rewriteUrl(href: string): string {
+  for (const domain of INTERNAL_DOMAINS) {
+    const pattern = new RegExp(`^https?://${domain.replace('.', '\\.')}(/[^\\s"']*)?$`)
+    const match = href.match(pattern)
+    if (match) {
+      let path = match[1] ?? '/'
+      // /apply-composer doesn't exist — map to /signup
+      if (path === '/apply-composer') path = '/signup'
+      return path || '/'
+    }
+  }
+  return href
+}
+
+function processInline(text: string, slugMap?: Record<string, string>): string {
   // Bold + italic: ***text***
   text = text.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
   // Bold: **text**
@@ -23,28 +39,35 @@ function processInline(text: string): string {
   text = text.replace(/\*(.+?)\*/g, '<em>$1</em>')
   // Inline code: `code`
   text = text.replace(/`([^`]+)`/g, '<code class="font-mono text-sm bg-muted px-1.5 py-0.5 rounded text-primary">$1</code>')
-  
+
   // Images: ![alt text](url)
   text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="rounded-xl border border-border my-8 w-full object-cover shadow-sm" />')
 
-  // Internal Links: [INTERNAL LINK: What is a one-stop licence?]
-  text = text.replace(/\[INTERNAL LINK:\s*([^\]]+)\]/g, (match, title) => {
-    const slug = title.toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
+  // Internal Links: [INTERNAL LINK: Title] — resolve slug via map first, then generate
+  text = text.replace(/\[INTERNAL LINK:\s*([^\]]+)\]/g, (_, title) => {
+    const key = title.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim()
+    const slug = slugMap?.[key]
+      ?? title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')
     return `<a href="/blog/${slug}" class="inline-flex items-center gap-1.5 font-bold text-primary hover:text-primary/80 underline decoration-primary/30 underline-offset-4 decoration-2 transition-all">
       ${title}
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
     </a>`
   })
 
-  // Links: [text](url)
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary font-bold underline decoration-primary/30 underline-offset-4 decoration-2 hover:decoration-primary transition-all">$1</a>')
-  
+  // Links: [text](url) — rewrite syncmaster domains to relative, open external in new tab
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, rawHref) => {
+    const href = rewriteUrl(rawHref)
+    const isExternal = /^https?:\/\//.test(href)
+    const attrs = isExternal
+      ? ' target="_blank" rel="noopener noreferrer"'
+      : ''
+    return `<a href="${href}"${attrs} class="text-primary font-bold underline decoration-primary/30 underline-offset-4 decoration-2 hover:decoration-primary transition-all">${label}</a>`
+  })
+
   return text
 }
 
-export function renderMarkdown(content: string): string {
+export function renderMarkdown(content: string, slugMap?: Record<string, string>): string {
   const lines = content.split('\n')
   const htmlParts: string[] = []
 
@@ -72,25 +95,25 @@ export function renderMarkdown(content: string): string {
     // Headings
     const h4 = line.match(/^####\s+(.+)/)
     if (h4) {
-      htmlParts.push(`<h4 class="text-lg font-black tracking-[-0.068em] mt-8 mb-3 text-foreground">${processInline(h4[1])}</h4>`)
+      htmlParts.push(`<h4 class="text-lg font-black tracking-[-0.068em] mt-8 mb-3 text-foreground">${processInline(h4[1], slugMap)}</h4>`)
       i++
       continue
     }
     const h3 = line.match(/^###\s+(.+)/)
     if (h3) {
-      htmlParts.push(`<h3 class="text-xl font-black tracking-[-0.068em] mt-10 mb-4 text-foreground">${processInline(h3[1])}</h3>`)
+      htmlParts.push(`<h3 class="text-xl font-black tracking-[-0.068em] mt-10 mb-4 text-foreground">${processInline(h3[1], slugMap)}</h3>`)
       i++
       continue
     }
     const h2 = line.match(/^##\s+(.+)/)
     if (h2) {
-      htmlParts.push(`<h2 class="text-2xl md:text-3xl font-black tracking-[-0.068em] mt-12 mb-5 text-foreground">${processInline(h2[1])}</h2>`)
+      htmlParts.push(`<h2 class="text-2xl md:text-3xl font-black tracking-[-0.068em] mt-12 mb-5 text-foreground">${processInline(h2[1], slugMap)}</h2>`)
       i++
       continue
     }
     const h1 = line.match(/^#\s+(.+)/)
     if (h1) {
-      htmlParts.push(`<h1 class="text-3xl md:text-4xl font-black tracking-[-0.068em] mt-12 mb-6 text-foreground">${processInline(h1[1])}</h1>`)
+      htmlParts.push(`<h1 class="text-3xl md:text-4xl font-black tracking-[-0.068em] mt-12 mb-6 text-foreground">${processInline(h1[1], slugMap)}</h1>`)
       i++
       continue
     }
@@ -106,7 +129,7 @@ export function renderMarkdown(content: string): string {
     if (line.startsWith('> ')) {
       const bqLines: string[] = []
       while (i < lines.length && lines[i].startsWith('> ')) {
-        bqLines.push(processInline(lines[i].slice(2)))
+        bqLines.push(processInline(lines[i].slice(2), slugMap))
         i++
       }
       htmlParts.push(
@@ -119,7 +142,7 @@ export function renderMarkdown(content: string): string {
     if (/^[*\-]\s+/.test(line)) {
       const items: string[] = []
       while (i < lines.length && /^[*\-]\s+/.test(lines[i])) {
-        items.push(`<li class="mb-2">${processInline(lines[i].replace(/^[*\-]\s+/, ''))}</li>`)
+        items.push(`<li class="mb-2">${processInline(lines[i].replace(/^[*\-]\s+/, ''), slugMap)}</li>`)
         i++
       }
       htmlParts.push(`<ul class="list-disc list-outside pl-6 my-5 space-y-1 text-muted-foreground">${items.join('')}</ul>`)
@@ -130,7 +153,7 @@ export function renderMarkdown(content: string): string {
     if (/^\d+\.\s+/.test(line)) {
       const items: string[] = []
       while (i < lines.length && /^\d+\.\s+/.test(lines[i])) {
-        items.push(`<li class="mb-2">${processInline(lines[i].replace(/^\d+\.\s+/, ''))}</li>`)
+        items.push(`<li class="mb-2">${processInline(lines[i].replace(/^\d+\.\s+/, ''), slugMap)}</li>`)
         i++
       }
       htmlParts.push(`<ol class="list-decimal list-outside pl-6 my-5 space-y-1 text-muted-foreground">${items.join('')}</ol>`)
@@ -156,7 +179,7 @@ export function renderMarkdown(content: string): string {
       !/^---+$/.test(lines[i].trim()) &&
       !/^\*\*\*+$/.test(lines[i].trim())
     ) {
-      paraLines.push(processInline(lines[i]))
+      paraLines.push(processInline(lines[i], slugMap))
       i++
     }
     if (paraLines.length > 0) {

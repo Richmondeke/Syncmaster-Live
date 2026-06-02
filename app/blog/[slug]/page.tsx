@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, ArrowRight, Clock, BookOpen } from 'lucide-react'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { getPostBySlug, getAllSlugs, getAllPosts, getClusterStyle } from '@/lib/blog'
+import { getPostBySlug, getAllSlugs, getAllPosts, getClusterStyle, buildSlugMap } from '@/lib/blog'
 import { renderMarkdown } from '@/lib/markdown'
 import { notFound } from 'next/navigation'
 import { Navbar } from '@/components/marketing/Navbar'
@@ -41,9 +41,8 @@ export default async function BlogPostPage({ params }: Props) {
 
   const readTime = Math.max(1, Math.round(post.wordCount / 200))
   const cs = getClusterStyle(post.cluster)
-  const htmlContent = renderMarkdown(post.content)
-
   const allPosts = getAllPosts()
+  const htmlContent = renderMarkdown(post.content, buildSlugMap(allPosts))
   // getAllPosts returns normalized clusters; find the normalized cluster for this post
   const thisPostMeta = allPosts.find(p => p.slug === slug)
   const normalizedCluster = thisPostMeta?.cluster ?? post.cluster

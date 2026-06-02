@@ -220,3 +220,28 @@ export function getClusterStyle(cluster: string): { bg: string; text: string } {
 export function getAllSlugs(): string[] {
   return getAllPosts().map((p) => p.slug)
 }
+
+// Known mismatches between [INTERNAL LINK: Title] text and actual post slugs
+export const LINK_ALIASES: Record<string, string> = {
+  'what is a one-stop licence':                     'what-is-one-stop-music-clearance',
+  'isrc codes explained':                           'isrc-codes-for-african-artists',
+  'sync licensing 101 the african composers guide': 'sync-licensing-101-african-composer-guide',
+  'how to prepare your stems for sync':             'how-to-prepare-stems-for-sync',
+}
+
+function normalizeKey(title: string): string {
+  return title.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, ' ').trim()
+}
+
+export function buildSlugMap(posts: PostMeta[]): Record<string, string> {
+  const map: Record<string, string> = {}
+  // Seed with known aliases first
+  for (const [k, v] of Object.entries(LINK_ALIASES)) {
+    map[k] = v
+  }
+  // Then add title → slug for every real post (may override aliases if titles match exactly)
+  for (const p of posts) {
+    map[normalizeKey(p.title)] = p.slug
+  }
+  return map
+}
