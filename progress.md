@@ -27,6 +27,43 @@
   - Overhauled dashboard EPK listing & editor interface.
   - Successfully ran full integration tests and Playwright smoke testing with 100% success.
 
+## Session: 2026-05-26
+
+### Phase 7: Dakol-AI-OS Intelligence Bridge
+- **Status:** complete
+- Actions taken:
+  - Switched development to the tracked `dev/dakol` branch.
+  - Added a server-side Dakol-AI-OS bridge service that calls the local SyncMaster OS CLI with JSON arguments.
+  - Routed AI tagger requests through a root `agents/metadata-tagger.ts` agent, using Dakol-AI-OS first with the existing app AI tagger as fallback.
+  - Updated composer matching to use Dakol-AI-OS deterministic brief matching first, with Claude matching preserved as fallback.
+  - Added submission sync-fit analysis after submission creation, writing best-effort AI score/reason/analysis fields.
+  - Documented Phase 7 bridge environment variables in `ENV.md`.
+  - Added a Playwright API spec for the tagger route.
+- External dependency:
+  - Dakol-AI-OS now exposes `scripts/os_cli.py syncmaster match-brief` for the bridge.
+- Verification so far:
+  - Dakol-AI-OS targeted CLI/tool/matching tests pass with 15 tests.
+  - Dakol-AI-OS full test discovery passes with 93 tests.
+  - Syncmaster-Live `npm run type-check` passes.
+  - Syncmaster-Live `npm run build` passes.
+  - Syncmaster-Live `npx playwright test tests/ai-tagger-api.spec.ts` passes with 2 tests.
+
+### Phase 8A/8B: Real Audio Analysis + Optional Model Hooks
+- **Status:** complete
+- Actions taken:
+  - Added multipart audio upload support to `/api/ai/tagger` with Node runtime temp-file handling and cleanup.
+  - Updated the tagger UI to send the selected audio file plus parsed metadata during analysis.
+  - Extended the SyncMaster OS bridge to call Dakol-AI-OS `syncmaster analyze-audio`.
+  - Extended `TrackTags` with optional confidence, warnings, source, and model-assisted fields while preserving the existing response contract.
+  - Documented optional model/audio env flags in `ENV.md`.
+- External dependency:
+  - Dakol-AI-OS now provides a preferred lazy `librosa` backend, standard-library WAV fallback, optional ffmpeg conversion for non-WAV files, and disabled-by-default model tagging hooks.
+- Verification:
+  - Dakol-AI-OS full test discovery passes with 98 tests.
+  - Syncmaster-Live `npm run type-check` passes.
+  - Syncmaster-Live `npm run build` passes.
+  - Syncmaster-Live `npx playwright test tests/ai-tagger-api.spec.ts` passes with 3 tests.
+
 ## 5-Question Reboot Check
 | Question | Answer |
 |----------|--------|

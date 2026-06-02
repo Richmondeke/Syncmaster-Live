@@ -1,9 +1,8 @@
-'use client'
-
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, CheckCircle2, Mic2, FileText, Radio, BarChart3, Sparkles, Globe2, Music2, Send } from 'lucide-react'
-import { buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/lib/button-variants'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 export const metadata = {
   title: "For Composers — SyncMaster",
@@ -97,6 +96,7 @@ export default function ComposersPage() {
           </div>
           <div className="flex items-center gap-4">
             <Link href="/login" className="text-sm font-bold hover:text-primary transition-colors">Login</Link>
+            <ThemeToggle />
             <Link href="/signup" className={buttonVariants({ variant: "default", size: "sm" }) + " rounded-full px-6 font-bold"}>
               Get early access
             </Link>

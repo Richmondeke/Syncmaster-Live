@@ -1,9 +1,8 @@
-'use client'
-
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, CheckCircle2, Film, Sparkles, Shield, Clock, BarChart3, Users, FileSearch, Zap } from 'lucide-react'
-import { buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/lib/button-variants'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 export const metadata = {
   title: "For Supervisors — SyncMaster",
@@ -97,6 +96,7 @@ export default function SupervisorsPage() {
           </div>
           <div className="flex items-center gap-4">
             <Link href="/login" className="text-sm font-bold hover:text-primary transition-colors">Login</Link>
+            <ThemeToggle />
             <Link href="/signup" className={buttonVariants({ variant: "default", size: "sm" }) + " rounded-full px-6 font-bold"}>
               Get early access
             </Link>
@@ -108,18 +108,18 @@ export default function SupervisorsPage() {
         {/* Hero */}
         <section className="relative pt-20 pb-32 overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[700px] pointer-events-none">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full opacity-50" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-primary/10 blur-[120px] rounded-full opacity-50" />
           </div>
 
           <div className="max-w-screen-2xl w-full mx-auto px-6 relative z-10">
             <div className="flex flex-col items-center text-center gap-10 max-w-4xl mx-auto">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-bold uppercase tracking-wider animate-in fade-in slide-in-from-bottom-2 duration-500">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider animate-in fade-in slide-in-from-bottom-2 duration-500">
                 <Film className="w-3.5 h-3.5" />
                 For Music Supervisors &amp; Producers
               </div>
 
               <h1 className="text-6xl md:text-7xl font-black tracking-[-0.04em] leading-[1.1] animate-in fade-in slide-in-from-bottom-4 duration-700">
-                Stop sifting. Start placing <span className="text-emerald-500 italic">great African music.</span>
+                Stop sifting. Start placing <span className="text-primary italic">great African music.</span>
               </h1>
 
               <p className="text-xl md:text-2xl text-muted-foreground font-medium tracking-tight leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-1000">
@@ -129,7 +129,7 @@ export default function SupervisorsPage() {
               <div className="flex flex-wrap items-center justify-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                 <Link
                   href="/signup"
-                  className={buttonVariants({ size: "lg" }) + " h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-emerald-500/20 gap-2 bg-emerald-500 hover:bg-emerald-600 text-white"}
+                  className={buttonVariants({ size: "lg" }) + " h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 gap-2"}
                 >
                   Post your first brief
                   <ArrowRight className="w-5 h-5" />
@@ -163,7 +163,7 @@ export default function SupervisorsPage() {
                 </p>
               </div>
               <div className="flex flex-col gap-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-bold uppercase tracking-wider w-fit">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider w-fit">
                   <Zap className="w-3 h-3" />
                   The SyncMaster way
                 </div>
@@ -186,7 +186,7 @@ export default function SupervisorsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {steps.map((step) => (
                 <div key={step.number} className="flex flex-col gap-4 p-8 rounded-[2rem] bg-card border border-border">
-                  <span className="text-5xl font-black text-emerald-500/20 leading-none">{step.number}</span>
+                  <span className="text-5xl font-black text-primary/20 leading-none">{step.number}</span>
                   <h3 className="text-xl font-black tracking-tight">{step.title}</h3>
                   <p className="text-muted-foreground leading-relaxed text-sm">{step.description}</p>
                 </div>
@@ -221,14 +221,14 @@ export default function SupervisorsPage() {
         {/* CTA */}
         <section className="py-32 border-t border-border">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <div className="flex flex-col items-center text-center gap-8 p-16 rounded-[3rem] bg-emerald-500/5 border border-emerald-500/20 relative overflow-hidden">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
+            <div className="flex flex-col items-center text-center gap-8 p-16 rounded-[3rem] bg-primary/5 border border-primary/20 relative overflow-hidden">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
               <div className="relative z-10 flex flex-col items-center gap-6">
                 <h2 className="text-4xl md:text-5xl font-black tracking-tight max-w-2xl">Your next brief deserves the right music.</h2>
                 <p className="text-lg text-muted-foreground max-w-xl">Post your brief today. We&apos;ll have curated matches for you within days.</p>
                 <Link
                   href="/signup"
-                  className={buttonVariants({ size: "lg" }) + " h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-emerald-500/20 gap-2 bg-emerald-500 hover:bg-emerald-600 text-white"}
+                  className={buttonVariants({ size: "lg" }) + " h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 gap-2"}
                 >
                   Post your first brief
                   <ArrowRight className="w-5 h-5" />

@@ -1,4 +1,5 @@
 import { ai } from '@/services/ai'
+import { matchBriefWithOs, type BriefMatch } from './syncmaster-intelligence'
 
 const SONNET_MODEL = 'claude-sonnet-4-20250514'
 
@@ -45,6 +46,14 @@ export async function matchComposers(
     bio: c.bio ?? 'No bio provided',
     tags: c.ai_tags ?? [],
   }))
+
+  try {
+    const matches = await matchBriefWithOs(toOsBrief(brief), composerList, composers.length)
+    const ranked = mapOsMatches(matches, composers)
+    if (ranked.length > 0) return ranked
+  } catch (error) {
+    console.warn('[matchComposers] Dakol-AI-OS bridge unavailable. Falling back to Claude matcher.', error)
+  }
 
   const budgetStr =
     brief.budget_min != null && brief.budget_max != null
@@ -119,6 +128,34 @@ Return all composers ranked best to worst. For each:
       match_score: ranking.score,
       match_reason: ranking.match_reason,
       confidence: ranking.confidence,
+    }))
+    .sort((a, b) => b.match_score - a.match_score)
+}
+
+function toOsBrief(brief: BriefInput): Record<string, unknown> {
+  return {
+    title: brief.title,
+    description: brief.description,
+    genres: brief.genres ?? [],
+    budget_min: brief.budget_min,
+    budget_max: brief.budget_max,
+    keywords: [brief.title, brief.description, ...(brief.genres ?? [])].filter(Boolean),
+  }
+}
+
+function mapOsMatches(matches: BriefMatch[], composers: ComposerInput[]): RankedComposer[] {
+  const validIds = new Set(composers.map((composer) => composer.id))
+
+  return matches
+    .filter((match) => {
+      const id = match.candidate.id
+      return typeof id === 'string' && validIds.has(id)
+    })
+    .map((match) => ({
+      composer_id: match.candidate.id as string,
+      match_score: Number((Math.max(0, Math.min(100, match.score)) / 10).toFixed(2)),
+      match_reason: match.reasons.join('; '),
+      confidence: Math.max(0.1, Math.min(1, match.score / 100)),
     }))
     .sort((a, b) => b.match_score - a.match_score)
 }

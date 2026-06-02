@@ -207,17 +207,25 @@ export default function TaggerPage() {
     setResults(null)
     
     try {
+      const metadata = {
+        filename: selectedFile.name,
+        title: title || selectedFile.name,
+        artist: artist || undefined,
+        description: description || undefined,
+        duration: binaryMeta?.duration,
+        sampleRate: binaryMeta?.sampleRate,
+        bitrate: binaryMeta?.bitrate,
+        album: binaryMeta?.album,
+        year: binaryMeta?.year,
+        isrc: binaryMeta?.isrc,
+      }
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+      formData.append('metadata', JSON.stringify(metadata))
+
       const response = await fetch('/api/ai/tagger', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          metadata: {
-            filename: selectedFile.name,
-            title: title || selectedFile.name,
-            artist: artist || undefined,
-            description: description || undefined
-          }
-        })
+        body: formData
       })
       
       if (!response.ok) {
@@ -629,4 +637,3 @@ export default function TaggerPage() {
     </div>
   )
 }
-

@@ -19,6 +19,7 @@ declare module 'lucide-react' {
   export const ArrowUpRight: LucideIcon;
   export const Award: LucideIcon;
   export const BarChart3: LucideIcon;
+  export const BookOpen: LucideIcon;
   export const Briefcase: LucideIcon;
   export const Building2: LucideIcon;
   export const Calendar: LucideIcon;
@@ -98,6 +99,8 @@ declare module 'lucide-react' {
   export const SkipForward: LucideIcon;
   export const Sparkles: LucideIcon;
   export const Star: LucideIcon;
+  export const Sun: LucideIcon;
+  export const Moon: LucideIcon;
   export const Tag: LucideIcon;
   export const Trash2: LucideIcon;
   export const TrendingUp: LucideIcon;

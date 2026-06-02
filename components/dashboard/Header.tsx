@@ -2,6 +2,7 @@
 
 import { useTransition } from 'react'
 import { LogOut } from 'lucide-react'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import { usePathname } from 'next/navigation'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
@@ -89,6 +90,7 @@ export function Header({ user }: Props) {
       </div>
 
       <div className="flex items-center justify-end gap-3">
+        <ThemeToggle />
 
         <DropdownMenu>
           <DropdownMenuTrigger

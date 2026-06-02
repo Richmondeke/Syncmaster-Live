@@ -42,7 +42,7 @@ export default function LoginPage() {
         </CardHeader>
 
         <form action={formAction}>
-          <CardContent className="space-y-5 px-8">
+          <CardContent className="space-y-5 px-8 pb-2">
             {state.error && (
               <p role="alert" className="rounded-2xl bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive animate-in fade-in slide-in-from-top-2">
                 {state.error}

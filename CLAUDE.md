@@ -39,6 +39,7 @@ The product wedge is the African composer to global brief corridor: human curati
 | Storage | Supabase Storage |
 | Email | Resend + React Email |
 | AI | Anthropic Messages API through `services/ai.ts` only |
+| Theme | `next-themes` — SSR-safe class-based dark/light toggle, FOUC prevention |
 | Deployment | Vercel |
 
 ---

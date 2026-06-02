@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, Zap, Shield, Globe, Layers, Sparkles, Mic2, Film } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 export default function LandingPage() {
   return (
@@ -30,6 +31,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-4">
             <Link href="/login" className="text-sm font-bold hover:text-primary transition-colors">Login</Link>
+            <ThemeToggle />
             <Link
               href="/signup"
               className={buttonVariants({ variant: "default", size: "sm" }) + " rounded-full px-6 font-bold"}

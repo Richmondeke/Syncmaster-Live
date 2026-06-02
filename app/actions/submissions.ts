@@ -1,9 +1,11 @@
 'use server'
 
+import { randomUUID } from 'node:crypto'
 import { createClient } from '@/lib/supabase/server'
 import { getSessionUser } from '@/lib/supabase/session'
 import { revalidatePath } from 'next/cache'
 import { assertSubmissionAllowed } from '@/core/workflows/submission-workflow'
+import { analyzeSubmissionSyncFit } from '@/agents/sync-fit-recommender'
 
 export type SubmissionFormState = { error: string | null }
 
@@ -36,7 +38,9 @@ export async function submitTrack(
     return { error: err instanceof Error ? err.message : 'Submission not allowed' }
   }
 
+  const submissionId = randomUUID()
   const { error } = await supabase.from('submissions').insert({
+    id: submissionId,
     brief_id: briefId,
     composer_id: composer.id,
     track_url: trackUrl,
@@ -45,6 +49,8 @@ export async function submitTrack(
   })
 
   if (error) return { error: error.message }
+
+  await analyzeSubmissionSyncFit(submissionId)
 
   revalidatePath(`/dashboard/briefs/${briefId}`)
   return { error: null }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import { ToastProvider } from "@/components/Toast";
 import { FirebaseProvider } from "@/components/providers/FirebaseProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -46,9 +47,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`h-full antialiased ${dmSans.variable}`}>
       <body className="min-h-full flex flex-col font-sans">
-        <ToastProvider>
-          <FirebaseProvider>{children}</FirebaseProvider>
-        </ToastProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ToastProvider>
+            <FirebaseProvider>{children}</FirebaseProvider>
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

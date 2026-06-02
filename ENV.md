@@ -26,6 +26,11 @@
 
 | Variable | Status |
 |----------|--------|
+| `DAKOL_AI_OS_PATH` | Optional local path to Dakol-AI-OS for Phase 7 SyncMaster intelligence bridge. Defaults to `../Dakol-AI-OS/Dakol-AI-OS` from the Syncmaster-Live root. |
+| `DAKOL_AI_OS_PYTHON` | Optional Python executable for the Dakol-AI-OS bridge. Defaults to the OS venv Python when present, then `python3`. |
+| `DAKOL_AI_OS_TIMEOUT_MS` | Optional timeout for local Dakol-AI-OS CLI calls. Defaults to `15000`. |
+| `SYNCMASTER_AUDIO_TAGGER` | Optional Dakol-AI-OS Phase 8B model tagger mode. Defaults to `none`; future values include `huggingface`. |
+| `SYNCMASTER_HF_AUDIO_MODEL` | Optional Hugging Face model id for future model-assisted audio tagging. |
 | `AWS_REGION` | Legacy Bedrock experiment; not active baseline |
 | `AWS_ACCESS_KEY_ID` | Legacy Bedrock experiment; not active baseline |
 | `AWS_SECRET_ACCESS_KEY` | Legacy Bedrock experiment; not active baseline |
