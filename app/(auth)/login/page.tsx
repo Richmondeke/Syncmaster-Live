@@ -15,6 +15,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import Image from 'next/image'
+import { Navbar } from '@/components/marketing/Navbar'
+import { Footer } from '@/components/marketing/Footer'
 
 const initialState: AuthState = { error: null }
 
@@ -22,88 +24,98 @@ export default function LoginPage() {
   const [state, formAction, pending] = useActionState(signIn, initialState)
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 font-sans selection:bg-primary/30">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,153,255,0.05),transparent_50%)] pointer-events-none" />
-      
-      <Card className="w-full max-w-sm bg-white/80 backdrop-blur-xl border-black/10 rounded-[2.5rem] shadow-2xl relative z-10 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+    <div className="min-h-screen flex flex-col bg-background font-sans selection:bg-primary/20">
+      <main className="flex-1 flex items-center justify-center px-4 relative overflow-hidden py-12">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,153,255,0.05),transparent_50%)] pointer-events-none" />
         
-        <CardHeader className="text-center space-y-3 pt-10">
-          <div className="mx-auto relative w-48 h-12 mb-4">
-            <Image 
-              src="/syncmasterwhite.png" 
-              alt="SyncMaster Logo" 
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-          <CardDescription className="text-black/50 font-medium">Welcome back to the sync hub</CardDescription>
-        </CardHeader>
-
-        <form action={formAction}>
-          <CardContent className="space-y-5 px-8 pb-2">
-            {state.error && (
-              <p role="alert" className="rounded-2xl bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive animate-in fade-in slide-in-from-top-2">
-                {state.error}
-              </p>
-            )}
-
-            <div className="space-y-2.5">
-              <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-black/50 ml-1">Email address</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                autoComplete="email"
-                required
-                className="bg-black/5 border-black/10 text-black rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-black/30"
+        <Card className="w-full max-w-sm bg-card/80 backdrop-blur-xl border-border rounded-[2.5rem] shadow-2xl relative z-10 overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+          
+          <CardHeader className="text-center space-y-3 pt-10">
+            <div className="mx-auto relative w-48 h-12 mb-4">
+              <Image
+                src="/syncmaster-logo-light.svg"
+                alt="SyncMaster Logo"
+                fill
+                className="object-contain dark:hidden"
+                priority
+              />
+              <Image
+                src="/syncmaster-logo-dark.svg"
+                alt="SyncMaster Logo"
+                fill
+                className="object-contain hidden dark:block"
+                priority
               />
             </div>
+            <CardDescription className="text-muted-foreground font-medium">Welcome back to the sync hub</CardDescription>
+          </CardHeader>
 
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between ml-1">
-                <Label htmlFor="password" className="text-xs font-semibold uppercase tracking-widest text-black/50">Password</Label>
-                <Link href="#" className="text-xs font-medium text-primary/80 hover:text-primary transition-colors">Forgot?</Link>
+          <form action={formAction}>
+            <CardContent className="space-y-5 px-8 pb-2">
+              {state.error && (
+                <p role="alert" className="rounded-2xl bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive animate-in fade-in slide-in-from-top-2">
+                  {state.error}
+                </p>
+              )}
+
+              <div className="space-y-2.5">
+                <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground ml-1">Email address</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  required
+                  className="bg-muted/50 border-border text-foreground rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-muted-foreground/30"
+                />
               </div>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="bg-black/5 border-black/10 text-black rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-black/30"
-              />
-            </div>
-          </CardContent>
 
-          <CardFooter className="flex flex-col gap-6 pt-6 pb-10 px-8">
-            <Button 
-              type="submit" 
-              className="w-full h-12 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-base transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100" 
-              disabled={pending}
-            >
-              {pending ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Signing in…</span>
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between ml-1">
+                  <Label htmlFor="password" title="At least 8 characters" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Password</Label>
+                  <Link href="#" className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">Forgot?</Link>
                 </div>
-              ) : 'Sign in'}
-            </Button>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="bg-muted/50 border-border text-foreground rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-muted-foreground/30"
+                />
+              </div>
+            </CardContent>
 
-            <p className="text-center text-sm text-black/50">
-              New here?{' '}
-              <Link
-                href="/signup"
-                className="text-black font-semibold hover:text-primary transition-colors underline-offset-4 hover:underline"
+            <CardFooter className="flex flex-col gap-6 pt-6 pb-10 px-8">
+              <Button 
+                type="submit" 
+                className="w-full h-12 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100" 
+                disabled={pending}
               >
-                Create an account
-              </Link>
-            </p>
-          </CardFooter>
-        </form>
-      </Card>
+                {pending ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                    <span>Signing in…</span>
+                  </div>
+                ) : 'Sign in'}
+              </Button>
+
+              <p className="text-center text-sm text-muted-foreground">
+                New here?{' '}
+                <Link
+                  href="/signup"
+                  className="text-foreground font-semibold hover:text-primary transition-colors underline-offset-4 hover:underline"
+                >
+                  Create an account
+                </Link>
+              </p>
+            </CardFooter>
+          </form>
+        </Card>
+      </main>
+      <Footer />
     </div>
   )
 }

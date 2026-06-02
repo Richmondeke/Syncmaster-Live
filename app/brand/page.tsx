@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowDownToLine } from 'lucide-react'
+import { Navbar } from '@/components/marketing/Navbar'
+import { Footer } from '@/components/marketing/Footer'
 
 export const metadata = {
   title: "Brand Assets — SyncMaster",
@@ -20,27 +22,7 @@ export default function BrandPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary/20 font-sans">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
-        <div className="max-w-screen-2xl w-full mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-40 h-10 transition-transform group-hover:scale-105">
-              <Image src="/syncmasterwhite.png" alt="SyncMaster Logo" fill className="object-contain" priority />
-            </div>
-          </Link>
-          <div className="hidden md:flex items-center gap-10">
-            <Link href="/#features" className="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors">Features</Link>
-            <Link href="/#solutions" className="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors">Solutions</Link>
-            <Link href="/composers" className="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors">For Composers</Link>
-            <Link href="/supervisors" className="text-sm font-bold text-muted-foreground hover:text-foreground transition-colors">For Supervisors</Link>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="text-sm font-bold hover:text-primary transition-colors">Login</Link>
-            <Link href="/signup" className="text-sm font-bold bg-primary text-primary-foreground rounded-full px-6 py-2 hover:bg-primary/90 transition-colors">
-              Get early access
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       <main className="flex-1 pt-20">
         {/* Header */}
@@ -65,7 +47,7 @@ export default function BrandPage() {
               <div className="flex flex-col gap-6 rounded-[2rem] border border-border bg-card overflow-hidden">
                 <div className="flex items-center justify-center p-16 bg-[#0f0f1a] min-h-[200px]">
                   <div className="relative w-56 h-14">
-                    <Image src="/syncmasterwhite.png" alt="SyncMaster Logo (Light)" fill className="object-contain" />
+                    <Image src="/syncmaster-logo-light.svg" alt="SyncMaster Logo (Light)" fill className="object-contain" />
                   </div>
                 </div>
                 <div className="p-8 pt-0 flex flex-col gap-4">
@@ -74,12 +56,12 @@ export default function BrandPage() {
                     <p className="text-sm text-muted-foreground mt-1">Use on dark or colored backgrounds.</p>
                   </div>
                   <a
-                    href="/syncmasterwhite.png"
+                    href="/syncmaster-logo-light.svg"
                     download
                     className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary/80 transition-colors"
                   >
                     <ArrowDownToLine className="w-4 h-4" />
-                    Download PNG
+                    Download SVG
                   </a>
                 </div>
               </div>
@@ -88,7 +70,7 @@ export default function BrandPage() {
               <div className="flex flex-col gap-6 rounded-[2rem] border border-border bg-card overflow-hidden">
                 <div className="flex items-center justify-center p-16 bg-white min-h-[200px]">
                   <div className="relative w-56 h-14">
-                    <Image src="/Syncdark.png" alt="SyncMaster Logo (Dark)" fill className="object-contain" />
+                    <Image src="/syncmaster-logo-dark.svg" alt="SyncMaster Logo (Dark)" fill className="object-contain" />
                   </div>
                 </div>
                 <div className="p-8 pt-0 flex flex-col gap-4">
@@ -97,12 +79,12 @@ export default function BrandPage() {
                     <p className="text-sm text-muted-foreground mt-1">Use on white or light backgrounds.</p>
                   </div>
                   <a
-                    href="/Syncdark.png"
+                    href="/syncmaster-logo-dark.svg"
                     download
                     className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary/80 transition-colors"
                   >
                     <ArrowDownToLine className="w-4 h-4" />
-                    Download PNG
+                    Download SVG
                   </a>
                 </div>
               </div>
@@ -209,26 +191,7 @@ export default function BrandPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border py-20 bg-card">
-        <div className="max-w-screen-2xl w-full mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
-          <div className="flex flex-col gap-4 items-center md:items-start">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="relative w-32 h-8">
-                <Image src="/syncmasterwhite.png" alt="SyncMaster Logo" fill className="object-contain" />
-              </div>
-            </Link>
-            <p className="text-sm text-muted-foreground font-medium">© 2026 SyncMaster Operations. All rights reserved.</p>
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-8 text-sm font-bold text-muted-foreground">
-            <Link href="/composers" className="hover:text-foreground transition-colors">For Composers</Link>
-            <Link href="/supervisors" className="hover:text-foreground transition-colors">For Supervisors</Link>
-            <Link href="/brand" className="text-foreground">Brand Assets</Link>
-            <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
-            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
-            <Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

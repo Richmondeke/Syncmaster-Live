@@ -23,8 +23,24 @@ function processInline(text: string): string {
   text = text.replace(/\*(.+?)\*/g, '<em>$1</em>')
   // Inline code: `code`
   text = text.replace(/`([^`]+)`/g, '<code class="font-mono text-sm bg-muted px-1.5 py-0.5 rounded text-primary">$1</code>')
+  
+  // Images: ![alt text](url)
+  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="rounded-xl border border-border my-8 w-full object-cover shadow-sm" />')
+
+  // Internal Links: [INTERNAL LINK: What is a one-stop licence?]
+  text = text.replace(/\[INTERNAL LINK:\s*([^\]]+)\]/g, (match, title) => {
+    const slug = title.toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+    return `<a href="/blog/${slug}" class="inline-flex items-center gap-1.5 font-bold text-primary hover:text-primary/80 underline decoration-primary/30 underline-offset-4 decoration-2 transition-all">
+      ${title}
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+    </a>`
+  })
+
   // Links: [text](url)
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors">$1</a>')
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary font-bold underline decoration-primary/30 underline-offset-4 decoration-2 hover:decoration-primary transition-all">$1</a>')
+  
   return text
 }
 

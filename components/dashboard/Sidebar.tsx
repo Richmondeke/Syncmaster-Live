@@ -302,7 +302,7 @@ export function Sidebar({ role, fullName }: Props) {
       >
         <div className="flex h-20 shrink-0 items-center px-8">
           <Image
-            src="/Syncdark.png"
+            src="/syncmaster-lockup-white.svg"
             alt="SyncMaster Logo"
             width={120 * 1.5}
             height={40 * 1.5}

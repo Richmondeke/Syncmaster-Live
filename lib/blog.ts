@@ -3,6 +3,61 @@ import path from 'path'
 
 const BLOG_DIR = path.join(process.cwd(), 'content', 'blog')
 
+const CLUSTER_MAP: Record<string, string> = {
+  // Composer Stories
+  'Artist Stories': 'Composer Stories',
+  'Composers like Tunde': 'Composer Stories',
+
+  // Supervisor Side
+  'Music Supervisor Side': 'Supervisor Side',
+  'Head of Sync': 'Supervisor Side',
+
+  // Proof & Placements
+  'Proof/Placements': 'Proof & Placements',
+  'Proof': 'Proof & Placements',
+  'Case Studies': 'Proof & Placements',
+
+  // African Music
+  'African Music Infrastructure': 'African Music',
+  'C — African Music Infrastructure & Market': 'African Music',
+  'Amapiano Culture': 'African Music',
+  'Diaspora': 'African Music',
+  'Culture': 'African Music',
+
+  // Education
+  'Education': 'Education',
+  'Licensing Education': 'Education',
+  'Definitions': 'Education',
+  'How-To': 'Education',
+  'Technical/Metadata': 'Education',
+  'Product': 'Education',
+  'Sync licensing fundamentals': 'Education',
+  'Pillar Keywords': 'Education',
+  'Publishing': 'Education',
+  'Royalty Collection': 'Education',
+  'Long-tail Qs': 'Education',
+  'Action Intent': 'Education',
+  'Problem Awareness': 'Education',
+
+  // Industry (catch-all)
+  'Industry': 'Industry',
+  'default': 'Industry',
+  'Market News': 'Industry',
+  'Income': 'Industry',
+  'Gaming': 'Industry',
+  'Genre Sync': 'Industry',
+  'Film & TV': 'Industry',
+  'Film & TV Sync': 'Industry',
+  'Advertising': 'Industry',
+  'Sports Sync': 'Industry',
+  'Behind the Scenes': 'Industry',
+  'Relationships': 'Industry',
+}
+
+function normalizeCluster(raw: string): string {
+  return CLUSTER_MAP[raw] ?? 'Industry'
+}
+
 export interface PostMeta {
   slug: string
   title: string
@@ -12,6 +67,7 @@ export interface PostMeta {
   persona: string
   wordCount: number
   excerpt: string
+  coverImage?: string
 }
 
 export interface Post extends PostMeta {
@@ -78,10 +134,11 @@ export function getAllPosts(): PostMeta[] {
       title: data.title || slug,
       publishDate: data.publishDate || '',
       keyword: data.keyword || '',
-      cluster: data.cluster || 'General',
+      cluster: normalizeCluster(data.cluster || 'default'),
       persona: data.persona || '',
       wordCount: parseInt(data.wordCount || data.word_count_target || '1000', 10),
       excerpt: extractExcerpt(content),
+      coverImage: data.coverImage || undefined,
     }
   })
 
@@ -101,20 +158,26 @@ export function getPostBySlug(slug: string): Post | null {
   for (const filename of files) {
     const raw = fs.readFileSync(path.join(BLOG_DIR, filename), 'utf8')
     const { data, content } = parseFrontmatter(raw)
+const fileSlug = data.slug || filename.replace(/\.md$/, '')
+if (fileSlug !== slug) continue
 
-    const fileSlug = data.slug || filename.replace(/\.md$/, '')
-    if (fileSlug !== slug) continue
+// Strip internal metadata (Social Bridge)
+let cleanContent = content
+const socialBridgeIdx = content.indexOf('## Social Bridge')
+if (socialBridgeIdx !== -1) {
+  cleanContent = content.slice(0, socialBridgeIdx).trim()
+}
 
-    return {
-      slug: fileSlug,
-      title: data.title || fileSlug,
-      publishDate: data.publishDate || '',
-      keyword: data.keyword || '',
-      cluster: data.cluster || 'General',
-      persona: data.persona || '',
-      wordCount: parseInt(data.wordCount || data.word_count_target || '1000', 10),
-      excerpt: extractExcerpt(content),
-      content,
+return {
+  slug: fileSlug,
+  title: data.title || fileSlug,
+  publishDate: data.publishDate || '',
+  keyword: data.keyword || '',
+  cluster: normalizeCluster(data.cluster || 'default'),
+  persona: data.persona || '',
+  wordCount: parseInt(data.wordCount || data.word_count_target || '1000', 10),
+  excerpt: extractExcerpt(cleanContent),
+  content: cleanContent,
     }
   }
 
@@ -132,18 +195,20 @@ export function formatDate(dateStr: string): string {
 }
 
 export type ClusterKey =
-  | 'Pillar Keywords'
-  | 'Case Studies'
-  | 'Licensing Education'
-  | 'Technical/Metadata'
-  | 'African Music Infrastructure'
+  | 'Composer Stories'
+  | 'Supervisor Side'
+  | 'Proof & Placements'
+  | 'African Music'
+  | 'Education'
+  | 'Industry'
 
 const CLUSTER_STYLES: Record<string, { bg: string; text: string }> = {
-  'Pillar Keywords': { bg: 'bg-primary/10', text: 'text-primary' },
-  'Case Studies': { bg: 'bg-emerald-500/10', text: 'text-emerald-500' },
-  'Licensing Education': { bg: 'bg-orange-500/10', text: 'text-orange-500' },
-  'Technical/Metadata': { bg: 'bg-sky-500/10', text: 'text-sky-500' },
-  'African Music Infrastructure': { bg: 'bg-fuchsia-500/10', text: 'text-fuchsia-500' },
+  'Composer Stories':   { bg: 'bg-primary/10',      text: 'text-primary' },
+  'Supervisor Side':    { bg: 'bg-sky-500/10',       text: 'text-sky-500' },
+  'Proof & Placements': { bg: 'bg-emerald-500/10',   text: 'text-emerald-500' },
+  'African Music':      { bg: 'bg-fuchsia-500/10',   text: 'text-fuchsia-500' },
+  'Education':          { bg: 'bg-orange-500/10',    text: 'text-orange-500' },
+  'Industry':           { bg: 'bg-muted',            text: 'text-muted-foreground' },
 }
 
 const DEFAULT_STYLE = { bg: 'bg-muted', text: 'text-muted-foreground' }

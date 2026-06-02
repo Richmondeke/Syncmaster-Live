@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/card'
 import { CheckCircle2 } from 'lucide-react'
 import Image from 'next/image'
+import { Footer } from '@/components/marketing/Footer'
 
 const initialState: AuthState = { error: null }
 
@@ -23,125 +24,135 @@ export default function SignupPage() {
   const [state, formAction, pending] = useActionState(signUp, initialState)
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 py-12 font-sans selection:bg-primary/30">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,153,255,0.05),transparent_50%)] pointer-events-none" />
+    <div className="min-h-screen flex flex-col bg-background font-sans selection:bg-primary/20">
+      <main className="flex-1 flex items-center justify-center px-4 py-12 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,153,255,0.05),transparent_50%)] pointer-events-none" />
 
-      <Card className="w-full max-w-sm bg-white/80 backdrop-blur-xl border-black/10 rounded-[2.5rem] shadow-2xl relative z-10 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-        
-        <CardHeader className="text-center space-y-3 pt-10">
-          <div className="mx-auto relative w-48 h-12 mb-4">
-            <Image 
-              src="/syncmasterwhite.png" 
-              alt="SyncMaster Logo" 
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-          <CardTitle className="text-2xl font-bold tracking-tighter text-black mt-2">Create an account</CardTitle>
-          <CardDescription className="text-black/50 font-medium">Create your gateway to the industry</CardDescription>
-        </CardHeader>
-
-        <form action={formAction}>
-          <CardContent className="space-y-5 px-8 pb-2">
-            {state.error && (
-              <p role="alert" className="rounded-2xl bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive animate-in fade-in slide-in-from-top-2">
-                {state.error}
-              </p>
-            )}
-
-            <div className="space-y-2.5">
-              <Label htmlFor="full_name" className="text-xs font-semibold uppercase tracking-widest text-black/50 ml-1">Full name</Label>
-              <Input
-                id="full_name"
-                name="full_name"
-                type="text"
-                placeholder="Hans Zimmer"
-                autoComplete="name"
-                required
-                className="bg-black/5 border-black/10 text-black rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-black/30"
+        <Card className="w-full max-w-sm bg-card/80 backdrop-blur-xl border-border rounded-[2.5rem] shadow-2xl relative z-10 overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+          
+          <CardHeader className="text-center space-y-3 pt-10">
+            <div className="mx-auto relative w-48 h-12 mb-4">
+              <Image
+                src="/syncmaster-logo-light.svg"
+                alt="SyncMaster Logo"
+                fill
+                className="object-contain dark:hidden"
+                priority
+              />
+              <Image
+                src="/syncmaster-logo-dark.svg"
+                alt="SyncMaster Logo"
+                fill
+                className="object-contain hidden dark:block"
+                priority
               />
             </div>
+            <CardTitle className="text-2xl font-bold tracking-tighter text-foreground mt-2">Create an account</CardTitle>
+            <CardDescription className="text-muted-foreground font-medium">Create your gateway to the industry</CardDescription>
+          </CardHeader>
 
-            <div className="space-y-2.5">
-              <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-black/50 ml-1">Email address</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                autoComplete="email"
-                required
-                className="bg-black/5 border-black/10 text-black rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-black/30"
-              />
-            </div>
+          <form action={formAction}>
+            <CardContent className="space-y-5 px-8 pb-2">
+              {state.error && (
+                <p role="alert" className="rounded-2xl bg-destructive/10 border border-destructive/20 px-4 py-3 text-sm text-destructive animate-in fade-in slide-in-from-top-2">
+                  {state.error}
+                </p>
+              )}
 
-            <div className="space-y-2.5">
-              <Label htmlFor="password" title="At least 8 characters" className="text-xs font-semibold uppercase tracking-widest text-black/50 ml-1">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                minLength={8}
-                required
-                className="bg-black/5 border-black/10 text-black rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-black/30"
-              />
-            </div>
-
-            <div className="space-y-3 pt-2">
-              <Label className="text-xs font-semibold uppercase tracking-widest text-black/50 ml-1">I am a…</Label>
-              <div className="grid grid-cols-2 gap-3">
-                {(['composer', 'producer'] as const).map((role) => (
-                  <label key={role} className="relative flex cursor-pointer group">
-                    <input
-                      type="radio"
-                      name="role"
-                      value={role}
-                      className="peer sr-only"
-                      defaultChecked={role === 'composer'}
-                      required
-                    />
-                    <div className="w-full h-24 rounded-2xl border border-black/10 bg-black/5 flex flex-col items-center justify-center gap-2 transition-all group-hover:bg-black/[0.08] peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:ring-1 peer-checked:ring-primary/30">
-                      <div className="text-black font-bold capitalize text-sm">{role}</div>
-                      <CheckCircle2 className="w-4 h-4 text-primary opacity-0 peer-checked:opacity-100 transition-opacity" />
-                    </div>
-                  </label>
-                ))}
+              <div className="space-y-2.5">
+                <Label htmlFor="full_name" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground ml-1">Full name</Label>
+                <Input
+                  id="full_name"
+                  name="full_name"
+                  type="text"
+                  placeholder="Hans Zimmer"
+                  autoComplete="name"
+                  required
+                  className="bg-muted/50 border-border text-foreground rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-muted-foreground/30"
+                />
               </div>
-              <p className="text-[10px] text-black/40 text-center leading-relaxed px-2">
-                Composers apply to briefs. Producers post them.
-              </p>
-            </div>
-          </CardContent>
 
-          <CardFooter className="flex flex-col gap-6 pt-8 pb-10 px-8">
-            <Button 
-              type="submit" 
-              className="w-full h-12 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-base transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100" 
-              disabled={pending}
-            >
-              {pending ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Creating account…</span>
+              <div className="space-y-2.5">
+                <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground ml-1">Email address</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  required
+                  className="bg-muted/50 border-border text-foreground rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-muted-foreground/30"
+                />
+              </div>
+
+              <div className="space-y-2.5">
+                <Label htmlFor="password" title="At least 8 characters" className="text-xs font-semibold uppercase tracking-widest text-muted-foreground ml-1">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  minLength={8}
+                  required
+                  className="bg-muted/50 border-border text-foreground rounded-2xl h-12 px-4 focus:ring-primary/20 focus:border-primary/40 transition-all placeholder:text-muted-foreground/30"
+                />
+              </div>
+
+              <div className="space-y-3 pt-2">
+                <Label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground ml-1">I am a…</Label>
+                <div className="grid grid-cols-2 gap-3">
+                  {(['composer', 'producer'] as const).map((role) => (
+                    <label key={role} className="relative flex cursor-pointer group">
+                      <input
+                        type="radio"
+                        name="role"
+                        value={role}
+                        className="peer sr-only"
+                        defaultChecked={role === 'composer'}
+                        required
+                      />
+                      <div className="w-full h-24 rounded-2xl border border-border bg-muted/50 flex flex-col items-center justify-center gap-2 transition-all group-hover:bg-muted peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:ring-1 peer-checked:ring-primary/30">
+                        <div className="text-foreground font-bold capitalize text-sm">{role}</div>
+                        <CheckCircle2 className="w-4 h-4 text-primary opacity-0 peer-checked:opacity-100 transition-opacity" />
+                      </div>
+                    </label>
+                  ))}
                 </div>
-              ) : 'Create account'}
-            </Button>
+                <p className="text-[10px] text-muted-foreground text-center leading-relaxed px-2">
+                  Composers apply to briefs. Producers post them.
+                </p>
+              </div>
+            </CardContent>
 
-            <p className="text-center text-sm text-black/50">
-              Already a member?{' '}
-              <Link
-                href="/login"
-                className="text-black font-semibold hover:text-primary transition-colors underline-offset-4 hover:underline"
+            <CardFooter className="flex flex-col gap-6 pt-8 pb-10 px-8">
+              <Button 
+                type="submit" 
+                className="w-full h-12 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-base transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100" 
+                disabled={pending}
               >
-                Sign in
-              </Link>
-            </p>
-          </CardFooter>
-        </form>
-      </Card>
+                {pending ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                    <span>Creating account…</span>
+                  </div>
+                ) : 'Create account'}
+              </Button>
+
+              <p className="text-center text-sm text-muted-foreground">
+                Already a member?{' '}
+                <Link
+                  href="/login"
+                  className="text-foreground font-semibold hover:text-primary transition-colors underline-offset-4 hover:underline"
+                >
+                  Sign in
+                </Link>
+              </p>
+            </CardFooter>
+          </form>
+        </Card>
+      </main>
+      <Footer />
     </div>
   )
 }

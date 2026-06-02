@@ -48,21 +48,36 @@
   - Syncmaster-Live `npm run build` passes.
   - Syncmaster-Live `npx playwright test tests/ai-tagger-api.spec.ts` passes with 2 tests.
 
-### Phase 8A/8B: Real Audio Analysis + Optional Model Hooks
+### Phase 9: Marketing & Blog Site Expansion
 - **Status:** complete
+- **Started:** 2026-06-02
 - Actions taken:
-  - Added multipart audio upload support to `/api/ai/tagger` with Node runtime temp-file handling and cleanup.
-  - Updated the tagger UI to send the selected audio file plus parsed metadata during analysis.
-  - Extended the SyncMaster OS bridge to call Dakol-AI-OS `syncmaster analyze-audio`.
-  - Extended `TrackTags` with optional confidence, warnings, source, and model-assisted fields while preserving the existing response contract.
-  - Documented optional model/audio env flags in `ENV.md`.
-- External dependency:
-  - Dakol-AI-OS now provides a preferred lazy `librosa` backend, standard-library WAV fallback, optional ffmpeg conversion for non-WAV files, and disabled-by-default model tagging hooks.
-- Verification:
-  - Dakol-AI-OS full test discovery passes with 98 tests.
-  - Syncmaster-Live `npm run type-check` passes.
-  - Syncmaster-Live `npm run build` passes.
-  - Syncmaster-Live `npx playwright test tests/ai-tagger-api.spec.ts` passes with 3 tests.
+  - Finalized implementation of core marketing pages: `/about`, `/brand`, `/composers`, `/how-it-works`, `/platform`, `/supervisors`.
+  - Overhauled root landing page `app/page.tsx` with high-fidelity components and platform logos.
+  - Implemented a robust markdown-based blog system with 220+ generated posts.
+  - Centralized blog cluster styling in `lib/blog.ts` and refined `CategoryFilter` component.
+  - Created missing supplementary pages to ensure a complete public site: `/pricing`, `/contact`, `/stories`, `/terms`, `/privacy`.
+  - Verified all new pages with `npx tsc --noEmit`.
+- Files created/modified:
+  - `app/page.tsx`
+  - `app/about/page.tsx`
+  - `app/blog/page.tsx`
+  - `app/blog/[slug]/page.tsx`
+  - `app/brand/page.tsx`
+  - `app/composers/page.tsx`
+  - `app/how-it-works/page.tsx`
+  - `app/platform/page.tsx`
+  - `app/supervisors/page.tsx`
+  - `app/pricing/page.tsx`
+  - `app/contact/page.tsx`
+  - `app/stories/page.tsx`
+  - `app/terms/page.tsx`
+  - `app/privacy/page.tsx`
+  - `lib/blog.ts`
+  - `lib/markdown.ts`
+  - `components/blog/CategoryFilter.tsx`
+  - `components/marketing/Navbar.tsx`
+  - `components/marketing/Footer.tsx`
 
 ## 5-Question Reboot Check
 | Question | Answer |
