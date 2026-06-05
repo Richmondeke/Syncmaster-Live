@@ -22,7 +22,7 @@ export default function BlogPage() {
         {/* Hero */}
         <section className="pt-24 pb-20 border-b border-border">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <div className="max-w-3xl">
+            <div className="max-w-3xl mx-auto flex flex-col items-center text-center gap-6">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
                 <BookOpen className="w-3.5 h-3.5" />
                 The Blog

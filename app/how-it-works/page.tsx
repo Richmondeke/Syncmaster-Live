@@ -125,11 +125,11 @@ export default function HowItWorksPage() {
               <p className="text-xl md:text-2xl text-muted-foreground font-medium tracking-tight leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-1000 max-w-3xl">
                 SyncMaster runs a two-sided curation system. Composers are vetted before they join. Supervisors get 3&ndash;5 matched tracks, not 500 unfiltered submissions. Here&apos;s the full loop.
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                <Link href="/composers" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' h-14 px-8 rounded-2xl text-base font-black gap-2'}>
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 w-full max-w-md md:max-w-none px-6 md:px-0">
+                <Link href="/composers" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' w-full sm:w-auto h-14 px-6 md:px-8 rounded-2xl text-base font-black gap-2'}>
                   I&apos;m a composer <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link href="/supervisors" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' h-14 px-8 rounded-2xl text-base font-black gap-2'}>
+                <Link href="/supervisors" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' w-full sm:w-auto h-14 px-6 md:px-8 rounded-2xl text-base font-black gap-2'}>
                   I need music <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -164,7 +164,7 @@ export default function HowItWorksPage() {
                     </div>
                   ))}
                 </div>
-                <Link href="/signup" className={buttonVariants({ variant: 'default', size: 'lg' }) + ' h-12 px-8 rounded-xl font-black gap-2 w-fit'}>
+                <Link href="/signup" className={buttonVariants({ variant: 'default', size: 'lg' }) + ' w-full sm:w-auto h-12 px-6 rounded-xl font-black gap-2'}>
                   Apply to the roster <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -192,7 +192,7 @@ export default function HowItWorksPage() {
                     </div>
                   ))}
                 </div>
-                <Link href="/signup" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' h-12 px-8 rounded-xl font-black gap-2 w-fit border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/10'}>
+                <Link href="/signup" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' w-full sm:w-auto h-12 px-6 rounded-xl font-black gap-2 border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/10'}>
                   Post a brief <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -272,7 +272,7 @@ export default function HowItWorksPage() {
                   </div>
                   <h3 className="text-2xl md:text-3xl font-black tracking-[-0.068em] leading-tight">Ready to join the roster?</h3>
                   <p className="text-muted-foreground text-base leading-relaxed max-w-sm">Applications reviewed individually. Rights-verified. Brief-ready.</p>
-                  <Link href="/signup" className={buttonVariants({ variant: 'default', size: 'lg' }) + ' h-14 px-8 rounded-2xl text-base font-black gap-2 w-fit shadow-2xl shadow-primary/20'}>
+                  <Link href="/signup" className={buttonVariants({ variant: 'default', size: 'lg' }) + ' w-full sm:w-auto h-14 px-8 rounded-2xl text-base font-black gap-2 shadow-2xl shadow-primary/20'}>
                     Apply as a composer <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -285,7 +285,7 @@ export default function HowItWorksPage() {
                   </div>
                   <h3 className="text-2xl md:text-3xl font-black tracking-[-0.068em] leading-tight">Have a brief to fill?</h3>
                   <p className="text-muted-foreground text-base leading-relaxed max-w-sm">Describe your project. We&apos;ll have 3&ndash;5 curated matches in your inbox within days.</p>
-                  <Link href="/signup" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' h-14 px-8 rounded-2xl text-base font-black gap-2 w-fit border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/10'}>
+                  <Link href="/signup" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' w-full sm:w-auto h-14 px-8 rounded-2xl text-base font-black gap-2 border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/10'}>
                     Post a brief <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>

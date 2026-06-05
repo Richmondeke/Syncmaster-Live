@@ -107,10 +107,10 @@ export default function ComposersPage() {
                 You have the sound. We have the connections. SyncMaster is the bridge between African composers and the global briefs that need you — without the gatekeepers, the guesswork, or the silence.
               </p>
 
-              <div className="flex flex-wrap items-center justify-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 w-full max-w-md md:max-w-none px-6 md:px-0">
                 <Link
                   href="/signup"
-                  className={buttonVariants({ size: "lg" }) + " h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 gap-2"}
+                  className={buttonVariants({ size: "lg" }) + " w-full sm:w-auto h-14 md:h-16 px-6 md:px-10 rounded-2xl text-base md:text-lg font-black shadow-2xl shadow-primary/20 gap-2"}
                 >
                   Apply as a composer
                   <ArrowRight className="w-5 h-5" />
@@ -209,7 +209,7 @@ export default function ComposersPage() {
                 <p className="text-lg text-muted-foreground max-w-xl">Join the SyncMaster composer roster. We review every application personally.</p>
                 <Link
                   href="/signup"
-                  className={buttonVariants({ size: "lg" }) + " h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 gap-2"}
+                  className={buttonVariants({ size: "lg" }) + " w-full sm:w-auto h-14 md:h-16 px-6 md:px-10 rounded-2xl text-base md:text-lg font-black shadow-2xl shadow-primary/20 gap-2"}
                 >
                   Apply as a composer
                   <ArrowRight className="w-5 h-5" />

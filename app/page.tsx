@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, Zap, Shield, Globe, Layers, Sparkles, Mic2, Film } from 'lucide-react'
-import { buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/lib/button-variants'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { Navbar } from '@/components/marketing/Navbar'
 import { Footer } from '@/components/marketing/Footer'
@@ -37,19 +37,20 @@ export default function LandingPage() {
                 SyncMaster connects vetted African composers with briefs from production houses worldwide. Human curation. Rights clarity. 3–5 curated matches — not 500 unvetted submissions.
               </p>
 
-              <div className="flex flex-wrap items-center justify-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 w-full max-w-md md:max-w-none px-6 md:px-0">
                 <Link
                   href="/signup"
-                  className={buttonVariants({ size: "lg" }) + " h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 gap-2"}
+                  className={buttonVariants({ variant: "default", size: "lg" }) + " w-full sm:w-auto h-14 md:h-16 px-6 md:px-10 rounded-2xl text-base md:text-lg font-black gap-2"}
                 >
                   Get early access
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/composers"
-                  className={buttonVariants({ variant: "outline", size: "lg" }) + " h-16 px-10 rounded-2xl text-lg font-bold gap-2"}
+                  className={buttonVariants({ variant: "outline", size: "lg" }) + " w-full sm:w-auto h-14 md:h-16 px-6 md:px-10 rounded-2xl text-base md:text-lg font-bold gap-2"}
                 >
                   I&apos;m a composer
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
 
@@ -183,7 +184,7 @@ export default function LandingPage() {
                 <p className="text-lg text-muted-foreground max-w-xl">Join the first cohort of African composers and supervisors on SyncMaster.</p>
                 <Link
                   href="/signup"
-                  className={buttonVariants({ size: "lg" }) + " h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 gap-2"}
+                  className={buttonVariants({ size: "lg" }) + " w-full sm:w-auto h-14 md:h-16 px-6 md:px-10 rounded-2xl text-base md:text-lg font-black shadow-2xl shadow-primary/20 gap-2"}
                 >
                   Get early access
                   <ArrowRight className="w-5 h-5" />

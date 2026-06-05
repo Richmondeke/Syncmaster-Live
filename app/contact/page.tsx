@@ -42,7 +42,7 @@ export default function ContactPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-primary/10 blur-[120px] rounded-full opacity-50" />
           </div>
           <div className="max-w-screen-2xl w-full mx-auto px-6 relative z-10">
-            <div className="max-w-3xl">
+            <div className="max-w-3xl mx-auto flex flex-col items-center text-center gap-6">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-8">
                 <MessageSquare className="w-3.5 h-3.5" />
                 Contact Us
@@ -120,7 +120,7 @@ export default function ContactPage() {
                     className="rounded-xl border border-border bg-background p-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                   />
                 </div>
-                <button className={buttonVariants({ size: 'lg' }) + ' h-14 rounded-2xl font-black mt-4'}>
+                <button className={buttonVariants({ size: 'lg' }) + ' w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 rounded-2xl font-black mt-4'}>
                   Send Message
                 </button>
               </div>
@@ -131,18 +131,18 @@ export default function ContactPage() {
         {/* Office Info */}
         <section className="py-32 border-t border-border">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-12 p-12 md:p-16 rounded-[3rem] border border-border bg-card/50">
-              <div className="flex flex-col gap-4 max-w-md">
-                <div className="flex items-center gap-3 text-primary">
+            <div className="flex flex-col items-center text-center gap-10 p-12 md:p-16 rounded-[3rem] border border-border bg-card/50">
+              <div className="flex flex-col items-center text-center gap-4 max-w-xl">
+                <div className="flex items-center gap-3 text-primary justify-center">
                   <MapPin className="w-5 h-5" />
                   <span className="font-black uppercase tracking-widest text-xs">Our Presence</span>
                 </div>
-                <h2 className="text-3xl font-black tracking-tight">Globally distributed.<br />African-rooted.</h2>
+                <h2 className="text-3xl font-black tracking-tight">Globally distributed.<br className="hidden md:inline" /> African-rooted.</h2>
                 <p className="text-muted-foreground leading-relaxed">
                   SyncMaster operates as a remote-first team across London, Lagos, and Cape Town. We meet composers and supervisors where they are.
                 </p>
               </div>
-              <div className="flex flex-wrap gap-4 justify-center md:justify-end">
+              <div className="flex flex-wrap gap-4 justify-center">
                 <div className="px-6 py-4 rounded-2xl border border-border bg-background">
                   <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-1">London</p>
                   <p className="font-bold">Sync Hub &middot; UK</p>

@@ -26,7 +26,7 @@ export default function StoriesPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-emerald-500/5 blur-[120px] rounded-full opacity-50" />
           </div>
           <div className="max-w-screen-2xl w-full mx-auto px-6 relative z-10">
-            <div className="max-w-3xl">
+            <div className="max-w-3xl mx-auto flex flex-col items-center text-center gap-6">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-bold uppercase tracking-wider mb-8">
                 <Trophy className="w-3.5 h-3.5" />
                 Placement Stories
@@ -103,7 +103,7 @@ export default function StoriesPage() {
                 <p className="text-lg text-muted-foreground max-w-xl">Join the SyncMaster roster. We handle the vetting, the briefs, and the deals.</p>
                 <Link
                   href="/signup"
-                  className={buttonVariants({ size: "lg" }) + " h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-emerald-500/20 gap-2"}
+                  className={buttonVariants({ size: "lg" }) + " w-full sm:w-auto h-14 md:h-16 px-6 md:px-10 rounded-2xl text-base md:text-lg font-black shadow-2xl shadow-emerald-500/20 gap-2"}
                 >
                   Apply as a composer
                   <ArrowRight className="w-5 h-5" />

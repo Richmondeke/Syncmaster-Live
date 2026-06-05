@@ -53,6 +53,7 @@ const columns = [
     links: [
       { label: 'Blog', href: '/blog' },
       { label: 'Pricing', href: '/pricing' },
+      { label: 'FAQ', href: '/faq' },
       { label: 'Contact', href: '/contact' },
       { label: 'Brand Assets', href: '/brand' },
     ],

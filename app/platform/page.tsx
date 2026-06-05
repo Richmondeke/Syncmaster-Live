@@ -51,11 +51,11 @@ export default function PlatformPage() {
               <p className="text-xl md:text-2xl text-muted-foreground font-medium tracking-tight leading-relaxed animate-in fade-in slide-in-from-bottom-6 duration-1000">
                 From brief to placement, SyncMaster manages the full workflow for composers and supervisors. No scattered tools. No missing documentation. One platform for the whole process.
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                <Link href="/composers" className={buttonVariants({ size: 'lg' }) + ' h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 gap-2'}>
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 w-full max-w-md md:max-w-none px-6 md:px-0">
+                <Link href="/composers" className={buttonVariants({ size: 'lg' }) + ' w-full sm:w-auto h-14 md:h-16 px-6 md:px-10 rounded-2xl text-base md:text-lg font-black shadow-2xl shadow-primary/20 gap-2'}>
                   For composers <ArrowRight className="w-5 h-5" />
                 </Link>
-                <Link href="/supervisors" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' h-16 px-10 rounded-2xl text-lg font-black gap-2'}>
+                <Link href="/supervisors" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' w-full sm:w-auto h-14 md:h-16 px-6 md:px-10 rounded-2xl text-base md:text-lg font-black gap-2'}>
                   For supervisors <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -136,11 +136,11 @@ export default function PlatformPage() {
               <div className="relative z-10 flex flex-col items-center gap-6">
                 <h2 className="text-4xl md:text-5xl font-black tracking-[-0.068em] max-w-2xl">Ready to use the platform?</h2>
                 <p className="text-lg text-muted-foreground max-w-xl">Commission-only. No subscription fees.</p>
-                <div className="flex flex-wrap items-center justify-center gap-4">
-                  <Link href="/signup" className={buttonVariants({ size: 'lg' }) + ' h-16 px-10 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 gap-2'}>
+                <div className="flex flex-wrap items-center justify-center gap-4 w-full max-w-md md:max-w-none px-6 md:px-0">
+                  <Link href="/signup" className={buttonVariants({ size: 'lg' }) + ' w-full sm:w-auto h-14 md:h-16 px-6 md:px-10 rounded-2xl text-base md:text-lg font-black shadow-2xl shadow-primary/20 gap-2'}>
                     Apply as a composer <ArrowRight className="w-5 h-5" />
                   </Link>
-                  <Link href="/signup" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' h-16 px-10 rounded-2xl text-lg font-black gap-2'}>
+                  <Link href="/signup" className={buttonVariants({ variant: 'outline', size: 'lg' }) + ' w-full sm:w-auto h-14 md:h-16 px-6 md:px-10 rounded-2xl text-base md:text-lg font-black gap-2'}>
                     Post a brief <ArrowRight className="w-5 h-5" />
                   </Link>
                 </div>

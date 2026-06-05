@@ -13,8 +13,10 @@ export default function PrivacyPage() {
       <Navbar />
       <main className="flex-1 pt-20">
         <section className="py-24 max-w-3xl mx-auto px-6">
-          <h1 className="text-4xl font-black tracking-tight mb-8">Privacy Policy</h1>
-          <p className="text-muted-foreground mb-8">Last updated: June 2, 2026</p>
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">Privacy Policy</h1>
+            <p className="text-muted-foreground">Last updated: June 2, 2026</p>
+          </div>
           
           <div className="flex flex-col gap-10 text-muted-foreground leading-relaxed">
             <div className="flex flex-col gap-4">

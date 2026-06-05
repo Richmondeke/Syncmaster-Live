@@ -28,7 +28,7 @@ export default function BrandPage() {
         {/* Header */}
         <section className="pt-20 pb-16 border-b border-border">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <div className="max-w-2xl">
+            <div className="max-w-2xl mx-auto flex flex-col items-center text-center gap-6">
               <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">Press &amp; Brand</p>
               <h1 className="text-5xl md:text-6xl font-black tracking-[-0.03em] leading-[1.1] mb-6">Brand Assets</h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
@@ -41,7 +41,9 @@ export default function BrandPage() {
         {/* Logos */}
         <section className="py-24 border-b border-border">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <h2 className="text-2xl font-black tracking-tight mb-12">Logo Downloads</h2>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-black tracking-tight">Logo Downloads</h2>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Light version */}
               <div className="flex flex-col gap-6 rounded-[2rem] border border-border bg-card overflow-hidden">
@@ -95,8 +97,10 @@ export default function BrandPage() {
         {/* Colors */}
         <section className="py-24 border-b border-border">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <h2 className="text-2xl font-black tracking-tight mb-4">Brand Colors</h2>
-            <p className="text-muted-foreground mb-12 max-w-xl">Core palette for use across all brand touchpoints.</p>
+            <div className="text-center mb-12 flex flex-col items-center">
+              <h2 className="text-3xl font-black tracking-tight mb-4">Brand Colors</h2>
+              <p className="text-muted-foreground max-w-xl">Core palette for use across all brand touchpoints.</p>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {colors.map((color) => (
                 <div key={color.hex} className="flex flex-col gap-3">
@@ -118,8 +122,10 @@ export default function BrandPage() {
         {/* Typography */}
         <section className="py-24 border-b border-border">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <h2 className="text-2xl font-black tracking-tight mb-12">Typography</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-3xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-black tracking-tight">Typography</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-3xl mx-auto">
               <div className="flex flex-col gap-4">
                 <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Primary Typeface</p>
                 <p className="text-5xl font-black tracking-tight">DM Sans</p>
@@ -143,8 +149,10 @@ export default function BrandPage() {
         {/* Usage Guidelines */}
         <section className="py-24">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <h2 className="text-2xl font-black tracking-tight mb-12">Usage Guidelines</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-black tracking-tight">Usage Guidelines</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
               <div className="flex flex-col gap-4 p-8 rounded-[1.5rem] bg-emerald-500/5 border border-emerald-500/20">
                 <p className="text-xs font-bold uppercase tracking-widest text-emerald-500">Do</p>
                 <ul className="space-y-3 text-sm text-muted-foreground">
@@ -180,7 +188,7 @@ export default function BrandPage() {
                 </ul>
               </div>
             </div>
-            <p className="text-sm text-muted-foreground mt-10">
+            <p className="text-sm text-muted-foreground mt-10 text-center">
               Questions about brand usage?{' '}
               <Link href="/contact" className="text-primary font-bold hover:underline underline-offset-4">
                 Contact us

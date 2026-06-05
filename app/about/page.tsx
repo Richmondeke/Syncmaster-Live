@@ -63,7 +63,7 @@ export default function AboutPage() {
         {/* Hero */}
         <section className="pt-24 pb-32">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <div className="max-w-4xl">
+            <div className="max-w-4xl mx-auto flex flex-col items-center text-center gap-6">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-10 animate-in fade-in slide-in-from-bottom-2 duration-500">
                 <Sparkles className="w-3.5 h-3.5" />
                 About SyncMaster
@@ -81,14 +81,14 @@ export default function AboutPage() {
         {/* The problem */}
         <section className="py-32 border-t border-border bg-muted/30">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-border border border-border text-muted-foreground text-xs font-bold uppercase tracking-wider mb-12 w-fit">
+            <div className="max-w-3xl mx-auto flex flex-col items-center text-center gap-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-border border border-border text-muted-foreground text-xs font-bold uppercase tracking-wider mb-12">
                 The infrastructure gap
               </div>
-              <p className="text-3xl font-black tracking-[-0.068em] italic leading-snug text-foreground mb-12">
+              <p className="text-3xl font-black tracking-[-0.068em] italic leading-snug text-foreground mb-12 max-w-2xl">
                 &ldquo;This is not a talent gap. The music exists. It&apos;s an infrastructure gap — and that&apos;s what SyncMaster is solving.&rdquo;
               </p>
-              <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-8 max-w-2xl">
                 <p className="text-xl md:text-2xl leading-relaxed text-muted-foreground">
                   The global sync market is worth $500M annually. African composers earn a fraction of a percent of that. Not because the music isn&apos;t there. It is. Nigeria, South Africa, Kenya, Ghana — the output is extraordinary.
                 </p>
@@ -109,11 +109,11 @@ export default function AboutPage() {
         {/* How we work */}
         <section className="py-32 border-t border-border">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <div className="mb-20">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-6 w-fit">
+            <div className="mb-20 flex flex-col items-center text-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-6">
                 The model
               </div>
-              <h2 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-tight max-w-xl">
+              <h2 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-tight max-w-xl mx-auto">
                 One curated corridor.
               </h2>
             </div>
@@ -136,23 +136,21 @@ export default function AboutPage() {
         {/* Why now */}
         <section className="py-32 border-t border-border bg-muted/30">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start max-w-5xl">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-border border border-border text-muted-foreground text-xs font-bold uppercase tracking-wider mb-8 w-fit">
-                  Why now
-                </div>
-                <h2 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-tight mb-6">
-                  The window is open.
-                </h2>
+            <div className="mb-16 flex flex-col items-center text-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-border border border-border text-muted-foreground text-xs font-bold uppercase tracking-wider mb-6">
+                Why now
               </div>
-              <div className="flex flex-col gap-8 lg:pt-20">
-                <p className="text-xl md:text-2xl leading-relaxed text-muted-foreground">
-                  Streaming has made African music globally audible for the first time. The audience already knows Afrobeats, Amapiano, Afrofusion. Music supervisors are actively looking for authentic African sound — but have no reliable, rights-clean source.
-                </p>
-                <p className="text-xl md:text-2xl leading-relaxed text-muted-foreground">
-                  The sync market rewards specificity. Generic sounds from stock libraries are losing briefs to composers with cultural precision. African music has both: extraordinary specificity and extraordinary breadth. The market is ready. The composers are ready. The infrastructure is now.
-                </p>
-              </div>
+              <h2 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-tight mb-4">
+                The window is open.
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+              <p className="text-xl leading-relaxed text-muted-foreground">
+                Streaming has made African music globally audible for the first time. The audience already knows Afrobeats, Amapiano, Afrofusion. Music supervisors are actively looking for authentic African sound — but have no reliable, rights-clean source.
+              </p>
+              <p className="text-xl leading-relaxed text-muted-foreground">
+                The sync market rewards specificity. Generic sounds from stock libraries are losing briefs to composers with cultural precision. African music has both: extraordinary specificity and extraordinary breadth. The market is ready. The composers are ready. The infrastructure is now.
+              </p>
             </div>
           </div>
         </section>
@@ -160,15 +158,15 @@ export default function AboutPage() {
         {/* Team */}
         <section className="py-32 border-t border-border">
           <div className="max-w-screen-2xl w-full mx-auto px-6">
-            <div className="mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-6 w-fit">
+            <div className="mb-16 flex flex-col items-center text-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider mb-6">
                 <Users className="w-3 h-3" />
                 The team
               </div>
-              <h2 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-tight mb-4">
+              <h2 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-tight mb-4 max-w-3xl mx-auto">
                 Built by people who know both rooms.
               </h2>
-              <p className="text-lg text-muted-foreground max-w-xl leading-relaxed">
+              <p className="text-lg text-muted-foreground max-w-xl leading-relaxed mx-auto">
                 We&apos;ve been in the studio and in the supervisor&apos;s office. We built this because we&apos;ve seen both sides of the gap.
               </p>
             </div>
@@ -193,8 +191,8 @@ export default function AboutPage() {
           <div className="max-w-screen-2xl w-full mx-auto px-6">
             <div className="rounded-[2.5rem] bg-foreground text-background overflow-hidden">
               <div className="p-12 md:p-20">
-                <div className="mb-16 max-w-2xl">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background/10 border border-background/20 text-background text-xs font-bold uppercase tracking-wider mb-8 w-fit">
+                <div className="mb-16 max-w-2xl mx-auto flex flex-col items-center text-center">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background/10 border border-background/20 text-background text-xs font-bold uppercase tracking-wider mb-8">
                     <Mic2 className="w-3 h-3" />
                     Work with us
                   </div>
