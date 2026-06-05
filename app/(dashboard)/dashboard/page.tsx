@@ -39,11 +39,10 @@ const TOOLS = [
   },
   {
     label: 'Submissions',
-    description: 'Manage track submissions',
+    description: 'Track your pitches and submissions',
     href: '/dashboard/submissions',
     icon: FileText,
     color: 'bg-orange-500/10 text-orange-500',
-    adminOnly: true
   },
   {
     label: 'Marketplace',
@@ -153,7 +152,11 @@ export default async function DashboardPage() {
                 Your sync operations, simplified.
               </h2>
               <p className="text-lg md:text-2xl text-white/80 font-medium tracking-[-0.04em] max-w-xl leading-normal">
-                Manage your music assets, track submissions, and connect with supervisors from one central hub.
+                {profile.role === 'composer'
+                  ? 'Upload your catalog, track submissions, and connect with supervisors from one central hub.'
+                  : profile.role === 'producer'
+                  ? 'Post briefs, review curated matches, and track placements from one central hub.'
+                  : 'Manage the full roster, match briefs, and track every placement.'}
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-5 pt-2">
@@ -163,12 +166,14 @@ export default async function DashboardPage() {
               >
                   Explore Briefs
               </Link>
-              <Link 
-                href="/dashboard/tracks"
-                className={buttonVariants({ variant: "outline", size: "lg" }) + " border-white/20 bg-white/5 font-black text-white hover:bg-white/10 backdrop-blur-sm px-10 h-16 text-lg rounded-2xl"}
-              >
-                  View Catalog
-              </Link>
+              {(profile.role === 'composer' || profile.role === 'admin') && (
+                <Link 
+                  href="/dashboard/tracks"
+                  className={buttonVariants({ variant: "outline", size: "lg" }) + " border-white/20 bg-white/5 font-black text-white hover:bg-white/10 backdrop-blur-sm px-10 h-16 text-lg rounded-2xl"}
+                >
+                    View Catalog
+                </Link>
+              )}
             </div>
           </div>
           

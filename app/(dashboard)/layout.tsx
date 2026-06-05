@@ -19,7 +19,7 @@ export default async function DashboardLayout({
 }) {
   const cookieStore = await cookies()
   const sessionEmail = cookieStore.get('session_email')?.value
-  const roleOverride = (cookieStore.get('role')?.value || 'admin') as Role
+  const roleOverride = (cookieStore.get('role')?.value || 'composer') as Role
   const fullNameOverride = cookieStore.get('full_name')?.value || 'Godliverse'
 
   if (!sessionEmail && process.env.NODE_ENV === 'production') {

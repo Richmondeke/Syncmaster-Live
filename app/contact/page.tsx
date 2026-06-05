@@ -1,13 +1,12 @@
+'use client'
+
+import { useActionState } from 'react'
+import { submitContactForm, type ContactFormState } from '@/app/actions/contact'
 import Link from 'next/link'
 import { Mail, MessageSquare, MapPin, ArrowRight, Globe } from 'lucide-react'
 import { buttonVariants } from '@/lib/button-variants'
 import { Navbar } from '@/components/marketing/Navbar'
 import { Footer } from '@/components/marketing/Footer'
-
-export const metadata = {
-  title: 'Contact — SyncMaster',
-  description: 'Get in touch with the SyncMaster team. Whether you are a composer, supervisor, or press, we are here to help.',
-}
 
 const contactChannels = [
   {
@@ -31,6 +30,9 @@ const contactChannels = [
 ]
 
 export default function ContactPage() {
+  const initialState: ContactFormState = { success: false }
+  const [state, action, pending] = useActionState(submitContactForm, initialState)
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary/20 font-sans">
       <Navbar />
@@ -93,37 +95,56 @@ export default function ContactPage() {
                 <p className="text-muted-foreground">We usually respond within 24 hours.</p>
               </div>
               
-              <div className="flex flex-col gap-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Name</label>
-                    <input
-                      type="text"
-                      placeholder="Your name"
-                      className="h-12 rounded-xl border border-border bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-                    />
+              {state.success ? (
+                <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-center">
+                  <p className="font-black text-emerald-600">Message sent! We&apos;ll get back to you within 24 hours.</p>
+                </div>
+              ) : (
+                <form action={action} className="flex flex-col gap-4">
+                  {state.error && (
+                    <p className="text-sm text-destructive font-medium">{state.error}</p>
+                  )}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Name</label>
+                      <input
+                        name="name"
+                        type="text"
+                        placeholder="Your name"
+                        required
+                        className="h-12 rounded-xl border border-border bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Email</label>
+                      <input
+                        name="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        required
+                        className="h-12 rounded-xl border border-border bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                      />
+                    </div>
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Email</label>
-                    <input
-                      type="email"
-                      placeholder="your@email.com"
-                      className="h-12 rounded-xl border border-border bg-background px-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Message</label>
+                    <textarea
+                      name="message"
+                      placeholder="How can we help?"
+                      rows={5}
+                      required
+                      className="rounded-xl border border-border bg-background p-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                     />
                   </div>
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-xs font-black uppercase tracking-widest text-muted-foreground ml-1">Message</label>
-                  <textarea
-                    placeholder="How can we help?"
-                    rows={5}
-                    className="rounded-xl border border-border bg-background p-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
-                  />
-                </div>
-                <button className={buttonVariants({ size: 'lg' }) + ' w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 rounded-2xl font-black mt-4'}>
-                  Send Message
-                </button>
-              </div>
+                  <button
+                    type="submit"
+                    disabled={pending}
+                    className={buttonVariants({ size: 'lg' }) + ' w-full sm:w-auto h-12 md:h-14 px-6 md:px-8 rounded-2xl font-black mt-4'}
+                  >
+                    {pending ? 'Sending...' : 'Send Message'}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </section>

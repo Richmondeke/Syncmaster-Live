@@ -39,16 +39,19 @@ const howWeWork = [
 const team = [
   {
     initials: 'FC',
+    name: '[Founder Name]',
     role: 'Founder & CEO',
     bio: '10 years across music production and licensing. Built this because the pathway didn’t exist for the composers I worked with.',
   },
   {
     initials: 'HC',
+    name: '[Curator Name]',
     role: 'Head of Curation',
     bio: 'Former music supervisor. Worked briefs for streaming and advertising. Joined SyncMaster to build the source she always needed.',
   },
   {
     initials: 'HR',
+    name: '[Relations Name]',
     role: 'Head of Composer Relations',
     bio: 'Trained in Lagos, worked globally. Spent years watching African composers miss opportunities that should have been theirs.',
   },
@@ -177,7 +180,10 @@ export default function AboutPage() {
                     <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-sm flex-shrink-0">
                       {member.initials}
                     </div>
-                    <span className="text-sm font-black tracking-tight text-foreground">{member.role}</span>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-black tracking-tight text-foreground">{member.name}</span>
+                      <span className="text-xs text-muted-foreground">{member.role}</span>
+                    </div>
                   </div>
                   <p className="text-sm text-muted-foreground leading-relaxed">{member.bio}</p>
                 </div>

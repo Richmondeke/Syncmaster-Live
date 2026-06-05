@@ -61,17 +61,17 @@ export default function SubmissionsPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Submissions</h1>
+        <h1 className="text-2xl font-black tracking-tight text-foreground">Submissions</h1>
         <p className="text-muted-foreground text-sm font-medium">Track your pitches and active submissions across all briefs.</p>
       </div>
 
       <div className="grid gap-4">
         {mockSubmissions.map((sub) => (
           <Link key={sub.id} href={`/dashboard/briefs/${sub.briefId}`} className="block group">
-            <Card className="bg-card border-border rounded-md overflow-hidden hover:border-primary/40 hover:shadow-lg transition-all">
+            <Card className="bg-card border-border rounded-[2rem] overflow-hidden hover:border-primary/40 hover:shadow-lg transition-all">
               <CardContent className="p-0">
                 <div className="flex flex-col md:flex-row md:items-center p-6 gap-6">
-                  <div className="w-14 h-14 rounded-md bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:border-primary transition-colors">
+                  <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:border-primary transition-colors">
                     <Music className="w-7 h-7 text-primary group-hover:text-primary-foreground transition-colors" />
                   </div>
                   
@@ -109,7 +109,7 @@ export default function SubmissionsPage() {
       </div>
 
       {mockSubmissions.length === 0 && (
-        <Card className="bg-card border-dashed border-border rounded-md p-20 text-center">
+        <Card className="bg-card border-dashed border-border rounded-[2rem] p-16 text-center">
           <div className="max-w-xs mx-auto space-y-4">
             <div className="w-16 h-16 rounded-full bg-muted/40 flex items-center justify-center mx-auto">
               <Music className="w-8 h-8 text-muted-foreground/40" />

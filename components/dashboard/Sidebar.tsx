@@ -77,7 +77,7 @@ const NAV_GROUPS: Record<string, NavItem[]> = {
       label: 'Campaigns',
       href: '/dashboard/campaigns',
       icon: Mail,
-      roles: ['admin', 'composer'],
+      roles: ['admin'],
     },
     {
       label: 'Radio Directory',

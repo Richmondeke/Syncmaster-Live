@@ -405,7 +405,7 @@ export default function TaggerPage() {
                 Analyzing Sonics...
               </h2>
               <p className="text-muted-foreground max-w-sm mx-auto text-base font-medium leading-relaxed">
-                Claude 3.5 Sonnet is performing deep audio metadata extraction and generating contextual sync tags.
+                AI is performing deep audio metadata extraction and generating contextual sync tags.
               </p>
             </div>
             

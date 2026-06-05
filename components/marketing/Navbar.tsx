@@ -47,11 +47,10 @@ const navGroups: NavGroup[] = [
   },
   {
     trigger: 'Resources',
-    paths: ['/blog', '/about', '/brand'],
+    paths: ['/blog', '/about'],
     items: [
       { label: 'Blog', href: '/blog', description: 'Sync knowledge. African perspective.' },
       { label: 'About Us', href: '/about', description: 'The mission and the team' },
-      { label: 'Brand Assets', href: '/brand', description: 'Logos, colours, guidelines' },
     ],
   },
 ]
