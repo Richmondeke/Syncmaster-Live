@@ -16,6 +16,9 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import type { Metadata } from 'next'
+import { createClient } from '@/lib/supabase/server'
+import { getSessionUser } from '@/lib/supabase/session'
+import { cn } from '@/lib/utils'
 
 type Props = { params: Promise<{ id: string }> }
 
@@ -34,6 +37,18 @@ export default async function AgencyDetailPage({ params }: Props) {
 
   if (!agency) notFound()
 
+  const supabase = await createClient()
+  const userSession = await getSessionUser()
+  let isPro = false
+  if (userSession) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('is_pro')
+      .eq('id', userSession.id)
+      .single()
+    isPro = !!data?.is_pro
+  }
+
   return (
     <div className="flex flex-col gap-8 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-5xl mx-auto pt-4">
       {/* Back Button & Header Actions */}
@@ -45,14 +60,29 @@ export default async function AgencyDetailPage({ params }: Props) {
           </Button>
         </Link>
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="rounded-full gap-2 border-border">
-            <Globe className="w-4 h-4" />
-            Website
-          </Button>
-          <Button className="rounded-full gap-2 bg-primary hover:bg-primary/90 text-primary-foreground">
-            <MessageSquare className="w-4 h-4" />
-            Contact Agency
-          </Button>
+          {isPro ? (
+            <>
+              <Button variant="outline" className="rounded-full gap-2 border-border" asChild>
+                <a href={agency.website || '#'} target="_blank" rel="noopener noreferrer">
+                  <Globe className="w-4 h-4" />
+                  Website
+                </a>
+              </Button>
+              <Button className="rounded-full gap-2 bg-primary hover:bg-primary/95 text-primary-foreground animate-in fade-in zoom-in duration-300" asChild>
+                <a href={`mailto:${agency.email || 'info@syncmaster.co'}`}>
+                  <MessageSquare className="w-4 h-4" />
+                  Contact Agency
+                </a>
+              </Button>
+            </>
+          ) : (
+            <Link href="/dashboard/settings">
+              <Button className="rounded-full gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold border-0 shadow-lg hover:scale-102 active:scale-98 transition-all duration-200">
+                <Zap className="w-4 h-4 fill-current" />
+                Unlock Contact with Pro
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -111,20 +141,40 @@ export default async function AgencyDetailPage({ params }: Props) {
                 <h2 className="text-3xl font-bold tracking-tight">Recent Placements</h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {agency.recentSyncs.map((sync, idx) => (
-                  <div key={idx} className="group p-6 rounded-3xl bg-muted/30 border border-border/50 hover:bg-primary/5 hover:border-primary/20 transition-all cursor-default">
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-2xl bg-background border border-border flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
-                          <Music2 className="w-6 h-6 text-muted-foreground" />
+              <div className="relative">
+                <div className={cn("grid grid-cols-1 md:grid-cols-2 gap-4", !isPro && "blur-md select-none pointer-events-none")}>
+                  {agency.recentSyncs.map((sync, idx) => (
+                    <div key={idx} className="group p-6 rounded-3xl bg-muted/30 border border-border/50 hover:bg-primary/5 hover:border-primary/20 transition-all cursor-default">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-background border border-border flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                            <Music2 className="w-6 h-6 text-muted-foreground" />
+                          </div>
+                          <span className="font-bold text-lg tracking-tight">{sync}</span>
                         </div>
-                        <span className="font-bold text-lg tracking-tight">{sync}</span>
+                        <Zap className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
-                      <Zap className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
+                  ))}
+                </div>
+                {!isPro && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/60 rounded-3xl p-6 text-center space-y-4">
+                    <div className="w-12 h-12 rounded-full bg-primary/15 flex items-center justify-center text-primary border border-primary/20 shadow-md">
+                      <Zap className="w-6 h-6 fill-current animate-pulse" />
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-xl font-bold tracking-tight text-foreground">Placements Gated</h4>
+                      <p className="text-sm text-muted-foreground max-w-sm">
+                        Upgrade to Pro to view recent sync placements and unlock email contacts for sync agencies.
+                      </p>
+                    </div>
+                    <Link href="/dashboard/settings">
+                      <Button size="sm" className="rounded-full bg-primary hover:bg-primary/95 text-white font-bold px-6 shadow-md shadow-primary/20">
+                        Upgrade to Pro
+                      </Button>
+                    </Link>
                   </div>
-                ))}
+                )}
               </div>
             </CardContent>
           </Card>
@@ -152,9 +202,21 @@ export default async function AgencyDetailPage({ params }: Props) {
                   </div>
                 </div>
               </div>
-              <Button className="w-full rounded-full h-14 text-lg font-bold bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg">
-                Send Direct Brief
-              </Button>
+              
+              {isPro ? (
+                <Button className="w-full rounded-full h-14 text-lg font-bold bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg" asChild>
+                  <a href={`mailto:${agency.email || 'info@syncmaster.co'}?subject=Brief Submission via SyncMaster`}>
+                    Send Direct Brief
+                  </a>
+                </Button>
+              ) : (
+                <Link href="/dashboard/settings" className="w-full block">
+                  <Button className="w-full rounded-full h-14 text-lg font-bold bg-gradient-to-r from-indigo-600 to-primary hover:from-indigo-700 hover:to-primary/90 text-white transition-all shadow-lg gap-2">
+                    <Zap className="w-4 h-4 fill-current" />
+                    Unlock Direct Brief
+                  </Button>
+                </Link>
+              )}
             </CardContent>
           </Card>
         </div>

@@ -30,7 +30,7 @@ export async function getSessionUser(): Promise<MockUser | null> {
     id = 'richmond-admin-id'
     role = 'admin'
   } else if (sessionEmail.includes('composer')) {
-    id = 'a2308014-7225-474f-a2e1-04a02111e348'
+    id = '441faafa-6f6b-4a29-9c40-9cdc3e467b38'
     role = 'composer'
   } else if (sessionEmail.includes('producer')) {
     id = 'mock-producer-id'

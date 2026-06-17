@@ -19,9 +19,12 @@ import {
   Loader2,
   CheckCircle2,
   X,
+  Sparkles,
+  Star,
 } from 'lucide-react'
 import { getProfile, updateProfile } from '@/app/actions/profile'
 import { useToast } from '@/components/Toast'
+import { PricingCard } from '@/components/dashboard/PricingCard'
 
 const ALL_GENRES = ['Cinematic', 'Electronic', 'Orchestral', 'Ambient', 'Rock', 'Hybrid', 'Hip Hop', 'Jazz', 'Folk', 'Pop', 'R&B', 'Classical']
 
@@ -37,8 +40,17 @@ export default function SettingsPage() {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([])
   const [email, setEmail] = useState('')
   const [memberSince, setMemberSince] = useState('')
+  const [isPro, setIsPro] = useState(false)
 
   useEffect(() => {
+    // Check URL query parameters for payment success redirect
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.get('payment_ref')) {
+      addToast('Payment completed successfully! We are updating your account.', 'success')
+      // Clean query parameters from URL
+      window.history.replaceState({}, document.title, window.location.pathname)
+    }
+
     getProfile().then((profile) => {
       if (profile) {
         setFullName(profile.full_name ?? '')
@@ -46,6 +58,7 @@ export default function SettingsPage() {
         setPortfolioUrl(profile.portfolio_url ?? '')
         setSelectedGenres(profile.genres ?? [])
         setEmail(profile.email ?? '')
+        setIsPro(!!profile.is_pro)
         if (profile.created_at) {
           setMemberSince(new Date(profile.created_at).toLocaleDateString('en-GB', {
             month: 'long', year: 'numeric'
@@ -230,6 +243,36 @@ export default function SettingsPage() {
               </Button>
             </CardFooter>
           </Card>
+        </section>
+
+        {/* Pro Membership / Upgrade */}
+        <section className="space-y-6">
+          <div className="flex items-center gap-3 ml-1">
+            <Sparkles className="w-5 h-5 text-primary" />
+            <h2 className="text-xl font-semibold tracking-tight text-foreground">Membership Status</h2>
+          </div>
+
+          {isPro ? (
+            <Card className="relative bg-gradient-to-br from-emerald-950 via-teal-950 to-emerald-950 border border-emerald-500/30 rounded-[2rem] overflow-hidden shadow-2xl p-8">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -z-10" />
+              <div className="flex flex-col md:flex-row items-center gap-6 justify-between">
+                <div className="space-y-2 text-center md:text-left">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    <Star className="w-3.5 h-3.5 fill-current" /> Active Pro Member
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mt-2">SyncMaster Pro Active</h3>
+                  <p className="text-slate-300 text-sm max-w-lg">
+                    You have unlocked unlimited applications to briefs, and full access to the Agency and Radio directories. Thank you for supporting SyncMaster!
+                  </p>
+                </div>
+                <div className="shrink-0 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold px-6 py-3 rounded-2xl flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5" /> Lifetime Access
+                </div>
+              </div>
+            </Card>
+          ) : (
+            <PricingCard />
+          )}
         </section>
 
         {/* Account & Security */}

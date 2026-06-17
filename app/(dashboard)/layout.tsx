@@ -6,11 +6,12 @@ import type { Database, Role } from '@/types/database.types'
 import { cookies } from 'next/headers'
 import { MusicPlayerProvider } from '@/contexts/MusicPlayerContext'
 import { MusicPlayer } from '@/components/player/MusicPlayer'
+import { getSessionUser } from '@/lib/supabase/session'
 
 type ProfileRow = Pick<
   Database['public']['Tables']['profiles']['Row'],
   'role' | 'full_name' | 'avatar_url'
->
+> & { is_pro?: boolean }
 
 export default async function DashboardLayout({
   children,
@@ -26,17 +27,37 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
-  const user = { id: 'dummy-id', email: sessionEmail || 'admin@test.com' }
+  const supabase = await createClient()
+  const userSession = await getSessionUser()
+  let isPro = false
+  let fullName = fullNameOverride
+
+  if (userSession) {
+    const { data } = await supabase
+      .from('profiles')
+      .select('full_name, is_pro')
+      .eq('id', userSession.id)
+      .single()
+    
+    if (data) {
+      if (data.full_name) fullName = data.full_name
+      isPro = !!data.is_pro
+    }
+  }
+
   const profile: ProfileRow = {
     role: roleOverride,
-    full_name: fullNameOverride,
+    full_name: fullName,
     avatar_url: null,
+    is_pro: isPro,
   }
+
+  const user = { id: userSession?.id || 'dummy-id', email: sessionEmail || 'admin@test.com' }
 
   return (
     <MusicPlayerProvider>
       <div className="flex min-h-screen bg-background">
-        <Sidebar role={profile.role as Role} fullName={profile.full_name ?? undefined} />
+        <Sidebar role={profile.role as Role} fullName={profile.full_name ?? undefined} isPro={profile.is_pro} />
 
         <div className="flex min-w-0 flex-1 flex-col lg:pl-64">
           <Header

@@ -17,8 +17,10 @@ import {
   Radio,
   Copy,
   CheckCircle2,
-  Filter
+  Filter,
+  Zap
 } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -27,9 +29,10 @@ import type { RadioStation } from '@/app/actions/radio-stations'
 
 interface RadioDirectoryClientProps {
   initialStations: RadioStation[]
+  isPro: boolean
 }
 
-export default function RadioDirectoryClient({ initialStations }: RadioDirectoryClientProps) {
+export default function RadioDirectoryClient({ initialStations, isPro }: RadioDirectoryClientProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedState, setSelectedState] = useState('All')
   const [selectedStation, setSelectedStation] = useState<RadioStation | null>(null)
@@ -280,118 +283,159 @@ export default function RadioDirectoryClient({ initialStations }: RadioDirectory
               </div>
 
               {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-4">
-                {selectedStation.email && (
+              <div className="relative">
+                {isPro ? (
+                  <div className="grid grid-cols-2 gap-4">
+                    {selectedStation.email && (
+                      <Button 
+                        className="h-14 rounded-2xl bg-violet-500 hover:bg-violet-600 text-white font-black text-lg gap-2 shadow-lg shadow-violet-500/20"
+                        onClick={() => window.location.href = `mailto:${selectedStation.email}`}
+                      >
+                        <Mail className="w-5 h-5" />
+                        Send Email
+                      </Button>
+                    )}
+                    {selectedStation.website && (
+                      <Button 
+                        variant="outline" 
+                        className="h-14 rounded-2xl border-border hover:bg-muted font-black text-lg gap-2"
+                        onClick={() => window.open(selectedStation.website!, '_blank')}
+                      >
+                        <Globe className="w-5 h-5" />
+                        Website
+                      </Button>
+                    )}
+                  </div>
+                ) : (
                   <Button 
-                    className="h-14 rounded-2xl bg-violet-500 hover:bg-violet-600 text-white font-black text-lg gap-2 shadow-lg shadow-violet-500/20"
-                    onClick={() => window.location.href = `mailto:${selectedStation.email}`}
+                    className="w-full h-14 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-lg gap-2 shadow-lg"
+                    onClick={() => {
+                      setIsDrawerOpen(false)
+                      window.location.href = '/dashboard/settings'
+                    }}
                   >
-                    <Mail className="w-5 h-5" />
-                    Send Email
-                  </Button>
-                )}
-                {selectedStation.website && (
-                  <Button 
-                    variant="outline" 
-                    className="h-14 rounded-2xl border-border hover:bg-muted font-black text-lg gap-2"
-                    onClick={() => window.open(selectedStation.website!, '_blank')}
-                  >
-                    <Globe className="w-5 h-5" />
-                    Website
+                    <Zap className="w-5 h-5 fill-current" />
+                    Unlock with Pro
                   </Button>
                 )}
               </div>
 
               {/* Data Sections */}
-              <div className="space-y-10 pb-12">
-                {/* Contact Info */}
-                <div className="space-y-4">
-                  <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
-                    <Info className="w-4 h-4 text-violet-500" />
-                    Contact Information
-                  </h4>
-                  <div className="bg-muted/30 border border-border rounded-3xl overflow-hidden divide-y divide-border">
-                    {selectedStation.email && (
-                      <div className="p-5 flex items-center justify-between group">
-                        <div className="flex items-center gap-4 min-w-0">
+              <div className="relative flex-1">
+                <div className={cn("space-y-10 pb-12", !isPro && "blur-md select-none pointer-events-none")}>
+                  {/* Contact Info */}
+                  <div className="space-y-4">
+                    <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+                      <Info className="w-4 h-4 text-violet-500" />
+                      Contact Information
+                    </h4>
+                    <div className="bg-muted/30 border border-border rounded-3xl overflow-hidden divide-y divide-border">
+                      {selectedStation.email && (
+                        <div className="p-5 flex items-center justify-between group">
+                          <div className="flex items-center gap-4 min-w-0">
+                            <div className="w-10 h-10 rounded-xl bg-background border border-border flex items-center justify-center shrink-0">
+                              <Mail className="w-5 h-5 text-muted-foreground" />
+                            </div>
+                            <div className="flex flex-col min-w-0">
+                              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Email Address</span>
+                              <span className="font-bold truncate text-foreground">{selectedStation.email}</span>
+                            </div>
+                          </div>
+                          <button 
+                            onClick={() => handleCopyEmail(selectedStation.email!)}
+                            className="p-2.5 hover:bg-violet-500/10 rounded-xl transition-all"
+                            disabled={!isPro}
+                          >
+                            {copySuccess ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-muted-foreground hover:text-violet-500" />}
+                          </button>
+                        </div>
+                      )}
+                      {selectedStation.phone && (
+                        <div className="p-5 flex items-center gap-4">
                           <div className="w-10 h-10 rounded-xl bg-background border border-border flex items-center justify-center shrink-0">
-                            <Mail className="w-5 h-5 text-muted-foreground" />
+                            <Phone className="w-5 h-5 text-muted-foreground" />
                           </div>
                           <div className="flex flex-col min-w-0">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Email Address</span>
-                            <span className="font-bold truncate text-foreground">{selectedStation.email}</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Phone Number</span>
+                            <span className="font-bold text-foreground">{selectedStation.phone}</span>
                           </div>
                         </div>
-                        <button 
-                          onClick={() => handleCopyEmail(selectedStation.email!)}
-                          className="p-2.5 hover:bg-violet-500/10 rounded-xl transition-all"
-                        >
-                          {copySuccess ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4 text-muted-foreground hover:text-violet-500" />}
-                        </button>
-                      </div>
-                    )}
-                    {selectedStation.phone && (
-                      <div className="p-5 flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-background border border-border flex items-center justify-center shrink-0">
-                          <Phone className="w-5 h-5 text-muted-foreground" />
+                      )}
+                      {selectedStation.address && (
+                        <div className="p-5 flex items-center gap-4">
+                          <div className="w-10 h-10 rounded-xl bg-background border border-border flex items-center justify-center shrink-0">
+                            <MapPin className="w-5 h-5 text-muted-foreground" />
+                          </div>
+                          <div className="flex flex-col min-w-0">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Physical Address</span>
+                            <span className="font-bold text-foreground text-sm leading-relaxed">{selectedStation.address}</span>
+                          </div>
                         </div>
-                        <div className="flex flex-col min-w-0">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Phone Number</span>
-                          <span className="font-bold text-foreground">{selectedStation.phone}</span>
-                        </div>
-                      </div>
-                    )}
-                    {selectedStation.address && (
-                      <div className="p-5 flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-background border border-border flex items-center justify-center shrink-0">
-                          <MapPin className="w-5 h-5 text-muted-foreground" />
-                        </div>
-                        <div className="flex flex-col min-w-0">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Physical Address</span>
-                          <span className="font-bold text-foreground text-sm leading-relaxed">{selectedStation.address}</span>
-                        </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
+
+                  {/* Team Info */}
+                  {(selectedStation.dj_music_dir || selectedStation.show_name) && (
+                    <div className="space-y-4">
+                      <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+                        <User className="w-4 h-4 text-violet-500" />
+                        Music & Programming
+                      </h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        {selectedStation.dj_music_dir && (
+                          <div className="p-5 bg-card border border-border rounded-3xl flex flex-col gap-1 shadow-sm">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Music Director / DJ</span>
+                            <span className="font-black text-foreground text-xl tracking-tight leading-tight">{selectedStation.dj_music_dir}</span>
+                          </div>
+                        )}
+                        {selectedStation.show_name && (
+                          <div className="p-5 bg-card border border-border rounded-3xl flex flex-col gap-1 shadow-sm">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Featured Show</span>
+                            <span className="font-black text-foreground text-xl tracking-tight leading-tight">{selectedStation.show_name}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Notes */}
+                  {selectedStation.notes && (
+                    <div className="space-y-4">
+                      <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
+                        <FileText className="w-4 h-4 text-violet-500" />
+                        Station Notes
+                      </h4>
+                      <div className="p-6 bg-violet-500/[0.03] border border-violet-500/10 rounded-3xl relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-violet-500/5 blur-3xl rounded-full -mr-12 -mt-12 group-hover:bg-violet-500/10 transition-colors" />
+                        <p className="text-foreground/90 font-medium leading-relaxed italic relative z-10">
+                          &quot;{selectedStation.notes}&quot;
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* Team Info */}
-                {(selectedStation.dj_music_dir || selectedStation.show_name) && (
-                  <div className="space-y-4">
-                    <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
-                      <User className="w-4 h-4 text-violet-500" />
-                      Music & Programming
-                    </h4>
-                    <div className="grid grid-cols-2 gap-4">
-                      {selectedStation.dj_music_dir && (
-                        <div className="p-5 bg-card border border-border rounded-3xl flex flex-col gap-1 shadow-sm">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Music Director / DJ</span>
-                          <span className="font-black text-foreground text-xl tracking-tight leading-tight">{selectedStation.dj_music_dir}</span>
-                        </div>
-                      )}
-                      {selectedStation.show_name && (
-                        <div className="p-5 bg-card border border-border rounded-3xl flex flex-col gap-1 shadow-sm">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Featured Show</span>
-                          <span className="font-black text-foreground text-xl tracking-tight leading-tight">{selectedStation.show_name}</span>
-                        </div>
-                      )}
+                {!isPro && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center space-y-4 bg-background/50 rounded-3xl">
+                    <div className="w-12 h-12 rounded-full bg-violet-500/15 flex items-center justify-center text-violet-500 border border-violet-500/20 shadow-md">
+                      <Zap className="w-6 h-6 fill-current animate-pulse" />
                     </div>
-                  </div>
-                )}
-
-                {/* Notes */}
-                {selectedStation.notes && (
-                  <div className="space-y-4">
-                    <h4 className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
-                      <FileText className="w-4 h-4 text-violet-500" />
-                      Station Notes
-                    </h4>
-                    <div className="p-6 bg-violet-500/[0.03] border border-violet-500/10 rounded-3xl relative overflow-hidden group">
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-violet-500/5 blur-3xl rounded-full -mr-12 -mt-12 group-hover:bg-violet-500/10 transition-colors" />
-                      <p className="text-foreground/90 font-medium leading-relaxed italic relative z-10">
-                        &quot;{selectedStation.notes}&quot;
+                    <div className="space-y-1">
+                      <h4 className="text-xl font-bold tracking-tight text-foreground">Contact Details Gated</h4>
+                      <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+                        Upgrade to Pro to unlock email contacts, phone numbers, and physical addresses for over 400 college radio stations.
                       </p>
                     </div>
+                    <button 
+                      onClick={() => {
+                        setIsDrawerOpen(false)
+                        window.location.href = '/dashboard/settings'
+                      }}
+                      className="rounded-full bg-violet-500 hover:bg-violet-600 text-white font-bold px-6 py-2.5 shadow-md shadow-violet-500/20 text-sm transition-all"
+                    >
+                      Upgrade to Pro
+                    </button>
                   </div>
                 )}
               </div>

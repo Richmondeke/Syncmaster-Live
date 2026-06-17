@@ -112,6 +112,7 @@ const BOTTOM_ITEMS: NavItem[] = [
 type Props = { 
   role: Role
   fullName?: string
+  isPro?: boolean
 }
 
 function NavLink({
@@ -154,16 +155,18 @@ function NavLink({
 function SidebarContent({
   role,
   fullName,
+  isPro,
   pathname,
   onNavigate,
 }: {
   role: Role
   fullName?: string
+  isPro?: boolean
   pathname: string
   onNavigate?: () => void
 }) {
   const isAdmin = role === 'admin'
-  const profile = { role, full_name: fullName || 'Godliverse' }
+  const profile = { role, full_name: fullName || 'Godliverse', is_pro: !!isPro }
   const bottom = BOTTOM_ITEMS.filter((item) => item.roles.includes(role))
 
   const renderGroup = (title: string, items: any[]) => {
@@ -248,7 +251,14 @@ function SidebarContent({
               />
             </div>
             <div className="overflow-hidden text-left">
-              <div className="font-black text-white text-sm tracking-[-0.04em] truncate">{profile.full_name}</div>
+              <div className="flex items-center gap-1.5 overflow-hidden">
+                <span className="font-black text-white text-sm tracking-[-0.04em] truncate">{profile.full_name}</span>
+                {profile.is_pro && (
+                  <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase shrink-0">
+                    Pro
+                  </span>
+                )}
+              </div>
               <div className="text-[10px] text-white/50 font-bold tracking-tight mt-0.5 capitalize">{profile.role} access</div>
             </div>
           </div>
@@ -266,7 +276,7 @@ function SidebarContent({
   )
 }
 
-export function Sidebar({ role, fullName }: Props) {
+export function Sidebar({ role, fullName, isPro }: Props) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
@@ -310,7 +320,7 @@ export function Sidebar({ role, fullName }: Props) {
             priority
           />
         </div>
-        <SidebarContent role={role} fullName={fullName} pathname={pathname} onNavigate={() => setOpen(false)} />
+        <SidebarContent role={role} fullName={fullName} isPro={isPro} pathname={pathname} onNavigate={() => setOpen(false)} />
       </aside>
     </>
   )
