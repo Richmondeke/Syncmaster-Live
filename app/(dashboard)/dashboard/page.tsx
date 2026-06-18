@@ -4,13 +4,8 @@ import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { cookies } from 'next/headers'
 import type { Role } from '@/types/database.types'
-import dynamic from 'next/dynamic'
-
-// Lazy-load UserBadgeModal to avoid SSR issues with @base-ui/react Dialog
-const UserBadgeModal = dynamic(
-  () => import('@/components/dashboard/UserBadgeModal').then(mod => mod.UserBadgeModal),
-  { ssr: false }
-)
+import { Suspense } from 'react'
+import { UserBadgeModal } from '@/components/dashboard/UserBadgeModal'
 
 const TOOLS = [
   {
@@ -103,7 +98,9 @@ export default async function DashboardPage() {
         <h1 className="text-3xl font-black tracking-[-0.068em] leading-[1.2] text-foreground sm:text-5xl">
           Welcome, {fullName}
         </h1>
-        <UserBadgeModal />
+        <Suspense fallback={null}>
+          <UserBadgeModal />
+        </Suspense>
       </div>
 
       {/* Hero Banner */}
