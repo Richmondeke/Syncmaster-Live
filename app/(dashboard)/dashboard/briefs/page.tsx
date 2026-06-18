@@ -53,7 +53,9 @@ export default async function BriefsPage() {
       .select('id, producer_id, title, description, genres, budget_min, budget_max, deadline, status, ai_suggested_composers, ai_match_status, ai_suggested_composers_detail, created_at, updated_at, producers(company, profiles(full_name))')
       .order('created_at', { ascending: false })
 
-    if (error) throw error
+    if (error) {
+      console.warn('[Briefs] Admin briefs query failed:', error.message)
+    }
 
     const briefs = (data ?? []) as unknown as BriefWithProducer[]
     const draftCount = briefs.filter((b) => b.status === 'draft').length
@@ -104,7 +106,9 @@ export default async function BriefsPage() {
         .eq('producer_id', producer.id)
         .order('created_at', { ascending: false })
 
-      if (error) throw error
+      if (error) {
+        console.warn('[Briefs] Producer briefs query failed:', error.message)
+      }
       briefs = data ?? []
     }
 
@@ -158,7 +162,9 @@ export default async function BriefsPage() {
           .eq('composer_id', composer.id),
       ])
 
-      if (outreachResult.error) throw outreachResult.error
+      if (outreachResult.error) {
+        console.warn('[Briefs] Outreach query failed:', outreachResult.error.message)
+      }
       outreachWithBriefs = (outreachResult.data ?? []) as unknown as OutreachWithBrief[]
       submittedBriefIds = new Set((submissionsResult.data ?? []).map((s) => s.brief_id))
     }
