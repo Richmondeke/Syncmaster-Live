@@ -3,9 +3,8 @@ import Link from 'next/link'
 export default function DashboardPage() {
   const tools = [
     { label: 'AI Tagger', description: 'Auto-tag tracks with smart AI engine', href: '/dashboard/tagger', emoji: '✨' },
-    { label: 'Sound Radar', description: 'Discover trending sync sounds', href: '/dashboard/radar', emoji: '🔍' },
-    { label: 'Agency Directory', description: 'Connect with music supervisors', href: '/dashboard/directory', emoji: '🏢' },
-    { label: 'Radio Directory', description: 'Connect with college radio stations', href: '/dashboard/radio-directory', emoji: '📻' },
+    { label: 'Sync Radar', description: 'Discover trending sync sounds', href: '/dashboard/radar', emoji: '🔍' },
+    { label: 'Directory', description: 'Agencies, supervisors & radio stations', href: '/dashboard/directory', emoji: '🏢' },
     { label: 'Submissions', description: 'Track your pitches and submissions', href: '/dashboard/submissions', emoji: '📄' },
     { label: 'Marketplace', description: 'Explore opportunities', href: '/dashboard/marketplace', emoji: '🛒' },
   ]
