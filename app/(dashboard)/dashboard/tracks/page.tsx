@@ -318,7 +318,7 @@ export default function TracksPage() {
               <input 
                 type="text" 
                 placeholder="Search catalog by title, genre, bpm..." 
-                className="w-full h-14 pl-12 pr-4 bg-white border-2 border-border/50 rounded-md font-bold text-sm focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all shadow-sm"
+                className="w-full h-14 pl-12 pr-4 bg-card border-2 border-border/50 rounded-md font-bold text-sm text-foreground focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all shadow-sm"
               />
             </div>
             <Button variant="outline" className="h-14 px-6 rounded-md border-2 border-border/50 font-bold text-xs uppercase tracking-widest hover:bg-muted/50 transition-all">
@@ -371,10 +371,10 @@ export default function TracksPage() {
           {tracks.map((track) => (
             <div key={track.id} className="relative group">
               <Card className={cn(
-                "bg-white border-2 rounded-md transition-all overflow-hidden",
+                "bg-card border-2 rounded-md transition-all overflow-hidden",
                 selectedTracks.includes(track.id) 
-                  ? "border-primary shadow-xl shadow-primary/10 ring-4 ring-primary/5 bg-primary/[0.02]" 
-                  : "border-primary/10 hover:border-primary/30 shadow-sm"
+                  ? "border-primary shadow-xl shadow-primary/10 ring-4 ring-primary/5" 
+                  : "border-border hover:border-primary/30 shadow-sm"
               )}>
                 <CardContent className="p-4 flex items-center gap-4">
                   <div className="flex items-center gap-4">
@@ -459,10 +459,10 @@ export default function TracksPage() {
                 {track.versions.length > 0 && (
                   <Accordion type="single" className="w-full border-t border-border/50">
                     <AccordionItem value="versions" className="border-none">
-                      <AccordionTrigger className="px-6 py-2.5 hover:no-underline label uppercase text-muted-foreground/40 hover:text-primary transition-all bg-[#f8f9fa]">
+                      <AccordionTrigger className="px-6 py-2.5 hover:no-underline label uppercase text-muted-foreground/40 hover:text-primary transition-all bg-muted/30">
                         View Versions & Stems
                       </AccordionTrigger>
-                      <AccordionContent className="bg-white p-0">
+                      <AccordionContent className="bg-card p-0">
                         {track.versions.map((version: any) => (
                           <div key={version.id} className="flex items-center gap-4 px-14 py-4 border-t border-border/30 hover:bg-primary/5 transition-all group/version">
                             <div className="w-8 h-8 rounded-md bg-muted/50 flex items-center justify-center text-muted-foreground/40 group-hover/version:bg-primary group-hover/version:text-white transition-all">
