@@ -5,15 +5,14 @@ import Link from 'next/link'
 import {
   Play,
   Clock,
-  Eye,
-  Camera,
-  MessageCircle,
-  Video,
+  Star,
   Globe,
+  MessageSquare,
+  Film,
   Music,
-  Disc3,
+  Music2,
   ExternalLink,
-  Headphones,
+  Radio,
   Sparkles,
 } from 'lucide-react'
 import { getEPKBySlug } from '@/app/actions/epks'
@@ -62,15 +61,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 function SocialIcon({ platform, size = 18 }: { platform: string; size?: number }) {
   switch (platform) {
     case 'instagram':
-      return <Camera size={size} />
+      return <Star size={size} />
     case 'twitter':
-      return <MessageCircle size={size} />
+      return <MessageSquare size={size} />
     case 'youtube':
-      return <Video size={size} />
+      return <Film size={size} />
     case 'spotify':
       return <Music size={size} />
     case 'soundcloud':
-      return <Headphones size={size} />
+      return <Radio size={size} />
     case 'website':
       return <Globe size={size} />
     default:
@@ -181,7 +180,7 @@ export default async function EPKPage({ params }: PageProps) {
             /* Fallback hero when no image */
             <div className="relative flex h-[40vh] min-h-[350px] items-center justify-center">
               <div className="absolute inset-0 bg-gradient-to-b from-[#4b4bc0]/10 via-[#07070f] to-[#07070f]" />
-              <Disc3 size={120} className="relative animate-[spin_8s_linear_infinite] text-white/[0.06]" />
+              <Music2 size={120} className="relative animate-[spin_8s_linear_infinite] text-white/[0.06]" />
             </div>
           )}
 
@@ -196,7 +195,7 @@ export default async function EPKPage({ params }: PageProps) {
                 </span>
                 {/* View count */}
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1 text-[11px] font-medium text-white/40 backdrop-blur-sm">
-                  <Eye size={12} />
+                  <Star size={12} />
                   {epk.views.toLocaleString()} {epk.views === 1 ? 'view' : 'views'}
                 </span>
               </div>

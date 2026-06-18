@@ -9,8 +9,8 @@ import {
   Send,
   Plus,
   Mail,
-  ArrowUpRight,
-  Volume2
+  ArrowRight,
+  Sparkles
 } from 'lucide-react'
 
 export default function CampaignsPage() {
@@ -30,7 +30,7 @@ export default function CampaignsPage() {
       <div className="flex flex-col items-center justify-center py-24 text-center gap-6 rounded-[2.5rem] border-2 border-dashed border-border/40 bg-muted/10">
         <div className="relative">
           <div className="w-24 h-24 rounded-[2rem] bg-primary/10 flex items-center justify-center shadow-lg">
-            <Volume2 className="w-12 h-12 text-primary/60" />
+            <Sparkles className="w-12 h-12 text-primary/60" />
           </div>
           <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
             <Send className="w-4 h-4 text-primary" />
@@ -60,7 +60,7 @@ export default function CampaignsPage() {
             <p className="text-muted-foreground max-w-lg font-medium">Use our professional templates and drag-and-drop builder to create newsletters that stand out in any inbox.</p>
           </div>
           <Button className="rounded-full bg-foreground text-background font-black h-14 px-8 shadow-xl hover:scale-105 transition-all">
-            Explore Templates <ArrowUpRight className="ml-2 w-5 h-5" />
+            Explore Templates <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
         </div>
       </Card>
