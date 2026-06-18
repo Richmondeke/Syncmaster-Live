@@ -20,7 +20,7 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   return getAllSlugs().map((slug: string) => ({ slug }))
 }
 
-const BASE_URL = 'https://syncmaster-live.vercel.app'
+const BASE_URL = 'https://syncmaster.live'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
