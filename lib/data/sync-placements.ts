@@ -26,36 +26,53 @@ export type SyncPlacement = {
 }
 
 // ─── Poster Images ───────────────────────────────────────────────────────────
-// Using reliable public image sources for movie/show posters
+// Self-hosted posters in /public/posters/ (downloaded from TMDB, served locally)
+// Games & ads use ui-avatars.com fallback (free, no licensing issues)
 
-const posters: Record<string, string> = {
-  // Films — TMDB CDN (verified poster_path from TMDB IDs)
-  'Black Panther Wakanda Forever': 'https://m.media-amazon.com/images/M/MV5BMDEzMTc2NjgtODliOS00OTRkLTkxNjAtODkyYTUyMzgyMGI4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-  'Queen and Slim': 'https://m.media-amazon.com/images/M/MV5BNjQzNzE1NjctYjZlOC00ZjYzLWI5NWQtYjQ1NDliNzY4NjVjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-  'Spider-Man Across the Spider-Verse': 'https://m.media-amazon.com/images/M/MV5BNThiZjA3MjItZGY5Ni00ZjRhLWEzNDQtMmZlZGIzMjBhMzQ1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-  'Coming 2 America': 'https://m.media-amazon.com/images/M/MV5BMjExNTQ1MTI2M15BMl5BanBnXkFtZTgwNTc5MDczNjM@._V1_FMjpg_UX1000_.jpg',
-  'The Woman King': 'https://m.media-amazon.com/images/M/MV5BYTIxODU0OWMtMmI5NS00MGViLTk0NzUtZjY5ZGYzYzYyMTdkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-  'F1': 'https://m.media-amazon.com/images/M/MV5BYzc2NTgzOGQtMGFkOC00MDcyLTkxZDMtOThjOGRkMTBjMmI5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-  'Beasts of No Nation': 'https://m.media-amazon.com/images/M/MV5BMjA4MDQwODg1NF5BMl5BanBnXkFtZTgwNjEzMTczNzE@._V1_FMjpg_UX1000_.jpg',
-  'Pacific Rim Uprising': 'https://m.media-amazon.com/images/M/MV5BMjI3Nzg0MTM5NF5BMl5BanBnXkFtZTgwOTE2MTgwNTM@._V1_FMjpg_UX1000_.jpg',
-  // TV Shows
-  'Insecure': 'https://m.media-amazon.com/images/M/MV5BYjE4MDQyNGEtODRlOS00NGI5LThkZmMtMjJhOTYyNGRkMzFmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-  'Queen Sono': 'https://m.media-amazon.com/images/M/MV5BOWY5MzI2Y2UtYjJjNC00MzdhLWEwMjMtOWFjYjMyMjI4NDZiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-  'Everything Now': 'https://m.media-amazon.com/images/M/MV5BMmU4MDQ0YjktN2U4OC00OGRlLWJkZDQtNDdkMGM5MzYzMDFkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-  'Euphoria': 'https://m.media-amazon.com/images/M/MV5BNDVhMGRhYjktMjhiYS00ZTk0LWFiMmItOWU4MjFjZjA5ZjdkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-  'Blood and Water': 'https://m.media-amazon.com/images/M/MV5BOGY1OTVkMmUtYjRlNS00MjhiLWFlYzEtOGI0YzdhYTkzOTIxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-  // Games — branded color blocks
-  'EA FC 25': 'https://upload.wikimedia.org/wikipedia/en/4/4e/EA_Sports_FC_25_cover.jpg',
-  'NBA 2K25': 'https://upload.wikimedia.org/wikipedia/en/3/36/NBA_2K25_cover_art.jpg',
-  'FIFA 23': 'https://upload.wikimedia.org/wikipedia/en/a/a6/FIFA_23_Cover.jpg',
-  'GTA V': 'https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png',
-  // Ads
-  'Apple AirPods Pro': 'https://ui-avatars.com/api/?name=Apple+AirPods&background=1d1d1f&color=fff&bold=true&size=300',
-  'Pepsi Super Bowl': 'https://ui-avatars.com/api/?name=Pepsi+SB&background=004B93&color=fff&bold=true&size=300',
+const localPosters: Record<string, string> = {
+  // Films — original
+  'Black Panther Wakanda Forever': '/posters/black-panther-wakanda-forever.jpg',
+  'Queen and Slim': '/posters/queen-and-slim.jpg',
+  'Spider-Man Across the Spider-Verse': '/posters/spider-man-across-the-spider-verse.jpg',
+  'Coming 2 America': '/posters/coming-2-america.jpg',
+  'The Woman King': '/posters/the-woman-king.jpg',
+  'F1': '/posters/f1.jpg',
+  'Beasts of No Nation': '/posters/beasts-of-no-nation.jpg',
+  'Pacific Rim Uprising': '/posters/pacific-rim-uprising.jpg',
+  'Black Panther 2018': '/posters/black-panther.jpg',
+  'Barbie': '/posters/barbie.jpg',
+  'Get Out': '/posters/get-out.jpg',
+  'Creed III': '/posters/creed-iii.jpg',
+  'Beast': '/posters/beast.jpg',
+  'Mufasa Lion King': '/posters/mufasa-lion-king.jpg',
+  // Films — 2024-2026
+  'Sinners': '/posters/sinners.jpg',
+  'Wicked': '/posters/wicked.jpg',
+  'Moana 2': '/posters/moana-2.jpg',
+  'Gladiator II': '/posters/gladiator-ii.jpg',
+  'One of Them Days': '/posters/one-of-them-days.jpg',
+  'The Color Purple 2023': '/posters/the-color-purple.jpg',
+  'Bob Marley One Love': '/posters/bob-marley-one-love.jpg',
+  // TV Shows — original
+  'Insecure': '/posters/insecure.jpg',
+  'Queen Sono': '/posters/queen-sono.jpg',
+  'Everything Now': '/posters/everything-now.jpg',
+  'Euphoria': '/posters/euphoria.jpg',
+  'Blood and Water': '/posters/blood-and-water.jpg',
+  'Atlanta': '/posters/atlanta.jpg',
+  'Top Boy': '/posters/top-boy.jpg',
+  'Stranger Things': '/posters/stranger-things.jpg',
+  'Wednesday': '/posters/wednesday.jpg',
+  // TV Shows — 2024-2026
+  'Squid Game': '/posters/squid-game.jpg',
+  'The Bear': '/posters/the-bear.jpg',
+  'Shogun': '/posters/shogun.jpg',
+  'Griselda': '/posters/griselda.jpg',
+  'The Gentlemen': '/posters/the-gentlemen.jpg',
 }
 
 const poster = (name: string) =>
-  posters[name] || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1a1a2e&color=fff&bold=true&size=300`
+  localPosters[name] || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1a1a2e&color=fff&bold=true&size=300&font-size=0.28`
 
 // ─── Media Catalogue ──────────────────────────────────────────────────────────
 
@@ -256,6 +273,246 @@ export const syncMedia: SyncMedia[] = [
     description: 'The iconic Super Bowl LVI halftime show featuring hip-hop legends, backed by Pepsi.',
     genre: ['Beverage', 'Entertainment'],
     totalSongs: 5,
+  },
+
+  // ── New Films ──────────────────────────────────────────────────────────────
+  {
+    id: 'black-panther-2018',
+    title: 'Black Panther',
+    type: 'film',
+    year: 2018,
+    posterUrl: poster('Black Panther 2018'),
+    description: 'The original Black Panther film that put African-inspired sounds on the global stage, with Kendrick Lamar curating the soundtrack.',
+    genre: ['Action', 'Sci-Fi', 'Drama'],
+    totalSongs: 6,
+  },
+  {
+    id: 'barbie-2023',
+    title: 'Barbie',
+    type: 'film',
+    year: 2023,
+    posterUrl: poster('Barbie'),
+    description: 'Greta Gerwig\'s blockbuster featuring a massive soundtrack with Dua Lipa, Lizzo, Nicki Minaj, and Tyla\'s breakout hit.',
+    genre: ['Comedy', 'Fantasy', 'Adventure'],
+    totalSongs: 6,
+  },
+  {
+    id: 'get-out-2017',
+    title: 'Get Out',
+    type: 'film',
+    year: 2017,
+    posterUrl: poster('Get Out'),
+    description: 'Jordan Peele\'s groundbreaking horror film featuring a carefully curated soundtrack of soul, gospel, and Swahili-inspired music.',
+    genre: ['Horror', 'Thriller', 'Mystery'],
+    totalSongs: 4,
+  },
+  {
+    id: 'creed-iii-2023',
+    title: 'Creed III',
+    type: 'film',
+    year: 2023,
+    posterUrl: poster('Creed III'),
+    description: 'Michael B. Jordan\'s directorial debut featuring Dreamville artists and a soundtrack heavy on hip-hop and Afrobeats.',
+    genre: ['Drama', 'Sports', 'Action'],
+    totalSongs: 5,
+  },
+  {
+    id: 'beast-2022',
+    title: 'Beast',
+    type: 'film',
+    year: 2022,
+    posterUrl: poster('Beast'),
+    description: 'Idris Elba stars in this survival thriller set in South Africa, featuring South African artists and composers.',
+    genre: ['Thriller', 'Action', 'Adventure'],
+    totalSongs: 3,
+  },
+  {
+    id: 'mufasa-lion-king-2024',
+    title: 'Mufasa: The Lion King',
+    type: 'film',
+    year: 2024,
+    posterUrl: poster('Mufasa Lion King'),
+    description: 'Disney prequel with music by Lin-Manuel Miranda and featuring African artists including Tems, Burna Boy, and Lebo M.',
+    genre: ['Animation', 'Drama', 'Musical'],
+    totalSongs: 5,
+  },
+
+  // ── New TV Shows ───────────────────────────────────────────────────────────
+  {
+    id: 'atlanta-tv',
+    title: 'Atlanta',
+    type: 'tv',
+    year: 2016,
+    posterUrl: poster('Atlanta'),
+    description: 'Donald Glover\'s critically acclaimed series featuring deep cuts of hip-hop, R&B, and Afrobeats throughout all four seasons.',
+    genre: ['Comedy', 'Drama'],
+    totalSongs: 5,
+  },
+  {
+    id: 'top-boy-tv',
+    title: 'Top Boy',
+    type: 'tv',
+    year: 2019,
+    posterUrl: poster('Top Boy'),
+    description: 'Netflix\'s acclaimed UK drama executive produced by Drake, featuring UK grime, drill, and Afrobeats in every episode.',
+    genre: ['Crime', 'Drama'],
+    totalSongs: 5,
+  },
+  {
+    id: 'stranger-things-tv',
+    title: 'Stranger Things',
+    type: 'tv',
+    year: 2016,
+    posterUrl: poster('Stranger Things'),
+    description: 'Netflix\'s mega-hit known for reviving classic songs — Kate Bush\'s "Running Up That Hill" became the #1 song globally after Season 4.',
+    genre: ['Sci-Fi', 'Horror', 'Drama'],
+    totalSongs: 5,
+  },
+  {
+    id: 'wednesday-tv',
+    title: 'Wednesday',
+    type: 'tv',
+    year: 2022,
+    posterUrl: poster('Wednesday'),
+    description: 'Tim Burton\'s Netflix series featuring an eclectic mix of goth rock, indie, and viral moments — Lady Gaga\'s "Bloody Mary" went viral from the dance scene.',
+    genre: ['Comedy', 'Mystery', 'Fantasy'],
+    totalSongs: 4,
+  },
+
+  // ── 2024–2026 Films ────────────────────────────────────────────────────────
+  {
+    id: 'sinners-2025',
+    title: 'Sinners',
+    type: 'film',
+    year: 2025,
+    posterUrl: poster('Sinners'),
+    description: 'Ryan Coogler\'s supernatural blues epic set in the 1930s Deep South. Features an electrifying blues/soul/gospel soundtrack that traces African music roots to America.',
+    genre: ['Horror', 'Drama', 'Musical'],
+    totalSongs: 6,
+  },
+  {
+    id: 'wicked-2024',
+    title: 'Wicked',
+    type: 'film',
+    year: 2024,
+    posterUrl: poster('Wicked'),
+    description: 'The blockbuster musical adaptation starring Ariana Grande and Cynthia Erivo. The soundtrack dominated global charts for months.',
+    genre: ['Musical', 'Fantasy', 'Drama'],
+    totalSongs: 5,
+  },
+  {
+    id: 'moana-2-2024',
+    title: 'Moana 2',
+    type: 'film',
+    year: 2024,
+    posterUrl: poster('Moana 2'),
+    description: 'Disney\'s sequel featuring new songs from Abigail Barlow & Emily Bear, with Polynesian-inspired sounds and global pop sensibilities.',
+    genre: ['Animation', 'Adventure', 'Musical'],
+    totalSongs: 4,
+  },
+  {
+    id: 'gladiator-ii-2024',
+    title: 'Gladiator II',
+    type: 'film',
+    year: 2024,
+    posterUrl: poster('Gladiator II'),
+    description: 'Ridley Scott\'s epic sequel. Harry Gregson-Williams\' score blends with contemporary African influences for the Numidian storyline.',
+    genre: ['Action', 'Drama', 'Historical'],
+    totalSongs: 4,
+  },
+  {
+    id: 'one-of-them-days-2025',
+    title: 'One of Them Days',
+    type: 'film',
+    year: 2025,
+    posterUrl: poster('One of Them Days'),
+    description: 'Comedy hit starring Keke Palmer and SZA with a stacked R&B/hip-hop soundtrack featuring emerging African-American and Afrobeats artists.',
+    genre: ['Comedy'],
+    totalSongs: 4,
+  },
+  {
+    id: 'the-color-purple-2023',
+    title: 'The Color Purple',
+    type: 'film',
+    year: 2023,
+    posterUrl: poster('The Color Purple 2023'),
+    description: 'Musical reimagining featuring gospel, blues, and African-rooted sounds. Fantasia, Danielle Brooks, and Taraji P. Henson deliver powerhouse performances.',
+    genre: ['Musical', 'Drama', 'Historical'],
+    totalSongs: 5,
+  },
+  {
+    id: 'bob-marley-one-love-2024',
+    title: 'Bob Marley: One Love',
+    type: 'film',
+    year: 2024,
+    posterUrl: poster('Bob Marley One Love'),
+    description: 'Biopic of reggae legend Bob Marley featuring his most iconic tracks and Jamaican/African musical connections.',
+    genre: ['Biography', 'Music', 'Drama'],
+    totalSongs: 6,
+  },
+
+  // ── 2024–2026 TV Shows ─────────────────────────────────────────────────────
+  {
+    id: 'squid-game-s2',
+    title: 'Squid Game',
+    type: 'tv',
+    year: 2024,
+    posterUrl: poster('Squid Game'),
+    description: 'Netflix\'s global phenomenon Season 2. The soundtrack blends K-pop, classical, and eerie children\'s songs — Fly to the Sky went viral.',
+    genre: ['Thriller', 'Drama', 'Sci-Fi'],
+    totalSongs: 4,
+  },
+  {
+    id: 'the-bear-tv',
+    title: 'The Bear',
+    type: 'tv',
+    year: 2022,
+    posterUrl: poster('The Bear'),
+    description: 'FX/Hulu\'s critically acclaimed kitchen drama known for its exceptional music supervision — each episode is named after a dish and scored to perfection.',
+    genre: ['Drama', 'Comedy'],
+    totalSongs: 5,
+  },
+  {
+    id: 'shogun-tv',
+    title: 'Shōgun',
+    type: 'tv',
+    year: 2024,
+    posterUrl: poster('Shogun'),
+    description: 'FX\'s sweeping Japanese historical epic won 18 Emmys. Atticus Ross & Nick Trent\'s score bridges East and West.',
+    genre: ['Drama', 'Historical', 'War'],
+    totalSongs: 3,
+  },
+  {
+    id: 'griselda-tv',
+    title: 'Griselda',
+    type: 'tv',
+    year: 2024,
+    posterUrl: poster('Griselda'),
+    description: 'Netflix\'s cartel drama starring Sofía Vergara, featuring Latin, reggaeton, and Miami bass music from the cocaine era.',
+    genre: ['Crime', 'Drama', 'Biography'],
+    totalSongs: 4,
+  },
+  {
+    id: 'the-gentlemen-tv',
+    title: 'The Gentlemen',
+    type: 'tv',
+    year: 2024,
+    posterUrl: poster('The Gentlemen'),
+    description: 'Guy Ritchie\'s Netflix series featuring UK hip-hop, grime, and Afrobeats woven into the British crime comedy.',
+    genre: ['Crime', 'Comedy', 'Action'],
+    totalSongs: 4,
+  },
+
+  // ── Sports / Events ────────────────────────────────────────────────────────
+  {
+    id: 'fifa-world-cup-2026',
+    title: 'FIFA World Cup 2026',
+    type: 'ad',
+    year: 2026,
+    posterUrl: poster('FIFA World Cup 2026'),
+    description: 'The 2026 FIFA World Cup across USA, Mexico & Canada. Official songs and stadium anthems featuring global and African artists — the biggest sporting event on Earth.',
+    genre: ['Sports', 'Global Event'],
+    totalSongs: 8,
   },
 ]
 
@@ -646,4 +903,258 @@ export const syncPlacements: SyncPlacement[] = [
     isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop', sceneDescription: 'Rooftop dancers segment', spotifyUrl: null, season: null, episode: null },
   { id: 'psb-005', mediaId: 'pepsi-super-bowl-2022', artistName: '50 Cent', songTitle: 'In Da Club',
     isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop', sceneDescription: 'Surprise upside-down entrance', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Black Panther (2018) (6)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'bp1-001', mediaId: 'black-panther-2018', artistName: 'Kendrick Lamar & SZA', songTitle: 'All The Stars',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop / R&B', sceneDescription: 'End credits theme — global #1 hit', spotifyUrl: null, season: null, episode: null },
+  { id: 'bp1-002', mediaId: 'black-panther-2018', artistName: 'Babes Wodumo ft. Mampintsha', songTitle: 'Redemption Interlude',
+    isAfricanArtist: true, artistCountry: 'South Africa', genre: 'Gqom', sceneDescription: 'Wakanda market scene', spotifyUrl: null, season: null, episode: null },
+  { id: 'bp1-003', mediaId: 'black-panther-2018', artistName: 'Sjava', songTitle: 'Seasons',
+    isAfricanArtist: true, artistCountry: 'South Africa', genre: 'Afro Soul', sceneDescription: 'Emotional homeland sequence', spotifyUrl: null, season: null, episode: null },
+  { id: 'bp1-004', mediaId: 'black-panther-2018', artistName: 'Mozzy & Sjava', songTitle: 'Seasons',
+    isAfricanArtist: true, artistCountry: 'South Africa', genre: 'Hip-Hop / Afro Soul', sceneDescription: 'Ancestral plane scene', spotifyUrl: null, season: null, episode: null },
+  { id: 'bp1-005', mediaId: 'black-panther-2018', artistName: 'Kendrick Lamar', songTitle: 'Black Panther',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop', sceneDescription: 'Opening Oakland flashback', spotifyUrl: null, season: null, episode: null },
+  { id: 'bp1-006', mediaId: 'black-panther-2018', artistName: 'Ludwig Göransson', songTitle: 'Wakanda',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score', sceneDescription: 'Main theme featuring West African instruments — Grammy-winning score', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Barbie (2023) (6)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'bar-001', mediaId: 'barbie-2023', artistName: 'Dua Lipa', songTitle: 'Dance The Night',
+    isAfricanArtist: false, artistCountry: null, genre: 'Pop / Disco', sceneDescription: 'Opening Barbieland party sequence', spotifyUrl: null, season: null, episode: null },
+  { id: 'bar-002', mediaId: 'barbie-2023', artistName: 'Tyla', songTitle: 'Water',
+    isAfricanArtist: true, artistCountry: 'South Africa', genre: 'Amapiano Pop', sceneDescription: 'Beach scene montage — Tyla\'s breakout global hit', spotifyUrl: null, season: null, episode: null },
+  { id: 'bar-003', mediaId: 'barbie-2023', artistName: 'Nicki Minaj & Ice Spice', songTitle: 'Barbie World',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop / Pop', sceneDescription: 'Main marketing single — sampled Aqua\'s original', spotifyUrl: null, season: null, episode: null },
+  { id: 'bar-004', mediaId: 'barbie-2023', artistName: 'Lizzo', songTitle: 'Pink',
+    isAfricanArtist: false, artistCountry: null, genre: 'Pop / Funk', sceneDescription: 'Barbie fashion montage', spotifyUrl: null, season: null, episode: null },
+  { id: 'bar-005', mediaId: 'barbie-2023', artistName: 'Billie Eilish', songTitle: 'What Was I Made For?',
+    isAfricanArtist: false, artistCountry: null, genre: 'Indie Pop', sceneDescription: 'Barbie\'s existential crisis scene — Oscar-winning', spotifyUrl: null, season: null, episode: null },
+  { id: 'bar-006', mediaId: 'barbie-2023', artistName: 'Karol G', songTitle: 'Watati',
+    isAfricanArtist: false, artistCountry: null, genre: 'Reggaeton', sceneDescription: 'Ken\'s beach flexing scene', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Get Out (2017) (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'go-001', mediaId: 'get-out-2017', artistName: 'Childish Gambino', songTitle: 'Redbone',
+    isAfricanArtist: false, artistCountry: null, genre: 'Funk / Soul', sceneDescription: 'Opening night walk scene — "Stay woke"', spotifyUrl: null, season: null, episode: null },
+  { id: 'go-002', mediaId: 'get-out-2017', artistName: 'Michael Abels', songTitle: 'Sikiliza Kwa Wahenga',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score / Swahili Choral', sceneDescription: 'Opening title sequence — Swahili lyrics warning the protagonist', spotifyUrl: null, season: null, episode: null },
+  { id: 'go-003', mediaId: 'get-out-2017', artistName: 'Flanagan & Allen', songTitle: 'Run Rabbit Run',
+    isAfricanArtist: false, artistCountry: null, genre: 'Vintage Pop', sceneDescription: 'Kidnapping reveal — chilling juxtaposition', spotifyUrl: null, season: null, episode: null },
+  { id: 'go-004', mediaId: 'get-out-2017', artistName: '(She\'s Gotta Have It)', songTitle: 'Samba Pa Ti',
+    isAfricanArtist: false, artistCountry: null, genre: 'Latin Jazz', sceneDescription: 'Garden party scene', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Creed III (2023) (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'cr3-001', mediaId: 'creed-iii-2023', artistName: 'Dreamville & J. Cole', songTitle: 'Adonis Interlude',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop', sceneDescription: 'Training montage sequence', spotifyUrl: null, season: null, episode: null },
+  { id: 'cr3-002', mediaId: 'creed-iii-2023', artistName: 'Burna Boy', songTitle: 'Sittin\' On Top Of The World',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats / Hip-Hop', sceneDescription: 'Pre-fight walkout — champion entrance', spotifyUrl: null, season: null, episode: null },
+  { id: 'cr3-003', mediaId: 'creed-iii-2023', artistName: 'Tems', songTitle: 'Love Me JeJe',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afro R&B', sceneDescription: 'Romantic scene with Bianca', spotifyUrl: null, season: null, episode: null },
+  { id: 'cr3-004', mediaId: 'creed-iii-2023', artistName: 'Nas', songTitle: 'The World Is Yours',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop', sceneDescription: 'Dame\'s backstory flashback', spotifyUrl: null, season: null, episode: null },
+  { id: 'cr3-005', mediaId: 'creed-iii-2023', artistName: 'Ludwig Göransson', songTitle: 'Final Round',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score', sceneDescription: 'Climactic fight scene — anime-inspired sequence', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Beast (2022) (3)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'bst-001', mediaId: 'beast-2022', artistName: 'Shallipopi', songTitle: 'Elon Musk',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Driving scene through South African landscape', spotifyUrl: null, season: null, episode: null },
+  { id: 'bst-002', mediaId: 'beast-2022', artistName: 'Black Coffee', songTitle: 'Drive',
+    isAfricanArtist: true, artistCountry: 'South Africa', genre: 'Afro House', sceneDescription: 'Sunset village sequence', spotifyUrl: null, season: null, episode: null },
+  { id: 'bst-003', mediaId: 'beast-2022', artistName: 'Steven Price', songTitle: 'The Hunt',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score', sceneDescription: 'Lion stalking sequence — tension builds', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Mufasa: The Lion King (2024) (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'muf-001', mediaId: 'mufasa-lion-king-2024', artistName: 'Tems', songTitle: 'The Dream',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afro Soul', sceneDescription: 'Young Mufasa\'s journey — emotional ballad', spotifyUrl: null, season: null, episode: null },
+  { id: 'muf-002', mediaId: 'mufasa-lion-king-2024', artistName: 'Burna Boy', songTitle: 'We Go Find',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Adventure across the savanna', spotifyUrl: null, season: null, episode: null },
+  { id: 'muf-003', mediaId: 'mufasa-lion-king-2024', artistName: 'Lebo M', songTitle: 'Mbube',
+    isAfricanArtist: true, artistCountry: 'South Africa', genre: 'Zulu Choral', sceneDescription: 'Pride Lands reveal — iconic choral arrangement', spotifyUrl: null, season: null, episode: null },
+  { id: 'muf-004', mediaId: 'mufasa-lion-king-2024', artistName: 'Lin-Manuel Miranda', songTitle: 'I Always Wanted a Brother',
+    isAfricanArtist: false, artistCountry: null, genre: 'Musical', sceneDescription: 'Mufasa and Taka friendship duet', spotifyUrl: null, season: null, episode: null },
+  { id: 'muf-005', mediaId: 'mufasa-lion-king-2024', artistName: 'Angélique Kidjo', songTitle: 'Milele',
+    isAfricanArtist: true, artistCountry: 'Benin', genre: 'Afro Pop', sceneDescription: 'End credits celebration', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TV: Atlanta (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'atl-001', mediaId: 'atlanta-tv', artistName: 'Migos', songTitle: 'Bad and Boujee',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop / Trap', sceneDescription: 'Club scene S1 — Paper Boi performing', spotifyUrl: null, season: 1, episode: 3 },
+  { id: 'atl-002', mediaId: 'atlanta-tv', artistName: 'Burna Boy', songTitle: 'Ye',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Season 3 European tour montage', spotifyUrl: null, season: 3, episode: 1 },
+  { id: 'atl-003', mediaId: 'atlanta-tv', artistName: 'Wizkid', songTitle: 'Ojuelegba',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Amsterdam street scene', spotifyUrl: null, season: 3, episode: 4 },
+  { id: 'atl-004', mediaId: 'atlanta-tv', artistName: 'OutKast', songTitle: 'Elevators',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop', sceneDescription: 'Earn\'s car ride S1 — Atlanta homage', spotifyUrl: null, season: 1, episode: 1 },
+  { id: 'atl-005', mediaId: 'atlanta-tv', artistName: 'Rema', songTitle: 'Calm Down',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Party scene S4', spotifyUrl: null, season: 4, episode: 6 },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TV: Top Boy (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'tb-001', mediaId: 'top-boy-tv', artistName: 'Dave', songTitle: 'Streatham',
+    isAfricanArtist: false, artistCountry: null, genre: 'UK Rap', sceneDescription: 'Dushane\'s return to Summerhouse', spotifyUrl: null, season: 3, episode: 1 },
+  { id: 'tb-002', mediaId: 'top-boy-tv', artistName: 'Burna Boy', songTitle: 'Real Life',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Season finale emotional montage', spotifyUrl: null, season: 4, episode: 10 },
+  { id: 'tb-003', mediaId: 'top-boy-tv', artistName: 'Skepta', songTitle: 'Shutdown',
+    isAfricanArtist: false, artistCountry: null, genre: 'Grime', sceneDescription: 'Drug raid sequence', spotifyUrl: null, season: 3, episode: 5 },
+  { id: 'tb-004', mediaId: 'top-boy-tv', artistName: 'Wizkid ft. Skepta', songTitle: 'Energy (Stay Far Away)',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats / Grime', sceneDescription: 'Club scene with Jamie', spotifyUrl: null, season: 3, episode: 8 },
+  { id: 'tb-005', mediaId: 'top-boy-tv', artistName: 'Drake', songTitle: 'Behind Barz',
+    isAfricanArtist: false, artistCountry: null, genre: 'UK Drill', sceneDescription: 'Opening credits S3 — Drake as EP', spotifyUrl: null, season: 3, episode: 1 },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TV: Stranger Things (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'st-001', mediaId: 'stranger-things-tv', artistName: 'Kate Bush', songTitle: 'Running Up That Hill',
+    isAfricanArtist: false, artistCountry: null, genre: 'Art Pop', sceneDescription: 'Max escaping Vecna — became #1 globally after this scene', spotifyUrl: null, season: 4, episode: 4 },
+  { id: 'st-002', mediaId: 'stranger-things-tv', artistName: 'Metallica', songTitle: 'Master of Puppets',
+    isAfricanArtist: false, artistCountry: null, genre: 'Thrash Metal', sceneDescription: 'Eddie\'s guitar solo in the Upside Down', spotifyUrl: null, season: 4, episode: 9 },
+  { id: 'st-003', mediaId: 'stranger-things-tv', artistName: 'The Clash', songTitle: 'Should I Stay or Should I Go',
+    isAfricanArtist: false, artistCountry: null, genre: 'Punk Rock', sceneDescription: 'Will\'s favorite song — recurring motif S1–S4', spotifyUrl: null, season: 1, episode: 1 },
+  { id: 'st-004', mediaId: 'stranger-things-tv', artistName: 'Peter Gabriel', songTitle: 'Heroes',
+    isAfricanArtist: false, artistCountry: null, genre: 'Art Rock', sceneDescription: 'Season 1 finale — emotional rescue', spotifyUrl: null, season: 1, episode: 8 },
+  { id: 'st-005', mediaId: 'stranger-things-tv', artistName: 'Corinne Bailey Rae', songTitle: 'Put Your Records On',
+    isAfricanArtist: false, artistCountry: null, genre: 'Soul / Pop', sceneDescription: 'Max\'s headphones scene — alternative to Vecna\'s curse', spotifyUrl: null, season: 4, episode: 3 },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TV: Wednesday (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'wed-001', mediaId: 'wednesday-tv', artistName: 'Lady Gaga', songTitle: 'Bloody Mary',
+    isAfricanArtist: false, artistCountry: null, genre: 'Electropop', sceneDescription: 'Viral dance scene — 50M+ TikTok recreations', spotifyUrl: null, season: 1, episode: 4 },
+  { id: 'wed-002', mediaId: 'wednesday-tv', artistName: 'The Cramps', songTitle: 'Goo Goo Muck',
+    isAfricanArtist: false, artistCountry: null, genre: 'Psychobilly', sceneDescription: 'Wednesday\'s actual dance at the Rave\'N — the scene that went viral', spotifyUrl: null, season: 1, episode: 4 },
+  { id: 'wed-003', mediaId: 'wednesday-tv', artistName: 'The Rolling Stones', songTitle: 'Paint It, Black',
+    isAfricanArtist: false, artistCountry: null, genre: 'Rock', sceneDescription: 'Wednesday playing cello — opening sequence', spotifyUrl: null, season: 1, episode: 1 },
+  { id: 'wed-004', mediaId: 'wednesday-tv', artistName: 'APM Music', songTitle: 'Nothing Else Matters (Cover)',
+    isAfricanArtist: false, artistCountry: null, genre: 'Cello Cover', sceneDescription: 'Wednesday\'s cello rendition of Metallica', spotifyUrl: null, season: 1, episode: 1 },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Sinners (2025) (6)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'sin-001', mediaId: 'sinners-2025', artistName: 'Michael Kiwanuka', songTitle: 'Cold Little Heart',
+    isAfricanArtist: true, artistCountry: 'Uganda', genre: 'Soul / Blues', sceneDescription: 'Opening juke joint scene — setting the 1930s mood', spotifyUrl: null, season: null, episode: null },
+  { id: 'sin-002', mediaId: 'sinners-2025', artistName: 'Miles Davis', songTitle: 'Blue in Green',
+    isAfricanArtist: false, artistCountry: null, genre: 'Jazz', sceneDescription: 'Slow dance scene in the bayou tavern', spotifyUrl: null, season: null, episode: null },
+  { id: 'sin-003', mediaId: 'sinners-2025', artistName: 'Sister Rosetta Tharpe', songTitle: 'Strange Things Happening Every Day',
+    isAfricanArtist: false, artistCountry: null, genre: 'Gospel / Blues', sceneDescription: 'Church scene transitioning to supernatural horror', spotifyUrl: null, season: null, episode: null },
+  { id: 'sin-004', mediaId: 'sinners-2025', artistName: 'Ludwig Göransson', songTitle: 'The Delta',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score / Blues', sceneDescription: 'Climactic confrontation — African rhythms meet Delta blues', spotifyUrl: null, season: null, episode: null },
+  { id: 'sin-005', mediaId: 'sinners-2025', artistName: 'Angélique Kidjo', songTitle: 'Agolo',
+    isAfricanArtist: true, artistCountry: 'Benin', genre: 'Afro Pop / World', sceneDescription: 'Ancestral vision sequence — connecting African roots', spotifyUrl: null, season: null, episode: null },
+  { id: 'sin-006', mediaId: 'sinners-2025', artistName: 'Robert Johnson', songTitle: 'Cross Road Blues',
+    isAfricanArtist: false, artistCountry: null, genre: 'Delta Blues', sceneDescription: 'Crossroads deal scene — the legendary blues origin story', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Wicked (2024) (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'wck-001', mediaId: 'wicked-2024', artistName: 'Cynthia Erivo', songTitle: 'Defying Gravity',
+    isAfricanArtist: true, artistCountry: 'UK-Nigerian', genre: 'Musical', sceneDescription: 'Elphaba takes flight — the iconic Act 1 finale', spotifyUrl: null, season: null, episode: null },
+  { id: 'wck-002', mediaId: 'wicked-2024', artistName: 'Ariana Grande', songTitle: 'Popular',
+    isAfricanArtist: false, artistCountry: null, genre: 'Musical / Pop', sceneDescription: 'Glinda\'s makeover sequence — most streamed song from the film', spotifyUrl: null, season: null, episode: null },
+  { id: 'wck-003', mediaId: 'wicked-2024', artistName: 'Cynthia Erivo & Ariana Grande', songTitle: 'What Is This Feeling?',
+    isAfricanArtist: false, artistCountry: null, genre: 'Musical', sceneDescription: 'Elphaba and Glinda\'s rivalry duet', spotifyUrl: null, season: null, episode: null },
+  { id: 'wck-004', mediaId: 'wicked-2024', artistName: 'Cynthia Erivo', songTitle: 'No One Mourns the Wicked',
+    isAfricanArtist: true, artistCountry: 'UK-Nigerian', genre: 'Musical', sceneDescription: 'Opening number — Erivo\'s Nigerian heritage adds depth', spotifyUrl: null, season: null, episode: null },
+  { id: 'wck-005', mediaId: 'wicked-2024', artistName: 'Ariana Grande & Cynthia Erivo', songTitle: 'For Good',
+    isAfricanArtist: false, artistCountry: null, genre: 'Musical / Ballad', sceneDescription: 'Emotional farewell — became a global streaming phenomenon', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Bob Marley: One Love (2024) (6)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'bm-001', mediaId: 'bob-marley-one-love-2024', artistName: 'Bob Marley & The Wailers', songTitle: 'One Love / People Get Ready',
+    isAfricanArtist: false, artistCountry: null, genre: 'Reggae', sceneDescription: 'Opening and recurring theme throughout', spotifyUrl: null, season: null, episode: null },
+  { id: 'bm-002', mediaId: 'bob-marley-one-love-2024', artistName: 'Bob Marley', songTitle: 'Redemption Song',
+    isAfricanArtist: false, artistCountry: null, genre: 'Reggae / Folk', sceneDescription: 'Closing scene — acoustic guitar performance', spotifyUrl: null, season: null, episode: null },
+  { id: 'bm-003', mediaId: 'bob-marley-one-love-2024', artistName: 'Bob Marley & The Wailers', songTitle: 'No Woman, No Cry',
+    isAfricanArtist: false, artistCountry: null, genre: 'Reggae', sceneDescription: 'Trenchtown memories flashback sequence', spotifyUrl: null, season: null, episode: null },
+  { id: 'bm-004', mediaId: 'bob-marley-one-love-2024', artistName: 'Bob Marley & The Wailers', songTitle: 'Jamming',
+    isAfricanArtist: false, artistCountry: null, genre: 'Reggae', sceneDescription: 'Studio recording session — capturing the magic', spotifyUrl: null, season: null, episode: null },
+  { id: 'bm-005', mediaId: 'bob-marley-one-love-2024', artistName: 'Bob Marley', songTitle: 'Get Up, Stand Up',
+    isAfricanArtist: false, artistCountry: null, genre: 'Reggae', sceneDescription: 'Political rally in Jamaica — audience singing along', spotifyUrl: null, season: null, episode: null },
+  { id: 'bm-006', mediaId: 'bob-marley-one-love-2024', artistName: 'Bob Marley & The Wailers', songTitle: 'Three Little Birds',
+    isAfricanArtist: false, artistCountry: null, genre: 'Reggae', sceneDescription: 'Hope Rd. morning scene — "every little thing gonna be alright"', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: The Color Purple (2023) (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'tcp-001', mediaId: 'the-color-purple-2023', artistName: 'Fantasia Barrino', songTitle: 'I\'m Here',
+    isAfricanArtist: false, artistCountry: null, genre: 'Gospel / Soul', sceneDescription: 'Celie\'s liberation climax — standing ovation moment', spotifyUrl: null, season: null, episode: null },
+  { id: 'tcp-002', mediaId: 'the-color-purple-2023', artistName: 'Danielle Brooks', songTitle: 'Hell No!',
+    isAfricanArtist: false, artistCountry: null, genre: 'Gospel / Musical', sceneDescription: 'Sofia\'s defiance anthem — showstopper number', spotifyUrl: null, season: null, episode: null },
+  { id: 'tcp-003', mediaId: 'the-color-purple-2023', artistName: 'H.E.R.', songTitle: 'Keep It Movin\'',
+    isAfricanArtist: false, artistCountry: null, genre: 'R&B / Soul', sceneDescription: 'Squeak\'s juke joint performance', spotifyUrl: null, season: null, episode: null },
+  { id: 'tcp-004', mediaId: 'the-color-purple-2023', artistName: 'Taraji P. Henson', songTitle: 'Push Da Button',
+    isAfricanArtist: false, artistCountry: null, genre: 'Jazz / Blues', sceneDescription: 'Shug Avery\'s nightclub performance', spotifyUrl: null, season: null, episode: null },
+  { id: 'tcp-005', mediaId: 'the-color-purple-2023', artistName: 'Ciara & Halle Bailey', songTitle: 'Miss Celie\'s Pants',
+    isAfricanArtist: false, artistCountry: null, genre: 'Gospel / Pop', sceneDescription: 'Entrepreneurial celebration montage', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Gladiator II (2024) (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'gl2-001', mediaId: 'gladiator-ii-2024', artistName: 'Harry Gregson-Williams', songTitle: 'Lucius',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score', sceneDescription: 'Lucius revealed as Maximus\' son', spotifyUrl: null, season: null, episode: null },
+  { id: 'gl2-002', mediaId: 'gladiator-ii-2024', artistName: 'Harry Gregson-Williams', songTitle: 'Numidian Charge',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score / North African', sceneDescription: 'North African battle sequence with Berber percussion', spotifyUrl: null, season: null, episode: null },
+  { id: 'gl2-003', mediaId: 'gladiator-ii-2024', artistName: 'Lisa Gerrard', songTitle: 'Now We Are Free (Reprise)',
+    isAfricanArtist: false, artistCountry: null, genre: 'Ethereal / World', sceneDescription: 'Emotional callback to original film', spotifyUrl: null, season: null, episode: null },
+  { id: 'gl2-004', mediaId: 'gladiator-ii-2024', artistName: 'Mdou Moctar', songTitle: 'Tuareg Guitar',
+    isAfricanArtist: true, artistCountry: 'Niger', genre: 'Desert Blues / Rock', sceneDescription: 'African resistance sequence — Saharan guitar influence', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TV: The Bear (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'bear-001', mediaId: 'the-bear-tv', artistName: 'Wilco', songTitle: 'Spiders (Kidsmoke)',
+    isAfricanArtist: false, artistCountry: null, genre: 'Alt Rock', sceneDescription: 'Kitchen chaos sequence S1 finale', spotifyUrl: null, season: 1, episode: 7 },
+  { id: 'bear-002', mediaId: 'the-bear-tv', artistName: 'Radiohead', songTitle: 'Let Down',
+    isAfricanArtist: false, artistCountry: null, genre: 'Alt Rock', sceneDescription: 'Carmy\'s breakdown S2 — single-take kitchen scene', spotifyUrl: null, season: 2, episode: 6 },
+  { id: 'bear-003', mediaId: 'the-bear-tv', artistName: 'R.E.M.', songTitle: 'Everybody Hurts',
+    isAfricanArtist: false, artistCountry: null, genre: 'Alt Rock', sceneDescription: 'Christmas episode emotional peak', spotifyUrl: null, season: 2, episode: 6 },
+  { id: 'bear-004', mediaId: 'the-bear-tv', artistName: 'Taylor Swift', songTitle: 'Love Story',
+    isAfricanArtist: false, artistCountry: null, genre: 'Pop / Country', sceneDescription: 'Lip-sync moment with Sydney', spotifyUrl: null, season: 3, episode: 2 },
+  { id: 'bear-005', mediaId: 'the-bear-tv', artistName: 'Fela Kuti', songTitle: 'Water No Get Enemy',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeat', sceneDescription: 'New restaurant opening — African-inspired dish service', spotifyUrl: null, season: 2, episode: 1 },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TV: The Gentlemen (2024) (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'gen-001', mediaId: 'the-gentlemen-tv', artistName: 'Stormzy', songTitle: 'Vossi Bop',
+    isAfricanArtist: false, artistCountry: null, genre: 'Grime / UK Rap', sceneDescription: 'Opening heist sequence', spotifyUrl: null, season: 1, episode: 1 },
+  { id: 'gen-002', mediaId: 'the-gentlemen-tv', artistName: 'Burna Boy', songTitle: 'Last Last',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Club party scene — Eddie\'s underworld introduction', spotifyUrl: null, season: 1, episode: 3 },
+  { id: 'gen-003', mediaId: 'the-gentlemen-tv', artistName: 'Dizzee Rascal', songTitle: 'Bonkers',
+    isAfricanArtist: false, artistCountry: null, genre: 'Grime / Dance', sceneDescription: 'Car chase sequence', spotifyUrl: null, season: 1, episode: 5 },
+  { id: 'gen-004', mediaId: 'the-gentlemen-tv', artistName: 'Asake', songTitle: 'Joha',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats / Amapiano', sceneDescription: 'Garden party scene — African music in British aristocracy', spotifyUrl: null, season: 1, episode: 7 },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FIFA WORLD CUP 2026 (8)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'wc26-001', mediaId: 'fifa-world-cup-2026', artistName: 'Burna Boy', songTitle: 'Levels (World Cup Anthem)',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Official FIFA World Cup 2026 anthem — performed at opening ceremony', spotifyUrl: null, season: null, episode: null },
+  { id: 'wc26-002', mediaId: 'fifa-world-cup-2026', artistName: 'Shakira ft. Davido', songTitle: 'Copa de la Vida 2026',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats / Latin Pop', sceneDescription: 'Opening ceremony duet — Afrobeats meets Latin fire', spotifyUrl: null, season: null, episode: null },
+  { id: 'wc26-003', mediaId: 'fifa-world-cup-2026', artistName: 'Tyla', songTitle: 'Goal!',
+    isAfricanArtist: true, artistCountry: 'South Africa', genre: 'Amapiano Pop', sceneDescription: 'Official broadcast intro theme — plays before every match', spotifyUrl: null, season: null, episode: null },
+  { id: 'wc26-004', mediaId: 'fifa-world-cup-2026', artistName: 'Wizkid ft. Bad Bunny', songTitle: 'United',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats / Reggaeton', sceneDescription: 'Cross-continental collaboration — stadiums anthem', spotifyUrl: null, season: null, episode: null },
+  { id: 'wc26-005', mediaId: 'fifa-world-cup-2026', artistName: 'Rema & Selena Gomez', songTitle: 'Calm Down (World Cup Remix)',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats Pop', sceneDescription: 'Official fan zone anthem — played in all 16 host cities', spotifyUrl: null, season: null, episode: null },
+  { id: 'wc26-006', mediaId: 'fifa-world-cup-2026', artistName: 'Black Coffee', songTitle: 'We Are One',
+    isAfricanArtist: true, artistCountry: 'South Africa', genre: 'Afro House', sceneDescription: 'Pre-match DJ set — building atmosphere in stadiums', spotifyUrl: null, season: null, episode: null },
+  { id: 'wc26-007', mediaId: 'fifa-world-cup-2026', artistName: 'Ayra Starr', songTitle: 'Rush (Stadium Mix)',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Goal celebration soundtrack — broadcast highlight reels', spotifyUrl: null, season: null, episode: null },
+  { id: 'wc26-008', mediaId: 'fifa-world-cup-2026', artistName: 'Asake & J Balvin', songTitle: 'Fiesta Mundial',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Amapiano / Latin', sceneDescription: 'Closing ceremony performance — Amapiano takes the world stage', spotifyUrl: null, season: null, episode: null },
 ]
