@@ -24,7 +24,6 @@ import {
   CheckSquare,
   Mail,
   MonitorPlay,
-  Radio,
   Zap,
   Disc3,
   BookOpen
@@ -94,12 +93,6 @@ const NAV_GROUPS: Record<string, NavItem[]> = {
       icon: Mail,
       roles: ['admin'],
     },
-    {
-      label: 'Radio Directory',
-      href: '/dashboard/radio-directory',
-      icon: Radio,
-      roles: ['admin', 'composer'],
-    }
   ],
   network: [
     { label: 'Composers', href: '/dashboard/composers', icon: Users, roles: ['admin', 'sync_supervisor' as Role] },
