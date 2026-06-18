@@ -25,7 +25,9 @@ import {
   Mail,
   MonitorPlay,
   Radio,
-  Zap
+  Zap,
+  Disc3,
+  BookOpen
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -64,6 +66,18 @@ const NAV_GROUPS: Record<string, NavItem[]> = {
       label: 'Placements',
       href: '/dashboard/placements',
       icon: TrendingUp,
+      roles: ['composer', 'producer', 'admin'],
+    },
+    {
+      label: 'Sync Radar',
+      href: '/dashboard/radar',
+      icon: Disc3,
+      roles: ['composer', 'producer', 'admin'],
+    },
+    {
+      label: 'Directory',
+      href: '/dashboard/directory',
+      icon: BookOpen,
       roles: ['composer', 'producer', 'admin'],
     },
   ],
