@@ -6,9 +6,9 @@ import {
   Play,
   Clock,
   Eye,
-  Instagram,
-  Twitter,
-  Youtube,
+  Camera,
+  MessageCircle,
+  Video,
   Globe,
   Music,
   Disc3,
@@ -62,11 +62,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 function SocialIcon({ platform, size = 18 }: { platform: string; size?: number }) {
   switch (platform) {
     case 'instagram':
-      return <Instagram size={size} />
+      return <Camera size={size} />
     case 'twitter':
-      return <Twitter size={size} />
+      return <MessageCircle size={size} />
     case 'youtube':
-      return <Youtube size={size} />
+      return <Video size={size} />
     case 'spotify':
       return <Music size={size} />
     case 'soundcloud':
