@@ -258,7 +258,7 @@ export default function EPKsPage() {
         loadEPKs()
         // Show share modal only on create (not edit)
         if (!editingEpk) {
-          const publicUrl = `${window.location.origin}/${slug.trim()}`
+          const publicUrl = `${window.location.origin}/epk/${slug.trim()}`
           setShareModalUrl(publicUrl)
           setShareModalTitle(title.trim())
         } else {

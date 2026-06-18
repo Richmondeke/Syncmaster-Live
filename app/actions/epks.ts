@@ -134,7 +134,7 @@ export async function createEPK(data: {
     }
 
     revalidatePath('/dashboard/epks')
-    revalidatePath(`/${cleanSlug}`)
+    revalidatePath(`/epk/${cleanSlug}`)
 
     return { success: true, data: inserted as EPK }
   } catch (err: any) {
@@ -222,9 +222,9 @@ export async function updateEPK(
     }
 
     revalidatePath('/dashboard/epks')
-    revalidatePath(`/${cleanSlug}`)
+    revalidatePath(`/epk/${cleanSlug}`)
     if (currentEPK.slug !== cleanSlug) {
-      revalidatePath(`/${currentEPK.slug}`)
+      revalidatePath(`/epk/${currentEPK.slug}`)
     }
 
     return { success: true, data: updated as EPK }
@@ -265,7 +265,7 @@ export async function deleteEPK(id: string): Promise<{ success: boolean; error?:
     }
 
     revalidatePath('/dashboard/epks')
-    revalidatePath(`/${currentEPK.slug}`)
+    revalidatePath(`/epk/${currentEPK.slug}`)
 
     return { success: true }
   } catch (err: any) {

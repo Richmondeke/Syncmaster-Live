@@ -58,7 +58,7 @@ export async function getRadioStations(): Promise<RadioStation[]> {
 
 function getLocalFallbackStations(): RadioStation[] {
   try {
-    const filePath = path.join(process.cwd(), 'scratch', 'radio_stations.json')
+    const filePath = path.join(process.cwd(), 'lib', 'data', 'radio_stations.json')
     if (!fs.existsSync(filePath)) {
       console.error('[Radio Stations] Local JSON file not found at:', filePath)
       return []

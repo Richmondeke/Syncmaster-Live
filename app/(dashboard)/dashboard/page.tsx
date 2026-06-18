@@ -86,15 +86,20 @@ export default async function DashboardPage() {
   const profile = { role: roleOverride, full_name: fullNameOverride }
   const composer = { status: 'active' }
 
-  // Fetch live briefs from mock DB
-  const supabase = getAdminClient()
-  const { data: briefs } = await supabase
-    .from('briefs')
-    .select('id, title, description, genres, budget_min, budget_max, deadline, status, producers:producers(company, profiles:profiles(full_name))')
-    .eq('status', 'active')
-    .limit(5)
+  // Fetch live briefs — wrapped in try-catch so dashboard always renders
+  let topBriefs: BriefCardData[] = []
+  try {
+    const supabase = getAdminClient()
+    const { data: briefs } = await supabase
+      .from('briefs')
+      .select('id, title, description, genres, budget_min, budget_max, deadline, status, producers:producers(company, profiles:profiles(full_name))')
+      .eq('status', 'active')
+      .limit(5)
 
-  const topBriefs: BriefCardData[] = (briefs || []) as BriefCardData[]
+    topBriefs = (briefs || []) as BriefCardData[]
+  } catch (err) {
+    console.warn('[Dashboard] Failed to fetch briefs, showing empty state:', err)
+  }
   const filteredTools = TOOLS.filter((tool) => !tool.adminOnly || profile.role === 'admin')
 
   if (composer?.status === 'pending') {
