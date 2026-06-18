@@ -1,7 +1,7 @@
 ---
 title: Sync Licensing 101: The African Composer's Guide to Getting Paid for Film, TV & Ads
 slug: sync-licensing-101-african-composer-guide
-publishDate: 2024-06-10
+publishDate: 2025-10-21
 socialDate: 2026-06-10
 keyword: sync licensing for African composers
 cluster: Sync licensing fundamentals

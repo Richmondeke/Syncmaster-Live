@@ -7,7 +7,7 @@ persona: Amara
 search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
-publishDate: 2024-03-07
+publishDate: 2024-04-20
 socialDate: PLACEHOLDER
 status: draft
 ---

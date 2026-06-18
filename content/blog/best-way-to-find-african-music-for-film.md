@@ -1,7 +1,7 @@
 ---
 title: How Music Supervisors Source Authentic African Sounds Without Risk
 slug: best-way-to-find-african-music-for-film
-publishDate: 2024-07-24
+publishDate: 2024-06-20
 socialDate: PLACEHOLDER
 keyword: best way to find African music for film
 cluster: Product

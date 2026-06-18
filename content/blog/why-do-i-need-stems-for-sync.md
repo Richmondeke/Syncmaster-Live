@@ -1,7 +1,7 @@
 ---
 title: Why Editors Care More Than Supervisors (And Why Stems Are Mandatory for Sync)
 slug: why-do-i-need-stems-for-sync
-publishDate: 2024-03-15
+publishDate: 2026-05-18
 socialDate: PLACEHOLDER
 keyword: why do I need stems for sync
 cluster: default

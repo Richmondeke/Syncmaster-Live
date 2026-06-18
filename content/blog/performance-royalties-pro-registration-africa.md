@@ -8,6 +8,7 @@ search_intent: transactional
 post_format: Long-form explainer
 word_count_target: 1500
 social_format: carousel
+publishDate: 2025-06-11
 ---
 
 # Preventing Leakage: The Strategic Necessity of Performance Royalties PRO Registration in Africa

@@ -8,6 +8,7 @@ search_intent: transactional
 post_format: Case study + narrative
 word_count_target: 1500
 status: draft
+publishDate: 2025-04-06
 ---
 
 # High-Stakes Sync: Navigating 15k-150k National Ad Placements

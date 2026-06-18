@@ -1,7 +1,7 @@
 ---
 title: Nigeria's Music Market Intelligence: Key Revenue Trends for 2024
 slug: african-music-market-trends-2024
-publishDate: 2024-07-30
+publishDate: 2024-03-17
 socialDate: 2024-07-30
 keyword: African music market trends 2024
 cluster: Industry

@@ -14,6 +14,7 @@ outline:
   - H2: The infrastructure lesson
   - H2: What this opens up for other composers
 social_format: carousel
+publishDate: 2026-03-29
 ---
 
 # Amapiano Market Entry: Tyla Water as a Sync Infrastructure Hero

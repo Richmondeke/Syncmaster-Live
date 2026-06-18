@@ -1,7 +1,7 @@
 ---
 title: SyncMaster vs The Traditional Agent: A Faster Pipeline for African Talent
 slug: syncmaster-vs-music-agents
-publishDate: 2024-07-25
+publishDate: 2026-02-19
 socialDate: PLACEHOLDER
 keyword: SyncMaster vs music agents
 cluster: Product

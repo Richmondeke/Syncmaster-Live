@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2024-04-06
 ---
 
 # Warner Music Acquisition of Africori: What it Means for the Continent

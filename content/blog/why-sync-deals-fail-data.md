@@ -1,7 +1,7 @@
 ---
 title: The Infrastructure Gap: Why 70% of African Composers Fail Initial Vetting for Sync Deals
 slug: why-sync-deals-fail-data
-publishDate: 2024-07-25
+publishDate: 2026-05-28
 socialDate: PLACEHOLDER
 keyword: Why sync deals fail data
 cluster: Proof/Placements

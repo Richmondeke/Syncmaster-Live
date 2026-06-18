@@ -1,7 +1,7 @@
 ---
 title: Narrative Integration: How Afrobeats Reshapes Global Streaming Drama
 slug: african-music-synchronization-in-netflix-originals
-publishDate: 2024-07-27
+publishDate: 2024-03-26
 socialDate: 2024-07-27
 keyword: African music synchronization in Netflix originals
 cluster: African Music Infrastructure

@@ -1,7 +1,7 @@
 ---
 title: Sync Licensing vs Streaming: Which Pays Better for African Composers?
 slug: sync-licensing-vs-streaming-royalties
-publishDate: 2024-05-16
+publishDate: 2025-12-21
 socialDate: PLACEHOLDER
 keyword: sync licensing vs streaming royalties
 cluster: Income

@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 social_format: carousel
+publishDate: 2025-04-30
 ---
 
 # Revenue Analysis: How Afrobeats and Amapiano are Redefining Nigerian Music Exports

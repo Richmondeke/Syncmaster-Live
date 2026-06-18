@@ -1,7 +1,7 @@
 ---
 title: Closing the Gap: Building Global Infrastructure for African Sounds and Assets
 slug: african-music-infrastructure
-publishDate: 2024-07-30
+publishDate: 2024-03-10
 socialDate: 2024-07-30
 keyword: African music infrastructure
 cluster: African Music Infrastructure

@@ -6,6 +6,7 @@ cluster: Licensing Education
 persona: Tunde
 wordCount: 1198
 status: draft
+publishDate: 2025-11-09
 ---
 
 # What Does a Sync Placement Actually Pay? Real Fee Tiers for 2026

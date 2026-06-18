@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2024-07-05
 ---
 
 # Swagger and Storytelling: The Impact of Afro-fusion in Global TV Drama

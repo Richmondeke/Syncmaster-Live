@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/blog'
 
-const BASE_URL = 'https://syncmaster.live'
+const BASE_URL = 'https://www.syncmaster.live'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // ── Static pages ──────────────────────────────────────────────────────────

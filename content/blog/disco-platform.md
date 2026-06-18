@@ -8,6 +8,7 @@ search_intent: transactional
 post_format: Industry guide
 word_count_target: 1500
 status: draft
+publishDate: 2024-08-26
 ---
 
 # Beyond the Link: Why DISCO is the Only Way to Pitch Professional Sync

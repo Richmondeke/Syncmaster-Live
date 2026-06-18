@@ -1,7 +1,7 @@
 ---
 title: The New Global Default: Monetizing Authentic Afrofusion Assets
 slug: afrofusion-sync-market-demand
-publishDate: 2024-05-16
+publishDate: 2024-05-02
 socialDate: PLACEHOLDER
 keyword: Afrofusion sync market demand
 cluster: Proof/Placements

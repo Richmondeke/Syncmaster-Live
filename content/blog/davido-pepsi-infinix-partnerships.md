@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2024-08-14
 ---
 
 # Local Infrastructure to Global Scale: Davido Multi-Brand Strategy

@@ -6,6 +6,7 @@ cluster: Market News
 persona: Industry Observer
 wordCount: 1488
 status: draft
+publishDate: 2025-08-28
 ---
 
 # Spotify's 2025 Revenue Data for Nigerian Artists: The Sync Opportunity You're Missing

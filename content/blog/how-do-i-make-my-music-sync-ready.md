@@ -13,6 +13,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2024-10-11
 ---
 
 # How Do I Make My Music Sync Ready? The Ultimate 6-Point Audit

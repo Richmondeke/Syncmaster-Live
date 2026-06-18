@@ -1,7 +1,7 @@
 ---
 title: The Master vs. Composition Split: 20k-150k Major Film Realities
 slug: feature-film-music-licensing
-publishDate: 2024-07-24
+publishDate: 2024-09-05
 socialDate: PLACEHOLDER
 keyword: Feature film music licensing
 cluster: Proof/Placements

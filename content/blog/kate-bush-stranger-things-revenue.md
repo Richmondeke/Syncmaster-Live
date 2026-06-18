@@ -1,7 +1,7 @@
 ---
 title: The 6000% Spike: How Sync Revitalizes Established Catalogs
 slug: kate-bush-stranger-things-revenue
-publishDate: 2024-05-15
+publishDate: 2025-01-15
 socialDate: PLACEHOLDER
 keyword: Kate Bush Stranger Things revenue
 cluster: Proof/Placements

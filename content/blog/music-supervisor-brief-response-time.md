@@ -1,7 +1,7 @@
 ---
 title: Why Speed Wins the Sync Race: The 48-Hour Delivery Rule
 slug: music-supervisor-brief-response-time
-publishDate: 2024-06-20
+publishDate: 2025-03-24
 socialDate: PLACEHOLDER
 keyword: music supervisor brief response time
 cluster: Product

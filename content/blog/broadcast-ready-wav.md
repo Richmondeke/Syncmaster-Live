@@ -8,6 +8,7 @@ search_intent: transactional
 post_format: Industry guide
 word_count_target: 1500
 status: draft
+publishDate: 2024-06-29
 ---
 
 # The Technical Floor: Why MP3 is the Mark of an Amateur in Sync Licensing

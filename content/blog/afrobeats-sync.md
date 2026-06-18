@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2024-04-30
 ---
 
 # West African Swagger: The Brand Appeal of Modern Afrobeats

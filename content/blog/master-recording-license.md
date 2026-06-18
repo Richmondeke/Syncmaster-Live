@@ -6,6 +6,7 @@ cluster: Music Supervisor Side
 persona: industry
 wordCount: 1485
 status: draft
+publishDate: 2025-01-16
 ---
 
 # The Master Split: Why Recording Ownership is the First Filter for Sync Licensing

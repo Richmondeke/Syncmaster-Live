@@ -1,7 +1,7 @@
 ---
 title: Proof of Power: How Sync Placements Trigger Global Catalog Spikes
 slug: sync-placement-revenue-case-studies
-publishDate: 2024-07-26
+publishDate: 2025-12-31
 socialDate: PLACEHOLDER
 keyword: Sync placement revenue case studies
 cluster: Proof/Placements

@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2024-05-15
 ---
 
 # Logistical Expansion: The Data Behind Amapiano’s Global Market Penetration

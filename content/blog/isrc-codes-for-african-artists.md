@@ -1,7 +1,7 @@
 ---
 title: Technical Infrastructure: The Role of ISRC in Global Rights Tracking
 slug: isrc-codes-for-african-artists
-publishDate: 2024-06-18
+publishDate: 2024-12-24
 socialDate: PLACEHOLDER
 keyword: ISRC Codes for African Artists
 cluster: Artist Stories

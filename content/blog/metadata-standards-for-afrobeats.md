@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Case study + narrative
 word_count_target: 1500
 social_format: carousel
+publishDate: 2025-02-08
 ---
 
 # Metadata as Market Entry: Technical Readiness for African Catalogues

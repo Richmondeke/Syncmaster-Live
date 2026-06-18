@@ -13,6 +13,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2024-07-21
 ---
 
 # Live Event IP: Burna Boy UEFA Kick Off Show as Sync Catalyst

@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
 status: draft
+publishDate: 2026-01-20
 ---
 
 # Vetting for Velocity: How SyncMaster De-Risks African Catalogues for Film

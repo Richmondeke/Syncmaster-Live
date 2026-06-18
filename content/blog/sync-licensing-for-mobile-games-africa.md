@@ -8,6 +8,7 @@ wordCount: 1200
 search_intent: commercial
 post_format: Long-form explainer
 status: draft
+publishDate: 2025-11-28
 ---
 
 # The Next Frontier: Sync Licensing Opportunities in African Mobile Apps

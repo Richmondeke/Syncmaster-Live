@@ -1,7 +1,7 @@
 ---
 title: High-Value Soundtrack Integration: Burna Boy in Coming 2 America
 slug: burna-boy-coming-2-america-sync
-publishDate: 2024-05-15
+publishDate: 2024-07-02
 socialDate: PLACEHOLDER
 keyword: Burna Boy Coming 2 America Sync
 cluster: Artist Stories

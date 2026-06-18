@@ -6,6 +6,7 @@ cluster: Licensing Education
 persona: Amara
 wordCount: 1215
 status: draft
+publishDate: 2025-10-27
 ---
 
 # Advanced Sync Licensing: How to Negotiate Your First Deal

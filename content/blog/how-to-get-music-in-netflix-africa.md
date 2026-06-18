@@ -1,7 +1,7 @@
 ---
 title: How to Place Your Music in Netflix Africa Originals: A Step-by-Step Guide
 slug: how-to-get-music-in-netflix-africa
-publishDate: 2024-05-23
+publishDate: 2024-11-17
 socialDate: PLACEHOLDER
 keyword: how to get music in Netflix Africa
 cluster: How-To

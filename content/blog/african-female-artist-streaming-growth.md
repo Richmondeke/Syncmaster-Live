@@ -1,7 +1,7 @@
 ---
 title: The 55% Surge: Evaluating the Growth of the African Female Creator Economy
 slug: african-female-artist-streaming-growth
-publishDate: 2024-07-30
+publishDate: 2024-02-07
 socialDate: 2024-07-30
 keyword: African female artist streaming growth
 cluster: African Music Infrastructure

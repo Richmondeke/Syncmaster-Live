@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 wordCount: 1480
 status: draft
+publishDate: 2025-03-18
 ---
 
 # Clearing Festival Rights: The First Step to Film Placements

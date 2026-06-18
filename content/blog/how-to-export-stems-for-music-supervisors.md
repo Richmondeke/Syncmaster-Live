@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 social_format: carousel
+publishDate: 2024-11-06
 ---
 
 # Stems Close Deals: How to Export and Organize Audio for Sync Supervisors

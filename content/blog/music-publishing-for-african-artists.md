@@ -1,7 +1,7 @@
 ---
 title: The Essential Guide to Music Publishing for Independent African Artists
 slug: music-publishing-for-african-artists
-publishDate: 2024-05-15
+publishDate: 2025-03-11
 socialDate: PLACEHOLDER
 keyword: music publishing for African artists
 cluster: Publishing

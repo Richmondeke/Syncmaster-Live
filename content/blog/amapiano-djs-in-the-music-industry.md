@@ -27,6 +27,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2024-05-08
 ---
 
 # The Rise of the Amapiano DJ: How African Electronic Genres are Driving Global Sync Revenue

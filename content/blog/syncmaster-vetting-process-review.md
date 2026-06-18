@@ -8,6 +8,7 @@ search_intent: navigational
 post_format: Case study + narrative
 wordCount: 798
 status: draft
+publishDate: 2026-02-14
 ---
 
 # Why 70% of Applicants Fail: Inside the SyncMaster Vetting Checklist

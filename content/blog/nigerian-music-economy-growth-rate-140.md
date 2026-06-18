@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2025-04-26
 ---
 
 # Exponential Yield: Analyzing the 140% Revenue Growth of Nigerian Music Assets

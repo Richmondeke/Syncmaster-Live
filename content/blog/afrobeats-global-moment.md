@@ -1,7 +1,7 @@
 ---
 title: From Lagos to the World: Decoding the Afrobeats Global Moment for Senior Music Supervisors
 slug: afrobeats-global-moment
-publishDate: 2024-07-29
+publishDate: 2024-04-10
 socialDate: 2024-07-29
 keyword: afrobeats global moment
 cluster: Culture

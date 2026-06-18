@@ -1,7 +1,7 @@
 ---
 title: Wizkid's "Rocks" in Film: A Case Study in Global Sync Infrastructure
 slug: wizkid-rocks-film-placement
-publishDate: 2024-07-24
+publishDate: 2026-06-10
 socialDate: PLACEHOLDER
 keyword: Wizkid Rocks Film Placement
 cluster: Artist Stories

@@ -14,6 +14,7 @@ outline:
   - H2: The infrastructure lesson
   - H2: What this opens up for other composers
 social_format: carousel
+publishDate: 2026-04-09
 ---
 
 # Shifting Revenue Models: The Financial Superiority of Upfront Sync Fees vs Streaming

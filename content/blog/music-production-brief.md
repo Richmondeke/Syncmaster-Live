@@ -6,6 +6,7 @@ cluster: Music Supervisor Side
 persona: industry
 wordCount: 1480
 status: draft
+publishDate: 2025-03-06
 ---
 
 # Decoding the Music Production Brief: Why Duration is Absolute and Mood is Subjective

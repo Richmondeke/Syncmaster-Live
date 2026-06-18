@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2025-05-17
 ---
 
 # Solving the Infrastructure Gap: The One-Stop Model for African Media

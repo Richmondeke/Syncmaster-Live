@@ -1,7 +1,7 @@
 ---
 title: Don't Just Say Yes: How to Negotiate Higher Sync Fees for Your Music
 slug: sync-fee-negotiation-for-african-artists
-publishDate: 2024-07-25
+publishDate: 2025-10-14
 socialDate: PLACEHOLDER
 keyword: sync fee negotiation for African artists
 cluster: Income

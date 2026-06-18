@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Industry guide
 word_count_target: 1500
 status: draft
+publishDate: 2025-06-18
 ---
 
 # The Long Tail: Understanding Performance Royalties Post-Sync

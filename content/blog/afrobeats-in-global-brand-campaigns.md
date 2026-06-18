@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
 status: draft
+publishDate: 2024-04-13
 ---
 
 # The Top 5 Vetted African Sync Catalogues for Premium Brand Campaigns

@@ -1,7 +1,7 @@
 ---
 title: Decoding the Math: Comparing $0.003 Payouts to Five-Figure Sync Fees
 slug: sync-licensing-income-calculator
-publishDate: 2024-06-14
+publishDate: 2025-12-05
 socialDate: PLACEHOLDER
 keyword: Sync licensing income calculator
 cluster: Proof/Placements

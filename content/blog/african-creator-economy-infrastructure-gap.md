@@ -1,7 +1,7 @@
 ---
 title: The Missing Bridge: Building Infrastructure for the African Creator Economy
 slug: african-creator-economy-infrastructure-gap
-publishDate: 2024-07-30
+publishDate: 2024-02-02
 socialDate: 2024-07-30
 keyword: African creator economy infrastructure gap
 cluster: African Music Infrastructure

@@ -1,7 +1,7 @@
 ---
 title: Operational Moats: The Power of the 48-Hour Brief Response Guarantee
 slug: 48-hour-brief-response-guarantee
-publishDate: 2024-07-30
+publishDate: 2024-01-19
 socialDate: 2024-07-30
 keyword: 48 hour brief response guarantee
 cluster: Proof/Placements

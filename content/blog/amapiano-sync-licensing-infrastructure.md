@@ -1,7 +1,7 @@
 ---
 title: Globalizing Amapiano: Building Sync Infrastructure for African Sound
 slug: amapiano-sync-licensing-infrastructure
-publishDate: 2024-07-25
+publishDate: 2024-05-18
 socialDate: PLACEHOLDER
 keyword: Amapiano sync licensing infrastructure
 cluster: Proof/Placements

@@ -1,7 +1,7 @@
 ---
 title: Mastering the 50/50 Split: 2k-20k+ AAA Video Game Licenses
 slug: aaa-video-game-music-rates
-publishDate: 2024-07-30
+publishDate: 2024-01-24
 socialDate: 2024-07-30
 keyword: AAA video game music rates
 cluster: Proof/Placements

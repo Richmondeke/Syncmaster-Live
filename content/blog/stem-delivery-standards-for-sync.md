@@ -8,6 +8,7 @@ search_intent: transactional
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2025-09-11
 ---
 
 # Stem Delivery Standards for Sync: Closing Deals, Not Creating Roadblocks

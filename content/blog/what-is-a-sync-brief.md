@@ -1,7 +1,7 @@
 ---
 title: Decoding the Sync Brief: What Music Supervisors Are Really Asking For
 slug: what-is-a-sync-brief
-publishDate: 2024-07-26
+publishDate: 2026-05-05
 socialDate: PLACEHOLDER
 keyword: what is a sync brief
 cluster: Definitions

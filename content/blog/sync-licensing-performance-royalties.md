@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 wordCount: 1450
 status: draft
+publishDate: 2025-12-20
 ---
 
 # Beyond the Fee: How Sync Placements Earn Long-Term Royalties

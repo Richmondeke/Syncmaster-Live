@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2024-07-19
 ---
 
 # CPG Integration Models: Burna Boy x Pepsi 'Rotate' Case Study

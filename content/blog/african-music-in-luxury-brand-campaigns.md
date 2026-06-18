@@ -1,7 +1,7 @@
 ---
 title: Burna Boy to Burberry: The Integration of African Sound in High Fashion
 slug: african-music-in-luxury-brand-campaigns
-publishDate: 2024-07-29
+publishDate: 2024-02-22
 socialDate: 2024-07-29
 keyword: african music in luxury brand campaigns
 cluster: Industry

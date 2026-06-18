@@ -1,7 +1,7 @@
 ---
 title: Three Placements in 90 Days: A Composer's Route Through SyncMaster
 slug: sync-placement-stories
-publishDate: 2024-07-24
+publishDate: 2026-01-02
 socialDate: PLACEHOLDER
 keyword: sync placement stories
 cluster: Proof/Placements

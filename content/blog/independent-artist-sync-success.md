@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Case study + narrative
 word_count_target: 1500
 social_format: carousel
+publishDate: 2024-12-18
 ---
 
 # From Lagos to Global Sync: The Story of African Composers Breaking Through Without Labels

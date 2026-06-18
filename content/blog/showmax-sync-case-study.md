@@ -1,7 +1,7 @@
 ---
 title: Local Sound, Global Reach: How 90% Curation in 'Blood & Water' Created Sync Opportunities
 slug: showmax-sync-case-study
-publishDate: 2024-07-24
+publishDate: 2025-08-19
 socialDate: PLACEHOLDER
 keyword: Showmax sync case study
 cluster: Proof/Placements

@@ -14,6 +14,7 @@ outline:
   - H2: Tools and resources
   - H2: SyncMaster's vetting standard
 social_format: carousel
+publishDate: 2025-01-03
 ---
 
 # ISRC Codes Explained: Why Your Music Can't Get Paid Without This Digital Barcode

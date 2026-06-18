@@ -7,7 +7,7 @@ persona: Head of Sync
 search_intent: informational
 post_format: Industry guide
 word_count_target: 1500
-publishDate: 2024-07-26
+publishDate: 2024-08-22
 socialDate: PLACEHOLDER
 ---
 

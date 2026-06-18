@@ -8,6 +8,7 @@ search_intent: navigational
 post_format: Industry guide
 wordCount: 785
 status: draft
+publishDate: 2026-02-15
 ---
 
 # The Vetting Advantage: SyncMaster's Infrastructure for African Sync

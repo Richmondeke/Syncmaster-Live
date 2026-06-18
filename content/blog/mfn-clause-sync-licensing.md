@@ -1,7 +1,7 @@
 ---
 title: Most Favored Nations: The Clause That Protects Your Payout in Sync Licensing
 slug: mfn-clause-sync-licensing
-publishDate: 2024-07-25
+publishDate: 2025-02-13
 socialDate: PLACEHOLDER
 keyword: MFN clause sync licensing
 cluster: default

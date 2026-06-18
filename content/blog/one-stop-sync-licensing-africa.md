@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
 social_format: carousel
+publishDate: 2025-05-30
 ---
 
 # The Competitive Moat: Why One-Stop Sync Licensing Dominates African Sync

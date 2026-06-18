@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2025-10-30
 ---
 
 # Anatomy of a Sync Brief: Decoding Mood, Tempo, and Requirements

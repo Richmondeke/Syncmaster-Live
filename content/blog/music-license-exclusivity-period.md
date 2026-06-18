@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
 status: draft
+publishDate: 2025-02-22
 ---
 
 # Negotiating Sync Deals: Understanding Exclusivity, Term, and Territory

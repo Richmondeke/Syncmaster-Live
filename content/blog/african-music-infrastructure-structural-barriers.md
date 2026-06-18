@@ -1,7 +1,7 @@
 ---
 title: Beyond Creative Merit: Solving Structural Bottlenecks in the Creator Economy
 slug: african-music-infrastructure-structural-barriers
-publishDate: 2024-07-30
+publishDate: 2024-03-08
 socialDate: 2024-07-30
 keyword: African music infrastructure structural barriers
 cluster: African Music Infrastructure

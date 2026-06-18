@@ -1,7 +1,7 @@
 ---
 title: Searchability and Discovery: Implementing Mood and BPM Tags in Afropop
 slug: afrobeats-metadata-tagging
-publishDate: 2024-07-24
+publishDate: 2024-04-17
 socialDate: PLACEHOLDER
 keyword: Afrobeats Metadata Tagging
 cluster: Artist Stories

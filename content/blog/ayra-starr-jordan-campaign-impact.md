@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2024-06-04
 ---
 
 # Cultural Currency: Evaluating African Stars in High-End Global Campaigns

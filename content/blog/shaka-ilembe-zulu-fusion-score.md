@@ -1,7 +1,7 @@
 ---
 title: Cultural Authenticity: The Shaka iLembe Model of Zulu Fusion Sync
 slug: shaka-ilembe-zulu-fusion-score
-publishDate: 2024-06-11
+publishDate: 2025-08-13
 socialDate: PLACEHOLDER
 keyword: Shaka iLembe Zulu fusion score
 cluster: Proof/Placements

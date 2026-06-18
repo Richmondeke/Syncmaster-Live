@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
 status: draft
+publishDate: 2024-10-18
 ---
 
 # Is Your Music Sync-Ready? The 6-Point Infrastructure Audit

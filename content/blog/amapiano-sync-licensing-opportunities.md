@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
 status: draft
+publishDate: 2024-05-22
 ---
 
 # Amapiano Sync: The Rising Demand for South African Sounds in Global Ads

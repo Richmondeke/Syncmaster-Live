@@ -1,7 +1,7 @@
 ---
 title: The Barcode of Sync: Why No ISRC Means No Payment
 slug: isrc-codes-for-sync
-publishDate: 2024-05-15
+publishDate: 2024-12-29
 socialDate: PLACEHOLDER
 keyword: ISRC Codes for Sync
 cluster: Music Supervisor Side

@@ -27,6 +27,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2026-05-24
 ---
 
 # Why is My Music Not Getting Sync Placements? 5 Common Mistakes to Avoid

@@ -1,7 +1,7 @@
 ---
 title: LUFS and LKFS: Meeting the Technical Specs of Broadcast TV for Your Music
 slug: broadcast-audio-standards-for-music
-publishDate: 2024-07-24
+publishDate: 2024-06-25
 socialDate: 2024-07-24
 keyword: broadcast audio standards for music
 cluster: default

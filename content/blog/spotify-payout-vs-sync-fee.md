@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Case study + narrative
 wordCount: 1185
 status: draft
+publishDate: 2025-09-05
 ---
 
 # The Streaming Illusion: Why One Sync Placement Equals 750,000 Streams

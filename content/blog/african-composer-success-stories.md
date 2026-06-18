@@ -1,7 +1,7 @@
 ---
 title: Zero to Placement: A Success Story of an Independent Lagos Composer
 slug: african-composer-success-stories
-publishDate: 2024-07-30
+publishDate: 2024-01-28
 socialDate: 2024-07-30
 keyword: African composer success stories
 cluster: Case Studies

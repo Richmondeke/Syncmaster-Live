@@ -1,7 +1,7 @@
 ---
 title: Speed is Trust: Why the Sub-24-Hour Rule is a Professional Barrier
 slug: 24-hour-response-time
-publishDate: 2024-07-30
+publishDate: 2024-01-15
 socialDate: 2024-07-30
 keyword: 24-Hour Response Time
 cluster: Music Supervisor Side

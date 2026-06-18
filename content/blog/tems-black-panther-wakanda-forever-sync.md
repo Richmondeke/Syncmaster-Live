@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2026-03-06
 ---
 
 # Emotional Equity: Analyzing the ROI of African Vocal Placements in Franchises

@@ -8,6 +8,7 @@ search_intent: transactional
 post_format: Long-form explainer
 wordCount: 1500
 status: draft
+publishDate: 2024-12-05
 ---
 
 # PRO Registration Guide: Ensuring You Collect Performance Royalties

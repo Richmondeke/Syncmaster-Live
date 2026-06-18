@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2025-07-11
 ---
 
 # Multi-Year Dominance: Rema's Cumulative Impact on FIFA Gaming IP

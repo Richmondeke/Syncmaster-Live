@@ -27,6 +27,7 @@ internal_links:
   - isrc-codes-explained
   - sync-licensing-101-the-african-composers-guide
 social_format: carousel
+publishDate: 2026-05-10
 ---
 
 # What is One-Stop Clearance and Why is it the Key to Winning Sync Deals?

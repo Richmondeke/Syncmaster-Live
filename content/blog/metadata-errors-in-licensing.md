@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Case study + narrative
 wordCount: 1498
 status: draft
+publishDate: 2025-01-28
 ---
 
 # Invisible Assets: How Metadata Friction Disqualifies 14 of 20 Tracks

@@ -7,7 +7,7 @@ persona: Denzel
 search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
-publishDate: 2024-02-21
+publishDate: 2025-05-07
 socialDate: PLACEHOLDER
 status: draft
 ---

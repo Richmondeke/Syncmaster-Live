@@ -27,6 +27,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2025-08-06
 ---
 
 # SAMRO, COSON, or MCSK? Understanding Royalty Collection for African Composers

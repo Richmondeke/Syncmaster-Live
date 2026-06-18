@@ -1,7 +1,7 @@
 ---
 title: How Apple's MacBook Air Ad Launched Yael Naim's Career to Billboard's Top 10
 slug: yael-naim-macbook-air-success
-publishDate: 2024-07-24
+publishDate: 2026-06-12
 socialDate: PLACEHOLDER
 keyword: Yael Naim MacBook Air success
 cluster: Proof/Placements

@@ -1,7 +1,7 @@
 ---
 title: Bridging the Gap: Connecting UK Diaspora Composers to Global Sync
 slug: african-diaspora-music-composers-uk
-publishDate: 2024-07-30
+publishDate: 2024-02-04
 socialDate: 2024-07-30
 keyword: African diaspora music composers UK
 cluster: Diaspora

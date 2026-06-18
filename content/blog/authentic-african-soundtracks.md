@@ -1,7 +1,7 @@
 ---
 title: Beyond Pastiche: The Demand for Authentic African Soundscapes
 slug: authentic-african-soundtracks
-publishDate: 2024-06-21
+publishDate: 2024-05-27
 socialDate: PLACEHOLDER
 keyword: Authentic African Soundtracks
 cluster: Music Supervisor Side

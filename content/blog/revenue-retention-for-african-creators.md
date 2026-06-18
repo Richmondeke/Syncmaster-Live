@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
 status: draft
+publishDate: 2025-07-20
 ---
 
 # Stopping the Leakage: Solving the Revenue Retention Crisis in African Music

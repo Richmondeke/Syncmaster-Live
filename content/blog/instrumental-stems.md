@@ -8,6 +8,7 @@ search_intent: transactional
 post_format: Industry guide
 wordCount: 1488
 status: draft
+publishDate: 2024-12-22
 ---
 
 # Closing the Deal with Stems: Giving Editors the Freedom to Cut

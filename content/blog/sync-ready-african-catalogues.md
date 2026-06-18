@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2026-01-08
 ---
 
 # Curating High-Value Assets: The Transition to Sync-Ready Portfolios

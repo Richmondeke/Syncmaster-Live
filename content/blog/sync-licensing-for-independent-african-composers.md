@@ -7,7 +7,7 @@ persona: Tunde
 search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
-publishDate: 2024-05-15
+publishDate: 2025-11-19
 socialDate: PLACEHOLDER
 ---
 

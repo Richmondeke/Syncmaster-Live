@@ -1,7 +1,7 @@
 ---
 title: Infrastructure Readiness: Inside the SyncMaster Vetting Model
 slug: syncmaster-operational-proof
-publishDate: 2024-05-15
+publishDate: 2026-01-30
 socialDate: PLACEHOLDER
 keyword: SyncMaster operational proof
 cluster: Proof/Placements

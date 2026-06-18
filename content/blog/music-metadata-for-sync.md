@@ -7,7 +7,7 @@ persona: Tunde
 search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
-publishDate: 2023-10-27
+publishDate: 2025-02-28
 socialDate: PLACEHOLDER
 status: draft
 ---

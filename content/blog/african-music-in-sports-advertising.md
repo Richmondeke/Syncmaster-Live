@@ -1,7 +1,7 @@
 ---
 title: High-Energy Afrobeats: Why Sports Brands are Licensing African Music
 slug: african-music-in-sports-advertising
-publishDate: 2024-07-30
+publishDate: 2024-02-23
 socialDate: 2024-07-30
 keyword: African music in sports advertising
 cluster: Advertising

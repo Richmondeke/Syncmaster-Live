@@ -7,7 +7,7 @@ persona: Consultant
 search_intent: informational
 post_format: Industry guide
 word_count_target: 1500
-publishDate: 2024-07-25
+publishDate: 2024-09-30
 socialDate: 2024-07-25
 ---
 

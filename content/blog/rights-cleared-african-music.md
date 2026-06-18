@@ -1,7 +1,7 @@
 ---
 title: Source Authentic African Music: 5 Rights-Cleared Tracks in 48 Hours
 slug: rights-cleared-african-music
-publishDate: 2024-05-15
+publishDate: 2025-07-25
 socialDate: 2024-05-15
 keyword: Rights-cleared African music
 cluster: Music Supervisor Side

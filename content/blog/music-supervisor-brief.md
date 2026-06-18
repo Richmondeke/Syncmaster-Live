@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Industry guide
 word_count_target: 1500
 status: draft
+publishDate: 2025-03-26
 ---
 
 # Anatomy of a Music Supervisor Brief: What Netflix & Amazon Actually Need

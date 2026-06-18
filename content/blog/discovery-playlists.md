@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Industry guide
 word_count_target: 1500
 status: draft
+publishDate: 2024-08-31
 ---
 
 # The Supervisor's Ear: How Discovery Playlists Drive Placements

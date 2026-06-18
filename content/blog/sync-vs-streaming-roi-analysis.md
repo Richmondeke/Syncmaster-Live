@@ -7,7 +7,7 @@ persona: Rights Holder
 search_intent: commercial
 post_format: Case study + narrative
 word_count_target: 1200
-publishDate: 2024-03-07
+publishDate: 2026-01-10
 socialDate: PLACEHOLDER
 ---
 

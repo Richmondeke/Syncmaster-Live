@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2024-09-10
 ---
 
 # Viral to Commercial Pivot: The Global Sync Potential of Fireboy DML's "Peru"

@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2026-02-08
 ---
 
 # The SyncMaster Model: Standardizing Risk Mitigation in African Sync

@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2025-03-04
 ---
 
 # Why Metadata is the Invisible Infrastructure for Sync Success: A Complete Checklist

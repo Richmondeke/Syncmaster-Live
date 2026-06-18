@@ -1,7 +1,7 @@
 ---
 title: The Netflix/Showmax Model: Standard $3k-$15k Fees for Originals
 slug: streaming-original-sync-fees
-publishDate: 2024-05-15
+publishDate: 2025-09-17
 socialDate: PLACEHOLDER
 keyword: Streaming original sync fees
 cluster: Proof/Placements

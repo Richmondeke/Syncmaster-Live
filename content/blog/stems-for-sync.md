@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2025-09-15
 ---
 
 # Why Stems Close Deals: A Guide to Professional Delivery for Music Supervisors

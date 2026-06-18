@@ -1,7 +1,7 @@
 ---
 title: File Naming Standards: Stop Sending 'Final_Mix_V3.wav' to Supervisors
 slug: how-to-name-music-files-for-sync
-publishDate: 2024-05-15
+publishDate: 2024-11-25
 socialDate: PLACEHOLDER
 keyword: how to name music files for sync
 cluster: default

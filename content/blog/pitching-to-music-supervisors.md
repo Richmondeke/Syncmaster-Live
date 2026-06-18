@@ -1,7 +1,7 @@
 ---
 title: Surviving the Inbox: How to Pitch to Music Supervisors Without Getting Deleted
 slug: pitching-to-music-supervisors
-publishDate: 2024-05-15
+publishDate: 2025-06-23
 socialDate: PLACEHOLDER
 keyword: Pitching to Music Supervisors
 cluster: Music Supervisor Side

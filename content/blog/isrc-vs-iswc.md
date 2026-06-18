@@ -27,6 +27,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2025-01-08
 ---
 
 # ISRC vs. ISWC: Understanding Your Music's Digital Fingerprints

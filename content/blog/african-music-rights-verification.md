@@ -1,7 +1,7 @@
 ---
 title: De-risking Emerging Markets: Rigorous African Music Rights Verification Protocols
 slug: african-music-rights-verification
-publishDate: 2024-07-30
+publishDate: 2024-03-21
 socialDate: 2024-07-30
 keyword: African Music Rights Verification
 cluster: Artist Stories

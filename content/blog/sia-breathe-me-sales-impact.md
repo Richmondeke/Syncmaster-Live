@@ -1,7 +1,7 @@
 ---
 title: The Million-Copy Placement: How Six Feet Under Launched Sia
 slug: sia-breathe-me-sales-impact
-publishDate: 2024-07-25
+publishDate: 2025-08-26
 socialDate: PLACEHOLDER
 keyword: Sia Breathe Me sales impact
 cluster: Proof/Placements

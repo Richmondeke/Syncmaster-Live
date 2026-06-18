@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2025-10-01
 ---
 
 # Maximizing Global Reach: The Power of Sub-Publishing Administration in Sync Licensing

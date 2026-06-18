@@ -1,7 +1,7 @@
 ---
 title: Emerging Territory Visibility: Tyla's Path to the Billboard Hot 100
 slug: tyla-south-african-billboard-sync
-publishDate: 2024-07-29
+publishDate: 2026-03-25
 socialDate: PLACEHOLDER
 keyword: Tyla South African Billboard Sync
 cluster: Artist Stories

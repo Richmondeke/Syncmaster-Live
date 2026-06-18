@@ -6,6 +6,7 @@ cluster: Music Supervisor Side
 persona: industry
 wordCount: 1485
 status: draft
+publishDate: 2025-10-12
 ---
 
 # Standardized Success: Mastering the Professional Sync Brief Format

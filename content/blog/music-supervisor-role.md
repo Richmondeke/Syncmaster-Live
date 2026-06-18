@@ -1,7 +1,7 @@
 ---
 title: Detective and Diplomat: The Dual Reality of Music Supervision
 slug: music-supervisor-role
-publishDate: 2024-06-17
+publishDate: 2025-04-01
 socialDate: PLACEHOLDER
 keyword: Music Supervisor Role
 cluster: Music Supervisor Side

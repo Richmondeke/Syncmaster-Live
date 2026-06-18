@@ -8,6 +8,7 @@ search_intent: navigational
 post_format: Industry guide
 word_count_target: 800
 status: draft
+publishDate: 2024-09-28
 ---
 
 # The Gold Standard: Navigating the Guild of Music Supervisors Awards

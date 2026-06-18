@@ -1,7 +1,7 @@
 ---
 title: The Two-Key System: Understanding Master and Composition Rights
 slug: master-use-license-vs-sync-license
-publishDate: 2024-05-16
+publishDate: 2025-01-23
 socialDate: 2024-05-16
 keyword: master use license vs sync license
 cluster: Education

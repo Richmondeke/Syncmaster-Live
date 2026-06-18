@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Explainer + how-to
 word_count_target: 1200
 status: draft
+publishDate: 2025-11-13
 ---
 
 # Sync Licensing Income: What African Composers Actually Earn per Placement

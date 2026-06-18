@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SyncMaster — African Composers. Global Briefs.",
     description: "SyncMaster connects vetted African composers with briefs from production houses worldwide. Human curation. Rights clarity. 3–5 curated matches — not 500 unvetted submissions.",
-    url: "https://syncmaster.live",
+    url: "https://www.syncmaster.live",
     siteName: "SyncMaster",
     images: [
       {

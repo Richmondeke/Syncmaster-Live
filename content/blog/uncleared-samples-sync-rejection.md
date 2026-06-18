@@ -7,7 +7,7 @@ persona: Independent Composer
 search_intent: informational
 post_format: Case study + narrative
 word_count_target: 1500
-publishDate: 2023-10-27
+publishDate: 2026-04-03
 socialDate: PLACEHOLDER
 ---
 

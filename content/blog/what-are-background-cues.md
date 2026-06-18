@@ -1,7 +1,7 @@
 ---
 title: Background vs. Featured: Understanding Sync Placement Types
 slug: what-are-background-cues
-publishDate: 2024-07-24
+publishDate: 2026-04-12
 socialDate: PLACEHOLDER
 keyword: what are background cues
 cluster: default

@@ -8,6 +8,7 @@ search_intent: transactional
 post_format: Industry guide
 word_count_target: 1500
 social_format: carousel
+publishDate: 2025-11-05
 ---
 
 # The Price of Sound: Realistic Sync Licensing Fee Ranges for African Composers

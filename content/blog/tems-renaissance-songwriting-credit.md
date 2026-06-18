@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2026-03-12
 ---
 
 # Songwriting as Asset Development: Tems' Contributions to Renaissance

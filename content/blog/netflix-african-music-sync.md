@@ -1,7 +1,7 @@
 ---
 title: African Sound on Netflix: Analyzing Recent High-Profile Sync Placements
 slug: netflix-african-music-sync
-publishDate: 2024-05-15
+publishDate: 2025-04-10
 socialDate: PLACEHOLDER
 keyword: Netflix African music sync
 cluster: Proof/Placements

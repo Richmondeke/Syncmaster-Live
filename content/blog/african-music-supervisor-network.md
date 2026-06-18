@@ -1,7 +1,7 @@
 ---
 title: Connecting Global Supervisors to the Pulse of Lagos and Johannesburg
 slug: african-music-supervisor-network
-publishDate: 2024-07-27
+publishDate: 2024-03-24
 socialDate: PLACEHOLDER
 keyword: african music supervisor network
 cluster: Industry

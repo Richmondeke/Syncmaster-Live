@@ -1,7 +1,7 @@
 ---
 title: The Invisible Barrier: How Bad Metadata is Killing Your Sync Career
 slug: how-metadata-blocks-placements
-publishDate: 2024-07-30
+publishDate: 2024-10-14
 socialDate: 2024-07-30
 keyword: How metadata blocks placements
 cluster: Technical/Metadata

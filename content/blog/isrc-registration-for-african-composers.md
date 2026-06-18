@@ -6,6 +6,7 @@ cluster: African Music Infrastructure
 persona: Independent Artist
 wordCount: 1500
 status: draft
+publishDate: 2025-01-04
 ---
 
 # The Royalty Lock: Why ISRC is the Foundation of Global Asset Tracking

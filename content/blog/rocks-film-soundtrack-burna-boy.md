@@ -26,6 +26,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2025-08-01
 ---
 
 # Authentic Urban Scoring: Burna Boy's Contribution to the Rocks OST

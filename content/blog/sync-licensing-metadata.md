@@ -8,6 +8,7 @@ search_intent: transactional
 post_format: Industry guide
 wordCount: 1520
 status: draft
+publishDate: 2025-12-14
 ---
 
 # The Invisible Gatekeeper: Transforming Files into Searchable Assets for Sync Licensing

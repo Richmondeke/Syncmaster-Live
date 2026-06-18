@@ -1,7 +1,7 @@
 ---
 title: ISRC Codes: What They Are and How to Get One for Your Sync Catalogue
 slug: how-do-i-get-an-isrc-code-in-nigeria
-publishDate: 2024-05-15
+publishDate: 2024-10-04
 socialDate: PLACEHOLDER
 keyword: how do I get an ISRC code in Nigeria
 cluster: Education

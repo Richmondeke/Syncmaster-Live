@@ -1,7 +1,7 @@
 ---
 title: Clarks Beyond Worlds Fireboy DML: How Virtual Performance Infrastructure Redefined African Music Sync
 slug: clarks-beyond-worlds-fireboy-dml
-publishDate: 2024-07-24
+publishDate: 2024-07-25
 socialDate: PLACEHOLDER
 keyword: Clarks Beyond Worlds Fireboy DML
 cluster: Artist Stories

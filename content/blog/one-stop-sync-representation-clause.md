@@ -1,7 +1,7 @@
 ---
 title: Collaborator Split Sheets: How to Assert One-Stop Sync Representation Correctly
 slug: one-stop-sync-representation-clause
-publishDate: 2024-05-16
+publishDate: 2025-06-03
 socialDate: PLACEHOLDER
 keyword: one-stop sync representation clause
 cluster: default

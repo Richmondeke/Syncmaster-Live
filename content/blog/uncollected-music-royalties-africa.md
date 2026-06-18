@@ -1,7 +1,7 @@
 ---
 title: The Black Box Problem: Where Millions in Uncollected African Royalties Go
 slug: uncollected-music-royalties-africa
-publishDate: 2024-07-25
+publishDate: 2026-04-05
 socialDate: PLACEHOLDER
 keyword: uncollected music royalties africa
 cluster: Education

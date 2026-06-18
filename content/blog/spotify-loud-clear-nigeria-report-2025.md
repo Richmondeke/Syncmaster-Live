@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2025-08-31
 ---
 
 # Transparency as a Catalyst: Decoding the 2025 Spotify Loud & Clear Nigeria Report

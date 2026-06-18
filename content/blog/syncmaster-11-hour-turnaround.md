@@ -7,7 +7,7 @@ persona: Amara
 search_intent: commercial
 post_format: Case study + narrative
 word_count_target: 1200
-publishDate: 2024-07-25
+publishDate: 2026-01-17
 socialDate: PLACEHOLDER
 ---
 

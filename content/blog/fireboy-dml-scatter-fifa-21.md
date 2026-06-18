@@ -1,7 +1,7 @@
 ---
 title: Gaming as Global Anthem Builder: The Fireboy DML Scatter Milestone
 slug: fireboy-dml-scatter-fifa-21
-publishDate: 2024-07-25
+publishDate: 2024-09-16
 socialDate: PLACEHOLDER
 keyword: Fireboy DML Scatter FIFA 21
 cluster: Artist Stories

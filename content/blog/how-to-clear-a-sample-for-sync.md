@@ -1,7 +1,7 @@
 ---
 title: The Sample Problem: How Uncleared Audio Kills Sync Deals
 slug: how-to-clear-a-sample-for-sync
-publishDate: 2024-07-26
+publishDate: 2024-10-24
 socialDate: PLACEHOLDER
 keyword: how to clear a sample for sync
 cluster: default

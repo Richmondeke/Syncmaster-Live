@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2025-05-12
 ---
 
 # Emotional Anchors: The Evolution of Music Licensing in Contemporary Nollywood

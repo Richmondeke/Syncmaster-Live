@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Industry guide
 wordCount: 1480
 status: draft
+publishDate: 2024-04-01
 ---
 
 # The Backend Gap: Why PRO Registration is Non-Negotiable in Africa

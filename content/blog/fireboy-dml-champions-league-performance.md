@@ -1,7 +1,7 @@
 ---
 title: From Lagos to Paris: The Story Behind Fireboy DML’s Global Sports Sync
 slug: fireboy-dml-champions-league-performance
-publishDate: 2024-05-15
+publishDate: 2024-09-07
 socialDate: PLACEHOLDER
 keyword: Fireboy DML Champions League performance
 cluster: Artist Stories

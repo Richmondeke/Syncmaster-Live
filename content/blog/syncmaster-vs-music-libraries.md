@@ -8,6 +8,7 @@ search_intent: navigational
 post_format: Long-form explainer
 word_count_target: 800
 status: draft
+publishDate: 2026-02-23
 ---
 
 # SyncMaster vs. Traditional Libraries: Why We Built a New Pipeline for African Composers

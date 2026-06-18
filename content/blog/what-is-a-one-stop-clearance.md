@@ -27,6 +27,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2026-04-27
 ---
 
 # Why One-Stop Clearance is the Most Valuable Status in Sync

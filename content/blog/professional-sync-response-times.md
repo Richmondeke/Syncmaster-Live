@@ -1,7 +1,7 @@
 ---
 title: Why Response Speed is the Ultimate Metric for Music Supervisors
 slug: professional-sync-response-times
-publishDate: 2024-07-26
+publishDate: 2025-06-25
 socialDate: PLACEHOLDER
 keyword: Professional sync response times
 cluster: Proof/Placements

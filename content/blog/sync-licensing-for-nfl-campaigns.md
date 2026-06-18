@@ -6,6 +6,7 @@ cluster: Sports Sync
 persona: Amara
 wordCount: 1180
 status: draft
+publishDate: 2025-12-04
 ---
 
 # Sync Licensing for NFL Campaigns: Unlocking African Electronic Music

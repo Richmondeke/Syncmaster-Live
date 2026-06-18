@@ -1,7 +1,7 @@
 ---
 title: The Producer Checklist: How to Export Stems That Close Deals
 slug: how-to-prepare-stems-for-sync
-publishDate: 2024-05-16
+publishDate: 2024-11-30
 socialDate: PLACEHOLDER
 keyword: how to prepare stems for sync
 cluster: default

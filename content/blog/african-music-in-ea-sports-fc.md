@@ -1,7 +1,7 @@
 ---
 title: Game On: The Impact of African Soundtracks in EA Sports FC & Gaming
 slug: african-music-in-ea-sports-fc
-publishDate: 2024-07-30
+publishDate: 2024-02-17
 socialDate: 2024-07-30
 keyword: African music in EA Sports FC
 cluster: Gaming

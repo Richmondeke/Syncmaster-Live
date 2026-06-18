@@ -27,6 +27,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2026-01-22
 ---
 
 # Building a Bridge to Lagos: Our Month 1 Results and Lessons Learned

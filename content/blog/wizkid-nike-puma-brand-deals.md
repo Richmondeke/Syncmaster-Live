@@ -1,7 +1,7 @@
 ---
 title: Global Brand Alignment: Wizkid Nike Puma Infrastructure Milestone
 slug: wizkid-nike-puma-brand-deals
-publishDate: 2024-07-17
+publishDate: 2026-06-03
 socialDate: PLACEHOLDER
 keyword: Wizkid Nike Puma Brand Deals
 cluster: Artist Stories

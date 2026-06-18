@@ -7,7 +7,7 @@ persona: Composers like Tunde
 search_intent: informational
 post_format: Long-form explainer
 word_count_target: 1500
-publishDate: 2024-05-16
+publishDate: 2026-04-16
 socialDate: PLACEHOLDER
 status: draft
 ---

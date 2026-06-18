@@ -1,7 +1,7 @@
 ---
 title: African Composers Have Always Had the Talent. Now They Have the Infrastructure.
 slug: sync-licensing-access-african-composers
-publishDate: 2024-07-30
+publishDate: 2025-10-23
 socialDate: 2024-07-30
 keyword: sync licensing for African composers
 cluster: C — African Music Infrastructure & Market

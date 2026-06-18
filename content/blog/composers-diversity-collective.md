@@ -8,6 +8,7 @@ search_intent: navigational
 post_format: Industry guide
 word_count_target: 800
 status: draft
+publishDate: 2024-08-01
 ---
 
 # Representation as Strategy: The Impact of the Composers Diversity Collective on Global Sync

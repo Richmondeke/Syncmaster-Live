@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
 social_format: carousel
+publishDate: 2024-09-22
 ---
 
 # Authenticity at Scale: Vetting African Music for Global NGO Campaigns

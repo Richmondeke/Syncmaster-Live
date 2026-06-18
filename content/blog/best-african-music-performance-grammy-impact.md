@@ -27,6 +27,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2024-06-10
 ---
 
 # The Grammy Effect: Why African Music is Now a Global Sync Asset

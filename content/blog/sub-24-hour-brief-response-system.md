@@ -8,6 +8,7 @@ search_intent: transactional
 post_format: Long-form explainer
 word_count_target: 1500
 status: draft
+publishDate: 2025-09-24
 ---
 
 # Speed as a KPI: Engineering a Sub-24-Hour Sync Response Culture

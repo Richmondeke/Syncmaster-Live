@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Case study + narrative
 word_count_target: 1200
 status: draft
+publishDate: 2025-08-16
 ---
 
 # From Lagos to Showmax: Case Study of an Independent Composer Landing a Major Sync Deal

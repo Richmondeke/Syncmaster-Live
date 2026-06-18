@@ -1,7 +1,7 @@
 ---
 title: Basslines to Billions: Projecting 2.5 Million Creative Jobs in Nigeria by 2030
 slug: african-music-industry-job-growth-2030
-publishDate: 2024-07-30
+publishDate: 2024-03-03
 socialDate: 2024-07-30
 keyword: African music industry job growth 2030
 cluster: Industry

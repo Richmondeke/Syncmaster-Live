@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-const BASE_URL = 'https://syncmaster.live'
+const BASE_URL = 'https://www.syncmaster.live'
 
 export default function robots(): MetadataRoute.Robots {
   return {

@@ -7,7 +7,7 @@ persona: Consultant
 search_intent: transactional
 post_format: Industry guide
 word_count_target: 1500
-publishDate: 2024-07-29
+publishDate: 2025-05-20
 socialDate: PLACEHOLDER
 ---
 

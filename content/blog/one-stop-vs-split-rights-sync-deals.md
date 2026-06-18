@@ -8,6 +8,7 @@ search_intent: commercial
 post_format: Long-form explainer
 word_count_target: 1200
 status: draft
+publishDate: 2025-06-05
 ---
 
 # Mitigating Deal Risk: The Operational Advantage of One-Stop vs. Split Rights

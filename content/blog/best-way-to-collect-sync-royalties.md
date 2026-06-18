@@ -1,7 +1,7 @@
 ---
 title: The Best Way to Collect Your Sync Royalties: PRO Registration Explained
 slug: best-way-to-collect-sync-royalties
-publishDate: 2024-07-24
+publishDate: 2024-06-16
 socialDate: PLACEHOLDER
 keyword: best way to collect sync royalties
 cluster: Action Intent

@@ -1,7 +1,7 @@
 ---
 title: Beyond Micro-payments: Synchronization as a Primary Revenue Engine
 slug: streaming-vs-sync-revenue-efficiency
-publishDate: 2024-07-24
+publishDate: 2025-09-20
 socialDate: PLACEHOLDER
 keyword: Streaming vs sync revenue efficiency
 cluster: Proof/Placements

@@ -1,7 +1,7 @@
 ---
 title: Live and Local: The Scalability of Music Festival Infrastructure in 2025
 slug: african-music-festival-infrastructure-2025
-publishDate: 2024-07-30
+publishDate: 2024-02-13
 socialDate: PLACEHOLDER: YYYY-MM-DD
 keyword: African music festival infrastructure 2025
 cluster: African Music Infrastructure

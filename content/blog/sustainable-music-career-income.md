@@ -8,6 +8,7 @@ search_intent: informational
 post_format: Case study + narrative
 word_count_target: 1500
 status: draft
+publishDate: 2025-10-05
 ---
 
 # Financial Paradigm Shifts: Why Sync is the Foundation of Music Sustainability

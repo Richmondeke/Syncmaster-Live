@@ -27,6 +27,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2024-07-29
 ---
 
 # 5 Reasons African Music Gets Rejected from Global Briefs

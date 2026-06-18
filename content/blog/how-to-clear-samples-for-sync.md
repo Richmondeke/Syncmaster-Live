@@ -27,6 +27,7 @@ internal_links:
   - ISRC codes explained
   - Sync Licensing 101: The African Composer's Guide
 social_format: carousel
+publishDate: 2024-10-28
 ---
 
 # Uncleared Samples: Why They Kill Your Sync Potential and How to Fix It

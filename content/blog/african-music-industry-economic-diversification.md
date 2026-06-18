@@ -1,7 +1,7 @@
 ---
 title: Sound Over Oil: Nigerian Music as a Soft Power Asset
 slug: african-music-industry-economic-diversification
-publishDate: 2024-07-30
+publishDate: 2024-02-27
 socialDate: PLACEHOLDER
 keyword: african music industry economic diversification
 cluster: Industry
