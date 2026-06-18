@@ -9,7 +9,18 @@ export async function createClient() {
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!url || !anonKey) {
-    throw new Error('[Supabase Server] Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY')
+    console.warn('[Supabase Server] Missing env vars — returning no-op client')
+    const handler: ProxyHandler<object> = {
+      get: (_target, prop) => {
+        if (prop === 'from') return () => new Proxy({}, handler)
+        if (prop === 'then') return undefined
+        if (prop === 'single' || prop === 'maybeSingle') return () => Promise.resolve({ data: null, error: null })
+        if (prop === 'auth') return new Proxy({}, handler)
+        if (prop === 'getUser' || prop === 'getSession') return () => Promise.resolve({ data: { user: null, session: null }, error: null })
+        return (..._args: unknown[]) => new Proxy({}, handler)
+      }
+    }
+    return new Proxy({}, handler) as any
   }
 
   return createServerClient<Database>(

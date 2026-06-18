@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { Plus, Mail, FileText } from 'lucide-react'
-import { buttonVariants } from '@/components/ui/button'
 import { cookies } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
@@ -31,7 +30,7 @@ export default async function BriefsPage() {
         {(role === 'producer' || role === 'admin') && (
           <Link
             href="/dashboard/briefs/new"
-            className={buttonVariants({ variant: 'default', size: 'sm' })}
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2"
           >
             <Plus className="h-4 w-4" />
             New brief
@@ -62,7 +61,7 @@ export default async function BriefsPage() {
         {(role === 'producer' || role === 'admin') && (
           <Link
             href="/dashboard/briefs/new"
-            className={buttonVariants({ variant: 'default' }) + ' rounded-full mt-2 px-8 h-12 font-black'}
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-black bg-primary text-primary-foreground hover:bg-primary/90 rounded-full mt-2 px-8 h-12"
           >
             <Plus className="w-5 h-5 mr-2" /> Create Your First Brief
           </Link>

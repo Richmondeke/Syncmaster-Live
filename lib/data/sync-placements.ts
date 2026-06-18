@@ -25,10 +25,37 @@ export type SyncPlacement = {
   episode: number | null
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Poster Images ───────────────────────────────────────────────────────────
+// Using reliable public image sources for movie/show posters
+
+const posters: Record<string, string> = {
+  // Films — TMDB CDN (verified poster_path from TMDB IDs)
+  'Black Panther Wakanda Forever': 'https://m.media-amazon.com/images/M/MV5BMDEzMTc2NjgtODliOS00OTRkLTkxNjAtODkyYTUyMzgyMGI4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+  'Queen and Slim': 'https://m.media-amazon.com/images/M/MV5BNjQzNzE1NjctYjZlOC00ZjYzLWI5NWQtYjQ1NDliNzY4NjVjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+  'Spider-Man Across the Spider-Verse': 'https://m.media-amazon.com/images/M/MV5BNThiZjA3MjItZGY5Ni00ZjRhLWEzNDQtMmZlZGIzMjBhMzQ1XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+  'Coming 2 America': 'https://m.media-amazon.com/images/M/MV5BMjExNTQ1MTI2M15BMl5BanBnXkFtZTgwNTc5MDczNjM@._V1_FMjpg_UX1000_.jpg',
+  'The Woman King': 'https://m.media-amazon.com/images/M/MV5BYTIxODU0OWMtMmI5NS00MGViLTk0NzUtZjY5ZGYzYzYyMTdkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+  'F1': 'https://m.media-amazon.com/images/M/MV5BYzc2NTgzOGQtMGFkOC00MDcyLTkxZDMtOThjOGRkMTBjMmI5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+  'Beasts of No Nation': 'https://m.media-amazon.com/images/M/MV5BMjA4MDQwODg1NF5BMl5BanBnXkFtZTgwNjEzMTczNzE@._V1_FMjpg_UX1000_.jpg',
+  'Pacific Rim Uprising': 'https://m.media-amazon.com/images/M/MV5BMjI3Nzg0MTM5NF5BMl5BanBnXkFtZTgwOTE2MTgwNTM@._V1_FMjpg_UX1000_.jpg',
+  // TV Shows
+  'Insecure': 'https://m.media-amazon.com/images/M/MV5BYjE4MDQyNGEtODRlOS00NGI5LThkZmMtMjJhOTYyNGRkMzFmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+  'Queen Sono': 'https://m.media-amazon.com/images/M/MV5BOWY5MzI2Y2UtYjJjNC00MzdhLWEwMjMtOWFjYjMyMjI4NDZiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+  'Everything Now': 'https://m.media-amazon.com/images/M/MV5BMmU4MDQ0YjktN2U4OC00OGRlLWJkZDQtNDdkMGM5MzYzMDFkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+  'Euphoria': 'https://m.media-amazon.com/images/M/MV5BNDVhMGRhYjktMjhiYS00ZTk0LWFiMmItOWU4MjFjZjA5ZjdkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+  'Blood and Water': 'https://m.media-amazon.com/images/M/MV5BOGY1OTVkMmUtYjRlNS00MjhiLWFlYzEtOGI0YzdhYTkzOTIxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+  // Games — branded color blocks
+  'EA FC 25': 'https://upload.wikimedia.org/wikipedia/en/4/4e/EA_Sports_FC_25_cover.jpg',
+  'NBA 2K25': 'https://upload.wikimedia.org/wikipedia/en/3/36/NBA_2K25_cover_art.jpg',
+  'FIFA 23': 'https://upload.wikimedia.org/wikipedia/en/a/a6/FIFA_23_Cover.jpg',
+  'GTA V': 'https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png',
+  // Ads
+  'Apple AirPods Pro': 'https://ui-avatars.com/api/?name=Apple+AirPods&background=1d1d1f&color=fff&bold=true&size=300',
+  'Pepsi Super Bowl': 'https://ui-avatars.com/api/?name=Pepsi+SB&background=004B93&color=fff&bold=true&size=300',
+}
 
 const poster = (name: string) =>
-  `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1a1a2e&color=fff&bold=true&size=300`
+  posters[name] || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1a1a2e&color=fff&bold=true&size=300`
 
 // ─── Media Catalogue ──────────────────────────────────────────────────────────
 

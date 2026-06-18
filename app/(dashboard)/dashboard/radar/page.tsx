@@ -457,11 +457,9 @@ export default function SyncRadarPage() {
                     >
                       <CardContent className="p-5">
                         <div className="flex items-start gap-4">
-                          {/* Poster placeholder */}
-                          <div className="w-16 h-20 rounded-xl bg-gradient-to-br from-muted/60 to-muted/30 border border-border/40 flex items-center justify-center shrink-0 overflow-hidden group-hover/media:scale-[1.03] transition-transform duration-300">
-                            <div className={`w-full h-full flex items-center justify-center ${TYPE_COLORS[media.type]} bg-opacity-20`}>
-                              {TYPE_ICONS[media.type]}
-                            </div>
+                          {/* Movie/Show Poster */}
+                          <div className="w-16 h-20 rounded-xl bg-gradient-to-br from-muted/60 to-muted/30 border border-border/40 shrink-0 overflow-hidden group-hover/media:scale-[1.03] transition-transform duration-300">
+                            <img src={media.posterUrl} alt={media.title} className="w-full h-full object-cover" />
                           </div>
 
                           <div className="flex-1 min-w-0 space-y-2">
