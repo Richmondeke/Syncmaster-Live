@@ -62,11 +62,11 @@ export default async function AgencyDetailPage({ params }: Props) {
         <div className="flex items-center gap-3">
           {isPro ? (
             <>
-              <a href={agency.website || '#'} target="_blank" rel="noopener noreferrer" className={cn(buttonVariants({ variant: 'outline' }), 'rounded-full gap-2 border-border')}>
+              <a href={`https://www.google.com/search?q=${encodeURIComponent(agency.name + ' music agency')}`} target="_blank" rel="noopener noreferrer" className={cn(buttonVariants({ variant: 'outline' }), 'rounded-full gap-2 border-border')}>
                 <Globe className="w-4 h-4" />
                 Website
               </a>
-              <a href={`mailto:${agency.email || 'info@syncmaster.co'}`} className={cn(buttonVariants(), 'rounded-full gap-2 bg-primary hover:bg-primary/95 text-primary-foreground animate-in fade-in zoom-in duration-300')}>
+              <a href={`mailto:info@syncmaster.co?subject=Enquiry about ${encodeURIComponent(agency.name)}`} className={cn(buttonVariants(), 'rounded-full gap-2 bg-primary hover:bg-primary/95 text-primary-foreground animate-in fade-in zoom-in duration-300')}>
                 <MessageSquare className="w-4 h-4" />
                 Contact Agency
               </a>
@@ -200,7 +200,7 @@ export default async function AgencyDetailPage({ params }: Props) {
               </div>
               
               {isPro ? (
-                <a href={`mailto:${agency.email || 'info@syncmaster.co'}?subject=Brief Submission via SyncMaster`} className={cn(buttonVariants(), 'w-full rounded-full h-14 text-lg font-bold bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg')}>
+                <a href={`mailto:info@syncmaster.co?subject=Brief Submission via SyncMaster – ${encodeURIComponent(agency.name)}`} className={cn(buttonVariants(), 'w-full rounded-full h-14 text-lg font-bold bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg')}>
                   Send Direct Brief
                 </a>
               ) : (
