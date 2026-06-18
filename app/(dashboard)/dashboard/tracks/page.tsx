@@ -60,6 +60,8 @@ export default function TracksPage() {
   const [currentTrack, setCurrentTrack] = useState<any>(null)
   const [toasts, setToasts] = useState<Toast[]>([])
   const [playingTrackId, setPlayingTrackId] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
   const { playTrack, currentTrack: playerTrack, isPlaying } = useMusicPlayer()
 
@@ -72,12 +74,25 @@ export default function TracksPage() {
 
   // Load from Supabase on mount
   useEffect(() => {
-    getTracks().then(data => { if (Array.isArray(data)) setTracks(data) })
+    setIsLoading(true)
+    getTracks().then(data => { if (Array.isArray(data)) setTracks(data) }).finally(() => setIsLoading(false))
     const savedPlaylist = localStorage.getItem('syncmaster_playlist')
     const savedPlaylistName = localStorage.getItem('syncmaster_playlist_name')
     if (savedPlaylist) setPlaylistTracks(JSON.parse(savedPlaylist))
     if (savedPlaylistName) setPlaylistName(savedPlaylistName)
   }, [])
+
+  // Filter tracks based on search query
+  const filteredTracks = tracks.filter(track => {
+    if (!searchQuery.trim()) return true
+    const q = searchQuery.toLowerCase()
+    return (
+      (track.title || '').toLowerCase().includes(q) ||
+      (track.genre || '').toLowerCase().includes(q) ||
+      (track.bpm || '').toString().includes(q) ||
+      (track.key || '').toLowerCase().includes(q)
+    )
+  })
 
   useEffect(() => { localStorage.setItem('syncmaster_playlist', JSON.stringify(playlistTracks)) }, [playlistTracks])
   useEffect(() => { localStorage.setItem('syncmaster_playlist_name', playlistName) }, [playlistName])
@@ -221,67 +236,93 @@ export default function TracksPage() {
     showToast(`Added track: ${track.title}`)
   }
 
-  const handlePlaylistAudioUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePlaylistAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
     const titleWithoutExtension = file.name.substring(0, file.name.lastIndexOf('.')) || file.name
 
+    // Get duration from the file
     const audioUrl = URL.createObjectURL(file)
     const audio = new Audio(audioUrl)
     
     let duration = '3:00'
-    audio.addEventListener('loadedmetadata', () => {
-      const totalSeconds = Math.round(audio.duration)
-      const minutes = Math.floor(totalSeconds / 60)
-      const seconds = totalSeconds % 60
-      duration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+    await new Promise<void>((resolve) => {
+      audio.addEventListener('loadedmetadata', () => {
+        const totalSeconds = Math.round(audio.duration)
+        const minutes = Math.floor(totalSeconds / 60)
+        const seconds = totalSeconds % 60
+        duration = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+        resolve()
+      })
+      audio.addEventListener('error', () => resolve())
+      setTimeout(() => resolve(), 3000) // fallback timeout
     })
 
     setIsPlaylistUploading(true)
     setPlaylistUploadProgress(0)
-    
-    let progress = 0
-    const interval = setInterval(async () => {
-      progress += 10
-      if (progress >= 100) {
-        clearInterval(interval)
-        setPlaylistUploadProgress(100)
-        
-        const songIdx = Math.floor(Math.random() * 16) + 1
-        const mockAudioUrl = `https://www.soundhelix.com/examples/mp3/SoundHelix-Song-${songIdx}.mp3`
-        
-        const newTrackData = {
-          title: titleWithoutExtension,
-          genre: 'Uploaded',
-          duration: duration,
-          bpm: '120',
-          key: 'Cmin',
-          audio_url: mockAudioUrl,
-          plays: 0,
-          versions: []
-        }
-        
-        const createdTrack = await createTrack(newTrackData as Omit<TrackData, 'id'>)
-        
-        if (createdTrack) {
-          setTracks(prev => [createdTrack, ...prev])
-          setPlaylistTracks(prev => [...prev, createdTrack])
-          showToast(`Successfully uploaded "${titleWithoutExtension}" and added to playlist!`)
-        } else {
-          const localTrack = { id: `tr_uploaded_${Date.now()}`, ...newTrackData }
-          setTracks(prev => [localTrack, ...prev])
-          setPlaylistTracks(prev => [...prev, localTrack])
-          showToast(`Uploaded "${titleWithoutExtension}" (saved locally - check connection)`)
-        }
-        
+
+    try {
+      // Upload to Supabase Storage
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
+      const fileName = `playlist_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`
+      
+      setPlaylistUploadProgress(20)
+      
+      const { error: uploadError } = await supabase.storage
+        .from('tracks')
+        .upload(fileName, file)
+
+      if (uploadError) {
+        showToast(`Upload failed: ${uploadError.message}`, 'error')
         setIsPlaylistUploading(false)
         setPlaylistUploadProgress(0)
-        setPlaylistAddMode('none')
-      } else {
-        setPlaylistUploadProgress(progress)
+        return
       }
-    }, 150)
+
+      setPlaylistUploadProgress(70)
+
+      const { data: urlData } = supabase.storage
+        .from('tracks')
+        .getPublicUrl(fileName)
+
+      const realAudioUrl = urlData?.publicUrl || audioUrl
+
+      setPlaylistUploadProgress(90)
+
+      const newTrackData = {
+        title: titleWithoutExtension,
+        genre: 'Uploaded',
+        duration: duration,
+        bpm: '120',
+        key: 'Cmin',
+        audio_url: realAudioUrl,
+        plays: 0,
+        versions: []
+      }
+      
+      const createdTrack = await createTrack(newTrackData as Omit<TrackData, 'id'>)
+      
+      setPlaylistUploadProgress(100)
+
+      if (createdTrack) {
+        setTracks(prev => [createdTrack, ...prev])
+        setPlaylistTracks(prev => [...prev, createdTrack])
+        showToast(`Successfully uploaded "${titleWithoutExtension}" and added to playlist!`)
+      } else {
+        const localTrack = { id: `tr_uploaded_${Date.now()}`, ...newTrackData }
+        setTracks(prev => [localTrack, ...prev])
+        setPlaylistTracks(prev => [...prev, localTrack])
+        showToast(`Uploaded "${titleWithoutExtension}" (saved locally - check connection)`)
+      }
+    } catch (err: any) {
+      showToast(`Upload error: ${err.message}`, 'error')
+    } finally {
+      setIsPlaylistUploading(false)
+      setPlaylistUploadProgress(0)
+      setPlaylistAddMode('none')
+    }
   }
 
   return (
@@ -318,6 +359,8 @@ export default function TracksPage() {
               <input 
                 type="text" 
                 placeholder="Search catalog by title, genre, bpm..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full h-14 pl-12 pr-4 bg-card border-2 border-border/50 rounded-md font-bold text-sm text-foreground focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all shadow-sm"
               />
             </div>
@@ -368,7 +411,34 @@ export default function TracksPage() {
 
         {/* Tracks List with Nesting */}
         <div className="grid gap-4 px-8 pb-8">
-          {tracks.map((track) => (
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-24 text-center gap-4">
+              <Loader2 className="w-8 h-8 text-primary animate-spin" />
+              <p className="text-sm font-bold text-muted-foreground">Loading your catalog...</p>
+            </div>
+          ) : filteredTracks.length === 0 && tracks.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-24 text-center gap-6 rounded-[2rem] border-2 border-dashed border-border/40 bg-muted/10">
+              <div className="w-24 h-24 rounded-[2rem] bg-primary/10 flex items-center justify-center shadow-lg">
+                <Music2 className="w-12 h-12 text-primary/60" />
+              </div>
+              <div className="space-y-2 max-w-md">
+                <h3 className="text-2xl font-black tracking-[-0.04em] text-foreground">Your catalog is empty</h3>
+                <p className="text-muted-foreground font-medium leading-relaxed">Upload your first track to start building your catalog. Supported formats: WAV, MP3, FLAC, AIFF.</p>
+              </div>
+              <Button className="rounded-full px-8 h-12 font-black" onClick={() => setActiveModal('upload')}>
+                <PlusIcon className="w-5 h-5 mr-2" /> Upload Your First Track
+              </Button>
+            </div>
+          ) : filteredTracks.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
+              <Search className="w-10 h-10 text-muted-foreground/40" />
+              <div className="space-y-1">
+                <p className="font-bold text-foreground/70">No tracks match "{searchQuery}"</p>
+                <p className="text-sm text-muted-foreground">Try a different search term or clear the filter.</p>
+              </div>
+              <Button variant="outline" size="sm" className="rounded-full" onClick={() => setSearchQuery('')}>Clear search</Button>
+            </div>
+          ) : filteredTracks.map((track) => (
             <div key={track.id} className="relative group">
               <Card className={cn(
                 "bg-card border-2 rounded-md transition-all overflow-hidden",
