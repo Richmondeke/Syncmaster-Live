@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import Image from 'next/image'
 // @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { ArrowLeft, ArrowRight, Clock, BookOpen } from 'lucide-react'
@@ -19,14 +20,49 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   return getAllSlugs().map((slug: string) => ({ slug }))
 }
 
-export async function generateMetadata({ params }: Props) {
+const BASE_URL = 'https://syncmaster-live.vercel.app'
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = getPostBySlug(slug)
   if (!post) return {}
+
+  const url = `${BASE_URL}/blog/${slug}`
+  const title = `${post.title} — SyncMaster Blog`
+  const description = post.excerpt || post.title
+
   return {
-    title: `${post.title} — SyncMaster Blog`,
-    description: post.excerpt,
+    title,
+    description,
     keywords: post.keyword,
+    authors: [{ name: 'SyncMaster' }],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'SyncMaster',
+      locale: 'en_US',
+      type: 'article',
+      publishedTime: post.publishDate || undefined,
+      authors: ['SyncMaster'],
+      images: [
+        {
+          url: post.coverImage || `${BASE_URL}/syncscreen.png`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [post.coverImage || `${BASE_URL}/syncscreen.png`],
+    },
   }
 }
 
@@ -53,6 +89,42 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground selection:bg-primary/20 font-sans">
+      {/* JSON-LD Structured Data for Google Rich Snippets */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: post.title,
+            description: post.excerpt || post.title,
+            image: post.coverImage || `${BASE_URL}/syncscreen.png`,
+            datePublished: post.publishDate || new Date().toISOString(),
+            dateModified: post.publishDate || new Date().toISOString(),
+            author: {
+              '@type': 'Organization',
+              name: 'SyncMaster',
+              url: BASE_URL,
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'SyncMaster',
+              url: BASE_URL,
+              logo: {
+                '@type': 'ImageObject',
+                url: `${BASE_URL}/syncscreen.png`,
+              },
+            },
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': `${BASE_URL}/blog/${slug}`,
+            },
+            wordCount: post.wordCount,
+            articleSection: post.cluster,
+            keywords: post.keyword,
+          }),
+        }}
+      />
       <Navbar />
 
       <main className="flex-1 pt-20">
