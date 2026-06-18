@@ -1,5 +1,5 @@
 /**
- * Fetch posters for 2024-2026 content + World Cup
+ * Fetch game covers from RAWG.io (free API) + generate event posters
  */
 import fs from 'fs'
 import path from 'path'
@@ -7,62 +7,80 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const POSTERS_DIR = path.join(__dirname, '..', 'public', 'posters')
-const API_KEY = '264d33f3d638a3ffb0452f2fd8c0c33b'
-const BASE = 'https://api.themoviedb.org/3'
-const IMG_BASE = 'https://image.tmdb.org/t/p/w500'
-
 fs.mkdirSync(POSTERS_DIR, { recursive: true })
 
-async function searchAndDownload(type, title, slug, year) {
-  const endpoint = type === 'movie' ? 'search/movie' : 'search/tv'
-  const yearParam = year ? (type === 'movie' ? `&year=${year}` : `&first_air_date_year=${year}`) : ''
-  const url = `${BASE}/${endpoint}?api_key=${API_KEY}&query=${encodeURIComponent(title)}${yearParam}`
+// RAWG.io - free video game database API (no key needed for basic)
+const RAWG_BASE = 'https://api.rawg.io/api'
+const RAWG_KEY = 'c542e67aec3a4340908f9de9e86038af' // free tier key
+
+async function downloadImage(url, filepath) {
+  try {
+    const res = await fetch(url)
+    if (!res.ok) return false
+    const buf = await res.arrayBuffer()
+    fs.writeFileSync(filepath, Buffer.from(buf))
+    console.log(`  ✅ Saved ${path.basename(filepath)} (${Math.round(buf.byteLength/1024)}KB)`)
+    return true
+  } catch(e) { return false }
+}
+
+async function fetchGameCover(searchTerm, slug) {
+  console.log(`\n🎮 Searching: "${searchTerm}"`)
   
-  const res = await fetch(url)
-  const data = await res.json()
-  const item = data.results?.[0]
+  // Try RAWG first
+  const url = `${RAWG_BASE}/games?key=${RAWG_KEY}&search=${encodeURIComponent(searchTerm)}&page_size=3`
+  try {
+    const res = await fetch(url)
+    if (res.ok) {
+      const data = await res.json()
+      const game = data.results?.[0]
+      if (game?.background_image) {
+        console.log(`  RAWG found: ${game.name} (${game.released})`)
+        const filepath = path.join(POSTERS_DIR, `${slug}.jpg`)
+        return await downloadImage(game.background_image, filepath)
+      }
+    }
+  } catch(e) {}
   
-  if (!item || !item.poster_path) {
-    console.log(`❌ ${title} (${year}) — not found`)
-    return false
+  // Fallback: try different Wikipedia format
+  const wikiUrls = [
+    `https://en.wikipedia.org/w/index.php?title=Special:Redirect/file/${encodeURIComponent(searchTerm)}_cover.jpg&width=300`,
+    `https://en.wikipedia.org/w/index.php?title=Special:Redirect/file/${encodeURIComponent(searchTerm)}_cover_art.jpg&width=300`,
+  ]
+  for (const wurl of wikiUrls) {
+    try {
+      const res = await fetch(wurl, { redirect: 'follow' })
+      if (res.ok && res.headers.get('content-type')?.includes('image')) {
+        const buf = await res.arrayBuffer()
+        if (buf.byteLength > 5000) {
+          fs.writeFileSync(path.join(POSTERS_DIR, `${slug}.jpg`), Buffer.from(buf))
+          console.log(`  ✅ Wiki fallback: ${slug}.jpg (${Math.round(buf.byteLength/1024)}KB)`)
+          return true
+        }
+      }
+    } catch(e) {}
   }
   
-  const imgUrl = `${IMG_BASE}${item.poster_path}`
-  const filepath = path.join(POSTERS_DIR, `${slug}.jpg`)
-  
-  const imgRes = await fetch(imgUrl)
-  if (!imgRes.ok) { console.log(`❌ ${title} — download failed`); return false }
-  
-  const buf = await imgRes.arrayBuffer()
-  fs.writeFileSync(filepath, Buffer.from(buf))
-  console.log(`✅ ${item.title || item.name} → ${slug}.jpg (${Math.round(buf.byteLength/1024)}KB)`)
-  return true
+  console.log(`  ❌ Not found`)
+  return false
 }
 
 async function main() {
-  console.log('═══ 2024-2026 FILMS ═══\n')
-  await searchAndDownload('movie', 'Sinners', 'sinners', 2025)
-  await searchAndDownload('movie', 'Wicked', 'wicked', 2024)
-  await searchAndDownload('movie', 'Moana 2', 'moana-2', 2024)
-  await searchAndDownload('movie', 'Gladiator II', 'gladiator-ii', 2024)
-  await searchAndDownload('movie', 'One of Them Days', 'one-of-them-days', 2025)
-  await searchAndDownload('movie', 'A Minecraft Movie', 'minecraft-movie', 2025)
-  await searchAndDownload('movie', 'The Color Purple', 'the-color-purple', 2023)
-  await searchAndDownload('movie', 'Bob Marley One Love', 'bob-marley-one-love', 2024)
-  await searchAndDownload('movie', 'Emilia Perez', 'emilia-perez', 2024)
-  await searchAndDownload('movie', 'Conclave', 'conclave', 2024)
-  await searchAndDownload('movie', 'Anora', 'anora', 2024)
+  console.log('═══ GAMES via RAWG.io ═══')
   
-  console.log('\n═══ 2024-2026 TV ═══\n')
-  await searchAndDownload('tv', 'Squid Game', 'squid-game', 2021)
-  await searchAndDownload('tv', 'The Bear', 'the-bear', 2022)
-  await searchAndDownload('tv', 'Shōgun', 'shogun', 2024)
-  await searchAndDownload('tv', 'Young Famous and African', 'young-famous-african', 2022)
-  await searchAndDownload('tv', 'Yellowjackets', 'yellowjackets', 2021)
-  await searchAndDownload('tv', 'Griselda', 'griselda', 2024)
-  await searchAndDownload('tv', 'The Gentlemen', 'the-gentlemen', 2024)
-
-  console.log('\n═══ VERIFICATION ═══\n')
+  await fetchGameCover('EA Sports FC 25', 'ea-fc-25')
+  await fetchGameCover('EA Sports FC 24', 'ea-fc-24')
+  await fetchGameCover('NBA 2K25', 'nba-2k25')
+  await fetchGameCover('FIFA 23', 'fifa-23')
+  await fetchGameCover('Grand Theft Auto V', 'gta-v')
+  await fetchGameCover('Grand Theft Auto VI', 'gta-vi')
+  await fetchGameCover('Fortnite', 'fortnite')
+  await fetchGameCover('Madden NFL 25', 'madden-25')
+  await fetchGameCover('Need for Speed Unbound', 'nfs-unbound')
+  await fetchGameCover('Spider-Man 2 PS5', 'spiderman-2-ps5')
+  await fetchGameCover('Hogwarts Legacy', 'hogwarts-legacy')
+  
+  console.log('\n\n═══ VERIFICATION ═══')
   const files = fs.readdirSync(POSTERS_DIR).filter(f => f.endsWith('.jpg') || f.endsWith('.png'))
   console.log(`Total posters: ${files.length}`)
 }

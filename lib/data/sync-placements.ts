@@ -30,7 +30,7 @@ export type SyncPlacement = {
 // Games & ads use ui-avatars.com fallback (free, no licensing issues)
 
 const localPosters: Record<string, string> = {
-  // Films — original
+  // ── Films ──────────────────────────────────────────────────────────────────
   'Black Panther Wakanda Forever': '/posters/black-panther-wakanda-forever.jpg',
   'Queen and Slim': '/posters/queen-and-slim.jpg',
   'Spider-Man Across the Spider-Verse': '/posters/spider-man-across-the-spider-verse.jpg',
@@ -45,7 +45,6 @@ const localPosters: Record<string, string> = {
   'Creed III': '/posters/creed-iii.jpg',
   'Beast': '/posters/beast.jpg',
   'Mufasa Lion King': '/posters/mufasa-lion-king.jpg',
-  // Films — 2024-2026
   'Sinners': '/posters/sinners.jpg',
   'Wicked': '/posters/wicked.jpg',
   'Moana 2': '/posters/moana-2.jpg',
@@ -53,7 +52,15 @@ const localPosters: Record<string, string> = {
   'One of Them Days': '/posters/one-of-them-days.jpg',
   'The Color Purple 2023': '/posters/the-color-purple.jpg',
   'Bob Marley One Love': '/posters/bob-marley-one-love.jpg',
-  // TV Shows — original
+  // 2025-2026 films
+  'Thunderbolts': '/posters/thunderbolts.jpg',
+  'Captain America Brave New World': '/posters/captain-america-bnw.jpg',
+  'Deadpool Wolverine': '/posters/deadpool-wolverine.jpg',
+  'Dune Part Two': '/posters/dune-2.jpg',
+  'Furiosa': '/posters/furiosa.jpg',
+  'Inside Out 2': '/posters/inside-out-2.jpg',
+  'Twisters': '/posters/twisters.jpg',
+  // ── TV Shows ───────────────────────────────────────────────────────────────
   'Insecure': '/posters/insecure.jpg',
   'Queen Sono': '/posters/queen-sono.jpg',
   'Everything Now': '/posters/everything-now.jpg',
@@ -63,12 +70,29 @@ const localPosters: Record<string, string> = {
   'Top Boy': '/posters/top-boy.jpg',
   'Stranger Things': '/posters/stranger-things.jpg',
   'Wednesday': '/posters/wednesday.jpg',
-  // TV Shows — 2024-2026
   'Squid Game': '/posters/squid-game.jpg',
   'The Bear': '/posters/the-bear.jpg',
   'Shogun': '/posters/shogun.jpg',
   'Griselda': '/posters/griselda.jpg',
   'The Gentlemen': '/posters/the-gentlemen.jpg',
+  // 2025-2026 TV
+  'Severance': '/posters/severance.jpg',
+  'The White Lotus': '/posters/white-lotus.jpg',
+  'Adolescence': '/posters/adolescence.jpg',
+  'Black Mirror': '/posters/black-mirror.jpg',
+  'The Last of Us': '/posters/the-last-of-us.jpg',
+  // ── Games (RAWG.io) ────────────────────────────────────────────────────────
+  'EA FC 25': '/posters/ea-fc-25.jpg',
+  'EA FC 24': '/posters/ea-fc-24.jpg',
+  'NBA 2K25': '/posters/nba-2k25.jpg',
+  'GTA V': '/posters/gta-v.jpg',
+  'GTA VI': '/posters/gta-vi.jpg',
+  'Fortnite': '/posters/fortnite.jpg',
+  'Madden 25': '/posters/madden-25.jpg',
+  'NFS Unbound': '/posters/nfs-unbound.jpg',
+  'Spider-Man 2': '/posters/spiderman-2-ps5.jpg',
+  // ── Events ─────────────────────────────────────────────────────────────────
+  'FIFA World Cup 2026': '/posters/fifa-world-cup-2026.png',
 }
 
 const poster = (name: string) =>
@@ -513,6 +537,204 @@ export const syncMedia: SyncMedia[] = [
     description: 'The 2026 FIFA World Cup across USA, Mexico & Canada. Official songs and stadium anthems featuring global and African artists — the biggest sporting event on Earth.',
     genre: ['Sports', 'Global Event'],
     totalSongs: 8,
+  },
+
+  // ── 2025–2026 Films ────────────────────────────────────────────────────────
+  {
+    id: 'thunderbolts-2025',
+    title: 'Thunderbolts*',
+    type: 'film',
+    year: 2025,
+    posterUrl: poster('Thunderbolts'),
+    description: 'Marvel\'s anti-hero ensemble film featuring Florence Pugh. Soundtrack blends indie rock, hip-hop, and unexpected African influences.',
+    genre: ['Action', 'Sci-Fi', 'Thriller'],
+    totalSongs: 4,
+  },
+  {
+    id: 'captain-america-bnw-2025',
+    title: 'Captain America: Brave New World',
+    type: 'film',
+    year: 2025,
+    posterUrl: poster('Captain America Brave New World'),
+    description: 'Anthony Mackie leads as the new Captain America. Features Afrobeats and hip-hop tracks reflecting Sam Wilson\'s heritage.',
+    genre: ['Action', 'Sci-Fi', 'Political'],
+    totalSongs: 4,
+  },
+  {
+    id: 'deadpool-wolverine-2024',
+    title: 'Deadpool & Wolverine',
+    type: 'film',
+    year: 2024,
+    posterUrl: poster('Deadpool Wolverine'),
+    description: 'The highest-grossing R-rated film ever. Known for its needle drops — *NSYNC "Bye Bye Bye" and Green Day went viral.',
+    genre: ['Action', 'Comedy', 'Sci-Fi'],
+    totalSongs: 5,
+  },
+  {
+    id: 'dune-2-2024',
+    title: 'Dune: Part Two',
+    type: 'film',
+    year: 2024,
+    posterUrl: poster('Dune Part Two'),
+    description: 'Denis Villeneuve\'s sci-fi epic with Hans Zimmer\'s African-influenced score using Saharan instruments and Tuareg percussion.',
+    genre: ['Sci-Fi', 'Action', 'Drama'],
+    totalSongs: 4,
+  },
+  {
+    id: 'furiosa-2024',
+    title: 'Furiosa: A Mad Max Saga',
+    type: 'film',
+    year: 2024,
+    posterUrl: poster('Furiosa'),
+    description: 'Anya Taylor-Joy stars in the Mad Max prequel set in post-apocalyptic Africa. Tom Holkenborg\'s score channels West African war drums.',
+    genre: ['Action', 'Sci-Fi', 'Adventure'],
+    totalSongs: 3,
+  },
+  {
+    id: 'inside-out-2-2024',
+    title: 'Inside Out 2',
+    type: 'film',
+    year: 2024,
+    posterUrl: poster('Inside Out 2'),
+    description: 'Pixar\'s $1.6B sequel. Andrea Datzman\'s score explores teen emotions with pop and R&B needle drops.',
+    genre: ['Animation', 'Comedy', 'Family'],
+    totalSongs: 3,
+  },
+
+  // ── 2025–2026 TV Shows ─────────────────────────────────────────────────────
+  {
+    id: 'severance-tv',
+    title: 'Severance',
+    type: 'tv',
+    year: 2025,
+    posterUrl: poster('Severance'),
+    description: 'Apple TV+ phenomenon Season 2. Theodore Shapiro\'s eerie score became one of the most-discussed in TV history.',
+    genre: ['Thriller', 'Sci-Fi', 'Drama'],
+    totalSongs: 4,
+  },
+  {
+    id: 'white-lotus-tv',
+    title: 'The White Lotus',
+    type: 'tv',
+    year: 2025,
+    posterUrl: poster('The White Lotus'),
+    description: 'Season 3 set in Thailand. Cristobal Tapia de Veer\'s score mixes world music, and the show features Afrobeats in resort scenes.',
+    genre: ['Drama', 'Comedy', 'Satire'],
+    totalSongs: 4,
+  },
+  {
+    id: 'adolescence-tv',
+    title: 'Adolescence',
+    type: 'tv',
+    year: 2025,
+    posterUrl: poster('Adolescence'),
+    description: 'Netflix UK\'s gripping drama about teenage radicalization. Features UK drill, grime, and Afroswing from the characters\' playlists.',
+    genre: ['Drama', 'Crime', 'Social'],
+    totalSongs: 4,
+  },
+  {
+    id: 'black-mirror-tv',
+    title: 'Black Mirror',
+    type: 'tv',
+    year: 2025,
+    posterUrl: poster('Black Mirror'),
+    description: 'Season 7 continues Charlie Brooker\'s techno-paranoia with curated soundtracks spanning every genre.',
+    genre: ['Sci-Fi', 'Thriller', 'Anthology'],
+    totalSongs: 4,
+  },
+  {
+    id: 'last-of-us-tv',
+    title: 'The Last of Us',
+    type: 'tv',
+    year: 2025,
+    posterUrl: poster('The Last of Us'),
+    description: 'HBO\'s Season 2 known for its devastating needle drops — Linda Ronstadt and Depeche Mode became viral after episodes.',
+    genre: ['Drama', 'Sci-Fi', 'Horror'],
+    totalSongs: 4,
+  },
+
+  // ── Games (2024–2026) ──────────────────────────────────────────────────────
+  {
+    id: 'gta-vi-2026',
+    title: 'GTA VI',
+    type: 'game',
+    year: 2026,
+    posterUrl: poster('GTA VI'),
+    description: 'Rockstar\'s most anticipated game set in Vice City. The radio stations feature 200+ licensed tracks spanning reggaeton, Afrobeats, drill, and Miami bass.',
+    genre: ['Action', 'Open World'],
+    totalSongs: 6,
+  },
+  {
+    id: 'fortnite-2024',
+    title: 'Fortnite Festival',
+    type: 'game',
+    year: 2024,
+    posterUrl: poster('Fortnite'),
+    description: 'Epic\'s music festival mode features licensed tracks playable in-game. Burna Boy, The Weeknd, and Billie Eilish had virtual concerts.',
+    genre: ['Battle Royale', 'Music'],
+    totalSongs: 5,
+  },
+  {
+    id: 'nfs-unbound-2022',
+    title: 'Need for Speed Unbound',
+    type: 'game',
+    year: 2022,
+    posterUrl: poster('NFS Unbound'),
+    description: 'EA\'s stylish street racer features A$AP Rocky as executive music curator with heavy Afrobeats and UK drill representation.',
+    genre: ['Racing', 'Action'],
+    totalSongs: 5,
+  },
+  {
+    id: 'ea-fc-24',
+    title: 'EA FC 24',
+    type: 'game',
+    year: 2023,
+    posterUrl: poster('EA FC 24'),
+    description: 'The first post-FIFA branded EA Sports football game. VOLTA soundtrack features global artists including Afrobeats stars.',
+    genre: ['Sports', 'Football'],
+    totalSongs: 4,
+  },
+  {
+    id: 'madden-25-2024',
+    title: 'Madden NFL 25',
+    type: 'game',
+    year: 2024,
+    posterUrl: poster('Madden 25'),
+    description: 'EA\'s NFL flagship with a hip-hop heavy soundtrack curated with NFL players featuring trap, drill, and Afrobeats crossovers.',
+    genre: ['Sports', 'Football'],
+    totalSongs: 4,
+  },
+  {
+    id: 'spiderman-2-2023',
+    title: 'Marvel\'s Spider-Man 2',
+    type: 'game',
+    year: 2023,
+    posterUrl: poster('Spider-Man 2'),
+    description: 'Insomniac\'s PS5 exclusive features Miles Morales\' Afro-Latino soundtrack with hip-hop and Latin music throughout Harlem missions.',
+    genre: ['Action', 'Adventure'],
+    totalSongs: 4,
+  },
+
+  // ── Ads / Campaigns (2025–2026) ────────────────────────────────────────────
+  {
+    id: 'nike-afcon-2025',
+    title: 'Nike AFCON 2025 Campaign',
+    type: 'ad',
+    year: 2025,
+    posterUrl: poster('Nike AFCON 2025'),
+    description: 'Nike\'s "Born to Play" campaign for the Africa Cup of Nations featuring African football stars and an all-African soundtrack.',
+    genre: ['Sports', 'Fashion'],
+    totalSongs: 4,
+  },
+  {
+    id: 'coca-cola-summer-2025',
+    title: 'Coca-Cola Summer 2025',
+    type: 'ad',
+    year: 2025,
+    posterUrl: poster('Coca-Cola Summer 2025'),
+    description: 'Coca-Cola\'s global "Share a Coke" summer campaign featuring Tyla and Rema in a continent-spanning music video.',
+    genre: ['Beverage', 'Lifestyle'],
+    totalSongs: 3,
   },
 ]
 
@@ -1157,4 +1379,156 @@ export const syncPlacements: SyncPlacement[] = [
     isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Goal celebration soundtrack — broadcast highlight reels', spotifyUrl: null, season: null, episode: null },
   { id: 'wc26-008', mediaId: 'fifa-world-cup-2026', artistName: 'Asake & J Balvin', songTitle: 'Fiesta Mundial',
     isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Amapiano / Latin', sceneDescription: 'Closing ceremony performance — Amapiano takes the world stage', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Deadpool & Wolverine (2024) (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'dpw-001', mediaId: 'deadpool-wolverine-2024', artistName: '*NSYNC', songTitle: 'Bye Bye Bye',
+    isAfricanArtist: false, artistCountry: null, genre: 'Pop', sceneDescription: 'Opening credits fight sequence — went #1 on Spotify after release', spotifyUrl: null, season: null, episode: null },
+  { id: 'dpw-002', mediaId: 'deadpool-wolverine-2024', artistName: 'Green Day', songTitle: 'Good Riddance (Time of Your Life)',
+    isAfricanArtist: false, artistCountry: null, genre: 'Punk Rock', sceneDescription: 'Emotional Wolverine farewell scene', spotifyUrl: null, season: null, episode: null },
+  { id: 'dpw-003', mediaId: 'deadpool-wolverine-2024', artistName: 'Madonna', songTitle: 'Like a Prayer',
+    isAfricanArtist: false, artistCountry: null, genre: 'Pop', sceneDescription: 'Multiverse battle montage', spotifyUrl: null, season: null, episode: null },
+  { id: 'dpw-004', mediaId: 'deadpool-wolverine-2024', artistName: 'Stray Kids', songTitle: 'Slash',
+    isAfricanArtist: false, artistCountry: null, genre: 'K-Pop / Hip-Hop', sceneDescription: 'Action sequence in the Void', spotifyUrl: null, season: null, episode: null },
+  { id: 'dpw-005', mediaId: 'deadpool-wolverine-2024', artistName: 'Aretha Franklin', songTitle: 'Angel',
+    isAfricanArtist: false, artistCountry: null, genre: 'Soul / Gospel', sceneDescription: 'Deadpool\'s sacrifice moment — emotional twist', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Dune: Part Two (2024) (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'dun2-001', mediaId: 'dune-2-2024', artistName: 'Hans Zimmer', songTitle: 'A Time of Quiet Between the Storms',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score / World', sceneDescription: 'Paul\'s desert vision — Saharan percussion and Tuareg instruments', spotifyUrl: null, season: null, episode: null },
+  { id: 'dun2-002', mediaId: 'dune-2-2024', artistName: 'Hans Zimmer', songTitle: 'Worm Riders',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score', sceneDescription: 'Sandworm riding scene — West African djembe rhythms', spotifyUrl: null, season: null, episode: null },
+  { id: 'dun2-003', mediaId: 'dune-2-2024', artistName: 'Hans Zimmer ft. Loire Cotler', songTitle: 'Kiss the Ring',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score / Vocal', sceneDescription: 'Paul becomes Emperor — North African vocal ululations', spotifyUrl: null, season: null, episode: null },
+  { id: 'dun2-004', mediaId: 'dune-2-2024', artistName: 'Mdou Moctar', songTitle: 'Afrique Victime (Trailer)',
+    isAfricanArtist: true, artistCountry: 'Niger', genre: 'Desert Blues', sceneDescription: 'International trailer — Tuareg guitar master', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Captain America: Brave New World (2025) (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'cabnw-001', mediaId: 'captain-america-bnw-2025', artistName: 'Burna Boy', songTitle: 'City Boys',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Sam Wilson suiting up montage — new Captain America', spotifyUrl: null, season: null, episode: null },
+  { id: 'cabnw-002', mediaId: 'captain-america-bnw-2025', artistName: 'Kendrick Lamar', songTitle: 'Not Like Us',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop', sceneDescription: 'Training sequence — high energy', spotifyUrl: null, season: null, episode: null },
+  { id: 'cabnw-003', mediaId: 'captain-america-bnw-2025', artistName: 'Laura Mvula', songTitle: 'Phenomenal Woman',
+    isAfricanArtist: true, artistCountry: 'UK-Zambian', genre: 'Neo-Soul', sceneDescription: 'Emotional character moment', spotifyUrl: null, season: null, episode: null },
+  { id: 'cabnw-004', mediaId: 'captain-america-bnw-2025', artistName: 'Henry Jackman', songTitle: 'Taking the Shield',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score', sceneDescription: 'Sam Wilson\'s Captain America theme — heroic brass', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FILM: Thunderbolts* (2025) (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'thb-001', mediaId: 'thunderbolts-2025', artistName: 'Tyler the Creator', songTitle: 'NOID',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop / Alt', sceneDescription: 'Team assembling sequence', spotifyUrl: null, season: null, episode: null },
+  { id: 'thb-002', mediaId: 'thunderbolts-2025', artistName: 'Tems', songTitle: 'Me & U',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afro R&B', sceneDescription: 'Yelena emotional scene — quiet moment of vulnerability', spotifyUrl: null, season: null, episode: null },
+  { id: 'thb-003', mediaId: 'thunderbolts-2025', artistName: 'The White Stripes', songTitle: 'Seven Nation Army',
+    isAfricanArtist: false, artistCountry: null, genre: 'Alt Rock', sceneDescription: 'Final battle march — stadium rock energy', spotifyUrl: null, season: null, episode: null },
+  { id: 'thb-004', mediaId: 'thunderbolts-2025', artistName: 'Christoph Beck', songTitle: 'Sentry',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score', sceneDescription: 'The Void reveal — ominous cosmic theme', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TV: Severance S2 (2025) (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'sev-001', mediaId: 'severance-tv', artistName: 'Theodore Shapiro', songTitle: 'The Lumon Score',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score / Ambient', sceneDescription: 'Office floor sequences — eerie corporate dystopia', spotifyUrl: null, season: 2, episode: 1 },
+  { id: 'sev-002', mediaId: 'severance-tv', artistName: 'Radiohead', songTitle: 'Everything In Its Right Place',
+    isAfricanArtist: false, artistCountry: null, genre: 'Alt Rock', sceneDescription: 'Season 2 finale reveal', spotifyUrl: null, season: 2, episode: 10 },
+  { id: 'sev-003', mediaId: 'severance-tv', artistName: 'Defiance', songTitle: 'Farewell Transmission',
+    isAfricanArtist: false, artistCountry: null, genre: 'Indie / Folk', sceneDescription: 'Outie world scenes — freedom contrast', spotifyUrl: null, season: 2, episode: 5 },
+  { id: 'sev-004', mediaId: 'severance-tv', artistName: 'Portishead', songTitle: 'Wandering Star',
+    isAfricanArtist: false, artistCountry: null, genre: 'Trip-Hop', sceneDescription: 'Helly\'s dual identity crisis', spotifyUrl: null, season: 2, episode: 8 },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TV: Adolescence (2025) (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'adol-001', mediaId: 'adolescence-tv', artistName: 'Central Cee', songTitle: 'Sprinter',
+    isAfricanArtist: false, artistCountry: null, genre: 'UK Drill', sceneDescription: 'Jamie\'s school hallway scene — single-take episode', spotifyUrl: null, season: 1, episode: 1 },
+  { id: 'adol-002', mediaId: 'adolescence-tv', artistName: 'Rema', songTitle: 'Charm',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'House party scene — contrasting youth and darkness', spotifyUrl: null, season: 1, episode: 2 },
+  { id: 'adol-003', mediaId: 'adolescence-tv', artistName: 'Nia Archives', songTitle: 'Silence Is Loud',
+    isAfricanArtist: false, artistCountry: null, genre: 'Jungle / DnB', sceneDescription: 'Classroom tension sequence', spotifyUrl: null, season: 1, episode: 3 },
+  { id: 'adol-004', mediaId: 'adolescence-tv', artistName: 'Ayra Starr', songTitle: 'Commas',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Social media montage — digital native generation', spotifyUrl: null, season: 1, episode: 4 },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TV: The Last of Us S2 (2025) (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'tlou-001', mediaId: 'last-of-us-tv', artistName: 'Pearl Jam', songTitle: 'Future Days',
+    isAfricanArtist: false, artistCountry: null, genre: 'Alt Rock', sceneDescription: 'Joel\'s guitar scene — devastating emotional payoff', spotifyUrl: null, season: 2, episode: 1 },
+  { id: 'tlou-002', mediaId: 'last-of-us-tv', artistName: 'A-ha', songTitle: 'Take On Me',
+    isAfricanArtist: false, artistCountry: null, genre: 'Synth Pop', sceneDescription: 'Ellie and Dina\'s first kiss', spotifyUrl: null, season: 2, episode: 3 },
+  { id: 'tlou-003', mediaId: 'last-of-us-tv', artistName: 'Gustavo Santaolalla', songTitle: 'All Gone (No Escape)',
+    isAfricanArtist: false, artistCountry: null, genre: 'Score', sceneDescription: 'The devastating midseason event', spotifyUrl: null, season: 2, episode: 5 },
+  { id: 'tlou-004', mediaId: 'last-of-us-tv', artistName: 'Crosby Stills Nash & Young', songTitle: 'Helplessly Hoping',
+    isAfricanArtist: false, artistCountry: null, genre: 'Folk Rock', sceneDescription: 'Season 2 finale — redemption or revenge', spotifyUrl: null, season: 2, episode: 7 },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // GAME: GTA VI (2026) (6)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'gta6-001', mediaId: 'gta-vi-2026', artistName: 'Burna Boy', songTitle: 'Rollercoaster',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Vice City Afrobeats Radio station — flagship track', spotifyUrl: null, season: null, episode: null },
+  { id: 'gta6-002', mediaId: 'gta-vi-2026', artistName: 'Wizkid', songTitle: 'Fever',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Beach cruising radio playlist', spotifyUrl: null, season: null, episode: null },
+  { id: 'gta6-003', mediaId: 'gta-vi-2026', artistName: 'Tyla', songTitle: 'Truth or Dare',
+    isAfricanArtist: true, artistCountry: 'South Africa', genre: 'Amapiano Pop', sceneDescription: 'Nightclub scene — Leonida nightlife', spotifyUrl: null, season: null, episode: null },
+  { id: 'gta6-004', mediaId: 'gta-vi-2026', artistName: 'Bad Bunny', songTitle: 'Monaco',
+    isAfricanArtist: false, artistCountry: null, genre: 'Reggaeton', sceneDescription: 'Heist getaway drive — Latin radio station', spotifyUrl: null, season: null, episode: null },
+  { id: 'gta6-005', mediaId: 'gta-vi-2026', artistName: 'Asake', songTitle: 'Lonely at the Top',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats / Amapiano', sceneDescription: 'Penthouse scene — luxury lifestyle radio', spotifyUrl: null, season: null, episode: null },
+  { id: 'gta6-006', mediaId: 'gta-vi-2026', artistName: 'Travis Scott', songTitle: 'FE!N',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop / Trap', sceneDescription: 'High-speed chase sequence', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // GAME: Fortnite Festival (2024) (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'fn-001', mediaId: 'fortnite-2024', artistName: 'Burna Boy', songTitle: 'On the Low',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Fortnite Festival playable track — virtual stage performance', spotifyUrl: null, season: null, episode: null },
+  { id: 'fn-002', mediaId: 'fortnite-2024', artistName: 'The Weeknd', songTitle: 'Blinding Lights',
+    isAfricanArtist: false, artistCountry: null, genre: 'Synth Pop', sceneDescription: 'Launch day featured track — most played in Festival mode', spotifyUrl: null, season: null, episode: null },
+  { id: 'fn-003', mediaId: 'fortnite-2024', artistName: 'Billie Eilish', songTitle: 'Bad Guy',
+    isAfricanArtist: false, artistCountry: null, genre: 'Pop / Alt', sceneDescription: 'Virtual concert event — 12M concurrent players', spotifyUrl: null, season: null, episode: null },
+  { id: 'fn-004', mediaId: 'fortnite-2024', artistName: 'Davido', songTitle: 'Feel',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Season update featured track — Afrobeats in gaming', spotifyUrl: null, season: null, episode: null },
+  { id: 'fn-005', mediaId: 'fortnite-2024', artistName: 'Lady Gaga', songTitle: 'Abracadabra',
+    isAfricanArtist: false, artistCountry: null, genre: 'Pop', sceneDescription: 'Fortnite x Gaga virtual concert event', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // GAME: NFS Unbound (5)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'nfs-001', mediaId: 'nfs-unbound-2022', artistName: 'A$AP Rocky', songTitle: 'Shittin\' Me',
+    isAfricanArtist: false, artistCountry: null, genre: 'Hip-Hop', sceneDescription: 'Title screen and main menu — A$AP as music director', spotifyUrl: null, season: null, episode: null },
+  { id: 'nfs-002', mediaId: 'nfs-unbound-2022', artistName: 'Burna Boy', songTitle: 'Kilometre',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Night race playlist — speed and swagger', spotifyUrl: null, season: null, episode: null },
+  { id: 'nfs-003', mediaId: 'nfs-unbound-2022', artistName: 'Skepta', songTitle: 'Greaze Mode',
+    isAfricanArtist: false, artistCountry: null, genre: 'Grime', sceneDescription: 'Police chase sequences', spotifyUrl: null, season: null, episode: null },
+  { id: 'nfs-004', mediaId: 'nfs-unbound-2022', artistName: 'Fireboy DML', songTitle: 'Playboy',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Garage customization menu', spotifyUrl: null, season: null, episode: null },
+  { id: 'nfs-005', mediaId: 'nfs-unbound-2022', artistName: 'Headie One', songTitle: 'Ain\'t It Different',
+    isAfricanArtist: false, artistCountry: null, genre: 'UK Drill', sceneDescription: 'Drift events soundtrack', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // AD: Nike AFCON 2025 (4)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'nafc-001', mediaId: 'nike-afcon-2025', artistName: 'Wizkid', songTitle: 'Essence',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Main campaign soundtrack — "Born to Play" TV spot', spotifyUrl: null, season: null, episode: null },
+  { id: 'nafc-002', mediaId: 'nike-afcon-2025', artistName: 'Amaarae', songTitle: 'Sad Girlz Luv Money',
+    isAfricanArtist: true, artistCountry: 'Ghana', genre: 'Afro Pop', sceneDescription: 'Women\'s football campaign — gender equality message', spotifyUrl: null, season: null, episode: null },
+  { id: 'nafc-003', mediaId: 'nike-afcon-2025', artistName: 'Black Sherif', songTitle: 'Kwaku the Traveller',
+    isAfricanArtist: true, artistCountry: 'Ghana', genre: 'Drill / Highlife', sceneDescription: 'Stadium walkout spot — players emerging from tunnel', spotifyUrl: null, season: null, episode: null },
+  { id: 'nafc-004', mediaId: 'nike-afcon-2025', artistName: 'Diamond Platnumz', songTitle: 'Iyo',
+    isAfricanArtist: true, artistCountry: 'Tanzania', genre: 'Bongo Flava', sceneDescription: 'East African market — continent-wide celebration', spotifyUrl: null, season: null, episode: null },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // AD: Coca-Cola Summer 2025 (3)
+  // ═══════════════════════════════════════════════════════════════════════════
+  { id: 'coke-001', mediaId: 'coca-cola-summer-2025', artistName: 'Tyla', songTitle: 'Water (Coke Remix)',
+    isAfricanArtist: true, artistCountry: 'South Africa', genre: 'Amapiano Pop', sceneDescription: 'Main 60-second TV spot — beach party across 4 continents', spotifyUrl: null, season: null, episode: null },
+  { id: 'coke-002', mediaId: 'coca-cola-summer-2025', artistName: 'Rema', songTitle: 'Calm Down (Summer Mix)',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Digital campaign — 15-second social media cuts', spotifyUrl: null, season: null, episode: null },
+  { id: 'coke-003', mediaId: 'coca-cola-summer-2025', artistName: 'Ckay', songTitle: 'Love Nwantiti',
+    isAfricanArtist: true, artistCountry: 'Nigeria', genre: 'Afrobeats', sceneDescription: 'Billboards and radio — summer playlist sponsorship', spotifyUrl: null, season: null, episode: null },
 ]
