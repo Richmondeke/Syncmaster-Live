@@ -7,6 +7,21 @@ export type Agency = {
   logo: string
   verified: boolean
   recentSyncs: string[]
+  // Pro-gated fields
+  website: string
+  email: string
+  phone: string | null
+  submissionUrl: string | null
+  socialLinks: {
+    instagram?: string
+    linkedin?: string
+    twitter?: string
+  }
+  // Free fields
+  acceptingSubmissions: boolean
+  genres: string[]
+  founded: string | null
+  notableClients: string[]
 }
 
 export const agencies: Agency[] = [
@@ -18,7 +33,16 @@ export const agencies: Agency[] = [
     location: 'Santa Monica, CA',
     logo: 'https://ui-avatars.com/api/?name=Lionsgate+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['John Wick: Chapter 4', 'The Hunger Games: Sunrise on the Reaping', 'Power']
+    recentSyncs: ['John Wick: Chapter 4', 'The Hunger Games: Sunrise on the Reaping', 'Power'],
+    website: 'https://www.lionsgate.com/music',
+    email: 'music@lionsgate.com',
+    phone: '+1 (310) 449-9200',
+    submissionUrl: null,
+    socialLinks: { instagram: 'laboroflovemgmt', linkedin: 'lionsgate', twitter: 'Lionsgate' },
+    acceptingSubmissions: false,
+    genres: ['Cinematic', 'Orchestral', 'Hip-Hop', 'Pop', 'Rock'],
+    founded: '1997',
+    notableClients: ['Lionsgate Films', 'Starz', 'Debmar-Mercury']
   },
   {
     id: 'agency_2',
@@ -28,7 +52,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=PEN+Music+Group&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Grey\'s Anatomy', 'Riverdale', 'Love Island']
+    recentSyncs: ['Grey\'s Anatomy', 'Riverdale', 'Love Island'],
+    website: 'https://www.penmusicgroup.com',
+    email: 'sync@penmusicgroup.com',
+    phone: '+1 (323) 962-6993',
+    submissionUrl: 'https://www.penmusicgroup.com/submit',
+    socialLinks: { instagram: 'penmusicgroup', linkedin: 'pen-music-group', twitter: 'PENMusicGroup' },
+    acceptingSubmissions: true,
+    genres: ['Pop', 'R&B', 'Indie', 'Alternative', 'Electronic'],
+    founded: '2000',
+    notableClients: ['ABC', 'Netflix', 'CW Network']
   },
   {
     id: 'agency_3',
@@ -38,7 +71,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=Position+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Avengers: Secret Wars Trailer', 'Call of Duty', 'Monday Night Football']
+    recentSyncs: ['Avengers: Secret Wars Trailer', 'Call of Duty', 'Monday Night Football'],
+    website: 'https://www.positionmusic.com',
+    email: 'info@positionmusic.com',
+    phone: '+1 (323) 372-6700',
+    submissionUrl: 'https://www.positionmusic.com/submit',
+    socialLinks: { instagram: 'positionmusic', linkedin: 'position-music', twitter: 'PositionMusic' },
+    acceptingSubmissions: true,
+    genres: ['Epic Orchestral', 'Hybrid', 'Electronic', 'Rock', 'Hip-Hop'],
+    founded: '1999',
+    notableClients: ['Marvel Studios', 'Activision', 'ESPN']
   },
   {
     id: 'agency_4',
@@ -48,7 +90,16 @@ export const agencies: Agency[] = [
     location: 'Portland, OR',
     logo: 'https://ui-avatars.com/api/?name=Terrorbird+Media&background=4b4bc0&color=fff&bold=true&size=100',
     verified: false,
-    recentSyncs: ['Euphoria', 'The Summer I Turned Pretty', 'Heartstopper']
+    recentSyncs: ['Euphoria', 'The Summer I Turned Pretty', 'Heartstopper'],
+    website: 'https://www.terrorbirdmedia.com',
+    email: 'sync@terrorbirdmedia.com',
+    phone: null,
+    submissionUrl: 'https://www.terrorbirdmedia.com/submissions',
+    socialLinks: { instagram: 'terrorbirdmedia', twitter: 'terraborbird' },
+    acceptingSubmissions: true,
+    genres: ['Indie Pop', 'Folk', 'Dream Pop', 'Lo-Fi', 'Shoegaze'],
+    founded: '2010',
+    notableClients: ['HBO', 'Amazon Prime Video', 'Netflix']
   },
   {
     id: 'agency_5',
@@ -58,7 +109,16 @@ export const agencies: Agency[] = [
     location: 'Chicago, IL',
     logo: 'https://ui-avatars.com/api/?name=Music+Dealers&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Coca-Cola', 'Under Armour', 'Microsoft Surface']
+    recentSyncs: ['Coca-Cola', 'Under Armour', 'Microsoft Surface'],
+    website: 'https://www.musicdealers.com',
+    email: 'licensing@musicdealers.com',
+    phone: '+1 (312) 496-5910',
+    submissionUrl: 'https://www.musicdealers.com/artists',
+    socialLinks: { instagram: 'musicdealers', linkedin: 'music-dealers', twitter: 'MusicDealers' },
+    acceptingSubmissions: true,
+    genres: ['Pop', 'Electronic', 'Hip-Hop', 'Indie', 'World'],
+    founded: '2008',
+    notableClients: ['Coca-Cola', 'Under Armour', 'Microsoft', 'Motorola']
   },
   {
     id: 'agency_6',
@@ -68,7 +128,16 @@ export const agencies: Agency[] = [
     location: 'London, UK',
     logo: 'https://ui-avatars.com/api/?name=Lip+Sync+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Burberry', 'BBC Dracula', 'John Lewis Christmas Ad']
+    recentSyncs: ['Burberry', 'BBC Dracula', 'John Lewis Christmas Ad'],
+    website: 'https://www.lipsyncmusic.com',
+    email: 'info@lipsyncmusic.com',
+    phone: '+44 20 7734 5444',
+    submissionUrl: null,
+    socialLinks: { instagram: 'lipsyncpost', linkedin: 'lip-sync' },
+    acceptingSubmissions: false,
+    genres: ['Pop', 'Classical', 'Electronic', 'Jazz', 'Ambient'],
+    founded: '1995',
+    notableClients: ['Burberry', 'BBC', 'John Lewis', 'ITV']
   },
   {
     id: 'agency_7',
@@ -78,7 +147,16 @@ export const agencies: Agency[] = [
     location: 'Liverpool, UK',
     logo: 'https://ui-avatars.com/api/?name=Sentric+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['FIFA 25', 'Peaky Blinders', 'Love Actually Live']
+    recentSyncs: ['FIFA 25', 'Peaky Blinders', 'Love Actually Live'],
+    website: 'https://www.sentricmusic.com',
+    email: 'sync@sentricmusic.com',
+    phone: '+44 151 239 2140',
+    submissionUrl: 'https://www.sentricmusic.com/sign-up',
+    socialLinks: { instagram: 'sentricmusic', linkedin: 'sentric-music', twitter: 'SentricMusic' },
+    acceptingSubmissions: true,
+    genres: ['All Genres', 'Indie', 'Pop', 'Electronic', 'Rock'],
+    founded: '2006',
+    notableClients: ['EA Sports', 'BBC', 'ITV', 'Sky']
   },
   {
     id: 'agency_8',
@@ -88,7 +166,16 @@ export const agencies: Agency[] = [
     location: 'Portland, OR',
     logo: 'https://ui-avatars.com/api/?name=Marmoset+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Google Pixel', 'Patagonia', 'REI Co-op']
+    recentSyncs: ['Google Pixel', 'Patagonia', 'REI Co-op'],
+    website: 'https://www.marmosetmusic.com',
+    email: 'hello@marmosetmusic.com',
+    phone: '+1 (503) 282-5682',
+    submissionUrl: 'https://www.marmosetmusic.com/artists/apply',
+    socialLinks: { instagram: 'marmosetmusic', linkedin: 'marmoset', twitter: 'MarmosetMusic' },
+    acceptingSubmissions: true,
+    genres: ['Indie', 'Folk', 'Electronic', 'Ambient', 'Cinematic'],
+    founded: '2009',
+    notableClients: ['Google', 'Patagonia', 'REI', 'Nike', 'Airbnb']
   },
   {
     id: 'agency_9',
@@ -98,7 +185,16 @@ export const agencies: Agency[] = [
     location: 'Fort Worth, TX',
     logo: 'https://ui-avatars.com/api/?name=Musicbed&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Canon EOS Campaign', 'Southwest Airlines', 'Squarespace']
+    recentSyncs: ['Canon EOS Campaign', 'Southwest Airlines', 'Squarespace'],
+    website: 'https://www.musicbed.com',
+    email: 'licensing@musicbed.com',
+    phone: '+1 (817) 400-6949',
+    submissionUrl: 'https://www.musicbed.com/artists/apply',
+    socialLinks: { instagram: 'musicbed', linkedin: 'musicbed', twitter: 'musicbed' },
+    acceptingSubmissions: true,
+    genres: ['Cinematic', 'Indie', 'Ambient', 'Pop', 'Classical'],
+    founded: '2011',
+    notableClients: ['Canon', 'Southwest Airlines', 'Squarespace', 'BMW']
   },
   {
     id: 'agency_10',
@@ -108,7 +204,16 @@ export const agencies: Agency[] = [
     location: 'Tel Aviv, Israel',
     logo: 'https://ui-avatars.com/api/?name=Artlist&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['YouTube Originals', 'Samsung Galaxy', 'National Geographic']
+    recentSyncs: ['YouTube Originals', 'Samsung Galaxy', 'National Geographic'],
+    website: 'https://artlist.io',
+    email: 'support@artlist.io',
+    phone: null,
+    submissionUrl: 'https://artlist.io/artists',
+    socialLinks: { instagram: 'artlist.io', linkedin: 'artlist', twitter: 'artaborlist' },
+    acceptingSubmissions: true,
+    genres: ['All Genres', 'Pop', 'Electronic', 'Cinematic', 'Lo-Fi'],
+    founded: '2016',
+    notableClients: ['YouTube', 'Samsung', 'National Geographic', 'GoPro']
   },
   {
     id: 'agency_11',
@@ -118,7 +223,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=Extreme+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['The Walking Dead', 'ESPN SportsCenter', 'HBO Max Promos']
+    recentSyncs: ['The Walking Dead', 'ESPN SportsCenter', 'HBO Max Promos'],
+    website: 'https://www.extrememusic.com',
+    email: 'info@extrememusic.com',
+    phone: '+1 (310) 566-8640',
+    submissionUrl: null,
+    socialLinks: { instagram: 'extrememusic', linkedin: 'extreme-music', twitter: 'ExtremeMusic' },
+    acceptingSubmissions: false,
+    genres: ['All Genres', 'Cinematic', 'Electronic', 'Rock', 'Urban'],
+    founded: '1997',
+    notableClients: ['Sony Pictures', 'AMC', 'ESPN', 'HBO']
   },
   {
     id: 'agency_12',
@@ -128,7 +242,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=APM+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['SpongeBob SquarePants', 'The Daily Show', 'CNN']
+    recentSyncs: ['SpongeBob SquarePants', 'The Daily Show', 'CNN'],
+    website: 'https://www.apmmusic.com',
+    email: 'info@apmmusic.com',
+    phone: '+1 (323) 461-3211',
+    submissionUrl: 'https://www.apmmusic.com/submit-music',
+    socialLinks: { instagram: 'apmmusic', linkedin: 'apm-music', twitter: 'APMmusic' },
+    acceptingSubmissions: true,
+    genres: ['All Genres', 'Production Music', 'Sound Design'],
+    founded: '1982',
+    notableClients: ['Nickelodeon', 'Comedy Central', 'CNN', 'NBC']
   },
   {
     id: 'agency_13',
@@ -138,7 +261,16 @@ export const agencies: Agency[] = [
     location: 'New York, NY',
     logo: 'https://ui-avatars.com/api/?name=Jingle+Punks&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Anthony Bourdain: Parts Unknown', 'Vice News', 'MLB Network']
+    recentSyncs: ['Anthony Bourdain: Parts Unknown', 'Vice News', 'MLB Network'],
+    website: 'https://www.jinglepunks.com',
+    email: 'info@jinglepunks.com',
+    phone: '+1 (212) 796-3720',
+    submissionUrl: 'https://www.jinglepunks.com/submit',
+    socialLinks: { instagram: 'jinglepunks', linkedin: 'jingle-punks', twitter: 'JinglePunks' },
+    acceptingSubmissions: true,
+    genres: ['All Genres', 'Custom Scoring', 'Production Music'],
+    founded: '2008',
+    notableClients: ['CNN', 'Vice Media', 'MLB', 'Discovery']
   },
   {
     id: 'agency_14',
@@ -148,7 +280,16 @@ export const agencies: Agency[] = [
     location: 'London, UK',
     logo: 'https://ui-avatars.com/api/?name=Big+Sync+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Peloton', 'Sky Atlantic', 'Jaguar Land Rover']
+    recentSyncs: ['Peloton', 'Sky Atlantic', 'Jaguar Land Rover'],
+    website: 'https://www.bigsyncmusic.com',
+    email: 'info@bigsyncmusic.com',
+    phone: '+44 20 3667 7010',
+    submissionUrl: 'https://www.bigsyncmusic.com/submissions',
+    socialLinks: { instagram: 'bigsyncmusic', linkedin: 'big-sync-music', twitter: 'BigSyncMusic' },
+    acceptingSubmissions: true,
+    genres: ['Pop', 'Indie', 'Electronic', 'Soul', 'R&B'],
+    founded: '2013',
+    notableClients: ['Peloton', 'Sky', 'Jaguar Land Rover', 'Diageo']
   },
   {
     id: 'agency_15',
@@ -158,7 +299,16 @@ export const agencies: Agency[] = [
     location: 'New York, NY',
     logo: 'https://ui-avatars.com/api/?name=Songs+For+Film&background=4b4bc0&color=fff&bold=true&size=100',
     verified: false,
-    recentSyncs: ['A24 Films', 'Sundance Selections', 'The Marvelous Mrs. Maisel']
+    recentSyncs: ['A24 Films', 'Sundance Selections', 'The Marvelous Mrs. Maisel'],
+    website: 'https://www.songsforfilm.com',
+    email: 'submissions@songsforfilm.com',
+    phone: null,
+    submissionUrl: 'https://www.songsforfilm.com/submit',
+    socialLinks: { instagram: 'songsforfilm' },
+    acceptingSubmissions: true,
+    genres: ['Indie', 'Singer-Songwriter', 'Classical', 'Ambient'],
+    founded: '2012',
+    notableClients: ['A24', 'Amazon Studios', 'HBO']
   },
   {
     id: 'agency_16',
@@ -168,7 +318,16 @@ export const agencies: Agency[] = [
     location: 'Vancouver, Canada',
     logo: 'https://ui-avatars.com/api/?name=Nettwerk+Music+Group&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Ted Lasso', 'This Is Us', 'Apple AirPods']
+    recentSyncs: ['Ted Lasso', 'This Is Us', 'Apple AirPods'],
+    website: 'https://www.nettwerk.com',
+    email: 'sync@nettwerk.com',
+    phone: '+1 (604) 654-2929',
+    submissionUrl: 'https://www.nettwerk.com/demo-submissions',
+    socialLinks: { instagram: 'nettwerk', linkedin: 'nettwerk-music-group', twitter: 'naborettwerk' },
+    acceptingSubmissions: true,
+    genres: ['Indie', 'Pop', 'Folk', 'Electronic', 'Alternative'],
+    founded: '1984',
+    notableClients: ['Apple', 'Warner Bros.', 'NBC', 'Disney']
   },
   {
     id: 'agency_17',
@@ -178,7 +337,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=Better+Noise+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['WWE SmackDown', 'Madden NFL', 'The Expendables 4']
+    recentSyncs: ['WWE SmackDown', 'Madden NFL', 'The Expendables 4'],
+    website: 'https://www.betternoisemusic.com',
+    email: 'sync@betternoisemusic.com',
+    phone: '+1 (310) 300-4350',
+    submissionUrl: null,
+    socialLinks: { instagram: 'betternoisemusic', linkedin: 'better-noise-music', twitter: 'BetterNoise' },
+    acceptingSubmissions: false,
+    genres: ['Rock', 'Metal', 'Hard Rock', 'Punk', 'Alternative'],
+    founded: '2006',
+    notableClients: ['WWE', 'EA Sports', 'Lionsgate']
   },
   {
     id: 'agency_18',
@@ -188,7 +356,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=Secret+Road&background=4b4bc0&color=fff&bold=true&size=100',
     verified: false,
-    recentSyncs: ['Yellowstone', 'Virgin River', 'The Wilds']
+    recentSyncs: ['Yellowstone', 'Virgin River', 'The Wilds'],
+    website: 'https://www.secretroad.com',
+    email: 'info@secretroad.com',
+    phone: null,
+    submissionUrl: 'https://www.secretroad.com/submissions',
+    socialLinks: { instagram: 'secretroadmusic', twitter: 'secretroad' },
+    acceptingSubmissions: true,
+    genres: ['Americana', 'Folk', 'Indie', 'Country', 'Singer-Songwriter'],
+    founded: '2015',
+    notableClients: ['Paramount Network', 'Netflix', 'Amazon']
   },
   {
     id: 'agency_19',
@@ -198,7 +375,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=Bank+Robber+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: false,
-    recentSyncs: ['Shameless', 'The Vampire Diaries', 'Lucifer']
+    recentSyncs: ['Shameless', 'The Vampire Diaries', 'Lucifer'],
+    website: 'https://www.bankrobbermusic.com',
+    email: 'info@bankrobbermusic.com',
+    phone: null,
+    submissionUrl: 'https://www.bankrobbermusic.com/submit',
+    socialLinks: { instagram: 'bankrobbermusic', twitter: 'bankrobbermusic' },
+    acceptingSubmissions: true,
+    genres: ['Indie', 'Pop', 'Electronic', 'Hip-Hop', 'R&B'],
+    founded: '2009',
+    notableClients: ['Showtime', 'CW Network', 'Netflix', 'Fox']
   },
   {
     id: 'agency_20',
@@ -208,7 +394,16 @@ export const agencies: Agency[] = [
     location: 'New York, NY',
     logo: 'https://ui-avatars.com/api/?name=Mophonics&background=4b4bc0&color=fff&bold=true&size=100',
     verified: false,
-    recentSyncs: ['Target', 'Verizon', 'HBO Brand Spots']
+    recentSyncs: ['Target', 'Verizon', 'HBO Brand Spots'],
+    website: 'https://www.mophonics.com',
+    email: 'hello@mophonics.com',
+    phone: '+1 (212) 625-3220',
+    submissionUrl: null,
+    socialLinks: { instagram: 'mophonics', linkedin: 'mophonics' },
+    acceptingSubmissions: false,
+    genres: ['Custom Scoring', 'Sound Design', 'Electronic', 'Orchestral'],
+    founded: '2002',
+    notableClients: ['Target', 'Verizon', 'HBO', 'Pepsi']
   },
   {
     id: 'agency_21',
@@ -218,7 +413,16 @@ export const agencies: Agency[] = [
     location: 'New York, NY',
     logo: 'https://ui-avatars.com/api/?name=Heavy+Duty+Projects&background=4b4bc0&color=fff&bold=true&size=100',
     verified: false,
-    recentSyncs: ['Nike Running', 'Converse', 'Tribeca Film Festival']
+    recentSyncs: ['Nike Running', 'Converse', 'Tribeca Film Festival'],
+    website: 'https://www.heavydutyprojects.com',
+    email: 'info@heavydutyprojects.com',
+    phone: null,
+    submissionUrl: 'https://www.heavydutyprojects.com/demos',
+    socialLinks: { instagram: 'heavydutyprojects' },
+    acceptingSubmissions: true,
+    genres: ['Indie', 'Hip-Hop', 'Electronic', 'Experimental'],
+    founded: '2011',
+    notableClients: ['Nike', 'Converse', 'Adidas', 'Tribeca']
   },
   {
     id: 'agency_22',
@@ -228,7 +432,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=Warner+Chappell+PM&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['NBC Nightly News', 'Discovery Channel', 'EA Sports FC']
+    recentSyncs: ['NBC Nightly News', 'Discovery Channel', 'EA Sports FC'],
+    website: 'https://www.warnerchappellpm.com',
+    email: 'info@warnerchappellpm.com',
+    phone: '+1 (310) 441-8600',
+    submissionUrl: null,
+    socialLinks: { instagram: 'warnerchappellpm', linkedin: 'warner-chappell-production-music' },
+    acceptingSubmissions: false,
+    genres: ['All Genres', 'Production Music', 'Sound Design', 'Custom'],
+    founded: '1929',
+    notableClients: ['NBC', 'Discovery', 'EA', 'Warner Bros.']
   },
   {
     id: 'agency_23',
@@ -238,7 +451,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=Universal+Production+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['ABC World News Tonight', 'Netflix Originals', 'Amazon Prime Promos']
+    recentSyncs: ['ABC World News Tonight', 'Netflix Originals', 'Amazon Prime Promos'],
+    website: 'https://www.universalproductionmusic.com',
+    email: 'info@umusic.com',
+    phone: '+1 (310) 235-4700',
+    submissionUrl: null,
+    socialLinks: { instagram: 'uproductionmusic', linkedin: 'universal-production-music' },
+    acceptingSubmissions: false,
+    genres: ['All Genres', 'Production Music', 'Cinematic', 'Sound Design'],
+    founded: '1966',
+    notableClients: ['ABC', 'Netflix', 'Amazon', 'Universal Pictures']
   },
   {
     id: 'agency_24',
@@ -248,7 +470,16 @@ export const agencies: Agency[] = [
     location: 'Nashville, TN',
     logo: 'https://ui-avatars.com/api/?name=Sony+Music+Publishing&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Stranger Things', 'Top Gun: Maverick', 'Super Bowl LVIII']
+    recentSyncs: ['Stranger Things', 'Top Gun: Maverick', 'Super Bowl LVIII'],
+    website: 'https://www.sonymusicpub.com',
+    email: 'sync@sonymusicpub.com',
+    phone: '+1 (615) 726-8300',
+    submissionUrl: null,
+    socialLinks: { instagram: 'sonymusicpub', linkedin: 'sony-music-publishing', twitter: 'sonymusicpub' },
+    acceptingSubmissions: false,
+    genres: ['All Genres', 'Pop', 'Country', 'R&B', 'Rock', 'Hip-Hop'],
+    founded: '1995',
+    notableClients: ['Netflix', 'Paramount', 'Apple', 'NFL']
   },
   {
     id: 'agency_25',
@@ -258,7 +489,16 @@ export const agencies: Agency[] = [
     location: 'Nashville, TN',
     logo: 'https://ui-avatars.com/api/?name=BMG+Production+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Fox Sports', 'CBS Sunday Morning', 'Premier League Broadcasts']
+    recentSyncs: ['Fox Sports', 'CBS Sunday Morning', 'Premier League Broadcasts'],
+    website: 'https://www.bmgproductionmusic.com',
+    email: 'info@bmgpm.com',
+    phone: '+1 (615) 329-4747',
+    submissionUrl: 'https://www.bmgproductionmusic.com/submit',
+    socialLinks: { instagram: 'bmgpm', linkedin: 'bmg-production-music' },
+    acceptingSubmissions: true,
+    genres: ['All Genres', 'Production Music', 'Sports', 'News'],
+    founded: '2008',
+    notableClients: ['Fox Sports', 'CBS', 'Premier League', 'BBC']
   },
   {
     id: 'agency_26',
@@ -268,7 +508,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=Crucial+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['NCIS', 'Chicago Fire', 'The Blacklist']
+    recentSyncs: ['NCIS', 'Chicago Fire', 'The Blacklist'],
+    website: 'https://www.crucialmusic.com',
+    email: 'info@crucialmusic.com',
+    phone: '+1 (818) 953-0300',
+    submissionUrl: 'https://www.crucialmusic.com/submit-music',
+    socialLinks: { instagram: 'crucialmusic', twitter: 'CrucialMusic' },
+    acceptingSubmissions: true,
+    genres: ['Rock', 'Pop', 'Country', 'Hip-Hop', 'Electronic', 'R&B'],
+    founded: '2003',
+    notableClients: ['CBS', 'NBC', 'ABC', 'Fox']
   },
   {
     id: 'agency_27',
@@ -278,7 +527,16 @@ export const agencies: Agency[] = [
     location: 'Los Angeles, CA',
     logo: 'https://ui-avatars.com/api/?name=Angry+Mob+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: false,
-    recentSyncs: ['13 Reasons Why', 'Pretty Little Liars', 'Toyota Camry']
+    recentSyncs: ['13 Reasons Why', 'Pretty Little Liars', 'Toyota Camry'],
+    website: 'https://www.angrymobmusic.com',
+    email: 'info@angrymobmusic.com',
+    phone: '+1 (323) 462-3600',
+    submissionUrl: 'https://www.angrymobmusic.com/demo-submission',
+    socialLinks: { instagram: 'angrymobmusic', twitter: 'AngryMobMusic' },
+    acceptingSubmissions: true,
+    genres: ['Indie Pop', 'Electronic', 'Singer-Songwriter', 'Alt-Pop'],
+    founded: '2007',
+    notableClients: ['Netflix', 'Freeform', 'Toyota', 'CW']
   },
   {
     id: 'agency_28',
@@ -288,7 +546,16 @@ export const agencies: Agency[] = [
     location: 'New York, NY',
     logo: 'https://ui-avatars.com/api/?name=Downtown+Music+Publishing&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Bridgerton', 'Emily in Paris', 'Beats by Dre']
+    recentSyncs: ['Bridgerton', 'Emily in Paris', 'Beats by Dre'],
+    website: 'https://www.downtownmusic.com',
+    email: 'sync@downtownmusic.com',
+    phone: '+1 (212) 966-4120',
+    submissionUrl: null,
+    socialLinks: { instagram: 'downtownmusic', linkedin: 'downtown-music-publishing', twitter: 'DowntownMP' },
+    acceptingSubmissions: false,
+    genres: ['Pop', 'R&B', 'Hip-Hop', 'Indie', 'Latin'],
+    founded: '2007',
+    notableClients: ['Netflix', 'Apple', 'Beats by Dre', 'Shondaland']
   },
   {
     id: 'agency_29',
@@ -298,7 +565,16 @@ export const agencies: Agency[] = [
     location: 'London, UK',
     logo: 'https://ui-avatars.com/api/?name=Warp+Records&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Ex Machina', 'Gucci', 'Black Mirror']
+    recentSyncs: ['Ex Machina', 'Gucci', 'Black Mirror'],
+    website: 'https://warp.net',
+    email: 'sync@warprecords.com',
+    phone: '+44 20 7288 2800',
+    submissionUrl: 'https://warp.net/demos',
+    socialLinks: { instagram: 'waborarprecords', linkedin: 'warp-records', twitter: 'waborarprecords' },
+    acceptingSubmissions: true,
+    genres: ['Electronic', 'IDM', 'Ambient', 'Experimental', 'Techno'],
+    founded: '1989',
+    notableClients: ['A24', 'Gucci', 'Netflix', 'Channel 4']
   },
   {
     id: 'agency_30',
@@ -308,7 +584,16 @@ export const agencies: Agency[] = [
     location: 'Seattle, WA',
     logo: 'https://ui-avatars.com/api/?name=Sub+Pop+Records&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['The Last of Us', 'Juno', 'Starbucks']
+    recentSyncs: ['The Last of Us', 'Juno', 'Starbucks'],
+    website: 'https://www.subpop.com',
+    email: 'licensing@subpop.com',
+    phone: '+1 (206) 441-8441',
+    submissionUrl: 'https://www.subpop.com/demos',
+    socialLinks: { instagram: 'subpop', linkedin: 'sub-pop-records', twitter: 'subpop' },
+    acceptingSubmissions: true,
+    genres: ['Indie Rock', 'Grunge', 'Lo-Fi', 'Post-Punk', 'Folk'],
+    founded: '1986',
+    notableClients: ['HBO', 'Naughty Dog', 'Starbucks', 'Apple']
   },
   {
     id: 'agency_31',
@@ -318,7 +603,16 @@ export const agencies: Agency[] = [
     location: 'London, UK',
     logo: 'https://ui-avatars.com/api/?name=Domino+Recording&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Peaky Blinders', 'Normal People', 'Apple TV+ Originals']
+    recentSyncs: ['Peaky Blinders', 'Normal People', 'Apple TV+ Originals'],
+    website: 'https://www.dominorecordco.com',
+    email: 'sync@dominorecordco.com',
+    phone: '+44 20 8875 1390',
+    submissionUrl: null,
+    socialLinks: { instagram: 'dominorecordco', linkedin: 'domino-recording', twitter: 'DominoRecordCo' },
+    acceptingSubmissions: false,
+    genres: ['Indie Rock', 'Alt-Rock', 'Post-Punk', 'Electronic', 'Art Rock'],
+    founded: '1993',
+    notableClients: ['BBC', 'Apple TV+', 'Netflix', 'Sky']
   },
   {
     id: 'agency_32',
@@ -328,7 +622,16 @@ export const agencies: Agency[] = [
     location: 'London, UK',
     logo: 'https://ui-avatars.com/api/?name=Beggars+Group&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['Succession', 'The White Lotus', 'Adidas Originals']
+    recentSyncs: ['Succession', 'The White Lotus', 'Adidas Originals'],
+    website: 'https://www.beggars.com',
+    email: 'sync@beggars.com',
+    phone: '+44 20 8870 9912',
+    submissionUrl: null,
+    socialLinks: { instagram: 'beggarsgroup', linkedin: 'beggars-group', twitter: 'BeggarsGroup' },
+    acceptingSubmissions: false,
+    genres: ['Indie', 'Electronic', 'Alternative', 'Post-Punk', 'Experimental'],
+    founded: '1977',
+    notableClients: ['HBO', 'Adidas', 'Apple', 'Netflix']
   },
   {
     id: 'agency_33',
@@ -338,6 +641,15 @@ export const agencies: Agency[] = [
     location: 'New York, NY',
     logo: 'https://ui-avatars.com/api/?name=ABKCO+Music&background=4b4bc0&color=fff&bold=true&size=100',
     verified: true,
-    recentSyncs: ['The Departed', 'Goodfellas', 'Apple Music Campaign']
+    recentSyncs: ['The Departed', 'Goodfellas', 'Apple Music Campaign'],
+    website: 'https://www.abkco.com',
+    email: 'licensing@abkco.com',
+    phone: '+1 (212) 399-0300',
+    submissionUrl: null,
+    socialLinks: { instagram: 'abkco', linkedin: 'abkco-music-records', twitter: 'ABKCO' },
+    acceptingSubmissions: false,
+    genres: ['Classic Rock', 'Soul', 'R&B', 'Blues', 'Pop'],
+    founded: '1958',
+    notableClients: ['Scorsese Films', 'Apple Music', 'HBO', 'Paramount']
   }
 ]

@@ -9,7 +9,17 @@ import {
   Star,
   Zap,
   Music2,
-  Award
+  Award,
+  Mail,
+  Phone,
+  Send,
+  Calendar,
+  Building2,
+  Lock,
+  ExternalLink,
+  Instagram,
+  Linkedin,
+  Twitter
 } from 'lucide-react'
 import { agencies } from '@/lib/data/agencies'
 import { Button, buttonVariants } from '@/components/ui/button'
@@ -62,11 +72,11 @@ export default async function AgencyDetailPage({ params }: Props) {
         <div className="flex items-center gap-3">
           {isPro ? (
             <>
-              <a href={`https://www.google.com/search?q=${encodeURIComponent(agency.name + ' music agency')}`} target="_blank" rel="noopener noreferrer" className={cn(buttonVariants({ variant: 'outline' }), 'rounded-full gap-2 border-border')}>
+              <a href={agency.website} target="_blank" rel="noopener noreferrer" className={cn(buttonVariants({ variant: 'outline' }), 'rounded-full gap-2 border-border')}>
                 <Globe className="w-4 h-4" />
                 Website
               </a>
-              <a href={`mailto:info@syncmaster.co?subject=Enquiry about ${encodeURIComponent(agency.name)}`} className={cn(buttonVariants(), 'rounded-full gap-2 bg-primary hover:bg-primary/95 text-primary-foreground animate-in fade-in zoom-in duration-300')}>
+              <a href={`mailto:${agency.email}`} className={cn(buttonVariants(), 'rounded-full gap-2 bg-primary hover:bg-primary/95 text-primary-foreground animate-in fade-in zoom-in duration-300')}>
                 <MessageSquare className="w-4 h-4" />
                 Contact Agency
               </a>
@@ -103,6 +113,21 @@ export default async function AgencyDetailPage({ params }: Props) {
                   <MapPin className="w-3.5 h-3.5" />
                   {agency.location}
                 </Badge>
+                {agency.acceptingSubmissions ? (
+                  <Badge className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20 rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-wider">
+                    Accepting Submissions
+                  </Badge>
+                ) : (
+                  <Badge variant="secondary" className="bg-red-500/10 text-red-400 border-red-500/20 rounded-full px-4 py-1 text-[10px] font-bold uppercase tracking-wider">
+                    Not Accepting
+                  </Badge>
+                )}
+                {agency.founded && (
+                  <Badge variant="outline" className="rounded-full px-4 py-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider border-border bg-muted/30">
+                    <Calendar className="w-3.5 h-3.5" />
+                    Est. {agency.founded}
+                  </Badge>
+                )}
               </div>
               <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground leading-[0.95]">
                 {agency.name}
@@ -126,8 +151,99 @@ export default async function AgencyDetailPage({ params }: Props) {
 
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column: Recent Placements */}
+        {/* Left Column */}
         <div className="lg:col-span-2 space-y-8">
+          {/* Contact Info — Pro Gated */}
+          <Card className="rounded-[2.5rem] border-border bg-card overflow-hidden">
+            <CardContent className="p-10 space-y-8">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
+                  <Mail className="w-5 h-5 text-amber-500" />
+                </div>
+                <h2 className="text-3xl font-bold tracking-tight">Contact Information</h2>
+                {!isPro && (
+                  <Badge className="ml-auto bg-amber-500/10 text-amber-500 border-amber-500/20 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
+                    <Lock className="w-3 h-3 mr-1" /> Pro Only
+                  </Badge>
+                )}
+              </div>
+
+              <div className="relative">
+                <div className={cn("space-y-4", !isPro && "blur-md select-none pointer-events-none")}>
+                  <div className="flex items-center gap-4 p-5 rounded-2xl bg-muted/30 border border-border/50">
+                    <Mail className="w-5 h-5 text-primary shrink-0" />
+                    <div>
+                      <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Email</p>
+                      <p className="font-bold text-lg">{agency.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 p-5 rounded-2xl bg-muted/30 border border-border/50">
+                    <Globe className="w-5 h-5 text-primary shrink-0" />
+                    <div>
+                      <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Website</p>
+                      <p className="font-bold text-lg">{agency.website}</p>
+                    </div>
+                  </div>
+                  {agency.phone && (
+                    <div className="flex items-center gap-4 p-5 rounded-2xl bg-muted/30 border border-border/50">
+                      <Phone className="w-5 h-5 text-primary shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Phone</p>
+                        <p className="font-bold text-lg">{agency.phone}</p>
+                      </div>
+                    </div>
+                  )}
+                  {agency.submissionUrl && (
+                    <div className="flex items-center gap-4 p-5 rounded-2xl bg-muted/30 border border-border/50">
+                      <Send className="w-5 h-5 text-primary shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">Submission Portal</p>
+                        <p className="font-bold text-lg">{agency.submissionUrl}</p>
+                      </div>
+                    </div>
+                  )}
+                  {/* Social Links */}
+                  <div className="flex items-center gap-3 pt-2">
+                    {agency.socialLinks.instagram && (
+                      <a href={`https://instagram.com/${agency.socialLinks.instagram}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all text-sm font-medium">
+                        <Instagram className="w-4 h-4" /> Instagram
+                      </a>
+                    )}
+                    {agency.socialLinks.linkedin && (
+                      <a href={`https://linkedin.com/company/${agency.socialLinks.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all text-sm font-medium">
+                        <Linkedin className="w-4 h-4" /> LinkedIn
+                      </a>
+                    )}
+                    {agency.socialLinks.twitter && (
+                      <a href={`https://twitter.com/${agency.socialLinks.twitter}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all text-sm font-medium">
+                        <Twitter className="w-4 h-4" /> Twitter
+                      </a>
+                    )}
+                  </div>
+                </div>
+                {!isPro && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-card/60 rounded-3xl p-6 text-center space-y-4">
+                    <div className="w-12 h-12 rounded-full bg-amber-500/15 flex items-center justify-center text-amber-500 border border-amber-500/20 shadow-md">
+                      <Lock className="w-6 h-6 animate-pulse" />
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-xl font-bold tracking-tight text-foreground">Contact Info Locked</h4>
+                      <p className="text-sm text-muted-foreground max-w-sm">
+                        Upgrade to Pro to reveal email, phone, website, submission portal, and social media links for all agencies.
+                      </p>
+                    </div>
+                    <Link href="/dashboard/settings">
+                      <Button size="sm" className="rounded-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold px-6 shadow-md border-0">
+                        <Zap className="w-4 h-4 mr-1 fill-current" /> Upgrade to Pro
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Recent Placements — Pro Gated */}
           <Card className="rounded-[2.5rem] border-border bg-card overflow-hidden">
             <CardContent className="p-10 space-y-8">
               <div className="flex items-center gap-3">
@@ -161,7 +277,7 @@ export default async function AgencyDetailPage({ params }: Props) {
                     <div className="space-y-1">
                       <h4 className="text-xl font-bold tracking-tight text-foreground">Placements Gated</h4>
                       <p className="text-sm text-muted-foreground max-w-sm">
-                        Upgrade to Pro to view recent sync placements and unlock email contacts for sync agencies.
+                        Upgrade to Pro to view recent sync placements and track which shows and brands this agency works with.
                       </p>
                     </div>
                     <Link href="/dashboard/settings">
@@ -178,6 +294,41 @@ export default async function AgencyDetailPage({ params }: Props) {
 
         {/* Right Column: Stats & Meta */}
         <div className="space-y-8">
+          {/* Genres */}
+          <Card className="rounded-[2.5rem] border-border bg-card overflow-hidden">
+            <CardContent className="p-8 space-y-5">
+              <h3 className="text-xl font-bold tracking-tight">Preferred Genres</h3>
+              <div className="flex flex-wrap gap-2">
+                {agency.genres.map(genre => (
+                  <Badge key={genre} variant="outline" className="rounded-full px-4 py-2 text-xs font-bold border-border bg-muted/30">
+                    {genre}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Notable Clients */}
+          <Card className="rounded-[2.5rem] border-border bg-card overflow-hidden">
+            <CardContent className="p-8 space-y-5">
+              <h3 className="text-xl font-bold tracking-tight flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-muted-foreground" />
+                Notable Clients
+              </h3>
+              <div className="space-y-3">
+                {agency.notableClients.map((client, idx) => (
+                  <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-muted/30">
+                    <div className="w-8 h-8 rounded-lg bg-background border border-border flex items-center justify-center text-sm font-bold text-muted-foreground">
+                      {client.charAt(0)}
+                    </div>
+                    <span className="font-medium text-sm">{client}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Agency Highlights */}
           <Card className="rounded-[2.5rem] border-border bg-card overflow-hidden">
             <CardContent className="p-8 space-y-6">
               <h3 className="text-xl font-bold tracking-tight">Agency Highlights</h3>
@@ -200,7 +351,7 @@ export default async function AgencyDetailPage({ params }: Props) {
               </div>
               
               {isPro ? (
-                <a href={`mailto:info@syncmaster.co?subject=Brief Submission via SyncMaster – ${encodeURIComponent(agency.name)}`} className={cn(buttonVariants(), 'w-full rounded-full h-14 text-lg font-bold bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg')}>
+                <a href={`mailto:${agency.email}?subject=Brief Submission via SyncMaster – ${encodeURIComponent(agency.name)}`} className={cn(buttonVariants(), 'w-full rounded-full h-14 text-lg font-bold bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg')}>
                   Send Direct Brief
                 </a>
               ) : (

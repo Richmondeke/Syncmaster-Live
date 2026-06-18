@@ -9,7 +9,15 @@ import {
   Filter,
   Users,
   Star,
-  ArrowUpRight
+  ArrowUpRight,
+  Globe,
+  Mail,
+  Phone,
+  Lock,
+  Zap,
+  Calendar,
+  Building2,
+  Send
 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -22,11 +30,12 @@ export default function DirectoryPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState('All')
 
-  const filters = ['All', 'Ads', 'Film', 'TV', 'Trailers', 'Electronic']
+  const filters = ['All', 'Ads', 'Film', 'TV', 'Trailers', 'Electronic', 'Indie', 'Publishing', 'Production Music']
 
   const filteredAgencies = agencies.filter(agency => {
     const matchesSearch = agency.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         agency.description.toLowerCase().includes(searchQuery.toLowerCase())
+                         agency.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         agency.genres.some(g => g.toLowerCase().includes(searchQuery.toLowerCase()))
     
     const matchesFilter = selectedFilter === 'All' || 
                           agency.specialization.includes(selectedFilter)
@@ -34,12 +43,17 @@ export default function DirectoryPage() {
     return matchesSearch && matchesFilter
   })
 
+  const acceptingCount = filteredAgencies.filter(a => a.acceptingSubmissions).length
+
   return (
     <div className="flex flex-col gap-10 pt-4 pb-20 max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">Agency Directory</h1>
-          <p className="text-lg text-muted-foreground tracking-tight">Connect with the world's leading sync agencies and music supervisors.</p>
+          <p className="text-lg text-muted-foreground tracking-tight">
+            Connect with the world's leading sync agencies and music supervisors.
+            <span className="ml-2 text-sm font-bold text-primary">{filteredAgencies.length} agencies • {acceptingCount} accepting submissions</span>
+          </p>
         </div>
         <div className="flex items-center gap-3 bg-card border border-border p-1.5 rounded-full overflow-x-auto no-scrollbar">
           {filters.map(filter => (
@@ -62,7 +76,7 @@ export default function DirectoryPage() {
       <div className="relative group">
         <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground group-focus-within:text-primary transition-colors" />
         <Input 
-          placeholder="Search by agency name, specialty, or description..." 
+          placeholder="Search by agency name, specialty, genre, or description..." 
           className="h-16 pl-16 pr-8 rounded-full border-border bg-card/50 text-xl focus-visible:ring-primary/20 transition-all shadow-sm"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -73,17 +87,28 @@ export default function DirectoryPage() {
         {filteredAgencies.map((agency) => (
           <Card key={agency.id} className="rounded-[2.5rem] border-border bg-card hover:bg-accent/5 transition-all group overflow-hidden">
             <CardContent className="p-0">
-              <div className="p-8 space-y-6">
+              <div className="p-8 space-y-5">
                 <div className="flex items-start justify-between">
                   <div className="w-16 h-16 rounded-2xl bg-muted overflow-hidden border border-border group-hover:scale-105 transition-transform duration-500">
                     <img src={agency.logo} alt={agency.name} className="w-full h-full object-cover" />
                   </div>
-                  {agency.verified && (
-                    <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 rounded-full px-3 py-1 flex items-center gap-1">
-                      <CheckCircle2 className="w-3 h-3" />
-                      Verified
-                    </Badge>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {agency.acceptingSubmissions ? (
+                      <Badge className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
+                        Open
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary" className="bg-muted/50 text-muted-foreground border-border rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
+                        Closed
+                      </Badge>
+                    )}
+                    {agency.verified && (
+                      <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 rounded-full px-3 py-1 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3" />
+                        Verified
+                      </Badge>
+                    )}
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -91,13 +116,21 @@ export default function DirectoryPage() {
                     {agency.name}
                     <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
                   </h3>
-                  <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
-                    <MapPin className="w-3.5 h-3.5" />
-                    {agency.location}
+                  <div className="flex items-center gap-3 text-muted-foreground text-sm">
+                    <span className="flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5" />
+                      {agency.location}
+                    </span>
+                    {agency.founded && (
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5" />
+                        Est. {agency.founded}
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">
+                <p className="text-muted-foreground line-clamp-2 text-sm leading-relaxed">
                   {agency.description}
                 </p>
 
@@ -108,12 +141,31 @@ export default function DirectoryPage() {
                     </Badge>
                   ))}
                 </div>
+
+                {/* Pro-gated contact preview */}
+                <div className="flex items-center gap-2 pt-1">
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground/60">
+                    <Mail className="w-3 h-3" />
+                    <span className="blur-[4px] select-none">
+                      {agency.email.slice(0, 6)}...
+                    </span>
+                  </div>
+                  {agency.website && (
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground/60">
+                      <Globe className="w-3 h-3" />
+                      <span className="blur-[4px] select-none">
+                        {agency.website.replace('https://', '').slice(0, 10)}...
+                      </span>
+                    </div>
+                  )}
+                  <Lock className="w-3 h-3 text-amber-500/60 ml-auto" />
+                </div>
               </div>
 
-              <div className="px-8 py-6 bg-muted/30 border-t border-border flex items-center justify-between">
+              <div className="px-8 py-5 bg-muted/30 border-t border-border flex items-center justify-between">
                 <div className="flex flex-col min-w-0">
-                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Recent Placements</span>
-                  <p className="text-xs font-medium truncate max-w-[150px]">{agency.recentSyncs[0]}</p>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Notable Clients</span>
+                  <p className="text-xs font-medium truncate max-w-[180px]">{agency.notableClients.slice(0, 2).join(', ')}</p>
                 </div>
                 <Link href={`/dashboard/directory/${agency.id}`}>
                   <Button variant="outline" size="sm" className="rounded-full border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all">
