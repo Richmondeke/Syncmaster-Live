@@ -28,7 +28,7 @@ export default async function BriefsPage() {
               : 'Review producer briefs and manage status transitions.'}
           </p>
         </div>
-        {role === 'producer' && (
+        {(role === 'producer' || role === 'admin') && (
           <Link
             href="/dashboard/briefs/new"
             className={buttonVariants({ variant: 'default', size: 'sm' })}
@@ -59,7 +59,7 @@ export default async function BriefsPage() {
               : 'No briefs have been created yet. Producers can submit briefs for review.'}
           </p>
         </div>
-        {role === 'producer' && (
+        {(role === 'producer' || role === 'admin') && (
           <Link
             href="/dashboard/briefs/new"
             className={buttonVariants({ variant: 'default' }) + ' rounded-full mt-2 px-8 h-12 font-black'}

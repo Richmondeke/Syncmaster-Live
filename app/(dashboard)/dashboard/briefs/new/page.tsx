@@ -9,7 +9,7 @@ export default async function NewBriefPage() {
   const cookieStore = await cookies()
   const role = cookieStore.get('role')?.value || 'admin'
 
-  if (role !== 'producer') redirect('/dashboard/briefs')
+  if (role !== 'producer' && role !== 'admin') redirect('/dashboard/briefs')
 
   return (
     <div className="flex flex-col gap-6 max-w-2xl">

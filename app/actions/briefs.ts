@@ -20,17 +20,24 @@ export async function createBrief(
   const sessionEmail = cookieStore.get('session_email')?.value
 
   if (!sessionEmail) return { error: 'Unauthorized' }
-  if (role !== 'producer') return { error: 'Only producers can create briefs' }
+  if (role !== 'producer' && role !== 'admin') return { error: 'Only producers and admins can create briefs' }
 
-  const userId = 'mock-producer-id'
+  let producerId: string
 
-  const { data: producer } = await supabase
-    .from('producers')
-    .select('id')
-    .eq('profile_id', userId)
-    .single()
+  if (role === 'admin') {
+    // Admins can create briefs directly — use a system producer ID
+    producerId = 'system-admin'
+  } else {
+    const userId = 'mock-producer-id'
+    const { data: producer } = await supabase
+      .from('producers')
+      .select('id')
+      .eq('profile_id', userId)
+      .single()
 
-  if (!producer) return { error: 'Producer profile not found. Please contact support.' }
+    if (!producer) return { error: 'Producer profile not found. Please contact support.' }
+    producerId = producer.id
+  }
 
   const title = (formData.get('title') as string)?.trim()
   const description = (formData.get('description') as string)?.trim()
@@ -58,7 +65,7 @@ export async function createBrief(
   }
 
   const { error } = await supabase.from('briefs').insert({
-    producer_id: producer.id,
+    producer_id: producerId,
     title,
     description: description || null,
     genres,
