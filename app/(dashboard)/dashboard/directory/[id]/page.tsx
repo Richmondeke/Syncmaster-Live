@@ -12,7 +12,7 @@ import {
   Award
 } from 'lucide-react'
 import { agencies } from '@/lib/data/agencies'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import type { Metadata } from 'next'
@@ -62,18 +62,14 @@ export default async function AgencyDetailPage({ params }: Props) {
         <div className="flex items-center gap-3">
           {isPro ? (
             <>
-              <Button variant="outline" className="rounded-full gap-2 border-border" asChild>
-                <a href={agency.website || '#'} target="_blank" rel="noopener noreferrer">
-                  <Globe className="w-4 h-4" />
-                  Website
-                </a>
-              </Button>
-              <Button className="rounded-full gap-2 bg-primary hover:bg-primary/95 text-primary-foreground animate-in fade-in zoom-in duration-300" asChild>
-                <a href={`mailto:${agency.email || 'info@syncmaster.co'}`}>
-                  <MessageSquare className="w-4 h-4" />
-                  Contact Agency
-                </a>
-              </Button>
+              <a href={agency.website || '#'} target="_blank" rel="noopener noreferrer" className={cn(buttonVariants({ variant: 'outline' }), 'rounded-full gap-2 border-border')}>
+                <Globe className="w-4 h-4" />
+                Website
+              </a>
+              <a href={`mailto:${agency.email || 'info@syncmaster.co'}`} className={cn(buttonVariants(), 'rounded-full gap-2 bg-primary hover:bg-primary/95 text-primary-foreground animate-in fade-in zoom-in duration-300')}>
+                <MessageSquare className="w-4 h-4" />
+                Contact Agency
+              </a>
             </>
           ) : (
             <Link href="/dashboard/settings">
@@ -204,11 +200,9 @@ export default async function AgencyDetailPage({ params }: Props) {
               </div>
               
               {isPro ? (
-                <Button className="w-full rounded-full h-14 text-lg font-bold bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg" asChild>
-                  <a href={`mailto:${agency.email || 'info@syncmaster.co'}?subject=Brief Submission via SyncMaster`}>
-                    Send Direct Brief
-                  </a>
-                </Button>
+                <a href={`mailto:${agency.email || 'info@syncmaster.co'}?subject=Brief Submission via SyncMaster`} className={cn(buttonVariants(), 'w-full rounded-full h-14 text-lg font-bold bg-foreground text-background hover:bg-foreground/90 transition-all shadow-lg')}>
+                  Send Direct Brief
+                </a>
               ) : (
                 <Link href="/dashboard/settings" className="w-full block">
                   <Button className="w-full rounded-full h-14 text-lg font-bold bg-gradient-to-r from-indigo-600 to-primary hover:from-indigo-700 hover:to-primary/90 text-white transition-all shadow-lg gap-2">
