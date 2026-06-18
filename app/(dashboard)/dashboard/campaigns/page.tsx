@@ -10,7 +10,7 @@ import {
   Plus,
   Mail,
   ArrowUpRight,
-  Megaphone
+  Volume2
 } from 'lucide-react'
 
 export default function CampaignsPage() {
@@ -30,7 +30,7 @@ export default function CampaignsPage() {
       <div className="flex flex-col items-center justify-center py-24 text-center gap-6 rounded-[2.5rem] border-2 border-dashed border-border/40 bg-muted/10">
         <div className="relative">
           <div className="w-24 h-24 rounded-[2rem] bg-primary/10 flex items-center justify-center shadow-lg">
-            <Megaphone className="w-12 h-12 text-primary/60" />
+            <Volume2 className="w-12 h-12 text-primary/60" />
           </div>
           <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
             <Send className="w-4 h-4 text-primary" />
