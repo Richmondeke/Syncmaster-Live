@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { 
   CloudUpload, 
   X, 

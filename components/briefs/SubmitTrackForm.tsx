@@ -5,6 +5,7 @@ import { submitTrack, type SubmissionFormState } from '@/app/actions/submissions
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Music2, Link2, ChevronDown, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 

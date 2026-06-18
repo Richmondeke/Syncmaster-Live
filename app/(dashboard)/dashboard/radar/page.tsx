@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+// @ts-ignore – lucide-react 1.11 ships CJS .d.ts but no ESM .d.mts; Turbopack resolves ESM and misses some exports at type-check time
 import {
   Search,
   Film,

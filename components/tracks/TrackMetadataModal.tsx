@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { X, Plus, Trash2, User, Tag, Music2, AlertCircle, CheckCircle2, Loader2, Mail, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

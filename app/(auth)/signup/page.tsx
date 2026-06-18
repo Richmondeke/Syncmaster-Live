@@ -14,6 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { CheckCircle2 } from 'lucide-react'
 import Image from 'next/image'
 import { Footer } from '@/components/marketing/Footer'

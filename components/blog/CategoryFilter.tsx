@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { ArrowRight, Search, X } from 'lucide-react'
 import type { PostMeta } from '@/lib/blog'
 

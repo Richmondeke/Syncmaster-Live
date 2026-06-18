@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Award, Shield, Star, Music, CheckCircle2, Medal } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { createClient } from '@/lib/supabase/client'

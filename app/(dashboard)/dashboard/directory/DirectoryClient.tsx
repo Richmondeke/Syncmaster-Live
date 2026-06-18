@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
+// @ts-ignore – lucide-react 1.11 CJS/.d.ts vs Turbopack ESM mismatch
 import { 
   Search, MapPin, CheckCircle2, Users, ArrowUpRight, Globe, Mail, Phone, Lock, Zap,
   Calendar, Building2, X, School, User, Info, FileText, ChevronRight, Radio, Copy,

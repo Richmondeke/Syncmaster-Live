@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { useMusicPlayer } from '@/contexts/MusicPlayerContext'
 import { cn } from '@/lib/utils'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import {
   Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, X, Music2, ChevronDown
 } from 'lucide-react'

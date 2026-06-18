@@ -1,4 +1,5 @@
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Plus, Mail, FileText } from 'lucide-react'
 import { cookies } from 'next/headers'
 

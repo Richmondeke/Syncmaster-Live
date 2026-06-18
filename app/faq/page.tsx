@@ -1,4 +1,5 @@
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { CircleQuestionMark } from 'lucide-react'
 import { Navbar } from '@/components/marketing/Navbar'
 import { Footer } from '@/components/marketing/Footer'

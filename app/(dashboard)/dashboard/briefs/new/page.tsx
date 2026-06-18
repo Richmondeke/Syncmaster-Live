@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { ArrowLeft } from 'lucide-react'
 import { BriefForm } from '@/components/briefs/BriefForm'
 import { buttonVariants } from '@/components/ui/button'

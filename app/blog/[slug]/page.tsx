@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { ArrowLeft, ArrowRight, Clock, BookOpen } from 'lucide-react'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { getPostBySlug, getAllSlugs, getAllPosts, getClusterStyle, buildSlugMap } from '@/lib/blog'

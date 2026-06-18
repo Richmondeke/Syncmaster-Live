@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { ArrowRight, Star, Sparkles, Trophy } from 'lucide-react'
 import { buttonVariants } from '@/lib/button-variants'
 import { getAllPosts, getClusterStyle } from '@/lib/blog'

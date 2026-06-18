@@ -1,7 +1,9 @@
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { FileText } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import type { Database, BriefStatus } from '@/types/database.types'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Plus } from 'lucide-react'
 
 export type BriefWithProducer = Database['public']['Tables']['briefs']['Row'] & {

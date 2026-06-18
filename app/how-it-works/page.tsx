@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import {
   ArrowRight,
   Sparkles,

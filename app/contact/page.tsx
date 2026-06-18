@@ -3,6 +3,7 @@
 import { useActionState } from 'react'
 import { submitContactForm, type ContactFormState } from '@/app/actions/contact'
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Mail, MessageSquare, MapPin, ArrowRight, Globe } from 'lucide-react'
 import { buttonVariants } from '@/lib/button-variants'
 import { Navbar } from '@/components/marketing/Navbar'

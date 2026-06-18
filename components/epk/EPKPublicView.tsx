@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import type { EPK, EPKTrack } from '@/types/epk.types'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { 
   Play, 
   Pause, 

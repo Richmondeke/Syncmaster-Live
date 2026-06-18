@@ -1,4 +1,5 @@
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Calendar, DollarSign, ArrowRight } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import type { BriefStatus } from '@/types/database.types'

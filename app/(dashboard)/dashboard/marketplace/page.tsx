@@ -1,5 +1,6 @@
 'use client'
 
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { ShoppingCart } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Button, buttonVariants } from '@/components/ui/button'

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { 
   ArrowLeft, 
   Trophy, 

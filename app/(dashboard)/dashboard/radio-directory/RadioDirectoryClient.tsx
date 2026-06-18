@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { 
   Search, 
   MapPin, 

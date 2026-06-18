@@ -1,4 +1,5 @@
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { CheckCircle2, ArrowRight, Zap, Shield, Sparkles } from 'lucide-react'
 import { buttonVariants } from '@/lib/button-variants'
 import { Navbar } from '@/components/marketing/Navbar'

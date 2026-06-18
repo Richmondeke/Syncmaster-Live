@@ -1,4 +1,5 @@
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { ArrowRight } from 'lucide-react'
 import type { PostMeta } from '@/lib/blog'
 

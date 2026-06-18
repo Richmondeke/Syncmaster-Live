@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useTransition } from 'react'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Sparkles, Loader2, AlertCircle, CheckCircle, Mail } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { inviteComposer } from '@/app/actions/outreach'

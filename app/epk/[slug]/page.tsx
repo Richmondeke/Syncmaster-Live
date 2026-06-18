@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import {
   Play,
   Clock,

@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import type { BriefStatus } from '@/types/database.types'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Settings2, AlertTriangle, CheckCircle2, Play, RotateCcw, XCircle, Loader2 } from 'lucide-react'
 
 type StatusAction = {

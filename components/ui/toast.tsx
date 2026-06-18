@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { CheckCircle2, XCircle, Info, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 

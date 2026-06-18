@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Sparkles, Check, Loader2, AlertCircle } from 'lucide-react'
 import { detectCurrency } from '@/lib/geo'
 import { useToast } from '@/components/Toast'

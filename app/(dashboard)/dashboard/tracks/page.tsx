@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
 } from '@/components/ui/card'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { 
   Music2, 
   Plus as PlusIcon, 

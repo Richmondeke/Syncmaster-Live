@@ -1,6 +1,7 @@
 'use client'
 
 import { useTransition } from 'react'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { LogOut } from 'lucide-react'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { usePathname } from 'next/navigation'

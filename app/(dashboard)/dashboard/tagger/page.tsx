@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { parseBlob } from 'music-metadata'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { 
   Music, 
   Upload, 

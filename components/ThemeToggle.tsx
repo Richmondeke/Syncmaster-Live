@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Sun, Moon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 

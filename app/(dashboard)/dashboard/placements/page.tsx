@@ -3,6 +3,7 @@ import {
   CardContent,
 } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { 
   Trophy, 
   DollarSign, 

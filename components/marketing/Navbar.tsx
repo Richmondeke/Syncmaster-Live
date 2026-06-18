@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { ChevronDown, Menu, X } from 'lucide-react'
 import { buttonVariants } from '@/lib/button-variants'
 import { ThemeToggle } from '@/components/ThemeToggle'

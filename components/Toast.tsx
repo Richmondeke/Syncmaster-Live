@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useCallback } from 'react'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { X } from 'lucide-react'
 
 export type ToastType = 'success' | 'error' | 'info'

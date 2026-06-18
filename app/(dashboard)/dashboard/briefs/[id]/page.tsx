@@ -1,5 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { ArrowLeft, Sparkles } from 'lucide-react'
 import { getAdminClient } from '@/lib/supabase/admin'
 import { BriefStatusControl } from '@/components/briefs/BriefStatusControl'

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import {
   FileText,
   Music2,
@@ -16,6 +17,7 @@ import {
   Upload,
   Trophy,
 } from 'lucide-react'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import type { LucideIcon } from 'lucide-react'
 
 type Feature = {

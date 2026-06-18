@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import { useState } from 'react'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import {
   LayoutDashboard,
   Layers,

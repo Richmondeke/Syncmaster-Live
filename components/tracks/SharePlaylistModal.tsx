@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { X, Send, Link as LinkIcon, ExternalLink, Shield, Info, Copy, Check, Lock, Globe, Clock } from 'lucide-react'
 
 interface SharePlaylistModalProps {

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { X, Link2, Check } from 'lucide-react'
 
 const LinkedInIcon = () => (

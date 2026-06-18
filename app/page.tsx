@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { ArrowRight, Zap, Shield, Globe, Layers, Sparkles, Mic2, Film } from 'lucide-react'
 import { buttonVariants } from '@/lib/button-variants'
 import { ThemeToggle } from '@/components/ThemeToggle'

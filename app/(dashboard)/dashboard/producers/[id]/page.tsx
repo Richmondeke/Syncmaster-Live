@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Building2, ArrowLeft, Mail, Globe, MapPin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 

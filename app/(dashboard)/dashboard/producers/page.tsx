@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { Building2, Plus, ArrowRight } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'

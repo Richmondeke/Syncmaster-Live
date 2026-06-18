@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+// @ts-ignore – lucide-react 1.11 CJS/.d.ts vs Turbopack ESM mismatch
 import { 
   ArrowLeft, 
   MapPin, 
@@ -16,10 +17,7 @@ import {
   Calendar,
   Building2,
   Lock,
-  ExternalLink,
-  Instagram,
-  Linkedin,
-  Twitter
+  ExternalLink
 } from 'lucide-react'
 import { agencies } from '@/lib/data/agencies'
 import { Button, buttonVariants } from '@/components/ui/button'
@@ -206,17 +204,17 @@ export default async function AgencyDetailPage({ params }: Props) {
                   <div className="flex items-center gap-3 pt-2">
                     {agency.socialLinks.instagram && (
                       <a href={`https://instagram.com/${agency.socialLinks.instagram}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all text-sm font-medium">
-                        <Instagram className="w-4 h-4" /> Instagram
+                        <ExternalLink className="w-4 h-4" /> Instagram
                       </a>
                     )}
                     {agency.socialLinks.linkedin && (
                       <a href={`https://linkedin.com/company/${agency.socialLinks.linkedin}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all text-sm font-medium">
-                        <Linkedin className="w-4 h-4" /> LinkedIn
+                        <ExternalLink className="w-4 h-4" /> LinkedIn
                       </a>
                     )}
                     {agency.socialLinks.twitter && (
                       <a href={`https://twitter.com/${agency.socialLinks.twitter}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted/50 border border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all text-sm font-medium">
-                        <Twitter className="w-4 h-4" /> Twitter
+                        <ExternalLink className="w-4 h-4" /> Twitter
                       </a>
                     )}
                   </div>

@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
 } from '@/components/ui/card'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import { 
   Plus, 
   Search, 

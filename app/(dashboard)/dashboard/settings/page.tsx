@@ -10,6 +10,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/ui/card'
+// @ts-ignore – lucide-react Turbopack ESM type mismatch
 import {
   User,
   Link as LinkIcon,
