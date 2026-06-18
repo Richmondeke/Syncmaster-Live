@@ -1,11 +1,9 @@
-import { ArrowRight, Sparkles, Search, Building2, CheckSquare, FileText, LayoutGrid, Users, Music2, Radio } from 'lucide-react'
+import { ArrowRight, Sparkles, Search, Building2, CheckSquare, FileText, LayoutGrid, Users, Music2, Radio, Medal } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { cookies } from 'next/headers'
 import type { Role } from '@/types/database.types'
-import { Suspense } from 'react'
-import { UserBadgeModal } from '@/components/dashboard/UserBadgeModal'
 
 const TOOLS = [
   {
@@ -98,9 +96,13 @@ export default async function DashboardPage() {
         <h1 className="text-3xl font-black tracking-[-0.068em] leading-[1.2] text-foreground sm:text-5xl">
           Welcome, {fullName}
         </h1>
-        <Suspense fallback={null}>
-          <UserBadgeModal />
-        </Suspense>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-background border border-border shadow-sm">
+          <Medal className="w-5 h-5 text-primary" />
+          <div className="text-left">
+            <p className="text-xs font-bold leading-none text-foreground">SyncNoob</p>
+            <p className="text-[10px] font-medium text-muted-foreground">Level 1</p>
+          </div>
+        </div>
       </div>
 
       {/* Hero Banner */}
