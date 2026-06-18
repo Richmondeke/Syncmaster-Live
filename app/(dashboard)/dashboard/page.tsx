@@ -1,9 +1,6 @@
 import { ArrowRight, Sparkles, Search, Building2, CheckSquare, FileText, LayoutGrid, Users, Music2, Radio, Medal } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
-import { cookies } from 'next/headers'
-import type { Role } from '@/types/database.types'
 
 const TOOLS = [
   {
@@ -47,54 +44,16 @@ const TOOLS = [
     href: '/dashboard/marketplace',
     icon: LayoutGrid,
     color: 'bg-rose-500/10 text-rose-500',
-    adminOnly: true
-  },
-  {
-    label: 'Composers',
-    description: 'Manage composer applications',
-    href: '/dashboard/composers',
-    icon: Users,
-    color: 'bg-cyan-500/10 text-cyan-500',
-    adminOnly: true
-  },
-  {
-    label: 'Producers',
-    description: 'Manage producer profiles',
-    href: '/dashboard/producers',
-    icon: Building2,
-    color: 'bg-indigo-500/10 text-indigo-500',
-    adminOnly: true
-  },
-  {
-    label: 'Tasks',
-    description: 'Pending operations',
-    href: '/dashboard/tasks',
-    icon: CheckSquare,
-    color: 'bg-blue-500/10 text-blue-500',
-    adminOnly: true
   },
 ]
 
-export default async function DashboardPage() {
-  let role: Role = 'admin'
-  let fullName = 'Godliverse'
-
-  try {
-    const cookieStore = await cookies()
-    role = (cookieStore.get('role')?.value || 'admin') as Role
-    fullName = cookieStore.get('full_name')?.value || 'Godliverse'
-  } catch {
-    // cookies() failed — use defaults
-  }
-
-  const filteredTools = TOOLS.filter((tool) => !tool.adminOnly || role === 'admin')
-
+export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-10 pt-2 pb-12 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-3xl font-black tracking-[-0.068em] leading-[1.2] text-foreground sm:text-5xl">
-          Welcome, {fullName}
+          Welcome to SyncMaster
         </h1>
         <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-background border border-border shadow-sm">
           <Medal className="w-5 h-5 text-primary" />
@@ -107,52 +66,30 @@ export default async function DashboardPage() {
 
       {/* Hero Banner */}
       <section className="group relative overflow-hidden rounded-[2.5rem] bg-[#4b4bc0] p-10 md:p-14 text-white shadow-2xl transition-all duration-500 border border-white/10">
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
-          <div className="flex flex-col gap-8 max-w-2xl text-center md:text-left">
-            <div className="space-y-5">
-              <h2 className="text-4xl md:text-6xl font-black tracking-[-0.068em] leading-[1.1]">
-                Your sync operations, simplified.
-              </h2>
-              <p className="text-lg md:text-2xl text-white/80 font-medium tracking-[-0.04em] max-w-xl leading-normal">
-                {role === 'composer'
-                  ? 'Upload your catalog, track submissions, and connect with supervisors from one central hub.'
-                  : role === 'producer'
-                  ? 'Post briefs, review curated matches, and track placements from one central hub.'
-                  : 'Manage the full roster, match briefs, and track every placement.'}
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-5 pt-2">
-              <Link
-                href="/dashboard/briefs"
-                className={buttonVariants({ variant: "default", size: "lg" }) + " rounded-2xl px-10 h-16 text-lg font-black bg-white text-[#4b4bc0] hover:bg-white/90 border-none transition-all shadow-xl shadow-black/10"}
-              >
-                Explore Briefs
-              </Link>
-              {(role === 'composer' || role === 'admin') && (
-                <Link
-                  href="/dashboard/tracks"
-                  className={buttonVariants({ variant: "outline", size: "lg" }) + " border-white/20 bg-white/5 font-black text-white hover:bg-white/10 backdrop-blur-sm px-10 h-16 text-lg rounded-2xl"}
-                >
-                  View Catalog
-                </Link>
-              )}
-            </div>
+        <div className="relative z-10 flex flex-col gap-8 max-w-2xl">
+          <div className="space-y-5">
+            <h2 className="text-4xl md:text-6xl font-black tracking-[-0.068em] leading-[1.1]">
+              Your sync operations, simplified.
+            </h2>
+            <p className="text-lg md:text-2xl text-white/80 font-medium tracking-[-0.04em] max-w-xl leading-normal">
+              Upload your catalog, track submissions, and connect with supervisors from one central hub.
+            </p>
           </div>
-
-          <div className="hidden lg:block shrink-0 relative">
-            <div className="relative h-[280px] w-[460px] overflow-hidden rounded-[2.5rem] border border-white/20 bg-white/5 backdrop-blur-md shadow-2xl rotate-3 group-hover:rotate-0 transition-all duration-700">
-              <Image
-                src="/dashboard-preview.png"
-                alt="Dashboard Preview"
-                fill
-                className="object-cover opacity-90 group-hover:opacity-100 transition-opacity"
-              />
-            </div>
-            <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/15 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-black/30 rounded-full blur-3xl" />
+          <div className="flex flex-wrap items-center gap-5 pt-2">
+            <Link
+              href="/dashboard/briefs"
+              className={buttonVariants({ variant: "default", size: "lg" }) + " rounded-2xl px-10 h-16 text-lg font-black bg-white text-[#4b4bc0] hover:bg-white/90 border-none transition-all shadow-xl shadow-black/10"}
+            >
+              Explore Briefs
+            </Link>
+            <Link
+              href="/dashboard/tracks"
+              className={buttonVariants({ variant: "outline", size: "lg" }) + " border-white/20 bg-white/5 font-black text-white hover:bg-white/10 backdrop-blur-sm px-10 h-16 text-lg rounded-2xl"}
+            >
+              View Catalog
+            </Link>
           </div>
         </div>
-
         <div className="absolute -right-20 -top-20 h-96 w-96 rounded-full bg-white/10 blur-[120px]" />
         <div className="absolute -bottom-20 -left-20 h-96 w-96 rounded-full bg-black/30 blur-[120px]" />
       </section>
@@ -197,7 +134,7 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTools.map((tool) => (
+          {TOOLS.map((tool) => (
             <Link
               key={tool.href}
               href={tool.href}
