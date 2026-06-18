@@ -24,7 +24,8 @@ import {
   CheckSquare,
   Mail,
   MonitorPlay,
-  Radio
+  Radio,
+  Zap
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -238,6 +239,28 @@ function SidebarContent({
             onClick={onNavigate}
           />
         ))}
+
+        {/* Upgrade to Pro CTA */}
+        {!profile.is_pro && (
+          <Link
+            href="/dashboard/settings#pricing"
+            onClick={onNavigate}
+            className="group relative block p-[1px] rounded-2xl overflow-hidden mt-2"
+          >
+            {/* Animated gradient border */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 opacity-80 group-hover:opacity-100 transition-opacity" />
+            <div className="relative flex items-center gap-3 px-4 py-3 rounded-[15px] bg-primary/95 group-hover:bg-primary/90 transition-colors">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <Zap className="w-4 h-4 text-white fill-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-black text-white tracking-tight">Upgrade to Pro</p>
+                <p className="text-[10px] text-white/50 font-medium">Unlimited submissions</p>
+              </div>
+              <Sparkles className="w-4 h-4 text-amber-400/60 group-hover:text-amber-400 transition-colors" />
+            </div>
+          </Link>
+        )}
         
         {/* User Profile Section */}
         <div className="mt-4 p-4 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl relative overflow-hidden group">

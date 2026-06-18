@@ -15,9 +15,9 @@ export async function initiateProUpgrade(currency: 'NGN' | 'USD'): Promise<{ ok:
       return { ok: false, error: 'User profile not found' }
     }
 
-    const flwSecretKey = process.env.FLW_SECRET_KEY
+    const flwSecretKey = process.env.FLW_SECRET_KEY || process.env.FLW_CLIENT_SECRET
     if (!flwSecretKey) {
-      console.error('FLW_SECRET_KEY is not configured in the environment')
+      console.error('FLW_SECRET_KEY (or FLW_CLIENT_SECRET) is not configured in the environment')
       return { ok: false, error: 'Payment gateway configuration error' }
     }
 

@@ -20,10 +20,10 @@ export async function POST(req: NextRequest) {
 
     if (event === 'charge.completed' && data && data.status === 'successful') {
       const transactionId = data.id
-      const flwSecretKey = process.env.FLW_SECRET_KEY
+      const flwSecretKey = process.env.FLW_SECRET_KEY || process.env.FLW_CLIENT_SECRET
 
       if (!flwSecretKey) {
-        console.error('[Flutterwave Webhook] FLW_SECRET_KEY is missing')
+        console.error('[Flutterwave Webhook] FLW_SECRET_KEY (or FLW_CLIENT_SECRET) is missing')
         return new NextResponse('Configuration Error', { status: 500 })
       }
 
