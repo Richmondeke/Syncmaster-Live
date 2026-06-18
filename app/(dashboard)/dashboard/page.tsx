@@ -1,4 +1,3 @@
-import { getAdminClient } from '@/lib/supabase/admin'
 import { Clock, ArrowRight, Sparkles, Search, Building2, CheckSquare, FileText, LayoutGrid, Users, Music2, Radio } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -79,64 +78,19 @@ const TOOLS = [
 ]
 
 export default async function DashboardPage() {
-  const cookieStore = await cookies()
-  const roleOverride = (cookieStore.get('role')?.value || 'admin') as Role
-  const fullNameOverride = cookieStore.get('full_name')?.value || 'Godliverse'
+  let profile = { role: 'admin' as Role, full_name: 'Godliverse' }
+  const topBriefs: BriefCardData[] = []
 
-  const profile = { role: roleOverride, full_name: fullNameOverride }
-  const composer = { status: 'active' }
-
-  // Fetch live briefs — wrapped in try-catch so dashboard always renders
-  let topBriefs: BriefCardData[] = []
   try {
-    const supabase = getAdminClient()
-    const { data: briefs } = await supabase
-      .from('briefs')
-      .select('id, title, description, genres, budget_min, budget_max, deadline, status, producers:producers(company, profiles:profiles(full_name))')
-      .eq('status', 'active')
-      .limit(5)
-
-    topBriefs = (briefs || []) as BriefCardData[]
+    const cookieStore = await cookies()
+    const roleOverride = (cookieStore.get('role')?.value || 'admin') as Role
+    const fullNameOverride = cookieStore.get('full_name')?.value || 'Godliverse'
+    profile = { role: roleOverride, full_name: fullNameOverride }
   } catch (err) {
-    console.warn('[Dashboard] Failed to fetch briefs, showing empty state:', err)
+    console.warn('[Dashboard] Failed to read cookies:', err)
   }
+
   const filteredTools = TOOLS.filter((tool) => !tool.adminOnly || profile.role === 'admin')
-
-  if (composer?.status === 'pending') {
-    return (
-      <div className="flex flex-col gap-8 pt-4">
-        <h1 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Dashboard</h1>
-        <div className="rounded-3xl border border-border bg-card p-8 shadow-md">
-          <div className="flex items-start gap-4">
-            <Clock className="h-6 w-6 text-primary mt-1 shrink-0" />
-            <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Application under review</h2>
-              <p className="text-base text-muted-foreground font-medium leading-relaxed max-w-2xl">
-                We&apos;ve received your application and our team is reviewing it. We manually vet every
-                composer to ensure rights clarity and quality standards. We&apos;ll notify you by email
-                once the review is complete.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (composer?.status === 'rejected') {
-    return (
-      <div className="flex flex-col gap-8 pt-4">
-        <h1 className="text-4xl md:text-5xl font-black tracking-[-0.068em] leading-[1.2] text-foreground">Dashboard</h1>
-        <div className="rounded-3xl border border-destructive/30 bg-card p-8">
-          <h2 className="text-xl font-black tracking-[-0.068em] leading-[1.2] text-destructive">Application not approved</h2>
-          <p className="text-base text-muted-foreground font-medium mt-2 leading-relaxed max-w-2xl">
-            Unfortunately your application wasn&apos;t approved at this time. Please contact us if
-            you have any questions.
-          </p>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="flex flex-col gap-10 pt-2 pb-12 max-w-7xl mx-auto">
