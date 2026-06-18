@@ -27,22 +27,29 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
-  const supabase = await createClient()
-  const userSession = await getSessionUser()
   let isPro = false
   let fullName = fullNameOverride
+  let userId = 'dummy-id'
 
-  if (userSession) {
-    const { data } = await supabase
-      .from('profiles')
-      .select('full_name, is_pro')
-      .eq('id', userSession.id)
-      .single()
-    
-    if (data) {
-      if (data.full_name) fullName = data.full_name
-      isPro = !!data.is_pro
+  try {
+    const supabase = await createClient()
+    const userSession = await getSessionUser()
+
+    if (userSession) {
+      userId = userSession.id
+      const { data } = await supabase
+        .from('profiles')
+        .select('full_name, is_pro')
+        .eq('id', userSession.id)
+        .single()
+      
+      if (data) {
+        if (data.full_name) fullName = data.full_name
+        isPro = !!data.is_pro
+      }
     }
+  } catch (err) {
+    console.warn('[DashboardLayout] Failed to load profile, using defaults:', err)
   }
 
   const profile: ProfileRow = {
@@ -52,7 +59,7 @@ export default async function DashboardLayout({
     is_pro: isPro,
   }
 
-  const user = { id: userSession?.id || 'dummy-id', email: sessionEmail || 'admin@test.com' }
+  const user = { id: userId, email: sessionEmail || 'admin@test.com' }
 
   return (
     <MusicPlayerProvider>
