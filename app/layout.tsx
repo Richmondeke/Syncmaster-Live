@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import { ToastProvider } from "@/components/Toast";
 import { FirebaseProvider } from "@/components/providers/FirebaseProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -52,6 +53,7 @@ export default function RootLayout({
             <FirebaseProvider>{children}</FirebaseProvider>
           </ToastProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
